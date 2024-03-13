@@ -7,12 +7,7 @@ import Schoolmenu from "../Menus/Schoolmenu";
 const MainLayoutContext = createContext();
 
 
-const MenuComponetMap = {
-  
-  'Colleges': <CollegeMenu/>,
-  'School': <Schoolmenu/>
-  
-}
+
 
 
 
@@ -20,8 +15,10 @@ export const MainLayoutProvider=({children})=>
 {
     const[collapsed,setCollapsed]=useState(false)
     const[menuComponent,setmenuComponent]= useState([]);
+    const[formData,setformData] = useState([])
+    console.log(formData)
    
-    return<MainLayoutContext.Provider value={{collapsed,setCollapsed,menuComponent,setmenuComponent}}>
+    return<MainLayoutContext.Provider value={{collapsed,setCollapsed,menuComponent,setmenuComponent ,formData,setformData}}>
         <Header/>
         <div className="flex">
         <SideBar/>

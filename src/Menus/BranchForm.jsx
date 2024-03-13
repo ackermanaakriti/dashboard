@@ -2,8 +2,10 @@
 import React from 'react'
 import * as Yup from 'yup';
 import { Formik,ErrorMessage } from 'formik';
+import { useLayouData } from '../Context/MainLayoutContext';
 
 const BranchForm = () => {
+    const {formData,setformData}= useLayouData()
    
   return (
     <div className='Branchform '>
@@ -34,6 +36,7 @@ const BranchForm = () => {
    onSubmit={(values)=>
 {
     console.log(values)
+    setformData(values)
 }}
    >
     {formik=>(

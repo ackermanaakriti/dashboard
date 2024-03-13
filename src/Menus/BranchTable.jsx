@@ -3,9 +3,12 @@ import { FaEdit } from "react-icons/fa";
 import { LuDelete } from "react-icons/lu";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import { MdEdit } from "react-icons/md";
+import { useLayouData } from "../Context/MainLayoutContext";
 
 
 const BranchTable = () => {
+  const{formData}= useLayouData();
+  console.log(formData)
   return (
     <>
       <div className="bg-bgclr branchtable">
@@ -32,9 +35,11 @@ const BranchTable = () => {
                 </thead>
                 <tbody>
                   <tr>
-                    <td>ABc Pvt.Ltd</td>
-                    <td>1234</td>
-                    <td>1234</td>
+                  
+                  
+                      <td>{formData?.name}</td>
+                    <td>{formData?.branchname}</td>
+                    <td>{formData?.Registrationno}</td>
                     <td>
                       <button>Yes</button>
                     </td>
@@ -48,43 +53,10 @@ const BranchTable = () => {
                         </span>
                       </div>
                     </td>
+                   
                   </tr>
-                  <tr>
-                    <td>ABc Pvt.Ltd</td>
-                    <td>1234</td>
-                    <td>1234</td>
-                    <td>
-                      <button>Yes</button>
-                    </td>
-                    <td className="">
-                      <div className="flex gap-[25px] items-center">
-                        <span className="text-PrimaryColor">
-                          <MdEdit />
-                        </span>
-                        <span className="text-[#d13838]">
-                          <RiDeleteBin5Fill />
-                        </span>
-                      </div>{" "}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>ABc Pvt.Ltd</td>
-                    <td>1234</td>
-                    <td>1234</td>
-                    <td>
-                      <button>Yes</button>
-                    </td>
-                    <td className="">
-                    <div className="flex gap-[25px] items-center">
-                        <span className="text-PrimaryColor">
-                          <MdEdit />
-                        </span>
-                        <span className="text-[#d13838]">
-                          <RiDeleteBin5Fill />
-                        </span>
-                      </div>
-                    </td>
-                  </tr>
+                
+                  
                 </tbody>
               </table>
             </div>
