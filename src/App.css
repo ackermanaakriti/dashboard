@@ -1,38 +1,329 @@
 .App {
   text-align: center;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+:root {
+  --Primarycolor: #034848;
+  --Secondarycolor: #95BFBF;
+  --Tablebg: #C0D3E4;
+  --inter:"Inter", sans-serif;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+.sidebar
+{
+ 
+  .ps-sidebar-root
+  {
+    background-color: #C7E1E1; 
+    width: 280px;
+    padding: 20px 0 80px;
+    min-height: calc(100vh - 76px);
+    .ps-sidebar-container 
+    {
+      background: none;
+    }
+  
+    /* sidebar--collapsed */
+    &.ps-collapsed 
+    {
+      min-width: 65px;
+      .ps-submenu-content{
+        &.ps-open 
+        {
+          ul 
+          {
+            li 
+            {
+              a 
+              {
+                padding:0 !important; 
+               
+              }
+            }
+          }
+        }
+       
+      }
+      .ps-menu-root{
+        .ps-menu-button 
+        {
+          padding-left:5px;
+        }
+      }
+     .ps-menu-button 
+     {
+      .ps-menu-icon{
+        min-width: 65px;
+      }
+    
+     &.ps-open 
+     {
+      .ps-menu-icon 
+      {
+        min-width: 65px;
+        &.ps-open 
+        {
+          background-color:rgba(97, 183, 195, 0.34) ;         
+            border-right: 3px solid #034848;
+          /* min-width: 65px; */
+        }
+      
+      }
+     }
+     
+     }
+    }
+    .ps-menu-button
+    {
+      padding-left: 20px;
+      display: flex;
+      justify-content: space-between;
+      gap:30px;
+     
+      &.ps-open 
+      {
+        color: #034848;
+        background-color: transparent;
+      }
+     
+      &:hover{
+        color: #034848;
+        background-color: transparent;
+      }
+     
+     
+     
+    }
+    /* menu item */
+    .ps-menu-root 
+    {
+      
+      .ps-submenu-content 
+      {
+   margin:0 10px;
+       
+        border-radius: 15px;
+        ul 
+        {
+          padding: 8px 0;
+          li 
+          {
+           
+            a 
+            {
+              height: 40px;
+              padding: 8px 0;
+            }
+          }
+        }
+      }
+
+      /* submenu items */
+     
+      .ps-submenu-root 
+      {
+        
+        margin:10px 0;
+        .ps-menu-button 
+        {
+            
+        }
+        .ps-menu-icon
+        {
+          
+         
+          padding-left:10px;
+        
+          margin:0;
+          min-width: 65px;
+         
+          &.ps-open 
+          {
+           background-color:  rgba(97, 183, 195, 0.34);
+            border-right: 3px solid #034848;
+          }
+       
+        }
+        .ps-menu-button
+      {
+        padding-left: 0;
+        display: flex;
+        justify-content: space-between;
+        gap:30px;
+        &.ps-open 
+        {
+          color: #034848;
+          background-color: transparent;
+        }
+       
+        &:hover{
+          color: #034848;
+          background-color: transparent;
+        }
+       
+       
+       
+      }
+
+      /* expan icons */
+      .ps-submenu-expand-icon 
+      {
+       .css-1097eso
+       {
+        display: none;
+       }
+        .css-honxw6
+        {
+         color:#034848;
+         height: 8px;
+         width: 8px;
+        }
+        .css-jn69v9
+        {
+          color:#034848;
+         height: 8px;
+         width: 8px;
+        }
+      }
+      }
+      
+    }
   }
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.footer 
+{
+  position:fixed;
+  width: 100%;
+  bottom: 0;
+  z-index: 3  ;
+  .firstdiv
+  {
+  border-radius: 0px 40px 0px 0px;
   }
-  to {
-    transform: rotate(360deg);
+  .secondiv
+  {
+    border-radius: 40px 0px 0px 0px;
+  }
+}
+.branchtable
+{
+  .addbtn
+  {
+    button 
+    {
+      background-color: var(--Primarycolor);
+      color:white;
+      padding:5px 20px;
+      font-family: var(--inter);
+      font-weight: 500;
+      &:hover
+      {
+        background-color: #082222;
+      }
+    }
+
+  }
+  table 
+  {
+    width: 100%;
+ 
+    thead 
+    {
+      th 
+      {
+        border-right: 1px solid #afafaf;
+        background-color: var(--Tablebg);
+        padding:10px;
+        font-weight: 600;
+        font-family: var(--inter);
+        text-align: start;
+        &:last-child
+        {
+          border-right: none;
+        }
+       
+
+      }
+    }
+    tbody 
+    {
+      &:last-child 
+      {
+        border-bottom: none;
+      }
+     
+      td 
+      {
+        border: 1px solid #afafaf;
+        background-color: white;
+        border-bottom: none;
+        padding:10px;
+        font-weight: 400;
+        font-family: var(--inter);
+        text-align: start;
+        font-size: 16px;
+        margin:0 !important;
+        button 
+        {
+          background: var(--Primarycolor);
+          padding: 4px 18px;
+          border-radius: 20px;
+          color:white;
+        }
+        &:nth-child(1)
+        {
+        
+          border-left: none;
+        }
+        &:last-child
+        {
+          border-right: none;
+        
+        }
+       
+        span 
+        {
+          font-size: 22px;
+          margin:0;
+        }
+      }
+    }
+  }
+}
+.Branchform
+{
+  background-color: var(--Tablebg);
+  padding: 80px;
+  padding-bottom: 120px;
+ 
+
+  height: 100%;
+
+  form 
+  {
+    background-color: white;
+    padding:10px 30px;
+    label 
+    {
+      font-family: var(--inter);
+      padding:5px 0;
+      font-weight: 500;
+      span 
+      {
+        color:rgb(184, 26, 26);
+      }
+    }
+    
+    input 
+    {
+      border:1px solid rgb(173, 173, 173);
+      padding:8px 12px;
+      outline:none
+    }
+    textarea 
+    {
+      border:1px solid rgb(173, 173, 173);
+      padding:10px 12px;
+      outline: none;
+    }
   }
 }
