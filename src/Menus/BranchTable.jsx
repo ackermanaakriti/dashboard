@@ -7,20 +7,28 @@ import { useLayouData } from "../Context/MainLayoutContext";
 
 
 const BranchTable = () => {
-  const{formData}= useLayouData();
-  console.log(formData)
+  const{submittedData, setSubmittedData,menuComponent,setmenuComponent}= useLayouData();
+ 
+  const hhandleTdDel =(index)=>
+  {
+    const updatedData = submittedData.filter((item, i) => i !== index);
+    console.log(updatedData)
+  
+   
+  }
+  
   return (
     <>
       <div className="bg-bgclr branchtable">
         <div className="container mx-auto">
-          <div className="py-[30px]">
+          <div className="pt-[30px]">
             <h3 className="font-inter font-semibold text-[30px]">
               Branch List
             </h3>
           </div>
           <div className="branchtable">
-            <div className="py-[18px] addbtn">
-              <button>Add New +</button>
+            <div onClick={()=>setmenuComponent('tableform')} className="py-[18px] addbtn">
+              <button >Add New +</button>
             </div>
             <div>
               <table className="shadow-lg">
@@ -34,12 +42,15 @@ const BranchTable = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
+                  {
+                    submittedData?.map((tdata,index)=>
+                    (
+                      <tr key={index}>
+                 
                   
-                  
-                      <td>{formData?.name}</td>
-                    <td>{formData?.branchname}</td>
-                    <td>{formData?.Registrationno}</td>
+                      <td>{tdata?.name}</td>
+                    <td>{tdata?.branchname}</td>
+                    <td>{tdata?.Registrationno}</td>
                     <td>
                       <button>Yes</button>
                     </td>
@@ -48,13 +59,16 @@ const BranchTable = () => {
                         <span className="text-PrimaryColor">
                           <MdEdit />
                         </span>
-                        <span className="text-[#d13838]">
+                        <span onClick={()=>hhandleTdDel(index)} className="text-[#d13838] cursor-pointer">
                           <RiDeleteBin5Fill />
                         </span>
                       </div>
                     </td>
                    
                   </tr>
+                    ))
+                  }
+                 
                 
                   
                 </tbody>
