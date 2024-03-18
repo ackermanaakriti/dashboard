@@ -14,7 +14,8 @@ export const MainLayoutProvider = ({ children }) => {
   const [gotoComp, setGotoComp] = useState();
   const [menuClose, setMenuClose] = useState(false);
   const [sidebarToggle,setSidebarToggle]= useState();
-  const [hanleInquiry,setHandleInquiry]= useState(false)
+  const [hanleInquiry,setHandleInquiry]= useState(false);
+  const [getId,setId]= useState()
 
 
   return (
@@ -32,7 +33,9 @@ export const MainLayoutProvider = ({ children }) => {
         setMenuOpen,
         menuClose,setMenuClose,
         sidebarToggle,setSidebarToggle,
-        hanleInquiry,setHandleInquiry
+        hanleInquiry,setHandleInquiry,
+        getId,setId
+        
       }}
     >
       <Header />

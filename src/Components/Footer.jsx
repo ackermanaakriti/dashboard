@@ -28,8 +28,8 @@ const Footer = () => {
             </figure>
           </div>
           <div className="flex justify-around gap-[10rem] ">
-            {footerimg.map((img, index) => (
-              <figure className="h-[30px]">
+            {footerimg?.map((img, index) => (
+              <figure key={index} className="h-[30px]">
                 <img className="h-[100%]" src={img.image} alt="" />
               </figure>
             ))}

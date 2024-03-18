@@ -8,8 +8,10 @@ import "react-toastify/dist/ReactToastify.css";
 
 
 const BranchForm = () => {
-  const { submittedData, setSubmittedData, menuComponent, setmenuComponent } =
+  const { submittedData, setSubmittedData, menuComponent, setmenuComponent ,getId,setId} =
     useLayouData();
+
+    console.log('hello')
 
     const handleSubmitbtnn=()=>
     {
@@ -17,13 +19,6 @@ const BranchForm = () => {
       toast.success("Your Data is saved");
       setmenuComponent("gotoTable");   
 
-
-      
-      setInterval(() => {
-           
-       
-      
-      }, 2000);
     }
     console.log(menuComponent)
  
@@ -36,7 +31,7 @@ const BranchForm = () => {
   return (
     <div className="Branchform ">
       <ToastContainer />
-
+{console.log('hello')}
       <div className="pb-[25px]">
         <h3 className="font-inter font-semibold text-[30px]">
           Add/Update Branch

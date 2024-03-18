@@ -7,7 +7,7 @@ import { useLayouData } from "../Context/MainLayoutContext";
 
 
 const BranchTable = () => {
-  const{ setSubmittedData,menuComponent,setmenuComponent}= useLayouData();
+  const{ setSubmittedData,menuComponent,setmenuComponent,getId,setId}= useLayouData();
   const submittedData = JSON.parse(localStorage.getItem('formData'))
  
   const hhandleTdDel =(index)=>
@@ -16,12 +16,15 @@ const BranchTable = () => {
     localStorage.setItem('formData', JSON.stringify(updatedData));
     setSubmittedData(updatedData)
 
-   
-   
-  
-   
   }
   
+  const handleEditdd =(index)=>
+  {
+    const editData = submittedData[index]; // Retrieve the data of the selected item
+    setmenuComponent("EditForm", editData);
+    setId(index)
+
+  }
   return (
     <>
       <div className="bg-bgclr branchtable">
@@ -61,7 +64,7 @@ const BranchTable = () => {
                     </td>
                     <td className="">
                     <div className="flex gap-[25px] items-center">
-                        <span onClick={setmenuComponent('EditForm')} className="text-PrimaryColor">
+                        <span onClick={()=>handleEditdd(index)} className="text-PrimaryColor">
                           <MdEdit />
                         </span>
                         <span onClick={()=>hhandleTdDel(index)} className="text-[#d13838] cursor-pointer">

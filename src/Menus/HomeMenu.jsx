@@ -12,6 +12,7 @@ const MenuComponetMap = {
   tableform: <Schoolmenu />,
   gotoTable: <CollegeMenu />,
   EditForm: <EditForm/>
+ 
 };
 
 const HomeMenu = () => {
@@ -27,6 +28,10 @@ const HomeMenu = () => {
   } = useLayouData();
 
   useEffect(() => {
+    if(menuComponent === 'EditForm')
+    {
+     setSlectedComponent(<EditForm/>)
+    }
     setSlectedComponent(MenuComponetMap[menuComponent]);
   }, [menuComponent]);
  
