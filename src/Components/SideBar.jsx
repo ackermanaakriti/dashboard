@@ -1,54 +1,74 @@
 import React, { useState } from 'react';
-import { Sidebar,Menu, SubMenu,MenuItem } from 'react-pro-sidebar';
-import { MdDashboard } from 'react-icons/md';
-import { FaChevronRight } from 'react-icons/fa';
-import { LuMenuSquare } from 'react-icons/lu';
 import { useLayouData } from '../Context/MainLayoutContext';
 import { MenuData } from '../Data/Menudata';
+import { FaChevronDown, FaChevronRight } from 'react-icons/fa';
+import './Sidebar.css';
 
 const SideBar = () => {
-    const { menuClose, menuOpen, collapsed, setCollapsed, menuComponent, setmenuComponent } = useLayouData();
-    const [openSubMenu, setOpenSubMenu] = useState(null); // State to keep track of the currently open submenu
+    const { menuClose, menuOpen, collapsed, setCollapsed, menuComponent, setmenuComponent,sidebarToggle,setSidebarToggle } = useLayouData();
+    const [activeLink, setActiveLink] = useState(null);
+    const [activeSubMenu, setActiveSubMenu] = useState(null);
+    const [menuopen, setMenuopen] = useState(false);
+   
+   
 
-    const handleOpenSubMenu = (menu) => {
-        setOpenSubMenu(openSubMenu === menu ? null : menu); // Toggle open/close of submenu
+    const handleClick = (name) => {
+         setmenuComponent(name)
+        if (activeLink === name) {
+            setMenuopen(!menuopen);
+        } else {
+            setActiveLink(name);
+            setMenuopen(true); // Open submenu when clicking on a different menu item
+        }
     };
 
+    const handleSubMenuClick = (menu, submenu) => {
+        setActiveLink(menu);
+        setActiveSubMenu(submenu);
+        console.log(activeSubMenu);
+    };
+  
+
     return (
-        <div className={`sidebar ${menuClose ? menuOpen: ''}`} >
-            <div style={{ display: 'flex', height: '100%' }}>
-                <Sidebar>
-                    <Menu>
-                        <MenuItem className='text-blue text-[16px] font-inter font-semibold' icon={<MdDashboard className='text-[25px]' />}>Dashboard</MenuItem>
-                        {MenuData?.map((menus, index) => (
-                            <SubMenu
-                            onClick={()=>setmenuComponent(menus.menu)} 
-                                key={index}
-                                className='text-blue text-[16px] font-inter font-semibold'
-                                expandIcon={<FaChevronRight className='text-[30px]' />}
-                                label={menus.menu}
-                                icon={menus.icon}
-                                active={openSubMenu ===menus.menu}
-                                open={openSubMenu === menus.menu} // Check if this submenu is open
-                                onOpenChange={() => handleOpenSubMenu(menus.menu)} // Handle submenu click
-                            >
-                                {menus?.submenu?.map((submenus, index) => (
-                                    <MenuItem active
-                                        key={index}
-                                        onClick={() => setmenuComponent(submenus.name)}
-                                        className='text-blue text-[16px] font-inter font-semibold'
-                                        icon={<LuMenuSquare className='text-[22px] text-[#1e72d9]' />}
-                                    >
-                                        {submenus.name}
-                                    </MenuItem>
-                                ))}
-                            </SubMenu>
-                        ))}
-                    </Menu>
-                </Sidebar>
-            </div>
+        <div className='sidebar'>
+                <div className={`sidenavlist ${sidebarToggle ?'sidebar-open' : 'sidebar-closed' }`}>
+                    <nav>
+                        <ul>
+                            {MenuData.map((menu, index) => (
+                                <li key={index}>
+                                    <a onClick={() => handleClick(menu.menu)} className={activeLink === menu.menu ? 'active' : ''}>
+                                        <div className='menuitems-flex'>
+                                        <span className='menuicons'>{menu.icon}</span>
+                                        <span className='menuname'> {menu.menu}</span>
+                                       
+                                        </div>
+                                        {
+                                            activeLink === menu.menu && menuopen ? <span className='chev-icon'><FaChevronDown /></span> : <span className='chev-icon'><FaChevronRight /></span>
+                                        }
+                                      </a>
+                                    {activeLink === menu.menu && menu.submenu && menuopen && (
+                                        <ul>
+                                            {menu.submenu.map((submenu, subIndex) => (
+                                                <li key={subIndex}>
+                                                    <a onClick={() => handleSubMenuClick(menu.menu, submenu.name)} className={activeSubMenu === submenu.name ? 'activesubmenu' : ''}>
+                                                        <span className='menuicons'>{menu.icon}</span>
+                                                        <span className='menuname'>
+                                                        {submenu.name}
+                                                        </span>
+                                                      
+                                                    </a>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )}
+                                </li>
+                            ))}
+                        </ul>
+                    </nav>
+                </div>
         </div>
     );
 };
+
 
 export default SideBar;

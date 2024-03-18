@@ -13,6 +13,9 @@ export const MainLayoutProvider = ({ children }) => {
   const [menuOpen, setMenuOpen] = useState("");
   const [gotoComp, setGotoComp] = useState();
   const [menuClose, setMenuClose] = useState(false);
+  const [sidebarToggle,setSidebarToggle]= useState();
+  const [hanleInquiry,setHandleInquiry]= useState(false)
+
 
   return (
     <MainLayoutContext.Provider
@@ -27,7 +30,9 @@ export const MainLayoutProvider = ({ children }) => {
         setSubmittedData,
         menuOpen,
         setMenuOpen,
-        menuClose,setMenuClose
+        menuClose,setMenuClose,
+        sidebarToggle,setSidebarToggle,
+        hanleInquiry,setHandleInquiry
       }}
     >
       <Header />

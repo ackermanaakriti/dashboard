@@ -6,7 +6,7 @@ export const MenuData =[
   
     {
         menu:'Hospital',
-        icon: <LuMenuSquare className='text-[25px] text-[#4a528f]'/>,
+        icon: <LuMenuSquare className='text-[28px] text-[#4a528f]'/>,
         submenu:[
             {
                 name:'Kanti Hospital',
@@ -22,7 +22,7 @@ export const MenuData =[
     },
     {
         menu:'Colleges',
-        icon:<LuSchool2 className='text-[25px] text-[#ab243d]' />
+        icon:<LuSchool2 className='text-[28px] text-[#ab243d]' />
         ,
         submenu:[
             {
@@ -39,7 +39,7 @@ export const MenuData =[
         ]
     },
     {
-        menu:'Hotel',        icon: <LuMenuSquare className='text-[25px] text-[#267bd1]'/>,
+        menu:'Hotel',        icon: <LuMenuSquare className='text-[28px] text-[#267bd1]'/>,
 
         submenu:[
             {
@@ -54,7 +54,7 @@ export const MenuData =[
         ]
     },
     {
-        menu:'School',        icon: <LuMenuSquare className='text-[25px] text-[#36925c]'/>,
+        menu:'School',        icon: <LuMenuSquare className='text-[28px] text-[#36925c]'/>,
 
         submenu:[
             {

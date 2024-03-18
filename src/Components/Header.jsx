@@ -4,12 +4,17 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { useLayouData } from "../Context/MainLayoutContext";
 
 const Header = () => {
-  const { menuClose, setMenuClose, menuOpen,setMenuOpen,collapsed, setCollapsed } = useLayouData();
-  const handleClick = () => {
-   setMenuClose(!menuClose);
-   setMenuOpen("closeside"); // Add your desired class name here
-  };
-  console.log(menuOpen);
+  const { menuClose, setMenuClose, menuOpen,setMenuOpen,collapsed, setCollapsed,sidebarToggle,setSidebarToggle } = useLayouData();
+  const handleToggleSidebar = () => {
+    setSidebarToggle(!sidebarToggle);
+};
+const [profileView,setProfileView]= useState(false)
+const handleProfile =()=>
+{
+    setProfileView(!profileView)
+    console.log(profileView)
+}
+
   return (
     <>
       <nav className="py-[10px] bg-PrimaryColor px-[30px] header">
@@ -17,7 +22,7 @@ const Header = () => {
           <div>
             <div className="flex  gap-[28px] items-center">
               <span
-                onClick={handleClick}
+                onClick={handleToggleSidebar}
                 className="text-white text-[30px] cursor-pointer hamicons"
               >
                 <LuMenuSquare />
@@ -42,14 +47,31 @@ const Header = () => {
               <p className="text-white text-[16px] text-center font-inter">
                 (Fiscal Year- 2080/81)
               </p>
-              <div className="flex items-center gap-[10px]">
+              <div  onClick={handleProfile} className="flex items-center relative gap-[10px] cursor-pointer">
                 <p className="text-white text-[16px] text-center font-inter">
                   Adminstrator
                 </p>
                 <span className="text-[#034848] bg-[#C7E1E1] text-[30px] rounded-[50%]">
                   <FaRegUserCircle />
                 </span>
+              
+                {profileView && (
+                  <div className=" profileview   ">
+                      <ul>
+                        <li>
+                          <a>Profile</a>
+                        </li>
+                        <li>
+                          <a>Setting </a>
+                        </li>
+                        <li>
+                          <a>Sign Out</a>
+                        </li>
+                      </ul>
+                  </div>
+                )}
               </div>
+              
             </div>
           </div>
         </div>
