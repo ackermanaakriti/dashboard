@@ -1,63 +1,45 @@
-import React,{useState,useEffect} from 'react'
-import { useLayouData } from '../Context/MainLayoutContext'
-import CollegeMenu from './CollegeMenu'
-import Schoolmenu from './Schoolmenu'
+import React, { useState, useEffect } from "react";
+import { useLayouData } from "../Context/MainLayoutContext";
+import CollegeMenu from "./CollegeMenu";
+import Schoolmenu from "./Schoolmenu";
+import InquiryForm from "../Components/InquiryForm";
+import EditForm from '../Components/EditForm'
 
 
 const MenuComponetMap = {
-  
-  'Colleges': <CollegeMenu/>,
-  'School': <Schoolmenu/>,
-  'tableform': <Schoolmenu/>,
-  'gotoTable':<CollegeMenu/>
-  
-}
+  Colleges: <CollegeMenu />,
+  School: <Schoolmenu />,
+  tableform: <Schoolmenu />,
+  gotoTable: <CollegeMenu />,
+  EditForm: <EditForm/>
+};
 
 const HomeMenu = () => {
-  const[SelectedCompo,setSlectedComponent,] = useState(null)
+  const [SelectedCompo, setSlectedComponent] = useState(null);
 
-  const{menuComponent,setmenuComponent,gotoComp,setGotoComp,hanleInquiry,setHandleInquiry}= useLayouData()
-  
- 
+  const {
+    menuComponent,
+    setmenuComponent,
+    gotoComp,
+    setGotoComp,
+    hanleInquiry,
+    setHandleInquiry,
+  } = useLayouData();
 
   useEffect(() => {
     setSlectedComponent(MenuComponetMap[menuComponent]);
   }, [menuComponent]);
  
-   
-  
   return (
-   <>
-    {hanleInquiry && (<div className='h-[50px]  w-[50%] inquirydiv'>
-         <form>
-          <div className='grid grid-cols-2 gap-2'>
-            <div className=''>
-            <label>Full Name:</label>
-            <input/>
-            </div>
-            <div>
-            <label>Address:</label>
-            <input/>
-            </div>
-          </div>
-          <div>
-            <label>Email:</label>
-            <input/>
-          </div>
-          <div>
-            <label>Message:</label>
-            <textarea></textarea>
-          </div>
-          <button>Submit</button>
+    <>
+     
+      <div className="relative">{SelectedCompo}</div>
+      <InquiryForm/>
+ 
 
-         </form>
-    </div>)}
-    <div className='relative'>
-    {SelectedCompo}
-    </div>
-  
-   </>
-  )
-}
 
-export default HomeMenu
+    </>
+  );
+};
+
+export default HomeMenu;

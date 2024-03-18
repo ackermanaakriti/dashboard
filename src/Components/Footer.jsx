@@ -7,7 +7,6 @@ import { useLayouData } from "../Context/MainLayoutContext";
 
 const Footer = () => {
   const {hanleInquiry,setHandleInquiry}= useLayouData()
-  console.log(hanleInquiry)
   const handleInquiry =()=>
   {
        setHandleInquiry(!hanleInquiry)

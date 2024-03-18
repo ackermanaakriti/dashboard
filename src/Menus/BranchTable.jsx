@@ -7,12 +7,17 @@ import { useLayouData } from "../Context/MainLayoutContext";
 
 
 const BranchTable = () => {
-  const{submittedData, setSubmittedData,menuComponent,setmenuComponent}= useLayouData();
+  const{ setSubmittedData,menuComponent,setmenuComponent}= useLayouData();
+  const submittedData = JSON.parse(localStorage.getItem('formData'))
  
   const hhandleTdDel =(index)=>
   {
     const updatedData = submittedData.filter((item, i) => i !== index);
-    console.log(updatedData)
+    localStorage.setItem('formData', JSON.stringify(updatedData));
+    setSubmittedData(updatedData)
+
+   
+   
   
    
   }
@@ -56,7 +61,7 @@ const BranchTable = () => {
                     </td>
                     <td className="">
                     <div className="flex gap-[25px] items-center">
-                        <span className="text-PrimaryColor">
+                        <span onClick={setmenuComponent('EditForm')} className="text-PrimaryColor">
                           <MdEdit />
                         </span>
                         <span onClick={()=>hhandleTdDel(index)} className="text-[#d13838] cursor-pointer">

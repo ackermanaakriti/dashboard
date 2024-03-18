@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import * as Yup from "yup";
 import { Formik, ErrorMessage } from "formik";
 import { useLayouData } from "../Context/MainLayoutContext";
-import BranchTable from "./BranchTable";
+import BranchTable from "../Menus/BranchTable";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
