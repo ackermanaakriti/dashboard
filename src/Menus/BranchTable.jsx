@@ -7,10 +7,11 @@ import { useLayouData } from "../Context/MainLayoutContext";
 
 
 const BranchTable = () => {
-  const{ setSubmittedData,menuComponent,setmenuComponent,getId,setId}= useLayouData();
+  const{ setSubmittedData,menuComponent,setmenuComponent,getId,setId,hanldeId,setHandleId}= useLayouData();
 
  
   const [contactD, setcontactD] = useState([])
+  
   const handleDeletebtn = (index) => {
     const updatedData = contactD.filter((item, i) => i !== index);
     // Update localStorage and contactD state with the updated data
@@ -23,14 +24,16 @@ const BranchTable = () => {
       setcontactD(storedData);
     }
   }, []);
-  
+  console.log(contactD);
   const handleEditdd =(index)=>
   {
-    const editData = contactD[index]; // Retrieve the data of the selected item
-    setmenuComponent("EditForm", editData);
+    // const editData = contactD[index]; // Retrieve the data of the selected item
+    setmenuComponent("tableform");
     setId(index)
+    setHandleId(true)
 
   }
+  console.log(getId)
   return (
     <>
       <div className="bg-bgclr branchtable">
@@ -70,7 +73,7 @@ const BranchTable = () => {
                     </td>
                     <td className="">
                     <div className="flex gap-[25px] items-center">
-                        <span onClick={()=>handleEditdd(index)} className="text-PrimaryColor">
+                        <span onClick={()=>handleEditdd(tdata.id)} className="text-PrimaryColor">
                           <MdEdit />
                         </span>
                         <span onClick={()=>handleDeletebtn(index)} className="text-[#d13838] cursor-pointer">

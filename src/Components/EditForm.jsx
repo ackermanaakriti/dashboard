@@ -24,7 +24,7 @@ const EditForm = () => {
      
       }, 2000);
     }
-    console.log(menuComponent)
+    
  
  
 
@@ -32,7 +32,7 @@ const EditForm = () => {
     <div className="Branchform ">
       
       <ToastContainer />
- {console.log('je;;p')}
+ 
       <div className="pb-[25px]">
         <h3 className="font-inter font-semibold text-[30px]">
         Update Branch

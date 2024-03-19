@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import * as Yup from "yup";
-import { Formik, ErrorMessage } from "formik";
+import { Formik, ErrorMessage ,Form, Field} from "formik";
 import { useLayouData } from "../Context/MainLayoutContext";
 import BranchTable from "./BranchTable";
 import { ToastContainer, toast } from "react-toastify";
@@ -8,9 +8,19 @@ import "react-toastify/dist/ReactToastify.css";
 
 
 const BranchForm = () => {
-  const { submittedData, setSubmittedData, menuComponent, setmenuComponent } =useLayouData();
-
-    console.log('hello')
+  const { submittedData, setSubmittedData, menuComponent, setmenuComponent,getId,setId,hanldeId,setHandleId } =useLayouData();
+  const initialValues={
+    name: "",
+    branchname: "",
+    Registrationno: "",
+    contact: "",
+    pan: "",
+    address: "",
+    billadd: "",
+    shipadd: "",
+    billcontact: "",
+  }
+  
 
     const handleSubmitbtnn=()=>
     {
@@ -19,7 +29,55 @@ const BranchForm = () => {
       setmenuComponent("gotoTable");   
 
     }
-    console.log(menuComponent)
+    const [editMode, setEditMode] = useState(false);
+    const [idData, setIdData] = useState('');
+    const [editIdData, seteditIdData] = useState('');
+   
+    const dataLocal = JSON.parse(localStorage.getItem('formData'));
+  //   const handleInputChange = (e) => {
+  //     const { name, value } = e.target;
+  //     seteditIdData({
+  //         ...editIdData,
+  //         [name]: value,
+  //     });
+  // };
+    useEffect(() => {
+        if (getId) {
+            setEditMode(true);
+            setIdData(dataLocal.find((item) => item.id === getId));
+            seteditIdData({
+              ...dataLocal.find((item) => item.id === getId), // include the ID in the editIdData
+            });
+            // seteditIdData({
+            //     name: idData.name,
+            //     branchname: idData.branchname,
+            //     Registrationno: idData.Registrationno,
+            //     contact: idData.contact,
+            //     address: idData.address,
+            //     billadd: idData.billadd,
+            //     shipadd: idData.shipadd,
+            //     billcontact: idData.billcontact,
+            // })
+        }
+        else {
+            console.log('not found')
+        }
+      
+    }, [getId])
+    console.log(editIdData)
+    const handleSubmit = (values) => {
+      let datas = JSON.parse(localStorage.getItem('formData')) || [];
+      if (editMode) {
+        datas = datas.map(item => (item.id === getId ? { ...values, id: getId } : item));
+      } else {
+        values.id = Math.floor(Math.random() * 100) + 1;
+        datas.push(values);
+      }
+      localStorage.setItem('formData', JSON.stringify(datas));
+      toast.success("Your Data is saved");
+  
+    };
+   
  
   // const toggleComp=()=>
   // {
@@ -30,7 +88,7 @@ const BranchForm = () => {
   return (
     <div className="Branchform ">
       <ToastContainer />
-{console.log('hello')}
+
       <div className="pb-[25px]">
         <h3 className="font-inter font-semibold text-[30px]">
           Add/Update Branch
@@ -38,46 +96,32 @@ const BranchForm = () => {
       </div>
 
       <Formik
-        initialValues={{
-          name: "",
-          branchname: "",
-          Registrationno: "",
-          contact: "",
-          pan: "",
-          address: "",
-          billadd: "",
-          shipadd: "",
-          billcontact: "",
-        }}
+             enableReinitialize={true}
+           initialValues={ editIdData && editMode ? editIdData : initialValues}
         validationSchema={Yup.object().shape({
           name: Yup.string().required("required"),
           branchname: Yup.string().required("required"),
           Registrationno: Yup.string().required("required"),
           pan: Yup.string().required("required"),
         })}
-        onSubmit={(values) => {
-          // setSubmittedData([...submittedData, values]);
-         
-     
-          console.log(submittedData)
-          localStorage.setItem('formData', JSON.stringify(values));
-        }}
+        onSubmit={handleSubmit}
+       
       >
         {(formik) => (
-          <form onSubmit={formik.handleSubmit} >
+          <Form onSubmit={formik.handleSubmit} >
             <div className="grid grid-cols-2 gap-[90px]">
               <div>
                 <div className="py-[5px]">
                   <label className="block">
                     Name <span>*</span>
                   </label>
-                  <input
+                  <Field
                     type="text"
                     name="name"
                     className="w-[100%]"
                     placeholder=""
-                    onChange={formik.handleChange}
-                    value={formik.values.name}
+                   
+
                   />
                 </div>
 
@@ -85,52 +129,52 @@ const BranchForm = () => {
                   <label className="block">
                     Branch Code <span>*</span>
                   </label>
-                  <input
+                  <Field
                     type="text"
                     name="branchname"
                     className="w-[100%]"
                     placeholder=""
-                    onChange={formik.handleChange}
-                    value={formik.values.branchname}
+                   
+                   
                   />
                 </div>
                 <div className="py-[6px]">
                   <label className="block">
                     Regestration No. <span>*</span>
                   </label>
-                  <input
+                  <Field
                     type="text"
                     name="Registrationno"
                     className="w-[100%]"
                     placeholder=""
-                    onChange={formik.handleChange}
-                    value={formik.values.Registrationno}
+                   
+                  
                   />
                 </div>
                 <div className="py-[6px]">
                   <label className="block">
                     Contact <span>*</span>
                   </label>
-                  <input
+                  <Field
                     type="text"
                     name="contact"
                     className="w-[100%]"
                     placeholder=""
-                    onChange={formik.handleChange}
-                    value={formik.values.contact}
+                   
+                
                   />
                 </div>
                 <div className="py-[6px]">
                   <label className="block">
                     PAN <span>*</span>
                   </label>
-                  <input
+                  <Field
                     type="text"
                     name="pan"
                     className="w-[100%]"
                     placeholder=""
-                    onChange={formik.handleChange}
-                    value={formik.values.pan}
+                   
+                    
                   />
                 </div>
 
@@ -138,25 +182,27 @@ const BranchForm = () => {
                   <label className="block">
                     Address <span>*</span>
                   </label>
-                  <textarea
+                  <Field
+                  as = 'textarea'
                     type="text"
-                    onChange={formik.handleChange}
-                    value={formik.values.address}
+                   
+                   
                     name="address"
                     className="w-[100%] "
-                  ></textarea>
+                  ></Field>
                 </div>
                 <div className="py-[6px]">
                   <label className="block">
                     Bill Address <span>*</span>
                   </label>
-                  <textarea
+                  <Field
+                    as = 'textarea'
                     type="text"
-                    onChange={formik.handleChange}
-                    value={formik.values.billadd}
+                   
+                   
                     name="billadd"
                     className="w-[100%] "
-                  ></textarea>
+                  ></Field>
                 </div>
               </div>
               <div>
@@ -165,28 +211,30 @@ const BranchForm = () => {
                     {" "}
                     Ship Address <span>*</span>
                   </label>
-                  <textarea
+                  <Field
+                    as = 'textarea'
                     type="text"
                     name="shipadd"
-                    onChange={formik.handleChange}
-                    value={formik.values.shipadd}
+                   
+                  
                     className="w-[100%] "
-                  ></textarea>
+                  ></Field>
                 </div>
                 <div className="py-[6px]">
                   <label className="block">
                     Bill Contact Info <span>*</span>
                   </label>
-                  <textarea
+                  <Field
+                    as = 'textarea'
                     type="text"
                     name="billcontact"
                     className="w-[100%]"
-                    onChange={formik.handleChange}
-                    value={formik.values.billcontact}
-                  ></textarea>
+                   
+                   
+                  ></Field>
                 </div>
                 <div className="flex gap-[30px] items-center formbutton">
-                  <button type="reset" className="bg-transparent border-[#d13838] border-solid py-[4px] px-[20px] border-[1px] text-[16px] font-inter font-[600] text-[#d13838]">
+                  <button onClick={()=>setmenuComponent('gotoTable')} type="reset" className="bg-transparent border-[#d13838] border-solid py-[4px] px-[20px] border-[1px] text-[16px] font-inter font-[600] text-[#d13838]">
                     Cancel
                   </button>
                   <button
@@ -199,7 +247,7 @@ const BranchForm = () => {
                 </div>
               </div>
             </div>
-          </form>
+          </Form>
         )}
       </Formik>
     </div>
