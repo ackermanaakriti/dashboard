@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import * as Yup from "yup";
 import { Formik, ErrorMessage } from "formik";
 import { useLayouData } from "../Context/MainLayoutContext";
@@ -8,10 +8,13 @@ import "react-toastify/dist/ReactToastify.css";
 
 
 const EditForm = () => {
-  const { submittedData, setSubmittedData, menuComponent, setmenuComponent } =
-    useLayouData();
-    console.log('hello')
+  const { submittedData, setSubmittedData, menuComponent, setmenuComponent,getId,setId } =useLayouData();
 
+  const datas = JSON.parse(localStorage.getItem('formData'))
+    // console.log(datas)
+    const selectdata = datas.find((item,i)=>i === getId);
+    console.log(selectdata)
+   
     const handleSubmitbtnn=()=>
     {
      
@@ -27,8 +30,9 @@ const EditForm = () => {
 
   return (
     <div className="Branchform ">
+      
       <ToastContainer />
-
+ {console.log('je;;p')}
       <div className="pb-[25px]">
         <h3 className="font-inter font-semibold text-[30px]">
         Update Branch
@@ -55,10 +59,11 @@ const EditForm = () => {
         })}
         onSubmit={(values) => {
           setSubmittedData([...submittedData, values]);
+          console.log(submittedData)
          
      
           console.log(submittedData)
-          localStorage.setItem('formData', JSON.stringify([...submittedData, values]));
+          localStorage.setItem('formData', 1);
         }}
       >
         {(formik) => (
@@ -74,8 +79,11 @@ const EditForm = () => {
                     name="name"
                     className="w-[100%]"
                     placeholder=""
-                    onChange={formik.handleChange}
-                    value={formik.values.name}
+                    onChange={(e) => {
+                      formik.handleChange(e);
+                      selectdata.name = e.target.value; // Update selectdata with the new value
+                    }}
+                    value={ selectdata.name && selectdata.name}
                   />
                 </div>
 
@@ -89,7 +97,8 @@ const EditForm = () => {
                     className="w-[100%]"
                     placeholder=""
                     onChange={formik.handleChange}
-                    value={formik.values.branchname}
+                    
+                    value={ selectdata.branchname && selectdata.branchname}
                   />
                 </div>
                 <div className="py-[6px]">
@@ -102,7 +111,8 @@ const EditForm = () => {
                     className="w-[100%]"
                     placeholder=""
                     onChange={formik.handleChange}
-                    value={formik.values.Registrationno}
+                    
+                    value={ selectdata.Registrationno}
                   />
                 </div>
                 <div className="py-[6px]">
@@ -115,7 +125,7 @@ const EditForm = () => {
                     className="w-[100%]"
                     placeholder=""
                     onChange={formik.handleChange}
-                    value={formik.values.contact}
+                    value={selectdata.contact}
                   />
                 </div>
                 <div className="py-[6px]">
@@ -128,7 +138,7 @@ const EditForm = () => {
                     className="w-[100%]"
                     placeholder=""
                     onChange={formik.handleChange}
-                    value={formik.values.pan}
+                    value={selectdata.pan}
                   />
                 </div>
 
@@ -139,7 +149,7 @@ const EditForm = () => {
                   <textarea
                     type="text"
                     onChange={formik.handleChange}
-                    value={formik.values.address}
+                    value={selectdata.address}
                     name="address"
                     className="w-[100%] "
                   ></textarea>
@@ -151,7 +161,7 @@ const EditForm = () => {
                   <textarea
                     type="text"
                     onChange={formik.handleChange}
-                    value={formik.values.billadd}
+                    value={selectdata.billadd}
                     name="billadd"
                     className="w-[100%] "
                   ></textarea>
@@ -167,7 +177,7 @@ const EditForm = () => {
                     type="text"
                     name="shipadd"
                     onChange={formik.handleChange}
-                    value={formik.values.shipadd}
+                    value={selectdata.shipadd}
                     className="w-[100%] "
                   ></textarea>
                 </div>
@@ -180,7 +190,7 @@ const EditForm = () => {
                     name="billcontact"
                     className="w-[100%]"
                     onChange={formik.handleChange}
-                    value={formik.values.billcontact}
+                    value={selectdata.billcontact}
                   ></textarea>
                 </div>
                 <div className="flex gap-[30px] items-center formbutton">

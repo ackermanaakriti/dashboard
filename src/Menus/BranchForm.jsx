@@ -8,8 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 
 const BranchForm = () => {
-  const { submittedData, setSubmittedData, menuComponent, setmenuComponent ,getId,setId} =
-    useLayouData();
+  const { submittedData, setSubmittedData, menuComponent, setmenuComponent } =useLayouData();
 
     console.log('hello')
 
@@ -57,11 +56,11 @@ const BranchForm = () => {
           pan: Yup.string().required("required"),
         })}
         onSubmit={(values) => {
-          setSubmittedData([...submittedData, values]);
+          // setSubmittedData([...submittedData, values]);
          
      
           console.log(submittedData)
-          localStorage.setItem('formData', JSON.stringify([...submittedData, values]));
+          localStorage.setItem('formData', JSON.stringify(values));
         }}
       >
         {(formik) => (

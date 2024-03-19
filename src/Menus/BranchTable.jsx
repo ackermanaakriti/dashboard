@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect ,useState} from "react";
 import { FaEdit } from "react-icons/fa";
 import { LuDelete } from "react-icons/lu";
 import { RiDeleteBin5Fill } from "react-icons/ri";
@@ -8,19 +8,25 @@ import { useLayouData } from "../Context/MainLayoutContext";
 
 const BranchTable = () => {
   const{ setSubmittedData,menuComponent,setmenuComponent,getId,setId}= useLayouData();
-  const submittedData = JSON.parse(localStorage.getItem('formData'))
- 
-  const hhandleTdDel =(index)=>
-  {
-    const updatedData = submittedData.filter((item, i) => i !== index);
-    localStorage.setItem('formData', JSON.stringify(updatedData));
-    setSubmittedData(updatedData)
 
-  }
+ 
+  const [contactD, setcontactD] = useState([])
+  const handleDeletebtn = (index) => {
+    const updatedData = contactD.filter((item, i) => i !== index);
+    // Update localStorage and contactD state with the updated data
+    localStorage.setItem('formData', JSON.stringify(updatedData));
+    setcontactD(updatedData);
+  };
+  useEffect(() => {
+    const storedData = JSON.parse(localStorage.getItem('formData'));
+    if (storedData) {
+      setcontactD(storedData);
+    }
+  }, []);
   
   const handleEditdd =(index)=>
   {
-    const editData = submittedData[index]; // Retrieve the data of the selected item
+    const editData = contactD[index]; // Retrieve the data of the selected item
     setmenuComponent("EditForm", editData);
     setId(index)
 
@@ -51,7 +57,7 @@ const BranchTable = () => {
                 </thead>
                 <tbody>
                   {
-                    submittedData?.map((tdata,index)=>
+                    contactD?.map((tdata,index)=>
                     (
                       <tr key={index}>
                  
@@ -67,7 +73,7 @@ const BranchTable = () => {
                         <span onClick={()=>handleEditdd(index)} className="text-PrimaryColor">
                           <MdEdit />
                         </span>
-                        <span onClick={()=>hhandleTdDel(index)} className="text-[#d13838] cursor-pointer">
+                        <span onClick={()=>handleDeletebtn(index)} className="text-[#d13838] cursor-pointer">
                           <RiDeleteBin5Fill />
                         </span>
                       </div>
