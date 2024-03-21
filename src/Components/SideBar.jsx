@@ -3,9 +3,12 @@ import { useLayouData } from '../Context/MainLayoutContext';
 import { MenuData } from '../Data/Menudata';
 import { FaChevronDown, FaChevronRight } from 'react-icons/fa';
 import './Sidebar.css';
+import { UseDispatch, useDispatch } from 'react-redux';
+import { addTab } from '../Redux/TopTabSlice';
 
 const SideBar = () => {
-    const { menuClose, menuOpen, collapsed, setCollapsed, menuComponent, setmenuComponent,sidebarToggle,setSidebarToggle } = useLayouData();
+    const dispatch = useDispatch()
+    const { menuTab,setmenuTab, setmenuComponent,sidebarToggle,setSidebarToggle } = useLayouData();
     const [activeLink, setActiveLink] = useState(null);
     const [activeSubMenu, setActiveSubMenu] = useState(null);
     const [menuopen, setMenuopen] = useState(false);
@@ -13,7 +16,8 @@ const SideBar = () => {
    
 
     const handleClick = (name) => {
-         setmenuComponent(name)
+    
+         dispatch(addTab(    name    ))
         if (activeLink === name) {
             setMenuopen(!menuopen);
         } else {
@@ -25,7 +29,10 @@ const SideBar = () => {
     const handleSubMenuClick = (menu, submenu) => {
         setActiveLink(menu);
         setActiveSubMenu(submenu);
-        console.log(activeSubMenu);
+       
+       
+       
+
     };
   
 

@@ -97,7 +97,7 @@ const BranchForm = () => {
 
       <Formik
              enableReinitialize={true}
-           initialValues={ editIdData && editMode ? editIdData : initialValues}
+           initialValues={ hanldeId && editIdData && editMode ? editIdData : initialValues}
         validationSchema={Yup.object().shape({
           name: Yup.string().required("required"),
           branchname: Yup.string().required("required"),

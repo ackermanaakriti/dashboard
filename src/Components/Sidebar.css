@@ -114,12 +114,14 @@
                               font-size: 16px;
                            .menuname{
                             text-align: center;
+                            padding-left: 5px;
                            }
 
                             }
                             .activesubmenu 
                             {
                                 color: var(--Primarycolor);
+                        
                               .menuicons 
                               {
                                 background-color: rgba(97, 183, 195, 0.34);

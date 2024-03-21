@@ -16,7 +16,8 @@ export const MainLayoutProvider = ({ children }) => {
   const [sidebarToggle,setSidebarToggle]= useState();
   const [hanleInquiry,setHandleInquiry]= useState(false);
   const [getId,setId]= useState()
-  const [hanldeId,setHandleId]= useState(false)
+  const [hanldeId,setHandleId]= useState(false);
+  const [menuTab,setmenuTab]= useState()
 
 
   return (
@@ -36,7 +37,8 @@ export const MainLayoutProvider = ({ children }) => {
         sidebarToggle,setSidebarToggle,
         hanleInquiry,setHandleInquiry,
         getId,setId,
-        hanldeId,setHandleId
+        hanldeId,setHandleId,
+        menuTab,setmenuTab
         
       }}
     >

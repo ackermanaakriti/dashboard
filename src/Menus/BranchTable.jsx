@@ -23,6 +23,7 @@ const BranchTable = () => {
     if (storedData) {
       setcontactD(storedData);
     }
+    setHandleId(false)
   }, []);
   console.log(contactD);
   const handleEditdd =(index)=>
