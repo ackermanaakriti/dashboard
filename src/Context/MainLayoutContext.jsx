@@ -17,7 +17,7 @@ export const MainLayoutProvider = ({ children }) => {
   const [hanleInquiry,setHandleInquiry]= useState(false);
   const [getId,setId]= useState()
   const [hanldeId,setHandleId]= useState(false);
-  const [menuTab,setmenuTab]= useState()
+  const [menuTab,setmenuTab]= useState([])
 
 
   return (

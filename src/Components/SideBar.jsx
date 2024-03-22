@@ -17,7 +17,9 @@ const SideBar = () => {
 
     const handleClick = (name) => {
     
-         dispatch(addTab(    name    ))
+         dispatch(addTab( name))
+         setmenuTab([...menuTab,name])
+         setmenuComponent(name)
         if (activeLink === name) {
             setMenuopen(!menuopen);
         } else {
