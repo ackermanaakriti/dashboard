@@ -23,30 +23,24 @@ const MenuComponentMap = {
 const HomeMenu = () => {
   const [selectedComponent, setSelectedComponent] = useState(null);
   const tabs = useSelector((state) => state.tabslice.title);
-    const component = useSelector((state) => state.tabslice.component);
+  const component = useSelector((state) => state.tabslice.component);
+  console.log(component)
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (tabs.length > 0) {
-      const initialTab = tabs[0];
-      setSelectedComponent(MenuComponentMap[component]);
-    }
-  }, [tabs]);
+    setSelectedComponent(MenuComponentMap[component]);
+  }, [component]);
 
   const handleTabClick = (tab) => {
     setSelectedComponent(MenuComponentMap[tab]);
   };
+
   const handleDeleteTab = (tab) => {
-    const tabIndex = tabs.findIndex((t) => t === tab);
+    dispatch(removeTab(tab));
 
-    if (tabIndex !== -1) {
-      dispatch(removeTab(tab));
-
-      if (selectedComponent === MenuComponentMap[tab]) {
-        setSelectedComponent(null);
-      }
-    }
+    setSelectedComponent(null);
+    console.log(selectedComponent)
   };
 
   return (
