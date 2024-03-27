@@ -1,15 +1,17 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import * as Yup from "yup";
-import { Formik, ErrorMessage ,Form, Field} from "formik";
+import { Formik, ErrorMessage, Form, Field } from "formik";
 import { useLayouData } from "../Context/MainLayoutContext";
 import BranchTable from "./BranchTable";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { useDispatch } from "react-redux";
+import { addMenu } from "../Redux/TopTabSlice";
 
 const BranchForm = () => {
-  const { submittedData, setSubmittedData, menuComponent, setmenuComponent,getId,setId,hanldeId,setHandleId } =useLayouData();
-  const initialValues={
+  const { getId, setId, hanldeId, setHandleId } = useLayouData();
+  const dispatch = useDispatch();
+  const initialValues = {
     name: "",
     branchname: "",
     Registrationno: "",
@@ -19,71 +21,53 @@ const BranchForm = () => {
     billadd: "",
     shipadd: "",
     billcontact: "",
-  }
-  
+  };
 
-    const handleSubmitbtnn=()=>
-    {
-     
-      toast.success("Your Data is saved");
-      setmenuComponent("gotoTable");   
-
-    }
-    const [editMode, setEditMode] = useState(false);
-    const [idData, setIdData] = useState('');
-    const [editIdData, seteditIdData] = useState('');
-   
-    const dataLocal = JSON.parse(localStorage.getItem('formData'));
-  //   const handleInputChange = (e) => {
-  //     const { name, value } = e.target;
-  //     seteditIdData({
-  //         ...editIdData,
-  //         [name]: value,
-  //     });
-  // };
-    useEffect(() => {
-        if (getId) {
-            setEditMode(true);
-            setIdData(dataLocal.find((item) => item.id === getId));
-            seteditIdData({
-              ...dataLocal.find((item) => item.id === getId), // include the ID in the editIdData
-            });
-            // seteditIdData({
-            //     name: idData.name,
-            //     branchname: idData.branchname,
-            //     Registrationno: idData.Registrationno,
-            //     contact: idData.contact,
-            //     address: idData.address,
-            //     billadd: idData.billadd,
-            //     shipadd: idData.shipadd,
-            //     billcontact: idData.billcontact,
-            // })
-        }
-        else {
-            console.log('not found')
-        }
-      
-    }, [getId])
-    console.log(editIdData)
-    const handleSubmit = (values) => {
-      let datas = JSON.parse(localStorage.getItem('formData')) || [];
-      if (editMode) {
-        datas = datas.map(item => (item.id === getId ? { ...values, id: getId } : item));
-      } else {
-        values.id = Math.floor(Math.random() * 100) + 1;
-        datas.push(values);
-      }
-      localStorage.setItem('formData', JSON.stringify(datas));
-      toast.success("Your Data is saved");
-  
-    };
-   
+  const handleSubmitbtnn = () => {
+    toast.success("Your Data is saved");
+    dispatch(addMenu("Colleges"));
+  };
+  const [editMode, setEditMode] = useState(false);
+  const [idData, setIdData] = useState("");
+  const [editIdData, seteditIdData] = useState("");
+  const dataLocal = JSON.parse(localStorage.getItem("formData"));
  
-  // const toggleComp=()=>
-  // {
-  //     setSubmittedData(!buttonclik)
-  //     setGotoNext(<BranchTable/>)
-  // }
+  useEffect(() => {
+    if (getId) {
+      setEditMode(true);
+      setIdData(dataLocal.find((item) => item.id === getId));
+      seteditIdData({
+        ...dataLocal.find((item) => item.id === getId), 
+      });
+    } else {
+      console.log("not found");
+    }
+  }, [getId]);
+  
+
+  const handleSubmit = (values) => {
+    let datas = JSON.parse(localStorage.getItem("formData")) || [];
+    if (editMode) {
+      datas = datas.map((item) =>
+        item.id === getId ? { ...values, id: getId } : item
+      );
+    } else {
+      values.id = Math.floor(Math.random() * 100) + 1;
+      datas.push(values);
+    }
+    localStorage.setItem("formData", JSON.stringify(datas));
+    toast.success("Your Data is saved");
+  };
+
+  const handleEnterKeyPress = (event, nextField) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      const nextInput = document.getElementById(nextField);
+      if (nextInput) {
+        nextInput.focus();
+      }
+    }
+  };
 
   return (
     <div className="Branchform ">
@@ -96,8 +80,10 @@ const BranchForm = () => {
       </div>
 
       <Formik
-             enableReinitialize={true}
-           initialValues={ hanldeId && editIdData && editMode ? editIdData : initialValues}
+        enableReinitialize={true}
+        initialValues={
+          hanldeId && editIdData && editMode ? editIdData : initialValues
+        }
         validationSchema={Yup.object().shape({
           name: Yup.string().required("required"),
           branchname: Yup.string().required("required"),
@@ -105,10 +91,9 @@ const BranchForm = () => {
           pan: Yup.string().required("required"),
         })}
         onSubmit={handleSubmit}
-       
       >
         {(formik) => (
-          <Form onSubmit={formik.handleSubmit} >
+          <Form onSubmit={formik.handleSubmit}>
             <div className="grid grid-cols-2 gap-[90px]">
               <div>
                 <div className="py-[5px]">
@@ -120,8 +105,9 @@ const BranchForm = () => {
                     name="name"
                     className="w-[100%]"
                     placeholder=""
-                   
-
+                    onKeyDown={(event) =>
+                      handleEnterKeyPress(event, "branchname")
+                    }
                   />
                 </div>
 
@@ -131,13 +117,16 @@ const BranchForm = () => {
                   </label>
                   <Field
                     type="text"
+                    onKeyDown={(event) =>
+                      handleEnterKeyPress(event, "Registrationno")
+                    }
                     name="branchname"
                     className="w-[100%]"
                     placeholder=""
-                   
-                   
+                    id="branchname"
                   />
                 </div>
+
                 <div className="py-[6px]">
                   <label className="block">
                     Regestration No. <span>*</span>
@@ -147,10 +136,11 @@ const BranchForm = () => {
                     name="Registrationno"
                     className="w-[100%]"
                     placeholder=""
-                   
-                  
+                    id="Registrationno"
+                    onKeyDown={(event) => handleEnterKeyPress(event, "contact")}
                   />
                 </div>
+
                 <div className="py-[6px]">
                   <label className="block">
                     Contact <span>*</span>
@@ -160,10 +150,11 @@ const BranchForm = () => {
                     name="contact"
                     className="w-[100%]"
                     placeholder=""
-                   
-                
+                    id="contact"
+                    onKeyDown={(event) => handleEnterKeyPress(event, "pan")}
                   />
                 </div>
+
                 <div className="py-[6px]">
                   <label className="block">
                     PAN <span>*</span>
@@ -173,38 +164,40 @@ const BranchForm = () => {
                     name="pan"
                     className="w-[100%]"
                     placeholder=""
-                   
-                    
+                    id="pan"
+                    onKeyDown={(event) => handleEnterKeyPress(event, "address")}
                   />
                 </div>
 
                 <div className="py-[6px]">
                   <label className="block">
                     Address <span>*</span>
-                  </label>
-                  <Field
-                  as = 'textarea'
+                   </label>
+                   <Field
+                    as="textarea"
                     type="text"
-                   
-                   
+                    onKeyDown={(event) => handleEnterKeyPress(event, "billadd")}
+                    id="address"
                     name="address"
                     className="w-[100%] "
-                  ></Field>
-                </div>
+                   ></Field>
+                 </div>
+
                 <div className="py-[6px]">
                   <label className="block">
                     Bill Address <span>*</span>
                   </label>
                   <Field
-                    as = 'textarea'
+                    as="textarea"
                     type="text"
-                   
-                   
+                    onKeyDown={(event) => handleEnterKeyPress(event, "shipadd")}
+                    id="billadd"
                     name="billadd"
                     className="w-[100%] "
                   ></Field>
                 </div>
               </div>
+
               <div>
                 <div className="py-[6px]">
                   <label className="block">
@@ -212,34 +205,46 @@ const BranchForm = () => {
                     Ship Address <span>*</span>
                   </label>
                   <Field
-                    as = 'textarea'
+                    as="textarea"
                     type="text"
                     name="shipadd"
-                   
-                  
+                    id="shipadd"
+                    onKeyDown={(event) =>
+                      handleEnterKeyPress(event, "billcontact")
+                    }
                     className="w-[100%] "
                   ></Field>
                 </div>
+
+
                 <div className="py-[6px]">
                   <label className="block">
                     Bill Contact Info <span>*</span>
                   </label>
                   <Field
-                    as = 'textarea'
+                    as="textarea"
                     type="text"
                     name="billcontact"
                     className="w-[100%]"
-                   
-                   
+                    id="billcontact"
+                    onKeyDown={(event) =>
+                      handleEnterKeyPress(event, "btnsubmit")
+                    }
                   ></Field>
                 </div>
+
+
                 <div className="flex gap-[30px] items-center formbutton">
-                  <button onClick={()=>setmenuComponent('gotoTable')} type="reset" className="bg-transparent border-[#d13838] border-solid py-[4px] px-[20px] border-[1px] text-[16px] font-inter font-[600] text-[#d13838]">
-                    Cancel
-                  </button>
                   <button
+                    onClick={() => dispatch(addMenu("Colleges"))}
+                    type="reset"
+                    className="bg-transparent border-[#d13838] border-solid py-[4px] px-[20px] border-[1px] text-[16px] font-inter font-[600] text-[#d13838]">
+                    Cancel
+                    </button>
+                    <button
                     onClick={handleSubmitbtnn}
                     type="submit"
+                    id="btnsubmit"
                     className="bg-PrimaryColor py-[4px] px-[20px] text-[16px] font-inter  text-white o "
                   >
                     Save

@@ -8,18 +8,17 @@ import { addTab } from '../Redux/TopTabSlice';
 
 const SideBar = () => {
     const dispatch = useDispatch()
-    const { menuTab,setmenuTab, setmenuComponent,sidebarToggle,setSidebarToggle } = useLayouData();
+    const { sidebarToggle,setSidebarToggle } = useLayouData();
     const [activeLink, setActiveLink] = useState(null);
     const [activeSubMenu, setActiveSubMenu] = useState(null);
     const [menuopen, setMenuopen] = useState(false);
    
    
 
-    const handleClick = (name) => {
+    const handleClick = (name,index) => {
     
-         dispatch(addTab( name))
-         setmenuTab([...menuTab,name])
-         setmenuComponent(name)
+         dispatch(addTab({ id:index, menu:name}))
+         
         if (activeLink === name) {
             setMenuopen(!menuopen);
         } else {
@@ -45,7 +44,7 @@ const SideBar = () => {
                         <ul>
                             {MenuData.map((menu, index) => (
                                 <li key={index}>
-                                    <a onClick={() => handleClick(menu.menu)} className={activeLink === menu.menu ? 'active' : ''}>
+                                    <a onClick={() => handleClick(menu.menu,index)} className={activeLink === menu.menu ? 'active' : ''}>
                                         <div className='menuitems-flex'>
                                         <span className='menuicons'>{menu.icon}</span>
                                         <span className='menuname'> {menu.menu}</span>

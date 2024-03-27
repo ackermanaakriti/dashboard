@@ -7,38 +7,24 @@ import Schoolmenu from "../Menus/Schoolmenu";
 const MainLayoutContext = createContext();
 
 export const MainLayoutProvider = ({ children }) => {
-  const [collapsed, setCollapsed] = useState(false);
-  const [menuComponent, setmenuComponent] = useState([]);
-  const [submittedData, setSubmittedData] = useState([]);
-  const [menuOpen, setMenuOpen] = useState("");
-  const [gotoComp, setGotoComp] = useState();
-  const [menuClose, setMenuClose] = useState(false);
+
   const [sidebarToggle,setSidebarToggle]= useState();
-  const [hanleInquiry,setHandleInquiry]= useState(false);
   const [getId,setId]= useState()
   const [hanldeId,setHandleId]= useState(false);
   const [menuTab,setmenuTab]= useState([])
+  const [  hanleInquiry,setHandleInquiry]= useState(false)
+
 
 
   return (
     <MainLayoutContext.Provider
       value={{
-        collapsed,
-        setCollapsed,
-        menuComponent,
-        gotoComp,
-        setGotoComp,
-        setmenuComponent,
-        submittedData,
-        setSubmittedData,
-        menuOpen,
-        setMenuOpen,
-        menuClose,setMenuClose,
-        sidebarToggle,setSidebarToggle,
-        hanleInquiry,setHandleInquiry,
+        
         getId,setId,
         hanldeId,setHandleId,
-        menuTab,setmenuTab
+        menuTab,setmenuTab,
+        sidebarToggle,setSidebarToggle,
+        hanleInquiry,setHandleInquiry
         
       }}
     >

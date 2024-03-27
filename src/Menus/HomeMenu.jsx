@@ -10,56 +10,65 @@ import Hospital from "./Hospital";
 import Hotel from "./Hotel";
 import { FaCross } from "react-icons/fa";
 import { RxCross1 } from "react-icons/rx";
-import { removeTab } from "../Redux/TopTabSlice";
+import { addMenu, addTab, removeTab } from "../Redux/TopTabSlice";
+import Dashboard from "../Dashboard";
 
 const MenuComponentMap = {
   Colleges: CollegeMenu,
   Hotel: Hotel,
   School: Schoolmenu,
   Hospital: Hospital,
-  EditForm: EditForm,
+ 
 };
 
 const HomeMenu = () => {
-  const [selectedComponent, setSelectedComponent] = useState(null);
-  const tabs = useSelector((state) => state.tabslice.title);
-  const component = useSelector((state) => state.tabslice.component);
-  console.log(component)
 
+  const [selectedComponent, setSelectedComponent] = useState(null);
+  const [MenuComponent,setmenuComponent]= useState(null)
+  // tabs title
+  const tabs = useSelector((state) => state.tabslice.title);
+  // tabs component to render
+  const component = useSelector((state) => state.tabslice.component);
+  // other component
+  const selectedMenuComponent = useSelector((state) => state.tabslice.menu);
   const dispatch = useDispatch();
+  console.log(tabs)
 
   useEffect(() => {
-    setSelectedComponent(MenuComponentMap[component]);
-  }, [component]);
+   
+    setSelectedComponent(MenuComponentMap[component.menu]);
+    setmenuComponent(MenuComponentMap[selectedMenuComponent]);
+  }, [component, selectedMenuComponent]); 
+  
 
+  // show component on clicking the button
   const handleTabClick = (tab) => {
-    setSelectedComponent(MenuComponentMap[tab]);
+    setmenuComponent(MenuComponentMap[tab])
   };
+  // to hide the component after the clicking delete icon
 
-  const handleDeleteTab = (tab) => {
-    dispatch(removeTab(tab));
-
-    setSelectedComponent(null);
-    console.log(selectedComponent)
+  const handleDeleteTab = (menu) => {
+    dispatch(removeTab(menu));
+ 
   };
 
   return (
     <>
       <div>
-        {tabs.map((tab, index) => (
+        {tabs?.map((tab, index) => (
           <button
-            onClick={() => handleTabClick(tab)}
+            onClick={() => handleTabClick(tab.menu)}
             key={index}
             className="relative border-solid border-[1px] border-PrimaryColor mx-[8px] px-[11px] py-[10px]"
           >
-            {tab}
-            <span onClick={() => handleDeleteTab(tab)} className="absolute">
+            {tab.menu}
+            <span onClick={() => handleDeleteTab(index)} className="absolute">
               <RxCross1 />
             </span>
           </button>
         ))}
       </div>
-      <div className="relative"> {selectedComponent}</div>
+      <div className="relative"> {MenuComponent ? MenuComponent : selectedComponent}</div>
       <InquiryForm />
     </>
   );

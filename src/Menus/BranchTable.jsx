@@ -1,23 +1,19 @@
 import React, { useEffect ,useState} from "react";
-import { FaEdit } from "react-icons/fa";
-import { LuDelete } from "react-icons/lu";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import { MdEdit } from "react-icons/md";
 import { useLayouData } from "../Context/MainLayoutContext";
+import { useDispatch } from "react-redux";
+import { addMenu, addTab } from "../Redux/TopTabSlice";
 
 
 const BranchTable = () => {
-  const{ setSubmittedData,menuComponent,setmenuComponent,getId,setId,hanldeId,setHandleId}= useLayouData();
+  const{ getId,setId,hanldeId,setHandleId}= useLayouData();
+  const dispatch = useDispatch()
 
  
   const [contactD, setcontactD] = useState([])
-  
-  const handleDeletebtn = (index) => {
-    const updatedData = contactD.filter((item, i) => i !== index);
-    // Update localStorage and contactD state with the updated data
-    localStorage.setItem('formData', JSON.stringify(updatedData));
-    setcontactD(updatedData);
-  };
+
+  // get data from local Storage
   useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem('formData'));
     if (storedData) {
@@ -25,16 +21,26 @@ const BranchTable = () => {
     }
     setHandleId(false)
   }, []);
-  console.log(contactD);
+
+  
+  const handleDeletebtn = (index) => {
+    const updatedData = contactD.filter((item, i) => i !== index);
+    // Update localStorage and contactD state with the updated data
+    localStorage.setItem('formData', JSON.stringify(updatedData));
+    setcontactD(updatedData);
+  };
+
+
+
+
   const handleEditdd =(index)=>
   {
-    // const editData = contactD[index]; // Retrieve the data of the selected item
-    setmenuComponent("tableform");
+    dispatch(addMenu('School'))
     setId(index)
     setHandleId(true)
 
   }
-  console.log(getId)
+  
   return (
     <>
       <div className="bg-bgclr branchtable">
@@ -45,7 +51,7 @@ const BranchTable = () => {
             </h3>
           </div>
           <div className="branchtable">
-            <div onClick={()=>setmenuComponent('tableform')} className="py-[18px] addbtn">
+            <div onClick={()=>dispatch(addMenu('School'))} className="py-[18px] addbtn">
               <button >Add New +</button>
             </div>
             <div>
