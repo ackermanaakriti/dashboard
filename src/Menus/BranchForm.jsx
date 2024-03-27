@@ -42,7 +42,8 @@ const BranchForm = () => {
     } else {
       console.log("not found");
     }
-  }, [getId]);
+   return 
+  }, [setHandleId]);
   
 
   const handleSubmit = (values) => {
@@ -236,7 +237,7 @@ const BranchForm = () => {
 
                 <div className="flex gap-[30px] items-center formbutton">
                   <button
-                    onClick={() => dispatch(addMenu("Colleges"))}
+                    onClick={() => dispatch(addMenu("Table"))}
                     type="reset"
                     className="bg-transparent border-[#d13838] border-solid py-[4px] px-[20px] border-[1px] text-[16px] font-inter font-[600] text-[#d13838]">
                     Cancel

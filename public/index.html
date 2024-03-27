@@ -32,11 +32,7 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    <form id="form">
-			<label for="todo"></label>
-			<input type="text" id="todo" name="todo" />
-			<button type="submit">Submit</button>
-		</form>
+ 
 		<script>
 			/* document.querySelector("#form").addEventListener("submit", function (e) {
             e.preventDefault()
@@ -44,24 +40,7 @@
             localStorage.setItem('todos', todo)
         });
  */
-			document.querySelector('#form').addEventListener('submit', function (e) {
-				e.preventDefault();
-				const todoInput = document.querySelector('#todo');
-				let existingTodos = localStorage.getItem('todos');
-				let todos;
-				if (existingTodos) {
-					todos = JSON.parse(existingTodos);
-				} else {
-					todos = [];
-				}
-				const todo = {
-					id: Math.floor(Math.random() * 100) + 1,
-					name: todoInput.value,
-				};
-				todos.push(todo);
-				localStorage.setItem('todos', JSON.stringify(todos));
-				todoInput = '';
-			});
+		
 		</script>
   </body>
 </html>

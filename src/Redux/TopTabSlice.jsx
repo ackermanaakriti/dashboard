@@ -12,7 +12,7 @@ const TopTabSlice = createSlice({
     addTab: (state, action) => {
       const existingIndex = state.title.findIndex((title, index) => title.menu === action.payload.menu);
             state.component = action.payload;
-            console.log(state.component);
+       
             if (existingIndex === -1) {
                 state.title = [...state.title, { menu: action.payload.menu, id: action.payload.id }];
             }
@@ -35,8 +35,8 @@ const TopTabSlice = createSlice({
                   newActiveTab = removedIndex - 1;
               }
           }
-          state.component = state.title[newActiveTab].menu;
-          console.log(state.title[newActiveTab]);
+          state.component = state.title[newActiveTab];
+       
       } else {
           state.component = ''; // euta matra tab baki huda
       }

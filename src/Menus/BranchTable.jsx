@@ -19,7 +19,8 @@ const BranchTable = () => {
     if (storedData) {
       setcontactD(storedData);
     }
-    setHandleId(false)
+    return setHandleId(false)
+    // setHandleId(false)
   }, []);
 
   
@@ -35,7 +36,7 @@ const BranchTable = () => {
 
   const handleEditdd =(index)=>
   {
-    dispatch(addMenu('School'))
+    dispatch(addMenu('Form'))
     setId(index)
     setHandleId(true)
 
