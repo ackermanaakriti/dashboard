@@ -10,8 +10,13 @@ const TopTabSlice = createSlice({
   },
   reducers: {
     addTab: (state, action) => {
-      state.title.push(action.payload);
-      state.component= action.payload
+      const existingIndex = state.title.findIndex((title, index) => title.menu === action.payload.menu);
+            state.component = action.payload;
+            console.log(state.component);
+            if (existingIndex === -1) {
+                state.title = [...state.title, { menu: action.payload.menu, id: action.payload.id }];
+            }
+   
      
     },
     removeTab: (state, action) => {
