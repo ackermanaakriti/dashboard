@@ -4,28 +4,26 @@ import { Formik, ErrorMessage, Form, Field } from "formik";
 import { useLayouData } from "../Context/MainLayoutContext";
 
 const BranchForm = () => {
-  const { getId, setId, hanldeId, setHandleId } = useLayouData();
+  const { getId, setId} = useLayouData();
    
-  const [editMode, setEditMode] = useState(false);
+const [edit,setEdit]= useState(false)
+     const dataLocal = JSON.parse(localStorage.getItem("formData"));
 
-  const [editIdData, seteditIdData] = useState("");
- 
+  // useEffect(() => {
+  //   const dataLocal = JSON.parse(localStorage.getItem("formData"));
+  //   if (getId) {
+  //     setEditMode(true);
 
-  useEffect(() => {
-    const dataLocal = JSON.parse(localStorage.getItem("formData"));
-    if (getId) {
-      setEditMode(true);
+  //     seteditIdData({
+  //       ...dataLocal.find((item) => item.id === getId), 
+  //     });
+  //   } else {
+  //     console.log("not found");
+  //   }
+  
+  // }, [getId]);
 
-      seteditIdData({
-        ...dataLocal.find((item) => item.id === getId), 
-      });
-    } else {
-      console.log("not found");
-    }
-   return 
-  }, [getId]);
-
-console.log(editIdData)
+console.log(edit)
 
     const initialValues = {
     name: "",

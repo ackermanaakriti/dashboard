@@ -35,10 +35,10 @@ const BranchTable = () => {
 
 
 
-  const handleEditdd =(index)=>
+  const handleEditdd =(id)=>
   {
-    setId(index);
-    dispatch(addMenu({ id:index, menu:'Form'}))
+    setId(id);
+    dispatch(addMenu({ id:id, menu:'Form'}))
  
    
    
