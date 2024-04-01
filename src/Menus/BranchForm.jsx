@@ -2,16 +2,32 @@ import React, { useState, useEffect } from "react";
 import * as Yup from "yup";
 import { Formik, ErrorMessage, Form, Field } from "formik";
 import { useLayouData } from "../Context/MainLayoutContext";
-import BranchTable from "./BranchTable";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { useDispatch } from "react-redux";
-import { addMenu } from "../Redux/TopTabSlice";
 
 const BranchForm = () => {
   const { getId, setId, hanldeId, setHandleId } = useLayouData();
-  const dispatch = useDispatch();
-  const initialValues = {
+   
+  const [editMode, setEditMode] = useState(false);
+
+  const [editIdData, seteditIdData] = useState("");
+ 
+
+  useEffect(() => {
+    const dataLocal = JSON.parse(localStorage.getItem("formData"));
+    if (getId) {
+      setEditMode(true);
+
+      seteditIdData({
+        ...dataLocal.find((item) => item.id === getId), 
+      });
+    } else {
+      console.log("not found");
+    }
+   return 
+  }, [getId]);
+
+console.log(editIdData)
+
+    const initialValues = {
     name: "",
     branchname: "",
     Registrationno: "",
@@ -22,45 +38,7 @@ const BranchForm = () => {
     shipadd: "",
     billcontact: "",
   };
-
-  const handleSubmitbtnn = () => {
-    toast.success("Your Data is saved");
-    dispatch(addMenu("Colleges"));
-  };
-  const [editMode, setEditMode] = useState(false);
-  const [idData, setIdData] = useState("");
-  const [editIdData, seteditIdData] = useState("");
-  const dataLocal = JSON.parse(localStorage.getItem("formData"));
- 
-  useEffect(() => {
-    if (getId) {
-      setEditMode(true);
-      setIdData(dataLocal.find((item) => item.id === getId));
-      seteditIdData({
-        ...dataLocal.find((item) => item.id === getId), 
-      });
-    } else {
-      console.log("not found");
-    }
-   return 
-  }, [setHandleId]);
-  
-
-  const handleSubmit = (values) => {
-    let datas = JSON.parse(localStorage.getItem("formData")) || [];
-    if (editMode) {
-      datas = datas.map((item) =>
-        item.id === getId ? { ...values, id: getId } : item
-      );
-    } else {
-      values.id = Math.floor(Math.random() * 100) + 1;
-      datas.push(values);
-    }
-    localStorage.setItem("formData", JSON.stringify(datas));
-    toast.success("Your Data is saved");
-  };
-
-  const handleEnterKeyPress = (event, nextField) => {
+    const handleEnterKeyPress = (event, nextField) => {
     if (event.key === "Enter") {
       event.preventDefault();
       const nextInput = document.getElementById(nextField);
@@ -69,21 +47,20 @@ const BranchForm = () => {
       }
     }
   };
-
   return (
-    <div className="Branchform ">
-      <ToastContainer />
+    <div>
+      <div className="Branchform ">
+    
 
-      <div className="pb-[25px]">
+       <div className="pb-[25px]">
         <h3 className="font-inter font-semibold text-[30px]">
-          Add/Update Branch
-        </h3>
-      </div>
-
+           Add/Update Branch
+       </h3>
+     </div>
       <Formik
         enableReinitialize={true}
         initialValues={
-          hanldeId && editIdData && editMode ? editIdData : initialValues
+          initialValues
         }
         validationSchema={Yup.object().shape({
           name: Yup.string().required("required"),
@@ -91,7 +68,10 @@ const BranchForm = () => {
           Registrationno: Yup.string().required("required"),
           pan: Yup.string().required("required"),
         })}
-        onSubmit={handleSubmit}
+        onSubmit={(values)=>
+        {
+
+        }}
       >
         {(formik) => (
           <Form onSubmit={formik.handleSubmit}>
@@ -237,13 +217,13 @@ const BranchForm = () => {
 
                 <div className="flex gap-[30px] items-center formbutton">
                   <button
-                    onClick={() => dispatch(addMenu("Table"))}
+                    // onClick={() => dispatch(addMenu("Table"))}
                     type="reset"
                     className="bg-transparent border-[#d13838] border-solid py-[4px] px-[20px] border-[1px] text-[16px] font-inter font-[600] text-[#d13838]">
                     Cancel
                     </button>
                     <button
-                    onClick={handleSubmitbtnn}
+                    // onClick={handleSubmitbtnn}
                     type="submit"
                     id="btnsubmit"
                     className="bg-PrimaryColor py-[4px] px-[20px] text-[16px] font-inter  text-white o "
@@ -257,7 +237,8 @@ const BranchForm = () => {
         )}
       </Formik>
     </div>
-  );
-};
+    </div>
+  )
+}
 
-export default BranchForm;
+export default BranchForm

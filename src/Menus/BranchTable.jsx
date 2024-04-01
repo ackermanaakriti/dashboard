@@ -7,7 +7,7 @@ import { addMenu, addTab } from "../Redux/TopTabSlice";
 
 
 const BranchTable = () => {
-  const{ getId,setId,hanldeId,setHandleId}= useLayouData();
+  const{ setId,hanldeId,setHandleId}= useLayouData();
   const dispatch = useDispatch()
 
  
@@ -19,9 +19,10 @@ const BranchTable = () => {
     if (storedData) {
       setcontactD(storedData);
     }
-    return setHandleId(false)
-    // setHandleId(false)
+
+   
   }, []);
+
 
   
   const handleDeletebtn = (index) => {
@@ -36,11 +37,14 @@ const BranchTable = () => {
 
   const handleEditdd =(index)=>
   {
-    dispatch(addMenu('Form'))
-    setId(index)
-    setHandleId(true)
+    setId(index);
+    dispatch(addMenu({ id:index, menu:'Form'}))
+ 
+   
+   
 
   }
+
   
   return (
     <>
@@ -52,7 +56,7 @@ const BranchTable = () => {
             </h3>
           </div>
           <div className="branchtable">
-            <div onClick={()=>dispatch(addMenu('School'))} className="py-[18px] addbtn">
+            <div onClick={()=>dispatch(addMenu({ id:'', menu:'Hospital'}))} className="py-[18px] addbtn">
               <button >Add New +</button>
             </div>
             <div>

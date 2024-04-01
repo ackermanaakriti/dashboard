@@ -6,12 +6,12 @@ const TopTabSlice = createSlice({
   initialState: {
     title: [],
     component: {},
-    menu:{}
+    
   },
   reducers: {
     addTab: (state, action) => {
       const existingIndex = state.title.findIndex((title, index) => title.menu === action.payload.menu);
-            state.component = action.payload;
+            state.component = action.payload.menu;
        
             if (existingIndex === -1) {
                 state.title = [...state.title, { menu: action.payload.menu, id: action.payload.id }];
@@ -45,7 +45,7 @@ const TopTabSlice = createSlice({
     },
     addMenu :(state,action)=>
     {
-      state.menu= action.payload
+      state.component= action.payload.menu
     }
   },
 });
