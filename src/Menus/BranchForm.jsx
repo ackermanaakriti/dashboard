@@ -1,242 +1,137 @@
-import React, { useState, useEffect } from "react";
-import * as Yup from "yup";
-import { Formik, ErrorMessage, Form, Field } from "formik";
-import { useLayouData } from "../Context/MainLayoutContext";
+import React, { useEffect, useState } from 'react';
+import { useLayouData } from '../Context/MainLayoutContext';
+import * as Yup from 'yup';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { useDispatch } from 'react-redux';
+
+import { v4 as uuidv4 } from 'uuid';
+import { useRef } from 'react';
 
 const BranchForm = () => {
-  const { getId, setId} = useLayouData();
-   
-const [edit,setEdit]= useState(false)
-     const dataLocal = JSON.parse(localStorage.getItem("formData"));
+    const { getId, setId } = useLayouData();
+    const [editMode, setEditMode] = useState(false);
+    const [editIdData, setEditIdData] = useState({});
 
-  // useEffect(() => {
-  //   const dataLocal = JSON.parse(localStorage.getItem("formData"));
-  //   if (getId) {
-  //     setEditMode(true);
+    const dispatch = useDispatch();
+    const dataLocal = JSON.parse(localStorage.getItem('formData'));
 
-  //     seteditIdData({
-  //       ...dataLocal.find((item) => item.id === getId), 
-  //     });
-  //   } else {
-  //     console.log("not found");
-  //   }
-  
-  // }, [getId]);
-
-console.log(edit)
-
+    const generateID = () => {
+        const uniqueID = uuidv4();
+        return uniqueID;
+    };
     const initialValues = {
-    name: "",
-    branchname: "",
-    Registrationno: "",
-    contact: "",
-    pan: "",
-    address: "",
-    billadd: "",
-    shipadd: "",
-    billcontact: "",
-  };
-    const handleEnterKeyPress = (event, nextField) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      const nextInput = document.getElementById(nextField);
-      if (nextInput) {
-        nextInput.focus();
-      }
+        name: '',
+        phone: '',
+        email: '',
+        address: '',
+        message: '',
     }
-  };
-  return (
-    <div>
-      <div className="Branchform ">
-    
+    const schema = Yup.object().shape({
+        name: Yup.string().required("required"),
+        phone: Yup.number().required("required"),
+        email: Yup.string().required("required"),
+        address: Yup.string().required("required"),
+        message: Yup.string().required("required"),
+    })
+    const handleSubmitForm = (values) => {
+        console.log(values)
+        let datas = JSON.parse(localStorage.getItem('contactData'));
+        if (editMode) {
+                datas = datas.map((item, index) => (item.id === editIdData.id ? { ...values, id: editIdData.id } : item))
+            }
+            else {
+            const data = {
+                id: generateID(),
+                ...values,
+            }
+            datas.push(data);
+        };
+        console.log(datas);
+        localStorage.setItem('formData', JSON.stringify(datas));
+        // dispatch(ViewMenuContent('Table'))
+    }
+    const formRef = useRef(null);
 
-       <div className="pb-[25px]">
-        <h3 className="font-inter font-semibold text-[30px]">
-           Add/Update Branch
-       </h3>
-     </div>
-      <Formik
-        enableReinitialize={true}
-        initialValues={
-          initialValues
+    const handleKeyPress = (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault(); // Prevent form submission
+            const inputs = formRef.current.querySelectorAll('input, select, textarea');
+            const index = Array.prototype.indexOf.call(inputs, event.target);
+            const nextInput = inputs[index + 1];
+            if (nextInput) {
+                nextInput.focus(); // Focus on the next input field
+            }
         }
-        validationSchema={Yup.object().shape({
-          name: Yup.string().required("required"),
-          branchname: Yup.string().required("required"),
-          Registrationno: Yup.string().required("required"),
-          pan: Yup.string().required("required"),
-        })}
-        onSubmit={(values)=>
-        {
+    };
 
-        }}
-      >
-        {(formik) => (
-          <Form onSubmit={formik.handleSubmit}>
-            <div className="grid grid-cols-2 gap-[90px]">
-              <div>
-                <div className="py-[5px]">
-                  <label className="block">
-                    Name <span>*</span>
-                  </label>
-                  <Field
-                    type="text"
-                    name="name"
-                    className="w-[100%]"
-                    placeholder=""
-                    onKeyDown={(event) =>
-                      handleEnterKeyPress(event, "branchname")
-                    }
-                  />
-                </div>
+    useEffect(() => {
+        if (getId) {
+            console.log(getId);
+            setEditMode(true);
+            const selectedIdData = dataLocal.find((item) => item.id === getId);
+            setEditIdData({
+                id: selectedIdData.id,
+                name: selectedIdData.name,
+                phone: selectedIdData.phone,
+                email: selectedIdData.email,
+                address: selectedIdData.address,
+                message: selectedIdData.message,
+            })
+        }
+        else {
+            setEditMode(false); // Set editMode to false when getId is null
+            setEditIdData({});
+        }
+        return () => {
+            setId('');
+        };
+    }, [setId])
 
-                <div className="py-[6px]">
-                  <label className="block">
-                    Branch Code <span>*</span>
-                  </label>
-                  <Field
-                    type="text"
-                    onKeyDown={(event) =>
-                      handleEnterKeyPress(event, "Registrationno")
-                    }
-                    name="branchname"
-                    className="w-[100%]"
-                    placeholder=""
-                    id="branchname"
-                  />
-                </div>
-
-                <div className="py-[6px]">
-                  <label className="block">
-                    Regestration No. <span>*</span>
-                  </label>
-                  <Field
-                    type="text"
-                    name="Registrationno"
-                    className="w-[100%]"
-                    placeholder=""
-                    id="Registrationno"
-                    onKeyDown={(event) => handleEnterKeyPress(event, "contact")}
-                  />
-                </div>
-
-                <div className="py-[6px]">
-                  <label className="block">
-                    Contact <span>*</span>
-                  </label>
-                  <Field
-                    type="text"
-                    name="contact"
-                    className="w-[100%]"
-                    placeholder=""
-                    id="contact"
-                    onKeyDown={(event) => handleEnterKeyPress(event, "pan")}
-                  />
-                </div>
-
-                <div className="py-[6px]">
-                  <label className="block">
-                    PAN <span>*</span>
-                  </label>
-                  <Field
-                    type="text"
-                    name="pan"
-                    className="w-[100%]"
-                    placeholder=""
-                    id="pan"
-                    onKeyDown={(event) => handleEnterKeyPress(event, "address")}
-                  />
-                </div>
-
-                <div className="py-[6px]">
-                  <label className="block">
-                    Address <span>*</span>
-                   </label>
-                   <Field
-                    as="textarea"
-                    type="text"
-                    onKeyDown={(event) => handleEnterKeyPress(event, "billadd")}
-                    id="address"
-                    name="address"
-                    className="w-[100%] "
-                   ></Field>
-                 </div>
-
-                <div className="py-[6px]">
-                  <label className="block">
-                    Bill Address <span>*</span>
-                  </label>
-                  <Field
-                    as="textarea"
-                    type="text"
-                    onKeyDown={(event) => handleEnterKeyPress(event, "shipadd")}
-                    id="billadd"
-                    name="billadd"
-                    className="w-[100%] "
-                  ></Field>
-                </div>
-              </div>
-
-              <div>
-                <div className="py-[6px]">
-                  <label className="block">
-                    {" "}
-                    Ship Address <span>*</span>
-                  </label>
-                  <Field
-                    as="textarea"
-                    type="text"
-                    name="shipadd"
-                    id="shipadd"
-                    onKeyDown={(event) =>
-                      handleEnterKeyPress(event, "billcontact")
-                    }
-                    className="w-[100%] "
-                  ></Field>
-                </div>
-
-
-                <div className="py-[6px]">
-                  <label className="block">
-                    Bill Contact Info <span>*</span>
-                  </label>
-                  <Field
-                    as="textarea"
-                    type="text"
-                    name="billcontact"
-                    className="w-[100%]"
-                    id="billcontact"
-                    onKeyDown={(event) =>
-                      handleEnterKeyPress(event, "btnsubmit")
-                    }
-                  ></Field>
-                </div>
-
-
-                <div className="flex gap-[30px] items-center formbutton">
-                  <button
-                    // onClick={() => dispatch(addMenu("Table"))}
-                    type="reset"
-                    className="bg-transparent border-[#d13838] border-solid py-[4px] px-[20px] border-[1px] text-[16px] font-inter font-[600] text-[#d13838]">
-                    Cancel
-                    </button>
-                    <button
-                    // onClick={handleSubmitbtnn}
-                    type="submit"
-                    id="btnsubmit"
-                    className="bg-PrimaryColor py-[4px] px-[20px] text-[16px] font-inter  text-white o "
-                  >
-                    Save
-                  </button>
-                </div>
-              </div>
-            </div>
-          </Form>
-        )}
-      </Formik>
-    </div>
-    </div>
-  )
+    return (
+        <>
+            <section className='contact-page'>
+                <Formik
+                    initialValues={editMode ? editIdData : initialValues}
+                    enableReinitialize={true}
+                    validationSchema={schema}
+                    onSubmit={handleSubmitForm}
+                >
+                    {formik => (
+                        <Form onSubmit={formik.handleSubmit} ref={formRef}>
+                            <div className="form-group">
+                                <label htmlFor="" className="form-label">name</label>
+                                <Field type="text" className='form-control' onKeyPress={(event) => handleKeyPress(event)} onChange={formik.handleChange} value={formik.values.name} name="name" placeholder="Name" />
+                                <ErrorMessage component="div" name='name' className='error' />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="" className="form-label">phone</label>
+                                <Field type="phone" className='form-control' onKeyPress={(event) => handleKeyPress(event)} onChange={formik.handleChange} value={formik.values.phone} name="phone" placeholder="phone" />
+                                <ErrorMessage component="div" name='phone' className='error' />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="" className="form-label">email</label>
+                                <Field type="email" className='form-control' onKeyPress={(event) => handleKeyPress(event)} onChange={formik.handleChange} value={formik.values.email} name="email" placeholder="email" />
+                                <ErrorMessage component="div" name='email' className='error' />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="" className="form-label">address</label>
+                                <Field type="text" className='form-control' onKeyPress={(event) => handleKeyPress(event)} onChange={formik.handleChange} value={formik.values.address} name="address" placeholder="address" />
+                                <ErrorMessage component="div" name='address' className='error' />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="" className="form-label">message</label>
+                                <Field as="textarea" type="text" className='form-control' onKeyPress={(event) => handleKeyPress(event)} onChange={formik.handleChange} value={formik.values.message} name="message" placeholder="message" />
+                                <ErrorMessage component="div" name='message' className='error' />
+                            </div>
+                            <div className="btn-wrapper">
+                                <button type='submit'>Submit</button>
+                            </div>
+                        </Form>
+                    )}
+                </Formik>
+            </section >
+        </>
+    )
 }
 
 export default BranchForm
