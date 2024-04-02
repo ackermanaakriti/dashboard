@@ -7,12 +7,12 @@ import BranchForm from "../Menus/BranchForm";
 import BranchTable from "../Menus/BranchTable";
 
 export const MenuComponentMap = {
-    Colleges: CollegeMenu,
-    Hotel: Hotel,
-    School: Schoolmenu,
-    Hospital: Hospital,
-    Form : BranchForm,
-    Table: BranchTable
+    Colleges: <CollegeMenu/>,
+    Hotel: <Hotel/>,
+    School: <Schoolmenu/>,
+    Hospital: <Hospital/>,
+    Form :<BranchForm/>,
+    Table: <BranchTable/>
    
   };
   

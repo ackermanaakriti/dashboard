@@ -27,8 +27,9 @@ const SideBar = () => {
         }
     };
 
-    const handleSubMenuClick = (menu, submenu) => {
+    const handleSubMenuClick = (menu, submenu,index) => {
         setActiveLink(menu);
+        dispatch(addTab({ id:index, menu:submenu}))
         setActiveSubMenu(submenu);
        
        
@@ -51,14 +52,14 @@ const SideBar = () => {
                                        
                                         </div>
                                         {
-                                            activeLink === menu.menu && menuopen ? <span className='chev-icon'><FaChevronDown /></span> : <span className='chev-icon'><FaChevronRight /></span>
+                                           menu.submenu.length > 0 ? ( activeLink === menu.menu &&  menuopen ? <span className='chev-icon'><FaChevronDown /></span> : <span className='chev-icon'><FaChevronRight /></span>):''
                                         }
                                       </a>
-                                    {activeLink === menu.menu && menu.submenu && menuopen && (
+                                    {activeLink === menu.menu && menu.submenu.length > 0 && menuopen && (
                                         <ul>
                                             {menu.submenu.map((submenu, subIndex) => (
                                                 <li key={subIndex}>
-                                                    <a onClick={() => handleSubMenuClick(menu.menu, submenu.name)} className={activeSubMenu === submenu.name ? 'activesubmenu' : ''}>
+                                                    <a onClick={() => handleSubMenuClick(menu.menu, submenu.name ,index)} className={activeSubMenu === submenu.name ? 'activesubmenu' : ''}>
                                                         <span className='menuicons'>{menu.icon}</span>
                                                         <span className='menuname'>
                                                         {submenu.name}

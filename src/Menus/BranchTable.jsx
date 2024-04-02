@@ -12,13 +12,15 @@ const BranchTable = () => {
 
  
   const [contactD, setcontactD] = useState([])
+  const storedData = JSON.parse(localStorage.getItem('formData'));
 
   // get data from local Storage
   useEffect(() => {
-    const storedData = JSON.parse(localStorage.getItem('formData'));
+    
     if (storedData) {
       setcontactD(storedData);
     }
+    setHandleId(false)
 
    
   }, []);
@@ -32,17 +34,10 @@ const BranchTable = () => {
     setcontactD(updatedData);
   };
 
-
-
-
   const handleEditdd =(id)=>
   {
     setId(id);
     dispatch(addMenu({ id:id, menu:'Form'}))
- 
-   
-   
-
   }
 
   
@@ -56,10 +51,11 @@ const BranchTable = () => {
             </h3>
           </div>
           <div className="branchtable">
-            <div onClick={()=>dispatch(addMenu({ id:'', menu:'Hospital'}))} className="py-[18px] addbtn">
+            <div onClick={()=>dispatch(addMenu({ id:'', menu:'Form'}))} className="py-[18px] addbtn">
               <button >Add New +</button>
             </div>
-            <div>
+            <div className="          
+            ">
               <table className="shadow-lg">
                 <thead>
                   <tr>
@@ -85,10 +81,10 @@ const BranchTable = () => {
                     </td>
                     <td className="">
                     <div className="flex gap-[25px] items-center">
-                        <span onClick={()=>handleEditdd(tdata.id)} className="text-PrimaryColor">
+                        <span onClick={()=>handleEditdd(tdata.id)} className="text-PrimaryColor cursor-pointer">
                           <MdEdit />
                         </span>
-                        <span onClick={()=>handleDeletebtn(index)} className="text-[#d13838] cursor-pointer">
+                        <span onClick={(e)=>{e.stopPropagation();handleDeletebtn(index)}} className="text-[#d13838] cursor-pointer">
                           <RiDeleteBin5Fill />
                         </span>
                       </div>

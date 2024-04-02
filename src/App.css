@@ -8,6 +8,7 @@
   --inter: "Inter", sans-serif;
 }
 .header {
+  position: relative;
   .hamicons {
     color: rgba(255, 255, 255, 0.479);
   }
@@ -164,7 +165,10 @@ left: 0;
       }
     }
   }
+  
+   
   table {
+   
     width: 100%;
 
     thead {

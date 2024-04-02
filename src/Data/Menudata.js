@@ -1,8 +1,16 @@
 import { FaWpforms } from "react-icons/fa";
 import { LuMenuSquare,LuSchool2 } from "react-icons/lu";
+import { MdDashboardCustomize } from "react-icons/md";
+
 
 
 export const MenuData =[
+    {
+        menu:'Dashboard',
+        icon: <MdDashboardCustomize className='text-[28px] text-[#049268ec]'/>,
+        submenu: []
+
+    },
   
     {
         menu:'Hospital',

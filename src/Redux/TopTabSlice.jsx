@@ -20,8 +20,7 @@ const TopTabSlice = createSlice({
      
     },
     removeTab: (state, action) => {
-      const removedIndex = action.payload;
-      console.log(removedIndex)
+      const removedIndex = action.payload.id;
       if (state.title.length > 1) {
           let newActiveTab;
           if (removedIndex === 0) {
@@ -35,14 +34,14 @@ const TopTabSlice = createSlice({
                   newActiveTab = removedIndex - 1;
               }
           }
-          state.component = state.title[newActiveTab];
-       
-      } else {
+          state.component = state.title[newActiveTab].menu;
+        } else {
           state.component = ''; // euta matra tab baki huda
-      }
-      // Remove the tab from the tabs array
-      state.title.splice(removedIndex, 1);
-    },
+        }
+        // Remove the tab from the tabs array
+        state.title.splice(removedIndex, 1);
+       
+  },
     addMenu :(state,action)=>
     {
       state.component= action.payload.menu
