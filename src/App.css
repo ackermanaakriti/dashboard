@@ -237,6 +237,11 @@ left: 0;
         color: rgb(236, 37, 37);
       }
     }
+    .error 
+    {
+      color:rgb(224, 9, 9);
+      font-size: 14px;
+    }
     .formbutton {
       position: absolute;
       bottom: 2em;

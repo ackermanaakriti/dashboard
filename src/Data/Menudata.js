@@ -13,28 +13,30 @@ export const MenuData =[
     },
   
     {
-        menu:'Hospital',
+        menu:'Branch',
+        slug:'branch',
         icon: <LuMenuSquare className='text-[28px] text-[#4a528f]'/>,
         submenu:[
             {
-                name:'Kanti Hospital',
+                name:'Add Branch',
+                slug:'addbranch'
             },
             {
-                name:'Teaching Hospital',
+                name:'Review Branch',
                 icon:<LuSchool2 className='text-[25px] text-[#ab243d]' />
             },
-            {
-                name:'Bir Hospital',
-            },
+            
         ]
     },
     {
-        menu:'Colleges',
+        menu:'Fiscal Year',
+        slug:'fiscalyear',
         icon:<LuSchool2 className='text-[28px] text-[#ab243d]' />
         ,
         submenu:[
             {
-                name:'Kanti College',
+                name:'Add Fiscal Year',
+                slug:'fiscalform',
                 icon:<LuSchool2 className='text-[25px] text-[#ab243d]' />
             },
             {
@@ -62,7 +64,7 @@ export const MenuData =[
         ]
     },
     {
-        menu:'School',        icon: <LuMenuSquare className='text-[28px] text-[#36925c]'/>,
+        menu:'Settings',        icon: <LuMenuSquare className='text-[28px] text-[#36925c]'/>,
 
         submenu:[
             {

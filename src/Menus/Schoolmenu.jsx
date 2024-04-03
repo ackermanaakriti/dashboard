@@ -1,5 +1,5 @@
 import React from 'react'
-import BranchForm from './BranchForm'
+import BranchForm from './BranchMenu/BranchForm'
 
 const Schoolmenu = () => {
   return (

@@ -45,21 +45,21 @@ const SideBar = () => {
                         <ul>
                             {MenuData.map((menu, index) => (
                                 <li key={index}>
-                                    <a onClick={() => handleClick(menu.menu,index)} className={activeLink === menu.menu ? 'active' : ''}>
+                                    <a onClick={() => handleClick(menu.slug,index)} className={activeLink === menu.menu ? 'active' : ''}>
                                         <div className='menuitems-flex'>
                                         <span className='menuicons'>{menu.icon}</span>
                                         <span className='menuname'> {menu.menu}</span>
                                        
                                         </div>
                                         {
-                                           menu.submenu.length > 0 ? ( activeLink === menu.menu &&  menuopen ? <span className='chev-icon'><FaChevronDown /></span> : <span className='chev-icon'><FaChevronRight /></span>):''
+                                           menu.submenu.length > 0 ? ( activeLink === menu.slug &&  menuopen ? <span className='chev-icon'><FaChevronDown /></span> : <span className='chev-icon'><FaChevronRight /></span>):''
                                         }
                                       </a>
-                                    {activeLink === menu.menu && menu.submenu.length > 0 && menuopen && (
+                                    {activeLink === menu.slug && menu.submenu.length > 0 && menuopen && (
                                         <ul>
                                             {menu.submenu.map((submenu, subIndex) => (
                                                 <li key={subIndex}>
-                                                    <a onClick={() => handleSubMenuClick(menu.menu, submenu.name ,index)} className={activeSubMenu === submenu.name ? 'activesubmenu' : ''}>
+                                                    <a onClick={() => handleSubMenuClick(menu.slug, submenu.slug ,index)} className={activeSubMenu === submenu.name ? 'activesubmenu' : ''}>
                                                         <span className='menuicons'>{menu.icon}</span>
                                                         <span className='menuname'>
                                                         {submenu.name}

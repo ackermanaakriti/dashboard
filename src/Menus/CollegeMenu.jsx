@@ -1,5 +1,5 @@
 import React from 'react'
-import BranchTable from './BranchTable'
+import BranchTable from './BranchMenu/BranchTable'
 
 const CollegeMenu = () => {
   return (

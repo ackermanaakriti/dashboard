@@ -1,9 +1,9 @@
 import React, { useEffect ,useState} from "react";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import { MdEdit } from "react-icons/md";
-import { useLayouData } from "../Context/MainLayoutContext";
+import { useLayouData } from "../../Context/MainLayoutContext";
 import { useDispatch } from "react-redux";
-import { addMenu, addTab } from "../Redux/TopTabSlice";
+import { addMenu, addTab } from "../../Redux/TopTabSlice";
 
 
 const BranchTable = () => {
@@ -74,7 +74,7 @@ const BranchTable = () => {
                  
                   
                       <td>{tdata?.name}</td>
-                    <td>{tdata?.branchname}</td>
+                    <td>{tdata?.branchcode}</td>
                     <td>{tdata?.Registrationno}</td>
                     <td>
                       <button>Yes</button>
