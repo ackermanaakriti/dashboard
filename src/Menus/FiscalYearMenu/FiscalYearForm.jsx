@@ -116,15 +116,16 @@ const FiscalYearForm = () => {
                 <div className='py-[8px]'>
                     <label className='block py-[8px] font-[500] font-inter '>Start Date BS</label>
                    <Field
-                 
+                 type='date'
                    id="startDate"
                    name="fromdate"
                    value={startDate}
                    onChange={handleDateChange}
                    placeholder="YYYYMMDD"
                    />
-
-                   
+ <input type="text" name="date" id="date"
+            pattern="\d{4}-\d{2}-\d{2}" required
+           />                   
                     
                     <ErrorMessage component='div' className='text-[14px] text-redclr ' name='fromdate'/>
 
