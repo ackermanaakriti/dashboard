@@ -2,8 +2,7 @@ import React, { createContext, useContext, useState } from "react";
 import Header from "../Components/Header";
 import Footer from "../Components/Footer";
 import SideBar from "../Components/SideBar";
-import CollegeMenu from "../Menus/CollegeMenu";
-import Schoolmenu from "../Menus/Schoolmenu";
+
 const MainLayoutContext = createContext();
 
 export const MainLayoutProvider = ({ children }) => {

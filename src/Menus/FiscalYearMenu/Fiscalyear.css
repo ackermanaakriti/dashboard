@@ -12,7 +12,7 @@ table
     padding: 10px;
     font-weight: 600;
     font-family: var(--inter);
-    text-align: start;
+    text-align: center;
     &:last-child {
       border-right: none;
     }
@@ -27,7 +27,7 @@ table
         padding: 10px;
         font-weight: 400;
         font-family: var(--inter);
-        text-align: start;
+        text-align: center;
         font-size: 16px;
         margin: 0 !important;
         button {

@@ -30,7 +30,7 @@ const BranchForm = () => {
     billadd: "",
     shipadd: "",
     billcontact: "",
-    headoffice: true,
+    headoffice: null,
   };
 
   console.log(initialValues.name);
@@ -83,7 +83,7 @@ const BranchForm = () => {
       <div className="pb-[25px]">
         <h3 className="font-inter font-semibold text-[30px]">
           {editMode ? 'Update Branch' : 'Add Branch'}
-          
+
         </h3>
       </div>
 
@@ -131,7 +131,7 @@ const BranchForm = () => {
                 <div className="flex  justify-between items-center">
                   <div className="py-[5px]">
                     <label className="block">
-                     Parent Branch <span>*</span>
+                      Parent Branch <span>*</span>
                     </label>
                     <Field
                       className="border-[1px] px-[8px] py-[8px] outline-0 border-[#c0d3e5] w-[22em] "
@@ -176,89 +176,89 @@ const BranchForm = () => {
                 </div>
 
                 <div className="flex justify-between">
-                <div className="py-[6px]">
-                  <label className="block">
-                    Regestration No. <span>*</span>
-                  </label>
-                  <Field
-                    type="text"
-                    name="Registrationno"
-                    className="w-[22em]"
-                    placeholder=""
-                    id="Registrationno"
-                    onKeyDown={(event) => handleEnterKeyPress(event, "pan")}
-                  />
-                  <ErrorMessage
-                    component="div"
-                    className="error"
-                    name="Registrationno"
-                  />
+                  <div className="py-[6px]">
+                    <label className="block">
+                      Regestration No. <span>*</span>
+                    </label>
+                    <Field
+                      type="text"
+                      name="Registrationno"
+                      className="w-[22em]"
+                      placeholder=""
+                      id="Registrationno"
+                      onKeyDown={(event) => handleEnterKeyPress(event, "pan")}
+                    />
+                    <ErrorMessage
+                      component="div"
+                      className="error"
+                      name="Registrationno"
+                    />
+                  </div>
+
+                  <div className="py-[6px]">
+                    <label className="block">
+                      Pan <span>*</span>
+                    </label>
+                    <Field
+                      type="text"
+                      name="pan"
+                      className="w-[22em]"
+                      placeholder=""
+                      id="pan"
+                      onKeyDown={(event) => handleEnterKeyPress(event, "fax")}
+                    />
+                    <ErrorMessage component="div" className="error" name="pan" />
+                  </div>
                 </div>
 
-                <div className="py-[6px]">
-                  <label className="block">
-                    Pan <span>*</span>
-                  </label>
-                  <Field
-                    type="text"
-                    name="pan"
-                    className="w-[22em]"
-                    placeholder=""
-                    id="pan"
-                    onKeyDown={(event) => handleEnterKeyPress(event, "fax")}
-                  />
-                  <ErrorMessage component="div" className="error" name="pan" />
-                </div>
+
+
+                <div className="flex justify-between">
+                  <div className="py-[6px]">
+                    <label className="block">
+                      Contact Number <span>*</span>
+                    </label>
+                    <Field
+                      type="text"
+                      name="contact"
+                      className="w-[22em]"
+                      placeholder=""
+                      id="contact"
+                      onKeyDown={(event) => handleEnterKeyPress(event, "address")}
+                    />
+                    <ErrorMessage
+                      component="div"
+                      className="error"
+                      name="contact"
+                    />
+                  </div>
+
+                  <div className="py-[6px]">
+                    <label className="block">
+                      Fax <span>*</span>
+                    </label>
+                    <Field
+                      type="text"
+                      name="fax"
+                      className="w-[22em]"
+                      placeholder=""
+                      id="fax"
+                      onKeyDown={(event) => handleEnterKeyPress(event, "contact")}
+                    />
+                    <ErrorMessage component="div" className="error" name="fax" />
+                  </div>
                 </div>
 
-               
-                
-              <div className="flex justify-between">
-              <div className="py-[6px]">
-                  <label className="block">
-                    Contact Number <span>*</span>
-                  </label>
-                  <Field
-                    type="text"
-                    name="contact"
-                    className="w-[22em]"
-                    placeholder=""
-                    id="contact"
-                    onKeyDown={(event) => handleEnterKeyPress(event, "address")}
-                  />
-                  <ErrorMessage
-                    component="div"
-                    className="error"
-                    name="contact"
-                  />
-                </div>
-               
-                <div className="py-[6px]">
-                  <label className="block">
-                    Fax <span>*</span>
-                  </label>
-                  <Field
-                    type="text"
-                    name="fax"
-                    className="w-[22em]"
-                    placeholder=""
-                    id="fax"
-                    onKeyDown={(event) => handleEnterKeyPress(event, "contact")}
-                  />
-                  <ErrorMessage component="div" className="error" name="fax" />
-                </div>
-                </div>
 
-              
 
-               
+
 
                 <div className="py-[6px]">
                   <label className="block">
                     Address <span>*</span>
                   </label>
                   <Field
-                    
+
                     type="text"
                     onKeyDown={(event) => handleEnterKeyPress(event, "billadd")}
                     id="address"
@@ -274,20 +274,20 @@ const BranchForm = () => {
 
                 <div className="py-[6px]">
                   <label className="block">
-                     Logo <span>*</span>
+                    Logo <span>*</span>
                   </label>
                   <div className="relative border-dotted border-[2px] border-[#c0d3e5] text-center py-[10px]">
-                  <Field
-                   
-                   type="file"
-                   name="branchlogo"
-                   className="w-[100%] opacity-0  absolute inset-0 "
-                   id="image"
-                   onKeyDown={(event) =>
-                     handleEnterKeyPress(event, "btnsubmit")
-                   }
-                 />
-                    <span className="text-[#c0d3e5] text-[30px] flex justify-center "> <HiOutlinePhotograph/></span>
+                    <Field
+
+                      type="file"
+                      name="branchlogo"
+                      className="w-[100%] opacity-0  absolute inset-0 "
+                      id="image"
+                      onKeyDown={(event) =>
+                        handleEnterKeyPress(event, "btnsubmit")
+                      }
+                    />
+                    <span className="text-[#c0d3e5] text-[30px] flex justify-center "> <HiOutlinePhotograph /></span>
                     <p className="text-[#c0d3e5] ">Click to upload photo</p>
                   </div>
                   <ErrorMessage
@@ -297,36 +297,26 @@ const BranchForm = () => {
                   />
                 </div>
 
-                
+
                 <div className="py-[6px]">
                   <div role="group">
-                    <label className="block">
-                      Head Office <span>*</span>
-                    </label>
+                    <label className='block py-[8px] font-[500] font-inter '>Head Office<span>*</span></label>
                     <div>
-                      <label className="pl-[10px]">
-                        <Field className='mx-[5px]' type="radio" name="headoffice" value={true} />
-                        Yes
-                      </label>
-                      <label className="ml-[10px]">
-                        <Field className='mx-[5px]' type="radio" name="headoffice" value={false} />
-                        No
-                      </label>
+                      <label className=""> <input className='mx-[5px]' type="radio" name="headoffice" checked={formik.values.headoffice === true} value={true}
+                        onChange={() => formik.setFieldValue('headoffice', true)} />Yes</label>
+                      <label className="ml-[10px]"><input className='mx-[5px]' type="radio" name="headoffice" checked={formik.values.headoffice === false} value={false}
+                        onChange={() => formik.setFieldValue('headoffice', false)} /> No</label>
                     </div>
-                    <ErrorMessage
-                      component="div"
-                      className="error"
-                      name="headoffice"
-                    />
+                    <ErrorMessage component="div" className='text-[14px] text-redclr ' name="headoffice" />
                   </div>
                 </div>
 
-                
+
               </div>
 
               <div>
                 <h2 className="text-PrimaryColor font-semibold text-center text-[20px] ">Billing Information</h2>
-              <div className="py-[6px]">
+                <div className="py-[6px]">
                   <label className="block">
                     Bill Address <span>*</span>
                   </label>
@@ -391,17 +381,17 @@ const BranchForm = () => {
                     Bill Logo <span>*</span>
                   </label>
                   <div className="relative border-dotted border-[2px] border-[#c0d3e5] text-center py-[10px]">
-                  <Field
-                   
-                   type="file"
-                   name="image"
-                   className="w-[100%] opacity-0  absolute inset-0 "
-                   id="image"
-                   onKeyDown={(event) =>
-                     handleEnterKeyPress(event, "btnsubmit")
-                   }
-                 />
-                    <span className="text-[#c0d3e5] text-[30px] flex justify-center "> <HiOutlinePhotograph/></span>
+                    <Field
+
+                      type="file"
+                      name="image"
+                      className="w-[100%] opacity-0  absolute inset-0 "
+                      id="image"
+                      onKeyDown={(event) =>
+                        handleEnterKeyPress(event, "btnsubmit")
+                      }
+                    />
+                    <span className="text-[#c0d3e5] text-[30px] flex justify-center "> <HiOutlinePhotograph /></span>
                     <p className="text-[#c0d3e5] ">Click to upload photo</p>
                   </div>
                   <ErrorMessage
@@ -411,7 +401,7 @@ const BranchForm = () => {
                   />
                 </div>
 
-                
+
 
 
                 <div className="flex gap-[30px] items-center formbutton">

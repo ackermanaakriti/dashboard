@@ -32,9 +32,6 @@ const SideBar = () => {
         dispatch(addTab({ id:index, menu:submenu}))
         setActiveSubMenu(submenu);
        
-       
-       
-
     };
   
 
@@ -48,7 +45,7 @@ const SideBar = () => {
                                     <a onClick={() => handleClick(menu.slug,index)} className={activeLink === menu.menu ? 'active' : ''}>
                                         <div className='menuitems-flex'>
                                         <span className='menuicons'>{menu.icon}</span>
-                                        <span className='menuname'> {menu.menu}</span>
+                                        <span className='menuname cursor-pointer'> {menu.menu}</span>
                                        
                                         </div>
                                         {

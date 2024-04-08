@@ -1,8 +1,18 @@
-import { configureStore } from "@reduxjs/toolkit";
-import TopTabSlice from "./TopTabSlice";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
-export const store  = configureStore({
-    reducer:{
-        'tabslice':TopTabSlice
-    }
+import storage from 'redux-persist/lib/storage';
+import { persistReducer, persistStore } from 'redux-persist';
+import rootReducer from "./Slices/CombineReducer";
+
+
+const persistConfig = {
+    key: 'root',
+    storage,
+  }
+  const persistedReducer = persistReducer(persistConfig, rootReducer)
+
+ export const store  = configureStore({
+    reducer:persistedReducer
+
 })
+export const persistor = persistStore(store)

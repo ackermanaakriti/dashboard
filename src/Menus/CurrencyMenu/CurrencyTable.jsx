@@ -1,63 +1,64 @@
 import React, { useEffect } from 'react'
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import { MdEdit } from "react-icons/md";
-import './Fiscalyear.css'
+import '../FiscalYearMenu/Fiscalyear.css'
 import { useDispatch, useSelector } from 'react-redux';
 import { removeFiscalYear ,editFiscalYear} from '../../Redux/Slices/FiscalYearSlice';
 import { addMenu } from '../../Redux/TopTabSlice';
 import { useLayouData } from '../../Context/MainLayoutContext';
 import { GreenButton } from '../../Components/GreenButton';
+import { removeCurrency } from '../../Redux/Slices/CurrencySlice';
 import { TableButton } from '../../Components/GreenButton';
 
-const FiscalYearTable = () => {
+const CurrencyTable = () => {
   const {setId} = useLayouData();
   const dispatch = useDispatch()
-  const fiscaldata = useSelector((state) => state.fiscalyear) 
+  const currencydata = useSelector((state) => state.currency) 
 
 
  
 
   const handleDel =(index)=>
   {
-    dispatch(removeFiscalYear(index))
+    dispatch(removeCurrency(index))
   }
   const handleEdit = (index) => {
     setId(index)
-    dispatch(addMenu({ id:index, menu:'fiscalform'}))
+    dispatch(addMenu({ id:index, menu:'currencyform'}))
   };
 
   return (
     <>
       <div className='px-[50px]'>
-        <div>
+        <div >
           <h2 className='font-inter font-semibold text-[30px]'>
-            Fiscal Year Table
+           Currency Table
           </h2>
         </div>
         <div>
-          <div className='mt-[20px]' onClick={()=>dispatch(addMenu({ id:'', menu:'fiscalform'}))}>
+          <div className='mt-[20px] flex justify-end' onClick={()=>dispatch(addMenu({ id:'', menu:'currencyform'}))}>
             <GreenButton className='bg-PrimaryColor px-[15px] py-[4px] text-white font-inter' text='Add New +' />
           </div>
           <table className="shadow-lg">
             <thead>
               <tr>
-                <th> Fiscal Year</th>
-                <th> Code</th>
-                <th> Start Date</th>
-                <th> End Date</th>
-                <th> Active</th>
+                <th> Name</th>
+                <th> Country</th>
+                <th>Symbol</th>
+                <th>  Exchange Rate</th>
+                <th> Local Currency</th>
                 <th> Action</th>
               </tr>
             </thead>
             <tbody>
-              {fiscaldata?.map((item, index) => (
+              {currencydata?.map((item, index) => (
                 <tr key={index}>
-                  <td>{item?.fullName}</td>
-                  <td>{item?.code}</td>
-                  <td>{item?.fromDate}</td>
-                  <td>{item?.toDate}</td>
+                  <td>{item?.name}</td>
+                  <td>{item?.country}</td>
+                  <td>{item?.symbol}</td>
+                  <td>{item?.currentExchangeRate}</td>
                   <td>
-                    {item?.isActive ? (<TableButton className='bg-PrimaryColor rounded-[20px] px-[12px] py-[5px] text-white' text='Yes'/>)
+                    {item?.isLocal ? (<TableButton className='bg-PrimaryColor rounded-[20px] px-[12px] py-[5px] text-white' text='Yes'/>)
                     : (<TableButton className='bg-[#378f80] rounded-[20px] px-[12px] py-[5px] text-white' text='No'/>)}
                     </td>
                   <td className="">
@@ -80,4 +81,4 @@ const FiscalYearTable = () => {
   )
 }
 
-export default FiscalYearTable;
+export default CurrencyTable;

@@ -39,47 +39,34 @@ export const MenuData =[
                 slug:'fiscalform',
                 icon:<LuSchool2 className='text-[25px] text-[#ab243d]' />
             },
-            {
-                name:'Teaching College',
-                icon: <LuMenuSquare className='text-[25px] text-[#4a528f]'/>,
-            },
-            {
-                name:'Bir College',
-            },
+            
         ]
     },
     {
-        menu:'Hotel',        icon: <LuMenuSquare className='text-[28px] text-[#267bd1]'/>,
+        menu:'Currency',  
+        slug:'currency'  ,  
+          icon: <LuMenuSquare className='text-[28px] text-[#267bd1]'/>,
 
         submenu:[
-            {
-                name:'Yak & Yeti Hotel',
-            },
-            {
-                name:'Imperial hotel',
-            },
-            {
-                name:'Bir Hotel',
-            },
+           
         ]
     },
     {
-        menu:'Settings',        icon: <LuMenuSquare className='text-[28px] text-[#36925c]'/>,
-
-        submenu:[
-            {
-                name:'Yak & Yeti School',
-                icon: <LuMenuSquare className='text-[25px] text-[#36925c]'/>
-                
-            },
-            {
-                name:'Imperial School',
-                icon: <LuMenuSquare className='text-[25px] text-[#267bd1]'/>
-            },
-            {
-                name:'Bir School',
-                icon:<LuSchool2 className='text-[25px] text-[#ab243d]' />
-            },
-        ]
+        menu:'Chart of Account', 
+        slug:'chartofacc',   
+        icon: <LuMenuSquare className='text-[28px] text-[#36925c]'/>,
+        submenu:[]
+    },
+    {
+        menu:'Account Group', 
+        slug:'Accgrp',   
+        icon: <LuMenuSquare className='text-[28px] text-[#36925c]'/>,
+        submenu:[]
+    },
+    {
+        menu:'Voucher Type', 
+        slug:'vouchertype',   
+        icon: <LuMenuSquare className='text-[28px] text-[#36925c]'/>,
+        submenu:[]
     }
 ]

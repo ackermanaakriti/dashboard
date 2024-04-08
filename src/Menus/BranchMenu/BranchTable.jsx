@@ -4,6 +4,7 @@ import { MdEdit } from "react-icons/md";
 import { useLayouData } from "../../Context/MainLayoutContext";
 import { useDispatch } from "react-redux";
 import { addMenu, addTab } from "../../Redux/TopTabSlice";
+import { TableButton } from "../../Components/GreenButton";
 
 
 const BranchTable = () => {
@@ -77,10 +78,11 @@ const BranchTable = () => {
                     <td>{tdata?.branchcode}</td>
                     <td>{tdata?.Registrationno}</td>
                     <td>
-                      <button>Yes</button>
+                    {tdata?.headoffice ? (<TableButton className='bg-PrimaryColor rounded-[20px] px-[12px] py-[5px] text-white' text='Yes'/>)
+                    : (<TableButton className='bg-[#378f80] rounded-[20px] px-[12px] py-[5px] text-white' text='No'/>)}
                     </td>
                     <td className="">
-                    <div className="flex gap-[25px] items-center">
+                    <div className="flex gap-[25px] items-center justify-center">
                         <span onClick={()=>handleEditdd(tdata.id)} className="text-PrimaryColor cursor-pointer">
                           <MdEdit />
                         </span>
