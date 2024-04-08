@@ -28,8 +28,8 @@ export const MenuComponentMap = {
     chartofacc : <ChartofAccTable/>, 
        Accgrp : <AccountGrpTable/>,
     accform: <AccountGroupForm/>,
-    vouchertype : <VouchertypeForm/>,
-    vouchertypetable : <VoucherTypeTable/>
+    vouchertypeform : <VouchertypeForm/>,
+    vouchertype : <VoucherTypeTable/>
 
 
    

@@ -32,11 +32,11 @@ const VoucherTypeTable = () => {
       <div className='px-[50px]'>
         <div >
           <h2 className='font-inter font-semibold text-[30px]'>
-           Currency Table
+           Voucher Type Table
           </h2>
         </div>
         <div>
-          <div className='mt-[20px] flex justify-end' onClick={()=>dispatch(addMenu({ id:'', menu:'currencyform'}))}>
+          <div className='mt-[20px] flex justify-end' onClick={()=>dispatch(addMenu({ id:'', menu:'vouchertypeform'}))}>
             <GreenButton className='bg-PrimaryColor px-[15px] py-[4px] text-white font-inter' text='Add New +' />
           </div>
           <table className="shadow-lg">
@@ -46,6 +46,7 @@ const VoucherTypeTable = () => {
                 <th> Prefix</th>
                 <th>Editable</th>
                 <th>   System Define</th>
+                <th>   Action</th>
                
               </tr>
             </thead>

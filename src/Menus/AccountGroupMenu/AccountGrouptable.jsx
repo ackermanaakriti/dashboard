@@ -32,7 +32,7 @@ const AccountGrpTable = () => {
       <div className='px-[50px]'>
         <div>
           <h2 className='font-inter font-semibold text-[30px]'>
-           Currency Table
+           Account Group Table
           </h2>
         </div>
         <div>
