@@ -11,8 +11,8 @@ export const MenuComponentMap = {
     Hotel: Hotel,
     School: Schoolmenu,
     Hospital: Hospital,
-    Form : BranchForm,
-    Table: BranchTable
+    Form : <BranchForm/>,
+    Table: <BranchTable/>
    
   };
   

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Component } from "react";
+import React, { useState, useEffect } from "react";
 import InquiryForm from "../Components/InquiryForm";
 import { useDispatch, useSelector } from "react-redux";
 import { RxCross1 } from "react-icons/rx";
@@ -26,7 +26,7 @@ const HomeMenu = () => {
    
   }, [component ]);
 
-
+console.log(selectedComponent);
 
   const handleTabClick = (tab,index) => {
     dispatch(addTab({ id:index, menu:tab}))
