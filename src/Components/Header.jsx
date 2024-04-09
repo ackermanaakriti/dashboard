@@ -47,7 +47,7 @@ const handleProfile =()=>
               <p className="text-white text-[16px] text-center font-inter">
                 (Fiscal Year- 2080/81)
               </p>
-              <div  onClick={handleProfile} className="flex items-center relative gap-[10px] cursor-pointer">
+              <div onMouseEnter={()=>setProfileView(true)}  onClick={handleProfile} className="flex items-center relative gap-[10px] cursor-pointer">
                 <p className="text-white text-[16px] text-center font-inter">
                   Adminstrator
                 </p>
@@ -56,7 +56,7 @@ const handleProfile =()=>
                 </span>
               
                 {profileView && (
-                  <div className=" profileview   ">
+                  <div onMouseLeave={()=>{setProfileView(false)}} className=" profileview   ">
                       <ul>
                         <li>
                           <a>Profile</a>

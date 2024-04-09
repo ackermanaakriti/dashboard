@@ -1,9 +1,10 @@
 import React, { useEffect ,useState} from "react";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import { MdEdit } from "react-icons/md";
-import { useLayouData } from "../Context/MainLayoutContext";
+import { useLayouData } from "../../Context/MainLayoutContext";
 import { useDispatch } from "react-redux";
-import { addMenu, addTab } from "../Redux/TopTabSlice";
+import { addMenu, addTab } from "../../Redux/TopTabSlice";
+import { TableButton } from "../../Components/GreenButton";
 
 
 const BranchTable = () => {
@@ -12,13 +13,15 @@ const BranchTable = () => {
 
  
   const [contactD, setcontactD] = useState([])
+  const storedData = JSON.parse(localStorage.getItem('formData'));
 
   // get data from local Storage
   useEffect(() => {
-    const storedData = JSON.parse(localStorage.getItem('formData'));
+    
     if (storedData) {
       setcontactD(storedData);
     }
+    setHandleId(false)
 
    
   }, []);
@@ -32,17 +35,10 @@ const BranchTable = () => {
     setcontactD(updatedData);
   };
 
-
-
-
   const handleEditdd =(id)=>
   {
     setId(id);
     dispatch(addMenu({ id:id, menu:'Form'}))
- 
-   
-   
-
   }
 
   
@@ -56,10 +52,11 @@ const BranchTable = () => {
             </h3>
           </div>
           <div className="branchtable">
-            <div onClick={()=>dispatch(addMenu({ id:'', menu:'Hospital'}))} className="py-[18px] addbtn">
+            <div onClick={()=>dispatch(addMenu({ id:'', menu:'Form'}))} className="py-[18px] addbtn">
               <button >Add New +</button>
             </div>
-            <div>
+            <div className="          
+            ">
               <table className="shadow-lg">
                 <thead>
                   <tr>
@@ -78,17 +75,18 @@ const BranchTable = () => {
                  
                   
                       <td>{tdata?.name}</td>
-                    <td>{tdata?.branchname}</td>
+                    <td>{tdata?.branchcode}</td>
                     <td>{tdata?.Registrationno}</td>
                     <td>
-                      <button>Yes</button>
+                    {tdata?.headoffice ? (<TableButton className='bg-PrimaryColor rounded-[20px] px-[12px] py-[5px] text-white' text='Yes'/>)
+                    : (<TableButton className='bg-[#378f80] rounded-[20px] px-[12px] py-[5px] text-white' text='No'/>)}
                     </td>
                     <td className="">
-                    <div className="flex gap-[25px] items-center">
-                        <span onClick={()=>handleEditdd(tdata.id)} className="text-PrimaryColor">
+                    <div className="flex gap-[25px] items-center justify-center">
+                        <span onClick={()=>handleEditdd(tdata.id)} className="text-PrimaryColor cursor-pointer">
                           <MdEdit />
                         </span>
-                        <span onClick={()=>handleDeletebtn(index)} className="text-[#d13838] cursor-pointer">
+                        <span onClick={(e)=>{e.stopPropagation();handleDeletebtn(index)}} className="text-[#d13838] cursor-pointer">
                           <RiDeleteBin5Fill />
                         </span>
                       </div>

@@ -1,185 +1,140 @@
-
 @import url(../App.css);
-.sidebar
-{
-    height: calc(100vh - 50px);
-    transition: 0.3s ease-in;
-  
-    .sidenavlist 
-    {
-        background-color: var(--Secondarycolor);
-        width: 260px;
-        height: 100%;
-       
-        
-        overflow-x:visible;
-        ::-webkit-scrollbar 
-        {
-            width: 30px;
-        }
-        ::-webkit-scrollbar-thumb
-        {
-            background-color: var(--Primarycolor);
-        }
-      
-        
-        &.sidebar-open 
-        {
-            width: 80px;
-            transition: 0.3s ease-in;
-            ul {
-                li 
-                {
-                   position: relative;
-                    a
-                    {
-                        .menuname 
-                        {
-                            display: none;
-                        }
-                        .chev-icon 
-                        {
-                            display: none;
-                        }
-                    }
-                    ul 
-                    {
-                        position: absolute;
-                        top:0;
-                        right: 0;
-                        margin:5px;
-                       background-color: aliceblue;
-                        left:120%;
-                        width: 230px ;
-                        overflow: visible !important;
-                        z-index: 999;
-                       
+.sidebar {
+  margin-top: -76px;
+  padding: 76px 0 40px;
+  min-height: 100vh;
+  transition: 0.3s ease-in;
+  /* overflow-y: auto; */
 
-                        li 
-                        {
-                            overflow: hidden;
-                            display: flex;
-                        
-                          a 
-                          {
-                            .menuname 
-                            {
-                                display: flex;
-                                text-align: center;
-                            }
-                          }
-                        }
-                        .activesubmenu 
-                        {
-                           
-                          .menuicons 
-                          {
-                         
-                           border-right: none;
-                           background-color: transparent;
-                                
-                          }
-                        }
-                    }
-                }
-            }
-           
-        }
-        
-        nav 
-        {
-            padding: 20px 20px 20px 0;
-            ul 
-            { 
-                li 
-                {
-                  
-                    padding: 10px 0;
-                    
-                    ul
-                    {
-                        margin: 10px 8px 10px 15px;
-                        background-color: white;
-                        padding: 5px 5px 5px 0;
-                        border-radius: 15px;
-                        transition:  0.3s ease-in;
-                       
-                        li 
-                        {
-                            padding: 5px 5px 5px 0;
-                            a 
-                            {
-                              display: flex;
-                         justify-content: flex-start;
-                              font-size: 16px;
-                           .menuname{
-                            text-align: center;
-                            padding-left: 5px;
-                           }
+  .sidenavlist {
+    background-color: var(--Secondarycolor);
+    width: 260px;
+    height: 100%;
 
-                            }
-                            .activesubmenu 
-                            {
-                                color: var(--Primarycolor);
-                        
-                              .menuicons 
-                              {
-                                background-color: rgba(97, 183, 195, 0.34);
-                                border-right: 3px solid var(--Primarycolor);
-                                border-radius: 4px 0 0 4px;
-
-                              }
-                            }
-                            .menuicons 
-                            {
-                                padding: 5px 10px 5px 20px ;
-                                border:3px solid transparent;
-                               
-                            }
-                        }
-                    }
-                     a 
-                     {
-                    display: flex;   
-                    justify-content: space-between;
-                    align-items: center;
-                    font-family: var(--inter);
-                    font-size: 18px;
-                    font-weight: 600;
-                    .menuitems-flex 
-                    {
-                        display: flex;
-                        align-items: center;
-                        gap:20px;
-                    }
-                    .chev-icon 
-                    {
-                        font-size: 15px !important;
-                    }
-                    &.active 
-                    {
-                        color: var(--Primarycolor);
-                        .menuicons 
-                        {
-                            background-color: rgba(97, 183, 195, 0.34);
-                            border-right: 3px solid var(--Primarycolor);
-                        }
-                     
-                    }
-                    .menuicons 
-                    {
-                        padding: 5px 10px 5px 20px ;
-                        border:3px solid transparent;
-                        cursor: pointer;
-                     
-                       
-                        
-                       
-                    }
-            
-                     }
-                }
-            }
-        }
+    overflow-x: visible;
+    ::-webkit-scrollbar {
+      width: 30px;
     }
+    ::-webkit-scrollbar-thumb {
+      background-color: var(--Primarycolor);
+    }
+
+    &.sidebar-open {
+      width: 80px;
+      transition: 0.3s ease-in;
+      ul {
+        li {
+          position: relative;
+          a {
+            .menuname {
+              display: none;
+            }
+            .chev-icon {
+              display: none;
+            }
+          }
+          ul {
+            position: absolute;
+            top: 0;
+            right: 0;
+            margin: 7px;
+            background-color: aliceblue;
+            left: 120%;
+            width: 230px;
+            overflow: visible !important;
+            z-index: 2;
+
+            li {
+              overflow: hidden;
+              display: flex;
+
+              a {
+                .menuname {
+                  display: flex;
+                  text-align: center;
+                }
+              }
+            }
+            .activesubmenu {
+              .menuicons {
+                border-right: none;
+                background-color: transparent;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    nav {
+      padding: 20px 20px 20px 0;
+      ul {
+        li {
+          padding: 10px 0;
+
+          ul {
+            margin: 10px 8px 10px 15px;
+            background-color: white;
+            padding: 5px 5px 5px 0;
+            border-radius: 15px;
+            transition: 0.3s ease-in;
+
+            li {
+              padding: 5px 5px 5px 0;
+              a {
+                display: flex;
+                justify-content: flex-start;
+                font-size: 16px;
+                .menuname {
+                  text-align: center;
+                  padding-left: 5px;
+                }
+              }
+              .activesubmenu {
+                color: var(--Primarycolor);
+
+                .menuicons {
+                  background-color: rgba(97, 183, 195, 0.34);
+                  border-right: 3px solid var(--Primarycolor);
+                  border-radius: 4px 0 0 4px;
+                }
+              }
+              .menuicons {
+                padding: 5px 10px 5px 20px;
+                border: 3px solid transparent;
+              }
+            }
+          }
+          a {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: var(--inter);
+            font-size: 18px;
+            font-weight: 600;
+            .menuitems-flex {
+              display: flex;
+              align-items: center;
+              gap: 20px;
+            }
+            .chev-icon {
+              font-size: 15px !important;
+            }
+            &.active {
+              color: var(--Primarycolor);
+              .menuicons {
+                background-color: rgba(97, 183, 195, 0.34);
+                border-right: 3px solid var(--Primarycolor);
+              }
+            }
+            .menuicons {
+              padding: 5px 10px 5px 20px;
+              border: 3px solid transparent;
+              cursor: pointer;
+            }
+          }
+        }
+      }
+    }
+  }
 }
