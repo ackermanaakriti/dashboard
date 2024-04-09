@@ -13,6 +13,8 @@ import AccountGrpTable from "../Menus/AccountGroupMenu/AccountGrouptable";
 import ChartofAccTable from "../Menus/CharofAcc/ChartofaccTable";
 import VouchertypeForm from "../Menus/Voucher/VoucherTypeForm";
 import VoucherTypeTable from "../Menus/Voucher/VoucherTypeTable";
+import Voucher from "../Menus/Voucher/VoucherForm";
+import MainVoucherForm from "../Menus/Voucher/VoucherDetailForm";
 
 
 export const MenuComponentMap = {
@@ -29,7 +31,8 @@ export const MenuComponentMap = {
        Accgrp : <AccountGrpTable/>,
     accform: <AccountGroupForm/>,
     vouchertypeform : <VouchertypeForm/>,
-    vouchertype : <VoucherTypeTable/>
+    vouchertype : <VoucherTypeTable/>,
+    voucher : <Voucher/>
 
 
    

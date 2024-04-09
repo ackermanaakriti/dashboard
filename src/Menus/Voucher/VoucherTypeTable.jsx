@@ -9,18 +9,19 @@ import { useLayouData } from '../../Context/MainLayoutContext';
 import { GreenButton } from '../../Components/GreenButton';
 import { removeCurrency } from '../../Redux/Slices/CurrencySlice';
 import { TableButton } from '../../Components/GreenButton';
+import { removeVoucherType } from '../../Redux/Slices/VoucherSlice';
 
 const VoucherTypeTable = () => {
   const {setId} = useLayouData();
   const dispatch = useDispatch()
-  const vouchertypeData = useSelector((state) => state.voucher) 
+  const vouchertypeData = useSelector((state) => state.voucherD.voucherType) 
 
 
  
 
   const handleDel =(index)=>
   {
-    dispatch(removeCurrency(index))
+    dispatch(removeVoucherType(index))
   }
   const handleEdit = (index) => {
     setId(index)

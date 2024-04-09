@@ -12,6 +12,7 @@ export const MainLayoutProvider = ({ children }) => {
   const [hanldeId,setHandleId]= useState(false);
   const [menuTab,setmenuTab]= useState([])
   const [  hanleInquiry,setHandleInquiry]= useState(false)
+  const [voucherId,setVoucherId] = useState()
 
 
 
@@ -23,7 +24,8 @@ export const MainLayoutProvider = ({ children }) => {
         hanldeId,setHandleId,
         menuTab,setmenuTab,
         sidebarToggle,setSidebarToggle,
-        hanleInquiry,setHandleInquiry
+        hanleInquiry,setHandleInquiry,
+        voucherId,setVoucherId
         
       }}
     >
