@@ -94,7 +94,7 @@ const VouchertypeForm = () => {
                   <Field
                     className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr '
                     type='text'
-                    name='fullNvouchernameme'
+                    name='vouchername'
                   />
                   <ErrorMessage component='div' className='text-[14px] text-redclr' name='vouchername' />
                 </div>
@@ -104,9 +104,9 @@ const VouchertypeForm = () => {
                   <Field
                     className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr '
                     type='text'
-                    name='code'
+                    name='prefix'
                   />
-                  <ErrorMessage component='div' className='text-[14px] text-redclr ' name='code' />
+                  <ErrorMessage component='div' className='text-[14px] text-redclr ' name='prefix' />
                 </div>
                 <div className="py-[6px]">
                                     <div role="group">
