@@ -68,5 +68,11 @@ export const MenuData =[
         slug:'vouchertype',   
         icon: <LuMenuSquare className='text-[28px] text-[#36925c]'/>,
         submenu:[]
+    },
+    {
+        menu:'Voucher ', 
+        slug:'voucher',   
+        icon: <LuMenuSquare className='text-[28px] text-[#36925c]'/>,
+        submenu:[]
     }
 ]

@@ -12,6 +12,6 @@ const rootReducer = combineReducers({
   currency: CurrencySlice,
   charofacc: CharofAccSlice,
   accgroup : AccountGroupSlice,
-  voucher: VoucherSlice
+  voucherD: VoucherSlice
 });
 export default rootReducer;

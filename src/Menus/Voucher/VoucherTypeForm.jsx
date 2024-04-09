@@ -19,9 +19,9 @@ const VouchertypeForm = () => {
   const [editMode,setEditMode]= useState(false)
   const [editData,seteditData]= useState('')
   const dispatch = useDispatch();
-  const voucherTypedata = useSelector((state)=>state.voucher)
+  const voucherTypedata = useSelector((state)=>state.voucherD.voucherType)
 
-  console.log(getId)
+
   useEffect(()=>
   {
     if(getId)
@@ -37,14 +37,14 @@ const VouchertypeForm = () => {
   const initialValues = {
     vouchername: '',
     prefix: '',
-    isSystemDefined: '',
-    isEditable:'',
+    isSystemDefined: null,
+    isEditable:null,
     
   };
 
   const validationSchema = Yup.object().shape({
-    prefix: Yup.string().typeError('enter number').required('required'),
-    vouchername: Yup.number().typeError('enter number').required('required'),
+    prefix: Yup.string().typeError('').required('required'),
+    vouchername: Yup.string().typeError('').required('required'),
     isSystemDefined: Yup.boolean().required('required'),
     isEditable: Yup.boolean().required('required'),
   });
@@ -52,13 +52,13 @@ const VouchertypeForm = () => {
 
   const handleSubmit = (values) => {
    
-    console.log(values)
+ 
     const VoucherTypeId = { ...values, id: id };
-    console.log(VoucherTypeId)
+  
    
     if(editMode)
     {
-      console.log(getId)
+     
       const editedId = {...values,id:getId}
       console.log(editedId)
       dispatch(editvouchertype(editedId))
