@@ -87,7 +87,7 @@ const Voucher = () => {
           enableReinitialize={true}
         >
           {(formik) => (
-            <Form>
+            <Form className='bg-[#e8fcfc] pb-[10px]'>
               <div className=' w-[70%] flex flex-col justify-center m-auto' >
                 <div className='grid grid-cols-3 gap-[10px]'>
                 <div className='py-[8px]'>

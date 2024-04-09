@@ -25,29 +25,21 @@ const VoucherDetailform = () => {
   const [editData, seteditData] = useState('')
   const [isamount,setisAmount]= useState(false);
   const [amount,setAmount]= useState('');
-  const [charofa,setcharofa]= useState('hello')
   const dispatch = useDispatch();
   const initialValues = {
     chartOfAccountId: '',
-    debitAmount: isamount ? amount : '0', 
-    creditAmount: isamount ? '0' : amount, 
+    debitAmount: '', 
+    creditAmount: '', 
     chequeNumber: '',
     Narration: '',
-    isActive:false
+    Amount:''
   };
-  console.log(charofa)
-
-  const handleValue =(e)=>
-  {
-           const {name,value}= e.target;
-           console.log(name)
-  }
 
   
 
   const handleSubmit = (values, { resetForm }) => {
     console.log(values)
-    const VoucherDataId = { ...values, id: id };
+    const VoucherDataId = { ...values, id: id ,debitAmount:isamount ? values.Amount : '0',  creditAmount: isamount ? '0' : values.Amount,};
     if (editMode) {
       const editedId = { ...values, id: getId }
       console.log(editedId)
@@ -56,7 +48,7 @@ const VoucherDetailform = () => {
     else {
       dispatch(addVoucherDetail(VoucherDataId))
       resetForm();
-      setAmount('')
+      // setAmount('')
     }
     //    dispatch(addMenu({ id:'', menu:'vouchertype'}))
 
@@ -67,10 +59,10 @@ const VoucherDetailform = () => {
     <>
       <div className=' '>
 
-        <div className='h-[1px] bg-[#b5b6b5] mt-[50px]'></div>
-        <div className='pt-[20px]'>
+     
+        {/* <div className='pt-[20px]'>
           <h4 className='text-[18px] font-semibold text-center my-[10px]'>Voucher Detail</h4>
-        </div>
+        </div> */}
         <Formik
           initialValues={editMode ? editData : initialValues}
           //   validationSchema={validationSchema}
@@ -88,12 +80,11 @@ const VoucherDetailform = () => {
                       type='text'
                       name='chartOfAccountId'
                       as='select'
-                      onChange={handleValue}
                     >
                       <option disabled selected value=''>Select ChartofAccount</option>
                       {chartofAccData?.map((item, index) =>
                       (
-                        <option  key={index} name='chartOfAccountId' value={item?.accountName}>{item?.accountName}</option>
+                        <option key={index} name='chartOfAccountId' value={item?.accountName}>{item?.accountName}</option>
                       ))}
                     </Field>
                     <ErrorMessage component='div' className='text-[14px] text-redclr' name='chartOfAccountId' />
@@ -103,9 +94,9 @@ const VoucherDetailform = () => {
                       <label className='block py-[8px] font-[500] font-inter '> Amount <span>*</span></label>
                       <div>
                         <label className=""> <input className='mx-[5px]' type="radio" name="isActive"  value={true}
-                          onChange={handleValue}/>Debit</label>
+                          onChange={() => setisAmount(true)} />Debit</label>
                         <label className="ml-[10px]"><input className='ml-[30px]' type="radio" name="isActive"  value={false}
-                          onChange={handleValue} /> Credit</label>
+                          onChange={() => setisAmount(false)} /> Credit</label>
                       </div>
                       <ErrorMessage component="div" className='text-[14px] text-redclr ' name="isAllBranchApplicable" />
                     </div>
@@ -117,8 +108,8 @@ const VoucherDetailform = () => {
                       className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr '
                       type='number'
                       name='Amount'
-                      onChange={handleValue}
-                       value={amount}
+                      //  onChange={(e)=>setAmount(e.target.value)}
+                      //  value={amount}
                     />
                     <ErrorMessage component='div' className='text-[14px] text-redclr ' name='Amount' />
                   </div>
@@ -129,7 +120,6 @@ const VoucherDetailform = () => {
                       className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr '
                       type='text'
                       name='chequeNumber'
-                      onChange={handleValue}
                     />
                     <ErrorMessage component='div' className='text-[14px] text-redclr ' name='chequeNumber' />
                   </div>
@@ -145,13 +135,12 @@ const VoucherDetailform = () => {
                       className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none  border-borderclr '
                       type='text'
                       name='Narration'
-                      as='textarea'
-                      onChange={handleValue}
+                     
                     />
                     <ErrorMessage component='div' className='text-[14px] text-redclr' name='Narration' />
                   </div>
                   <div className='col-span-1 flex justify-center items-center'>
-                    <button type='submit' className='text-[40px] text-PrimaryColor cursor-pointer'><IoMdAddCircleOutline /></button>
+                    <button type='submit' className='text-[40px] text-PrimaryColor cursor-pointer pt-[15px]'><IoMdAddCircleOutline /></button>
                   </div>
                 </div>
 
