@@ -13,7 +13,7 @@ import { TableButton } from '../../Components/GreenButton';
 const VoucherTypeTable = () => {
   const {setId} = useLayouData();
   const dispatch = useDispatch()
-  const vouchertypeData = useSelector((state) => state.voucher.voucherType) 
+  const vouchertypeData = useSelector((state) => state.voucher) 
 
 
  

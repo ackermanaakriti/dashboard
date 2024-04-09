@@ -5,14 +5,11 @@ import { persistReducer, persistStore } from 'redux-persist';
 
 const VoucherSlice = createSlice({
     name:'voucher',
-    initialState:{
-        voucherType:[],
-        voucher:[]
-    },
+    initialState:[],
     reducers:{ // Corrected typo: 'reducers' instead of 'reuducers'
         addVoucherType:(state,action)=>
         {
-             state.voucherType.push (action.payload)
+             state.push (action.payload)
              console.log(state)
             
         },

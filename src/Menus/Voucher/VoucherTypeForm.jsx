@@ -19,7 +19,7 @@ const VouchertypeForm = () => {
   const [editMode,setEditMode]= useState(false)
   const [editData,seteditData]= useState('')
   const dispatch = useDispatch();
-  const voucherTypedata = useSelector((state)=>state.voucher.voucherType)
+  const voucherTypedata = useSelector((state)=>state.voucher)
 
   console.log(getId)
   useEffect(()=>
@@ -52,6 +52,7 @@ const VouchertypeForm = () => {
 
   const handleSubmit = (values) => {
    
+    console.log(values)
     const VoucherTypeId = { ...values, id: id };
     console.log(VoucherTypeId)
    
