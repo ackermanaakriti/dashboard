@@ -12,7 +12,7 @@ export const MainLayoutProvider = ({ children }) => {
   const [hanldeId,setHandleId]= useState(false);
   const [menuTab,setmenuTab]= useState([])
   const [  hanleInquiry,setHandleInquiry]= useState(false)
-  const [voucherId,setVoucherId] = useState()
+  const [voucherId,setVoucherId] = useState('')
 
 
 

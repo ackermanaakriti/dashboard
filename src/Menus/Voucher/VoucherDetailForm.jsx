@@ -12,15 +12,11 @@ import VoucherDetailTable from './VoucheDetailTable';
 
 
 
-
-
-
-
 const VoucherDetailform = () => {
   const chartofAccData = useSelector((state) => state.charofacc)
   const id = uuidv4();
 
-  const { setId, getId } = useLayouData();
+  const { setId, getId,voucherId,setVoucherId } = useLayouData();
   const [editMode, setEditMode] = useState(false)
   const [editData, seteditData] = useState('')
   const [isamount,setisAmount]= useState(false);
@@ -36,18 +32,32 @@ const VoucherDetailform = () => {
   };
 
   
+  const validationSchema = Yup.object().shape({
+    chartOfAccountId: Yup.string().required('required'),
+    // debitAmount: Yup.number().typeError('enter number').required('required'),
+    // creditAmount: Yup.number().required('required'),
+    Narration: Yup.string().required('required'),
+    Amount: Yup.number().required('required'),
+    // isAmount : Yup.boolean().required('required'),
+    chequeNumber: Yup.number().required('required')
+
+  });
+  
+
+  
 
   const handleSubmit = (values, { resetForm }) => {
     console.log(values)
-    const VoucherDataId = { ...values, id: id ,debitAmount:isamount ? values.Amount : '0',  creditAmount: isamount ? '0' : values.Amount,};
+    const VoucherDataId = { ...values, id: id ,debitAmount:isamount ? values.Amount : '0',  creditAmount: isamount ? '0' : values.Amount,uid:voucherId};
     if (editMode) {
       const editedId = { ...values, id: getId }
-      console.log(editedId)
       dispatch(editvouchertype(editedId))
     }
     else {
       dispatch(addVoucherDetail(VoucherDataId))
       resetForm();
+      console.log(VoucherDataId)
+      
       // setAmount('')
     }
     //    dispatch(addMenu({ id:'', menu:'vouchertype'}))
@@ -65,7 +75,7 @@ const VoucherDetailform = () => {
         </div> */}
         <Formik
           initialValues={editMode ? editData : initialValues}
-          //   validationSchema={validationSchema}
+            validationSchema={validationSchema}
           onSubmit={(values, { resetForm }) => handleSubmit(values, { resetForm })}
           enableReinitialize={true}
         >
@@ -93,12 +103,12 @@ const VoucherDetailform = () => {
                     <div role="group">
                       <label className='block py-[8px] font-[500] font-inter '> Amount <span>*</span></label>
                       <div>
-                        <label className=""> <input className='mx-[5px]' type="radio" name="isActive"  value={true}
+                        <label className=""> <input className='mx-[5px]' type="radio" name="isAmount"  value={true}
                           onChange={() => setisAmount(true)} />Debit</label>
-                        <label className="ml-[10px]"><input className='ml-[30px]' type="radio" name="isActive"  value={false}
+                        <label className="ml-[10px]"><input className='ml-[30px]' type="radio" name="isAmount"  value={false}
                           onChange={() => setisAmount(false)} /> Credit</label>
                       </div>
-                      <ErrorMessage component="div" className='text-[14px] text-redclr ' name="isAllBranchApplicable" />
+                      <ErrorMessage component="div" className='text-[14px] text-redclr ' name="isAmount" />
                     </div>
                   </div>
 

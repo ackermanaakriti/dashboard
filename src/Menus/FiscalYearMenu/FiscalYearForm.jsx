@@ -128,29 +128,7 @@ const FiscalYearForm = () => {
                   </div>
                 </div>
 
-                {/* <div className='grid grid-cols-2 gap-[20px]'>
-                  <div className='py-[8px]'>
-                    <label className='block py-[8px] font-[500] font-inter '>Start Date BS</label>
-                    <Field
-                      className='border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr '
-                      name='fromDate'
-                      value={formik.values.fromDate}
-                      onChange={(date) => formik.setFieldValue('fromDate', date)}
-                    />
-                    <ErrorMessage component='div' className='text-[14px] text-redclr ' name='fromDate' />
-                  </div>
-                  <div className='py-[8px]'>
-                    <label className='block py-[8px] font-[500] font-inter '>End Date BS</label>
-                    <Field
-                      className='border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr '
-                      name='toDate'
-                      value={formik.values.toDate}
-                      onChange={(date) => formik.setFieldValue('toDate', date)}
-                    />
-                    <ErrorMessage component='div' className='text-[14px] text-redclr ' name='toDate' />
-                  </div>
-                </div> */}
-
+              
                             <div className="py-[6px]">
                                     <div role="group">
                                             <label className='block py-[8px] font-[500] font-inter '> Is Active <span>*</span></label>

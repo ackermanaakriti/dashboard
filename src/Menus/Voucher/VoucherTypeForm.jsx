@@ -19,7 +19,7 @@ const VouchertypeForm = () => {
   const [editMode,setEditMode]= useState(false)
   const [editData,seteditData]= useState('')
   const dispatch = useDispatch();
-  const voucherTypedata = useSelector((state)=>state.voucherD.voucherType)
+  const voucherTypedata = useSelector((state)=>state.voucherData.voucherType)
 
 
   useEffect(()=>

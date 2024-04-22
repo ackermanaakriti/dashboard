@@ -10,7 +10,7 @@ import { addFiscalYear, editFiscalYear } from '../../Redux/Slices/FiscalYearSlic
 import { useLayouData } from '../../Context/MainLayoutContext';
 import { addMenu } from '../../Redux/TopTabSlice';
 import { v4 as uuidv4 } from 'uuid';
-import { addVoucher, addVoucherType, editvouchertype } from '../../Redux/Slices/VoucherSlice';
+import { addVoucher, addVoucherType, editVoucher, editvouchertype } from '../../Redux/Slices/VoucherSlice';
 import MainVoucherForm from './VoucherDetailForm';
 import VoucherDetailTable from './VoucheDetailTable';
 import VoucherDetailform from './VoucherDetailForm';
@@ -22,8 +22,8 @@ const Voucher = () => {
   const [editMode,setEditMode]= useState(false)
   const [editData,seteditData]= useState('')
   const dispatch = useDispatch();
-  const voucherData = useSelector((state)=>state.voucherD.voucher)
-  const voucherType = useSelector((state)=>state.voucherD.voucherType)
+  const voucherData = useSelector((state)=>state.voucherData.voucher)
+  const voucherType = useSelector((state)=>state.voucherData.voucherType)
 
 
   useEffect(()=>
@@ -33,6 +33,8 @@ const Voucher = () => {
       setEditMode(true)
     seteditData(voucherData.find((item)=>item.id === getId))
     }   
+
+    setVoucherId(id)
   },[setId])
 
 
@@ -44,9 +46,10 @@ const Voucher = () => {
     Narration:'',
     InvoiceNumber:''
   };
+  console.log(voucherId)
 
   const validationSchema = Yup.object().shape({
-    VoucherTypeId: Yup.string().typeError('').required('required'),
+    // VoucherTypeId: Yup.string().typeError('').required('required'),
     voucherNumber: Yup.number().typeError('invalid data').required('required'),
     Narration: Yup.string().required('required'),
     InvoiceNumber: Yup.number().typeError('invalid data').required('required'),
@@ -56,17 +59,19 @@ const Voucher = () => {
 
 
   const handleSubmit = (values) => {
-    const VoucherDataId = { ...values, id: id };
+    const VoucherDataId = { ...values, id: id, uid:voucherId };
+    console.log(values)
+    
     if(editMode)
     {
       const editedId = {...values,id:getId}
-      dispatch(editvouchertype(editedId))
+      dispatch(editVoucher(editedId))
     }
     else 
     {
       dispatch(addVoucher(VoucherDataId))
     }
-    dispatch(addMenu({ id:'', menu:'vouchertype'}))
+    dispatch(addMenu({ id:'', menu:'voucher'}))
    
     setId('')
     // Perform form submission logic here
@@ -97,6 +102,7 @@ const Voucher = () => {
                     type='text'
                     name='VoucherTypeId'
                     as='select'
+                  
                   >
                     <option disabled selected value=''>  Select Voucher Type</option>
                     {voucherType?.map((item,index)=>(
@@ -162,32 +168,25 @@ const Voucher = () => {
                 </div>
                 </div>
 
-               
-
-              
-               
-              
-
-              
-                           
-
-               
               </div>
+              <div className=' mt-[10px] flex gap-[20px] justify-end  absolute right-[2em] bottom-[70px]'>
+     <CancelButton onClick={() => { dispatch(addMenu({ id:'', menu:'voucher'}));
+     }} className='border-[1px] border-redclr px-[15px] py-[4px] text-redclr font-inter' text='Cancel' type='button' />
+                  <button   className='bg-PrimaryColor px-[15px] py-[4px] text-white font-inter' type='submit' > 
+                  {editMode ? 'Update': 'Save'} </button>
+                </div>
 
             </Form>
           )}
 
         </Formik>
-      
-     <VoucherDetailform/>
-    <VoucherDetailTable/>
+        <div className='relative'>
+        <VoucherDetailform/>
+        <VoucherDetailTable/>
+   
 
-     <div className=' mt-[10px] flex gap-[20px] justify-end  absolute right-[2em]'>
-                <CancelButton onClick={()=>dispatch(addMenu({ id:'', menu:'vouchertype'}))} className=' border-[1px] border-redclr px-[15px] py-[4px] text-redclr font-inter' text='Cancel' type='button' />
-                  <button  className='bg-PrimaryColor px-[15px] py-[4px] text-white font-inter' type='submit' > 
-                  {editMode ? 'Update': 'Save'} </button>
-                </div>
-                </div>
+        </div>
+ </div>
     </>
   )
 }

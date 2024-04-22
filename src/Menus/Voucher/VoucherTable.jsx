@@ -7,63 +7,58 @@ import { removeFiscalYear ,editFiscalYear} from '../../Redux/Slices/FiscalYearSl
 import { addMenu } from '../../Redux/TopTabSlice';
 import { useLayouData } from '../../Context/MainLayoutContext';
 import { GreenButton } from '../../Components/GreenButton';
-import { removeCurrency } from '../../Redux/Slices/CurrencySlice';
 import { TableButton } from '../../Components/GreenButton';
-import { removeVoucherType } from '../../Redux/Slices/VoucherSlice';
+import { removeVoucher } from '../../Redux/Slices/VoucherSlice';
 
-const VoucherTypeTable = () => {
+const VoucherTable = () => {
   const {setId} = useLayouData();
   const dispatch = useDispatch()
-  const vouchertypeData = useSelector((state) => state.voucherData.voucherType) 
-
+  const voucherData = useSelector((state) => state.voucherData.voucher) 
+console.log(voucherData)
 
  
 
   const handleDel =(index)=>
   {
-    dispatch(removeVoucherType(index))
+    dispatch(removeVoucher(index))
   }
   const handleEdit = (index) => {
     setId(index)
-    dispatch(addMenu({ id:index, menu:'vouchertypeform'}))
+    dispatch(addMenu({ id:index, menu:'voucherForm'}))
   };
 
   return (
     <>
       <div className='px-[50px]'>
-        <div >
+        <div>
           <h2 className='font-inter font-semibold text-[30px]'>
-           Voucher Type Table
+            Voucher Table
           </h2>
         </div>
         <div>
-          <div className='mt-[20px] flex justify-end' onClick={()=>dispatch(addMenu({ id:'', menu:'vouchertypeform'}))}>
+          <div className='mt-[20px]' onClick={()=>dispatch(addMenu({ id:'', menu:'voucherForm'}))}>
             <GreenButton className='bg-PrimaryColor px-[15px] py-[4px] text-white font-inter' text='Add New +' />
           </div>
           <table className="shadow-lg">
             <thead>
               <tr>
-                <th> Name</th>
-                <th> Prefix</th>
-                <th>Editable</th>
-                <th>   System Define</th>
-                <th>   Action</th>
-               
+                <th> Voucher Type</th>
+                <th> Voucher Number</th>
+                <th> Invoice Number</th>
+                <th> Transaction Date</th>
+                <th> Transaction Data Bs</th>
+                <th> Action</th>
               </tr>
             </thead>
             <tbody>
-              {vouchertypeData?.map((item, index) => (
+              {/* {voucherData?.map((item, index) => (
                 <tr key={index}>
-                  <td>{item?.vouchername}</td>
-                  <td>{item?.prefix}</td>
-                  <td>
-                    {item?.isEditable ? (<TableButton className='bg-PrimaryColor rounded-[20px] px-[12px] py-[5px] text-white' text='Yes'/>)
-                    : (<TableButton className='bg-[#378f80] rounded-[20px] px-[12px] py-[5px] text-white' text='No'/>)}
-                    </td>
-                  <td>
-                    {item?.isSystemDefined ? (<TableButton className='bg-PrimaryColor rounded-[20px] px-[12px] py-[5px] text-white' text='Yes'/>)
-                    : (<TableButton className='bg-[#378f80] rounded-[20px] px-[12px] py-[5px] text-white' text='No'/>)}
-                    </td>
+                  <td>{item?.VoucherTypeId}</td>
+                  <td>{item?.voucherNumber}</td>
+                  <td>{item?.InvoiceNumber}</td>
+                  <td>{item?.TransactionDate}</td>
+                  <td>{item?.TransactionDateBS}</td>
+                
                   <td className="">
                     <div className="flex gap-[25px] items-center justify-center">
                       <span onClick={()=>handleEdit(item?.id)} className="text-PrimaryColor cursor-pointer">
@@ -75,7 +70,7 @@ const VoucherTypeTable = () => {
                     </div>
                   </td>
                 </tr>
-              ))}
+              ))} */}
             </tbody>
           </table>
         </div>
@@ -84,4 +79,4 @@ const VoucherTypeTable = () => {
   )
 }
 
-export default VoucherTypeTable;
+export default VoucherTable;
