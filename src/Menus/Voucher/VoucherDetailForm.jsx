@@ -50,7 +50,7 @@ const VoucherDetailform = () => {
     console.log(values)
     const VoucherDataId = { ...values, id: id ,debitAmount:isamount ? values.Amount : '0',  creditAmount: isamount ? '0' : values.Amount,uid:voucherId};
     if (editMode) {
-      const editedId = { ...values, id: getId }
+      const editedId = { ...values, id: getId ,uid:voucherId}
       dispatch(editvouchertype(editedId))
     }
     else {

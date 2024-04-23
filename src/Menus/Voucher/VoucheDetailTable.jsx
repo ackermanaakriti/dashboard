@@ -15,15 +15,11 @@ const VoucherDetailTable = () => {
   console.log(voucherId)
   const dispatch = useDispatch();
   const fiscaldata = useSelector((state) => state.voucherData.voucherDetail);
-
+console.log(fiscaldata.uid)
   const handleDel = (index) => {
     dispatch(removeVoucherdetail(index));
   };
 
-  const handleEdit = (index) => {
-    setId(index);
-    dispatch(addMenu({ id: index, menu: 'fiscalform' }));
-  };
 
   return (
     <>
@@ -38,9 +34,9 @@ const VoucherDetailTable = () => {
               <th>Action</th>
             </tr>
           </thead>
-          {voucherId && (
+          
             <tbody>
-              {fiscaldata?.map((item, index) => (
+              {fiscaldata?.filter(item => item.uid === getId ).map((item, index) => (
                 <tr key={index}>
                   <td>{item.chartOfAccountId}</td>
                   <td>{item.debitAmount}</td>
@@ -59,7 +55,7 @@ const VoucherDetailTable = () => {
                 </tr>
               ))}
             </tbody>
-          )}
+        
         </table>
       </div>
     </>

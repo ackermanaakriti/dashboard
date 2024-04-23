@@ -11,10 +11,10 @@ import { TableButton } from '../../Components/GreenButton';
 import { removeVoucher } from '../../Redux/Slices/VoucherSlice';
 
 const VoucherTable = () => {
-  const {setId} = useLayouData();
+  const {setId,getId} = useLayouData();
   const dispatch = useDispatch()
   const voucherData = useSelector((state) => state.voucherData.voucher) 
-console.log(voucherData)
+
 
  
 
@@ -26,6 +26,7 @@ console.log(voucherData)
     setId(index)
     dispatch(addMenu({ id:index, menu:'voucherForm'}))
   };
+  console.log(getId)
 
   return (
     <>
@@ -51,7 +52,7 @@ console.log(voucherData)
               </tr>
             </thead>
             <tbody>
-              {/* {voucherData?.map((item, index) => (
+              {voucherData?.map((item, index) => (
                 <tr key={index}>
                   <td>{item?.VoucherTypeId}</td>
                   <td>{item?.voucherNumber}</td>
@@ -61,7 +62,7 @@ console.log(voucherData)
                 
                   <td className="">
                     <div className="flex gap-[25px] items-center justify-center">
-                      <span onClick={()=>handleEdit(item?.id)} className="text-PrimaryColor cursor-pointer">
+                      <span onClick={()=>handleEdit(item?.uid)} className="text-PrimaryColor cursor-pointer">
                         <MdEdit />
                       </span>
                       <span onClick={()=>handleDel(item?.id)} className="text-[#d13838] cursor-pointer">
@@ -70,7 +71,7 @@ console.log(voucherData)
                     </div>
                   </td>
                 </tr>
-              ))} */}
+              ))}
             </tbody>
           </table>
         </div>

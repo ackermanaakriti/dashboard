@@ -31,11 +31,12 @@ const Voucher = () => {
     if(getId)
     {
       setEditMode(true)
-    seteditData(voucherData.find((item)=>item.id === getId))
+    seteditData(voucherData.find((item)=>item.uid === getId))
     }   
 
     setVoucherId(id)
   },[setId])
+  console.log(getId)
 
 
   const initialValues = {
@@ -46,7 +47,7 @@ const Voucher = () => {
     Narration:'',
     InvoiceNumber:''
   };
-  console.log(voucherId)
+ 
 
   const validationSchema = Yup.object().shape({
     // VoucherTypeId: Yup.string().typeError('').required('required'),
@@ -59,12 +60,12 @@ const Voucher = () => {
 
 
   const handleSubmit = (values) => {
-    const VoucherDataId = { ...values, id: id, uid:voucherId };
+    const VoucherDataId = { ...values, uid:voucherId };
     console.log(values)
     
     if(editMode)
     {
-      const editedId = {...values,id:getId}
+      const editedId = {...values,uid:getId}
       dispatch(editVoucher(editedId))
     }
     else 

@@ -10,10 +10,10 @@ const VoucherSlice = createSlice({
        
         voucher:
         [
-            {
-                voucherDetail:[]
-            }
-        ]
+           
+        ],
+        voucherDetail:[]
+
         
             
 
@@ -54,11 +54,8 @@ const VoucherSlice = createSlice({
         
         addVoucherDetail: (state, action) => {
             
-            const voucherIndex = state.voucher.findIndex(voucher => voucher.uid === action.payload.uid);
-            console.log(voucherIndex)
-            if (voucherIndex !== -1) {
-                state.voucher[voucherIndex].voucherDetail.push(action.payload);
-            }
+            state.voucherDetail = [...state.voucherDetail, action.payload]; 
+            console.log(action.payload)
         },
         removeVoucherdetail:(state,action)=>
         {
