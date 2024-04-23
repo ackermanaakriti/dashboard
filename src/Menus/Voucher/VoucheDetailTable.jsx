@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import { MdEdit } from "react-icons/md";
 import '../FiscalYearMenu/Fiscalyear.css'
@@ -12,13 +12,22 @@ import { TableButton } from '../../Components/GreenButton';
 import { removeVoucherdetail } from '../../Redux/Slices/VoucherSlice';
 const VoucherDetailTable = () => {
   const { setId, getId, voucherId, setVoucherId } = useLayouData();
-  console.log(voucherId)
   const dispatch = useDispatch();
   const fiscaldata = useSelector((state) => state.voucherData.voucherDetail);
-console.log(fiscaldata.uid)
+  const [voucherDetaildata,setvoucherDetaildata] = useState([])
+
   const handleDel = (index) => {
     dispatch(removeVoucherdetail(index));
   };
+  
+  // if(getId)
+  // {
+  //  setvoucherDetaildata(fiscaldata?.filter(item=> item.uid === getId))
+  // }
+  // else 
+  // {
+  //   setvoucherDetaildata(fiscaldata)
+  // }
 
 
   return (
@@ -36,7 +45,8 @@ console.log(fiscaldata.uid)
           </thead>
           
             <tbody>
-              {fiscaldata?.filter(item => item.uid === getId ).map((item, index) => (
+              
+              {fiscaldata?.filter(item => item.uid === getId)?.map((item, index) => (
                 <tr key={index}>
                   <td>{item.chartOfAccountId}</td>
                   <td>{item.debitAmount}</td>
@@ -53,9 +63,10 @@ console.log(fiscaldata.uid)
                     </div>
                   </td>
                 </tr>
-              ))}
+              )) }
+              
             </tbody>
-        
+          
         </table>
       </div>
     </>

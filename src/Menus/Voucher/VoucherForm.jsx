@@ -32,11 +32,16 @@ const Voucher = () => {
     {
       setEditMode(true)
     seteditData(voucherData.find((item)=>item.uid === getId))
+    setVoucherId(editData.uid)
     }   
+    else 
+    {
+      setVoucherId(id)
+    }
 
-    setVoucherId(id)
+   
   },[setId])
-  console.log(getId)
+ 
 
 
   const initialValues = {
@@ -61,20 +66,19 @@ const Voucher = () => {
 
   const handleSubmit = (values) => {
     const VoucherDataId = { ...values, uid:voucherId };
-    console.log(values)
-    
-    if(editMode)
+    if(editMode === true)
     {
-      const editedId = {...values,uid:getId}
+      const editedId = {...values,uid:voucherId}
       dispatch(editVoucher(editedId))
     }
     else 
     {
       dispatch(addVoucher(VoucherDataId))
     }
+    setId('')
     dispatch(addMenu({ id:'', menu:'voucher'}))
    
-    setId('')
+   
     // Perform form submission logic here
   };
 

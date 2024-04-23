@@ -20,8 +20,11 @@ const VoucherDetailform = () => {
   const [editMode, setEditMode] = useState(false)
   const [editData, seteditData] = useState('')
   const [isamount,setisAmount]= useState(false);
-  const [amount,setAmount]= useState('');
   const dispatch = useDispatch();
+ 
+  
+  
+
   const initialValues = {
     chartOfAccountId: '',
     debitAmount: '', 
@@ -47,22 +50,17 @@ const VoucherDetailform = () => {
   
 
   const handleSubmit = (values, { resetForm }) => {
-    console.log(values)
-    const VoucherDataId = { ...values, id: id ,debitAmount:isamount ? values.Amount : '0',  creditAmount: isamount ? '0' : values.Amount,uid:voucherId};
-    if (editMode) {
-      const editedId = { ...values, id: getId ,uid:voucherId}
-      dispatch(editvouchertype(editedId))
-    }
-    else {
+   
+    const VoucherDataId = { ...values ,debitAmount:isamount ? values.Amount : '0',  creditAmount: isamount ? '0' : values.Amount,uid:voucherId};
+   
       dispatch(addVoucherDetail(VoucherDataId))
-      resetForm();
-      console.log(VoucherDataId)
-      
-      // setAmount('')
-    }
-    //    dispatch(addMenu({ id:'', menu:'vouchertype'}))
 
-    setId('')
+  
+
+      // setAmount('')
+    
+    //   
+  
     // Perform form submission logic here
   };
   return (
