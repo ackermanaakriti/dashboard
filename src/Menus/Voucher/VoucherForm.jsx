@@ -20,27 +20,29 @@ const Voucher = () => {
 
   const {setId,getId, voucherId,setVoucherId}= useLayouData();
   const [editMode,setEditMode]= useState(false)
-  const [editData,seteditData]= useState('')
+  const [editData,seteditData]= useState(null)
+  const [editId,setEditId] = useState('')
   const dispatch = useDispatch();
-  const voucherData = useSelector((state)=>state.voucherData.voucher)
-  const voucherType = useSelector((state)=>state.voucherData.voucherType)
-
+  const voucherData = useSelector((state)=>state.voucherD.voucher)
+  const voucherType = useSelector((state)=>state.voucherD.voucherType)
+ 
+ console.log(getId)
 
   useEffect(()=>
   {
     if(getId)
     {
       setEditMode(true)
-    seteditData(voucherData.find((item)=>item.uid === getId))
-    setVoucherId(editData.uid)
+    seteditData(voucherData.find((item)=>item?.uid === getId))
+   setVoucherId(editData?.uid)
     }   
     else 
     {
       setVoucherId(id)
     }
+    
+  },[setId,voucherId])
 
-   
-  },[setId])
  
 
 
@@ -66,19 +68,20 @@ const Voucher = () => {
 
   const handleSubmit = (values) => {
     const VoucherDataId = { ...values, uid:voucherId };
-    if(editMode === true)
+    if(editMode )
     {
-      const editedId = {...values,uid:voucherId}
+      const editedId = {...values,uid:editId}
       dispatch(editVoucher(editedId))
+    
     }
     else 
     {
       dispatch(addVoucher(VoucherDataId))
     }
-    setId('')
+ 
     dispatch(addMenu({ id:'', menu:'voucher'}))
    
-   
+   setId('')
     // Perform form submission logic here
   };
 

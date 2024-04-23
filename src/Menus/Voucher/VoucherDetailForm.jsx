@@ -22,8 +22,8 @@ const VoucherDetailform = () => {
   const [isamount,setisAmount]= useState(false);
   const dispatch = useDispatch();
  
-  
-  
+ 
+ console.log(voucherId)
 
   const initialValues = {
     chartOfAccountId: '',
@@ -45,6 +45,7 @@ const VoucherDetailform = () => {
     chequeNumber: Yup.number().required('required')
 
   });
+
   
 
   
@@ -54,14 +55,8 @@ const VoucherDetailform = () => {
     const VoucherDataId = { ...values ,debitAmount:isamount ? values.Amount : '0',  creditAmount: isamount ? '0' : values.Amount,uid:voucherId};
    
       dispatch(addVoucherDetail(VoucherDataId))
+      resetForm()
 
-  
-
-      // setAmount('')
-    
-    //   
-  
-    // Perform form submission logic here
   };
   return (
     <>
