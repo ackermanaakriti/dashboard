@@ -28,7 +28,7 @@ useEffect(()=>
   }
   else 
   {
-    setvoucherDetaildata(fiscaldata?.filter(item=> item.uid === voucherId))
+    setvoucherDetaildata(fiscaldata)
   }
 },[voucherId,getId])
  
