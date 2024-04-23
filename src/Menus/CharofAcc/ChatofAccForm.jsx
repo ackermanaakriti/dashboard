@@ -295,7 +295,7 @@ const CharofAccForm = () => {
                                 <div className=' mt-[40px] flex gap-[20px] absolute bottom-[2em] right-[5em]' >
                                     <button onClick={() => dispatch(addMenu({ id: '', menu: 'chartofacc' }))} className=' border-[1px] border-redclr px-[15px] py-[4px] text-redclr font-inter'  type='button'>Cancel</button>
 
-                                    <button  className='bg-PrimaryColor px-[15px] py-[4px] text-white font-inter' type='submit' >
+                                    <button className='bg-PrimaryColor px-[15px] py-[4px] text-white font-inter' type='submit' >
                                         {editMode ? 'Update' : 'Save'} </button>
                                 </div>
                             </div>

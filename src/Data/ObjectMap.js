@@ -15,6 +15,7 @@ import VouchertypeForm from "../Menus/Voucher/VoucherTypeForm";
 import VoucherTypeTable from "../Menus/Voucher/VoucherTypeTable";
 import Voucher from "../Menus/Voucher/VoucherForm";
 import MainVoucherForm from "../Menus/Voucher/VoucherDetailForm";
+import VoucherTable from "../Menus/Voucher/VoucherTable";
 
 
 export const MenuComponentMap = {
@@ -32,7 +33,8 @@ export const MenuComponentMap = {
     accform: <AccountGroupForm/>,
     vouchertypeform : <VouchertypeForm/>,
     vouchertype : <VoucherTypeTable/>,
-    voucher : <Voucher/>
+    voucher : <VoucherTable/>,
+    voucherForm : <Voucher/>
 
 
    
