@@ -6,8 +6,10 @@ import { addTab, removeTab } from "../Redux/TopTabSlice";
 import { MenuComponentMap } from "../Data/ObjectMap";
 import Dashboard from "../Components/Dashboard";
 import { useLayouData } from "../Context/MainLayoutContext";
+import Login from "../Pages/Login";
 
 const HomeMenu = () => {
+  const {authorized,setAuthorized} = useLayouData();
   const dispatch = useDispatch();
   const [selectedComponent, setSelectedComponent] = useState(null);
   const [activebtn, setActivebn] = useState(false);
@@ -63,6 +65,7 @@ const HomeMenu = () => {
         ))}
       </div>
       <div className="relative">
+        
         {selectedComponent ? selectedComponent : <Dashboard />}
       </div>
       <InquiryForm />

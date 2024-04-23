@@ -5,10 +5,13 @@ import { useLayouData } from "../../Context/MainLayoutContext";
 import { useDispatch } from "react-redux";
 import { addMenu, addTab } from "../../Redux/TopTabSlice";
 import { TableButton } from "../../Components/GreenButton";
+import axios from 'axios'; 
+
 
 
 const BranchTable = () => {
-  const{ setId,hanldeId,setHandleId}= useLayouData();
+  const{ setId,hanldeId,setHandleId,token}= useLayouData();
+  console.log(token)
   const dispatch = useDispatch()
 
  
@@ -17,14 +20,26 @@ const BranchTable = () => {
 
   // get data from local Storage
   useEffect(() => {
-    
     if (storedData) {
       setcontactD(storedData);
     }
-    setHandleId(false)
-
-   
-  }, []);
+    setHandleId(false);
+  
+    const getAllBranches = async () => {
+      try {
+        const res = await axios.get('http://192.168.254.11:5128/api/Branch/GetAll', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        console.log(res.data); // Assuming you want to log the response data
+      } catch (err) {
+        console.log(err);
+      }
+    };
+  
+    getAllBranches();
+  }, [token]);
 
 
   

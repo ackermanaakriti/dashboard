@@ -26,7 +26,7 @@ const Voucher = () => {
   const voucherData = useSelector((state)=>state.voucherD.voucher)
   const voucherType = useSelector((state)=>state.voucherD.voucherType)
  
- console.log(getId)
+
 
   useEffect(()=>
   {
@@ -41,7 +41,7 @@ const Voucher = () => {
       setVoucherId(id)
     }
     
-  },[setId,voucherId])
+  },[setId])
 
  
 
@@ -68,6 +68,7 @@ const Voucher = () => {
 
   const handleSubmit = (values) => {
     const VoucherDataId = { ...values, uid:voucherId };
+
     if(editMode )
     {
       const editedId = {...values,uid:editId}

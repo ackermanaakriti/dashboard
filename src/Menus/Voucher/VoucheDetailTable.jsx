@@ -19,6 +19,8 @@ const VoucherDetailTable = () => {
   const handleDel = (index) => {
     dispatch(removeVoucherdetail(index));
   };
+  console.log(getId)
+  console.log(fiscaldata)
   
 useEffect(()=>
 {
@@ -28,9 +30,10 @@ useEffect(()=>
   }
   else 
   {
-    setvoucherDetaildata(fiscaldata)
+    setvoucherDetaildata(fiscaldata?.filter(item=> item.uid === voucherId))
+
   }
-},[voucherId,getId])
+},[getId,voucherId,fiscaldata])
  
 
 
