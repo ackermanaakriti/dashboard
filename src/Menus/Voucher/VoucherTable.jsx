@@ -11,10 +11,10 @@ import { TableButton } from '../../Components/GreenButton';
 import { removeVoucher } from '../../Redux/Slices/VoucherSlice';
 
 const VoucherTable = () => {
-  const {setId,getId} = useLayouData();
+  const {setId,getId,voucherId, setVoucherId } = useLayouData();
   const dispatch = useDispatch()
   const voucherData = useSelector((state) => state.voucherData.voucher) 
-
+console.log(voucherData)
 
  
 
@@ -24,6 +24,7 @@ const VoucherTable = () => {
   }
   const handleEdit = (index) => {
     setId(index)
+   
     dispatch(addMenu({ id:index, menu:'voucherForm'}))
   };
   console.log(getId)
