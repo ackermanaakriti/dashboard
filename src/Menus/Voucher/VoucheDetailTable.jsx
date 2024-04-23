@@ -13,21 +13,25 @@ import { removeVoucherdetail } from '../../Redux/Slices/VoucherSlice';
 const VoucherDetailTable = () => {
   const { setId, getId, voucherId, setVoucherId } = useLayouData();
   const dispatch = useDispatch();
-  const fiscaldata = useSelector((state) => state.voucherData.voucherDetail);
+  const fiscaldata = useSelector((state) => state.voucherD.voucherDetail);
   const [voucherDetaildata,setvoucherDetaildata] = useState([])
 
   const handleDel = (index) => {
     dispatch(removeVoucherdetail(index));
   };
   
-  // if(getId)
-  // {
-  //  setvoucherDetaildata(fiscaldata?.filter(item=> item.uid === getId))
-  // }
-  // else 
-  // {
-  //   setvoucherDetaildata(fiscaldata)
-  // }
+useEffect(()=>
+{
+   if(getId)
+  {
+   setvoucherDetaildata(fiscaldata?.filter(item=> item.uid === getId))
+  }
+  else 
+  {
+    setvoucherDetaildata(fiscaldata?.filter(item=> item.uid === voucherId))
+  }
+},[voucherId,getId])
+ 
 
 
   return (
@@ -46,7 +50,7 @@ const VoucherDetailTable = () => {
           
             <tbody>
               
-              {fiscaldata?.filter(item => item.uid === getId)?.map((item, index) => (
+              {voucherDetaildata?.map((item, index) => (
                 <tr key={index}>
                   <td>{item.chartOfAccountId}</td>
                   <td>{item.debitAmount}</td>

@@ -13,8 +13,8 @@ import { removeVoucher } from '../../Redux/Slices/VoucherSlice';
 const VoucherTable = () => {
   const {setId,getId,voucherId, setVoucherId } = useLayouData();
   const dispatch = useDispatch()
-  const voucherData = useSelector((state) => state.voucherData.voucher) 
-console.log(voucherData)
+  const voucherData = useSelector((state) => state.voucherD.voucher) 
+
 
  
 
@@ -27,7 +27,7 @@ console.log(voucherData)
    
     dispatch(addMenu({ id:index, menu:'voucherForm'}))
   };
-  console.log(getId)
+
 
   return (
     <>
@@ -66,7 +66,7 @@ console.log(voucherData)
                       <span onClick={()=>handleEdit(item?.uid)} className="text-PrimaryColor cursor-pointer">
                         <MdEdit />
                       </span>
-                      <span onClick={()=>handleDel(item?.id)} className="text-[#d13838] cursor-pointer">
+                      <span onClick={()=>handleDel(item?.uid)} className="text-[#d13838] cursor-pointer">
                         <RiDeleteBin5Fill />
                       </span>
                     </div>

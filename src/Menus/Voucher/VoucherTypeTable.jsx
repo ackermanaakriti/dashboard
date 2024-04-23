@@ -14,7 +14,7 @@ import { removeVoucherType } from '../../Redux/Slices/VoucherSlice';
 const VoucherTypeTable = () => {
   const {setId} = useLayouData();
   const dispatch = useDispatch()
-  const vouchertypeData = useSelector((state) => state.voucherData.voucherType) 
+  const vouchertypeData = useSelector((state) => state.voucherD.voucherType) 
 
 
  

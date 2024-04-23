@@ -4,7 +4,7 @@ import storage from 'redux-persist/lib/storage';
 import { persistReducer, persistStore } from 'redux-persist';
 
 const VoucherSlice = createSlice({
-    name:'voucherData',
+    name:'voucherD',
     initialState:{
         voucherType:[],
        
@@ -13,9 +13,6 @@ const VoucherSlice = createSlice({
            
         ],
         voucherDetail:[]
-
-        
-            
 
         
     },
@@ -43,12 +40,12 @@ const VoucherSlice = createSlice({
         removeVoucher:(state,action)=>
         {
             const idToRemove = action.payload;
-            state.voucher = state.voucher.filter(item => item?.id !== idToRemove);
+            state.voucher = state.voucher.filter(item => item?.uid !== idToRemove);
         },
         editVoucher: (state, action) => {
             console.log(action.payload);
             state.voucher = state.voucher.map(item =>
-                item?.id === action.payload.id ? { ...item, ...action.payload } : item
+                item?.uid === action.payload.uid ? { ...item, ...action.payload } : item
             );
         },
         
