@@ -5,6 +5,7 @@ import 'react-date-picker/dist/DatePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import { CancelButton, GreenButton } from '../Components/GreenButton';
 
+import { baseUrl } from '../Apis/Baseurl';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios'; 
 import { useLayouData } from '../Context/MainLayoutContext';
@@ -18,14 +19,17 @@ const Login = () => {
 
   const validationSchema = Yup.object().shape({
     username: Yup.string().required('Required'),
-    password: Yup.string().required('Required'),
+    password: Yup.string().min(8, 'Password must be at least 8 characters')
+    .matches(/[A-Z]/, 'Password must contain at least one uppercase letter')
+    .matches(/[0-9]/, 'Password must contain at least one number')
+    .required('Password is required'),
   });
 
   const handleSubmit = async (values) => {
     try {
       const id = uuidv4();
       const response = await axios.post(
-        'http://192.168.254.11:5128/api/Authenticate/login',
+        `${baseUrl}Authenticate/login`,
         {
           ...values,
           id: id,
@@ -42,9 +46,9 @@ const Login = () => {
 
   return (
     <>
-      <div className='px-[50px]'>
+      <div className='px-[50px] items-center pt-[90px]'>
         <div>
-          <h2 className='font-inter font-semibold text-[30px]'> Account Group</h2>
+          <h2 className='font-inter font-semibold text-center text-[30px]'>Login </h2>
         </div>
 
         <Formik
@@ -54,7 +58,7 @@ const Login = () => {
           enableReinitialize={true}
         >
           {(formik) => (
-            <Form className='grid grid-cols-2 gap-[90px]'>
+            <Form className='w-[30%] items-center m-auto'>
               <div className=''>
                 <div className='py-[8px]'>
                   <label className='block py-[5px] font-[500] font-inter '>Name</label>

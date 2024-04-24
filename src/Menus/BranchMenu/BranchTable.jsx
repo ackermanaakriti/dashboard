@@ -6,12 +6,15 @@ import { useDispatch } from "react-redux";
 import { addMenu, addTab } from "../../Redux/TopTabSlice";
 import { TableButton } from "../../Components/GreenButton";
 import axios from 'axios'; 
+import useGetData from "../../Apis/useGetData";
 
 
 
 const BranchTable = () => {
   const{ setId,hanldeId,setHandleId,token}= useLayouData();
-  console.log(token)
+
+  const {data}= useGetData('Branch/GetAll')
+  
   const dispatch = useDispatch()
 
  
@@ -25,21 +28,21 @@ const BranchTable = () => {
     }
     setHandleId(false);
   
-    const getAllBranches = async () => {
-      try {
-        const res = await axios.get('http://192.168.254.11:5128/api/Branch/GetAll', {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
-        console.log(res.data); // Assuming you want to log the response data
-      } catch (err) {
-        console.log(err);
-      }
-    };
+    // const getAllBranches = async () => {
+    //   try {
+    //     const res = await axios.get('http://192.168.254.11:5128/api/Branch/GetAll', {
+    //       headers: {
+    //         Authorization: `Bearer ${token}`
+    //       }
+    //     });
+    //     console.log(res.data); // Assuming you want to log the response data
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // };
   
-    getAllBranches();
-  }, [token]);
+    // getAllBranches();
+  }, []);
 
 
   
@@ -84,16 +87,16 @@ const BranchTable = () => {
                 </thead>
                 <tbody>
                   {
-                    contactD?.map((tdata,index)=>
+                    data?.data?.map((tdata,index)=>
                     (
                       <tr key={index}>
                  
                   
                       <td>{tdata?.name}</td>
-                    <td>{tdata?.branchcode}</td>
-                    <td>{tdata?.Registrationno}</td>
+                    <td>{tdata?.code}</td>
+                    <td>{tdata?.regestrationNo}</td>
                     <td>
-                    {tdata?.headoffice ? (<TableButton className='bg-PrimaryColor rounded-[20px] px-[12px] py-[5px] text-white' text='Yes'/>)
+                    {tdata?.isHeadOffice ? (<TableButton className='bg-PrimaryColor rounded-[20px] px-[12px] py-[5px] text-white' text='Yes'/>)
                     : (<TableButton className='bg-[#378f80] rounded-[20px] px-[12px] py-[5px] text-white' text='No'/>)}
                     </td>
                     <td className="">

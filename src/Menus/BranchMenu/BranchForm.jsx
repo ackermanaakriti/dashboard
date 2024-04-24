@@ -8,32 +8,44 @@ import "react-toastify/dist/ReactToastify.css";
 import { useDispatch } from "react-redux";
 import { addMenu } from "../../Redux/TopTabSlice";
 import { HiOutlinePhotograph } from "react-icons/hi";
+import usePostData from "../../Apis/usePostData";
+// import usePostData from '../../Apis/usePostData'
 
 const branchparentId = [{ id: "1" }, { id: "2" }, { id: "3" }];
 
 
 const BranchForm = () => {
   const { getId, setId, hanldeId, setHandleId } = useLayouData();
+const {postdata,postError}= usePostData('Branch/Create',)
   const dispatch = useDispatch();
   const [editMode, setEditMode] = useState(false);
 
   const [editIdData, seteditIdData] = useState("");
   const dataLocal = JSON.parse(localStorage.getItem("formData"));
   const initialValues = {
-    name: "",
-    branchparentid: "",
-    Registrationno: "",
-    branchcode: "",
-    contact: "",
-    pan: "",
-    address: "",
-    billadd: "",
-    shipadd: "",
-    billcontact: "",
-    headoffice: null,
+    Name: "",
+    ParentId: "",
+    RegestrationNo: "",
+    ContactNumber: "",
+    Pan: "",
+    Address: "",
+    // billadd: "",
+    ShipAddress: "",
+    BillContactInfo: "",
+    IsHeadOffice: '',
+    logoFile:null,
+    Logo:null,
+    Code:'',
+    // billLogoFile:null,
+    IsActive : true,
+    // BillLogo:null,
+    LogoRelatedFileUrl:null,
+    BillLogoRelatedFileUrl:null,
+    Fax:''
+
   };
 
-  console.log(initialValues.name);
+ 
 
   useEffect(() => {
     if (getId) {
@@ -49,19 +61,23 @@ const BranchForm = () => {
     };
   }, [setId]);
 
-  const handleSubmit = (values) => {
-    let datas = JSON.parse(localStorage.getItem("formData")) || [];
+  const handleSubmit = async (values) => {
+    // let datas = JSON.parse(localStorage.getItem("formData")) || [];
     if (editMode) {
-      datas = datas.map((item) =>
-        item.id === editIdData.id ? { ...values, id: editIdData.id } : item
-      );
+      // datas = datas.map((item) =>
+      //   item.id === editIdData.id ? { ...values, id: editIdData.id } : item
+      // );
     } else {
-      values.id = Math.floor(Math.random() * 100) + 1;
-      datas.push(values);
+      console.log(values)
+      const response = await postdata(values );
+      console.log(response)
+      // values.id = Math.floor(Math.random() * 100) + 1;
+      // datas.push(values);
+
     }
 
-    localStorage.setItem("formData", JSON.stringify(datas));
-    toast.success("Your Data is saved");
+    // localStorage.setItem("formData", JSON.stringify(datas));
+    // toast.success("Your Data is saved");
 
     dispatch(addMenu({ id: "", menu: "Table" }));
   };
@@ -91,21 +107,30 @@ const BranchForm = () => {
         enableReinitialize={true}
         initialValues={editMode && editIdData ? editIdData : initialValues}
         validationSchema={Yup.object().shape({
-          name: Yup.string().required("required"),
-          branchparentid: Yup.string().required("required"),
-          branchcode: Yup.string().required("required"),
-          Registrationno: Yup.number()
+          Name: Yup.string().required("required"),
+          ParentId: Yup.number().required("required"),
+          Code: Yup.string().required("required"),
+          RegestrationNo: Yup.string()
             .typeError("invalid data")
             .required("required"),
-          pan: Yup.number().typeError("invalid data").required("required"),
-          contact: Yup.number()
+            Pan: Yup.string().typeError("invalid data").required("required"),
+          ContactNumber: Yup.string()
             .typeError("invalid data")
-            .min(10, "contact number should be  between 10 to 11  characters ")
+            .min(10, "ContactNumber number should be  between 10 to 11  characters ")
             .required("required"),
-          billadd: Yup.string().required("required"),
-          shipadd: Yup.string().required("required"),
-          billcontact: Yup.string().required("required"),
-          address: Yup.string().required("required"),
+          // billadd: Yup.string().required("required"),
+          // shipadd: Yup.string().required("required"),
+          // billContactNumber: Yup.string().required("required"),
+          Address: Yup.string().required("required"),
+          Fax:Yup.string().required('required'),
+          ShipAddress: Yup.string().required('required'),
+          BillContactInfo:Yup.string().required('required'),
+          // Logo: Yup.string().required('required'),
+          // BillLogo: Yup.string().required('required'),
+          // ParentId:Yup.number().required('required')
+
+
+
         })}
         onSubmit={handleSubmit}
       >
@@ -119,14 +144,14 @@ const BranchForm = () => {
                   </label>
                   <Field
                     type="text"
-                    name="name"
+                    name="Name"
                     className="w-[100%]"
                     placeholder=""
                     onKeyDown={(event) =>
-                      handleEnterKeyPress(event, "branchparentid")
+                      handleEnterKeyPress(event, "ParentId")
                     }
                   />
-                  <ErrorMessage component="div" className="error" name="name" />
+                  <ErrorMessage component="div" className="error" name="Name" />
                 </div>
                 <div className="flex  justify-between items-center">
                   <div className="py-[5px]">
@@ -136,9 +161,10 @@ const BranchForm = () => {
                     <Field
                       className="border-[1px] px-[8px] py-[8px] outline-0 border-[#c0d3e5] w-[22em] "
                       as="select"
-                      id="branchparentid"
-                      name="branchparentid"
-                      onKeyDown={(event) => handleEnterKeyPress(event, "branchcode")}
+                      id="ParentId"
+                      name="ParentId"
+                      type='number'
+                      onKeyDown={(event) => handleEnterKeyPress(event, "Code")}
                     >
                       <option disabled value="">
                         Select id
@@ -150,7 +176,7 @@ const BranchForm = () => {
                     <ErrorMessage
                       component="div"
                       className="error"
-                      name="branchparentid"
+                      name="ParentId"
                     />
                   </div>
                   <div className="py-[6px]">
@@ -160,17 +186,17 @@ const BranchForm = () => {
                     <Field
                       type="text"
                       onKeyDown={(event) =>
-                        handleEnterKeyPress(event, "Registrationno")
+                        handleEnterKeyPress(event, "RegestrationNo")
                       }
-                      name="branchcode"
+                      name="Code"
                       className="w-[22em]"
                       placeholder=""
-                      id="branchname"
+                      id="Code"
                     />
                     <ErrorMessage
                       component="div"
                       className="error"
-                      name="branchcode"
+                      name="Code"
                     />
                   </div>
                 </div>
@@ -182,16 +208,16 @@ const BranchForm = () => {
                     </label>
                     <Field
                       type="text"
-                      name="Registrationno"
+                      name="RegestrationNo"
                       className="w-[22em]"
                       placeholder=""
-                      id="Registrationno"
-                      onKeyDown={(event) => handleEnterKeyPress(event, "pan")}
+                      id="RegestrationNo"
+                      onKeyDown={(event) => handleEnterKeyPress(event, "Pan")}
                     />
                     <ErrorMessage
                       component="div"
                       className="error"
-                      name="Registrationno"
+                      name="RegestrationNo"
                     />
                   </div>
 
@@ -201,13 +227,13 @@ const BranchForm = () => {
                     </label>
                     <Field
                       type="text"
-                      name="pan"
+                      name="Pan"
                       className="w-[22em]"
                       placeholder=""
-                      id="pan"
-                      onKeyDown={(event) => handleEnterKeyPress(event, "fax")}
+                      id="Pan"
+                      onKeyDown={(event) => handleEnterKeyPress(event, "ContactNumber")}
                     />
-                    <ErrorMessage component="div" className="error" name="pan" />
+                    <ErrorMessage component="div" className="error" name="Pan" />
                   </div>
                 </div>
 
@@ -220,16 +246,16 @@ const BranchForm = () => {
                     </label>
                     <Field
                       type="text"
-                      name="contact"
+                      name="ContactNumber"
                       className="w-[22em]"
                       placeholder=""
-                      id="contact"
+                      id="ContactNumber"
                       onKeyDown={(event) => handleEnterKeyPress(event, "address")}
                     />
                     <ErrorMessage
                       component="div"
                       className="error"
-                      name="contact"
+                      name="ContactNumber"
                     />
                   </div>
 
@@ -239,13 +265,13 @@ const BranchForm = () => {
                     </label>
                     <Field
                       type="text"
-                      name="fax"
+                      name="Fax"
                       className="w-[22em]"
                       placeholder=""
-                      id="fax"
-                      onKeyDown={(event) => handleEnterKeyPress(event, "contact")}
+                      id="Fax"
+                      onKeyDown={(event) => handleEnterKeyPress(event, "address")}
                     />
-                    <ErrorMessage component="div" className="error" name="fax" />
+                    <ErrorMessage component="div" className="error" name="Fax" />
                   </div>
                 </div>
 
@@ -261,14 +287,14 @@ const BranchForm = () => {
 
                     type="text"
                     onKeyDown={(event) => handleEnterKeyPress(event, "billadd")}
-                    id="address"
-                    name="address"
+                    id="Address"
+                    name="Address"
                     className="w-[100%] "
                   ></Field>
                   <ErrorMessage
                     component="div"
                     className="error"
-                    name="address"
+                    name="Address"
                   />
                 </div>
 
@@ -280,9 +306,9 @@ const BranchForm = () => {
                     <Field
 
                       type="file"
-                      name="branchlogo"
+                      name="Logo"
                       className="w-[100%] opacity-0  absolute inset-0 "
-                      id="image"
+                      id="Logo"
                       onKeyDown={(event) =>
                         handleEnterKeyPress(event, "btnsubmit")
                       }
@@ -293,7 +319,7 @@ const BranchForm = () => {
                   <ErrorMessage
                     component="div"
                     className="error"
-                    name="branchlogo"
+                    name="Logo"
                   />
                 </div>
 
@@ -302,12 +328,12 @@ const BranchForm = () => {
                   <div role="group">
                     <label className='block py-[8px] font-[500] font-inter '>Head Office<span>*</span></label>
                     <div>
-                      <label className=""> <input className='mx-[5px]' type="radio" name="headoffice" checked={formik.values.headoffice === true} value={true}
-                        onChange={() => formik.setFieldValue('headoffice', true)} />Yes</label>
-                      <label className="ml-[10px]"><input className='mx-[5px]' type="radio" name="headoffice" checked={formik.values.headoffice === false} value={false}
-                        onChange={() => formik.setFieldValue('headoffice', false)} /> No</label>
+                      <label className=""> <input className='mx-[5px]' type="radio" name="IsHeadOffice" checked={formik.values.IsHeadOffice === true} value={true}
+                        onChange={() => formik.setFieldValue('IsHeadOffice', true)} />Yes</label>
+                      <label className="ml-[10px]"><input className='mx-[5px]' type="radio" name="IsHeadOffice" checked={formik.values.IsHeadOffice === false} value={false}
+                        onChange={() => formik.setFieldValue('IsHeadOffice', false)} /> No</label>
                     </div>
-                    <ErrorMessage component="div" className='text-[14px] text-redclr ' name="headoffice" />
+                    <ErrorMessage component="div" className='text-[14px] text-redclr ' name="IsHeadOffice" />
                   </div>
                 </div>
 
@@ -324,14 +350,14 @@ const BranchForm = () => {
                     as="textarea"
                     type="text"
                     onKeyDown={(event) => handleEnterKeyPress(event, "shipadd")}
-                    id="billadd"
-                    name="billadd"
+                    id="BillContactInfo"
+                    name="BillContactInfo"
                     className="w-[100%] "
                   ></Field>
                   <ErrorMessage
                     component="div"
                     className="error"
-                    name="billadd"
+                    name="BillContactInfo"
                   />
                 </div>
                 <div className="py-[6px]">
@@ -342,8 +368,8 @@ const BranchForm = () => {
                   <Field
                     as="textarea"
                     type="text"
-                    name="shipadd"
-                    id="shipadd"
+                    name="ShipAddress"
+                    id="ShipAddress"
                     onKeyDown={(event) =>
                       handleEnterKeyPress(event, "billcontact")
                     }
@@ -352,7 +378,7 @@ const BranchForm = () => {
                   <ErrorMessage
                     component="div"
                     className="error"
-                    name="shipadd"
+                    name="ShipAddress"
                   />
                 </div>
 
@@ -363,9 +389,9 @@ const BranchForm = () => {
                   <Field
                     as="textarea"
                     type="text"
-                    name="billcontact"
+                    name="BillContactInfo"
                     className="w-[100%]"
-                    id="billcontact"
+                    id="BillContactInfo"
                     onKeyDown={(event) =>
                       handleEnterKeyPress(event, "image")
                     }
@@ -373,7 +399,7 @@ const BranchForm = () => {
                   <ErrorMessage
                     component="div"
                     className="error"
-                    name="billcontact"
+                    name="BillContactInfo"
                   />
                 </div>
                 <div className="py-[6px]">
@@ -384,9 +410,9 @@ const BranchForm = () => {
                     <Field
 
                       type="file"
-                      name="image"
+                      name="BillLogo"
                       className="w-[100%] opacity-0  absolute inset-0 "
-                      id="image"
+                      id="BillLogo"
                       onKeyDown={(event) =>
                         handleEnterKeyPress(event, "btnsubmit")
                       }
@@ -397,7 +423,7 @@ const BranchForm = () => {
                   <ErrorMessage
                     component="div"
                     className="error"
-                    name="image"
+                    name="BillLogo"
                   />
                 </div>
 

@@ -9,22 +9,24 @@ import { useLayouData } from '../../Context/MainLayoutContext';
 import { GreenButton, TableButton } from '../../Components/GreenButton';
 import { removeCurrency } from '../../Redux/Slices/CurrencySlice';
 import { removeCharofAcc } from '../../Redux/Slices/CharofAccSlice';
+import useGetData from '../../Apis/useGetData';
+import useDelData from '../../Apis/useDelData';
 
 const ChartofAccTable = () => {
-  const {setId} = useLayouData();
+  const {setId,getId} = useLayouData();
   const dispatch = useDispatch()
-  const currencydata = useSelector((state) => state.charofacc) 
+  const {data}= useGetData('ChartOfAccount/GetAll')
+  const {Deldata}= useDelData('ChartOfAccount/Delete/')
 
-
- 
-
-  const handleDel =(index)=>
+  const handleDel = async(id)=>
   {
-    dispatch(removeCharofAcc(index))
+    const response = await Deldata(id);
+    console.log(response)
+    
   }
-  const handleEdit = (index) => {
-    setId(index)
-    dispatch(addMenu({ id:index, menu:'chartofaccForm'}))
+  const handleEdit = (id) => {
+    setId(id)
+    dispatch(addMenu({ id:id, menu:'chartofaccForm'}))
   };
 
   return (
@@ -52,17 +54,19 @@ const ChartofAccTable = () => {
               </tr>
             </thead>
             <tbody>
-              {currencydata?.map((item, index) => (
+              {data?.map((item, index) => (
                 <tr key={index}>
                   <td>{item?.accountName}</td>
                   <td>{item?.accountCode}</td>
                   <td>{item?.accountGroupId}</td>
                   <td>{item?.mainParentId}</td>
                   <td>{item?.parentAccountId}</td>
-                  <td>
+                  {/* <td>
                     {item?.isActive ? (<TableButton className='bg-PrimaryColor rounded-[20px] px-[12px] py-[5px] text-white' text='Yes'/>)
                     : (<TableButton className='bg-[#378f80] rounded-[20px] px-[12px] py-[5px] text-white' text='No'/>)}
-                    </td>
+                    </td> */}
+
+                    <td><TableButton className={item.isActive? `bg-PrimaryColor rounded-[20px] px-[12px] py-[5px] text-white` : `bg-[#378f80] rounded-[20px] px-[12px] py-[5px] text-white`} text={item.isActive ? 'yes' : 'No'}/> </td>
                   <td className="">
                     <div className="flex gap-[25px] items-center justify-center">
                       <span onClick={()=>handleEdit(item?.id)} className="text-PrimaryColor cursor-pointer">

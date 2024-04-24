@@ -8,11 +8,13 @@ import { addMenu } from '../../Redux/TopTabSlice';
 import { useLayouData } from '../../Context/MainLayoutContext';
 import { GreenButton } from '../../Components/GreenButton';
 import { TableButton } from '../../Components/GreenButton';
+import useGetData from '../../Apis/useGetData';
 
 const FiscalYearTable = () => {
   const {setId} = useLayouData();
   const dispatch = useDispatch()
   const fiscaldata = useSelector((state) => state.fiscalyear) 
+  const {data}= useGetData('FiscalYear/GetAll')
 
 
  
@@ -50,12 +52,12 @@ const FiscalYearTable = () => {
               </tr>
             </thead>
             <tbody>
-              {fiscaldata?.map((item, index) => (
+              {data?.map((item, index) => (
                 <tr key={index}>
-                  <td>{item?.fullName}</td>
+                  <td>{item?.name}</td>
                   <td>{item?.code}</td>
-                  <td>{item?.fromDate}</td>
-                  <td>{item?.toDate}</td>
+                  <td>{item?.startDate}</td>
+                  <td>{item?.endDate}</td>
                   <td>
                     {item?.isActive ? (<TableButton className='bg-PrimaryColor rounded-[20px] px-[12px] py-[5px] text-white' text='Yes'/>)
                     : (<TableButton className='bg-[#378f80] rounded-[20px] px-[12px] py-[5px] text-white' text='No'/>)}
