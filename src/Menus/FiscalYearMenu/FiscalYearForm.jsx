@@ -1,74 +1,58 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import React, { useEffect, useState } from 'react';
 import * as Yup from 'yup';
-import DatePicker from 'react-date-picker';
-import 'react-date-picker/dist/DatePicker.css';
-import 'react-calendar/dist/Calendar.css';
 import { CancelButton, GreenButton } from '../../Components/GreenButton';
 import { useDispatch, useSelector } from 'react-redux';
-import { addFiscalYear, editFiscalYear } from '../../Redux/Slices/FiscalYearSlice';
 import { useLayouData } from '../../Context/MainLayoutContext';
 import { addMenu } from '../../Redux/TopTabSlice';
-import { v4 as uuidv4 } from 'uuid';
+import usePostData from '../../Apis/usePostData';
+import useGetData from '../../Apis/useGetData';
+import useUpdateData from '../../Apis/useUpdate';
 
 const FiscalYearForm = () => {
-  const id =uuidv4();
 
+  const {postdata} = usePostData('FiscalYear/Add')
+  const {data}= useGetData('FiscalYear/GetAll')
+  const {updateData} = useUpdateData('FiscalYear/Update')
   const {setId,getId}= useLayouData();
   const [editMode,setEditMode]= useState(false)
   const [editData,seteditData]= useState('')
   const dispatch = useDispatch();
-  const fiscaldata = useSelector((state)=>state.fiscalyear)
 
-  console.log(getId)
+
+
+
   useEffect(()=>
   {
-    if(getId)
+    if(getId && data)
     {
       setEditMode(true)
-    seteditData(fiscaldata.find((item)=>item.id === getId))
+    seteditData(data.find((item)=>item.id === getId))
     }   
-    console.log(editData)
-   
-  },[setId])
-
+  },[])
 
   const initialValues = {
     code: '',
-    fullName: '',
-    fromDate: '',
-    toDate: '',
-    isActive: null // added isActive field
+    name: '',
+    startDate: '',
+    endDate: '',
+    isActive: null 
   };
 
   const validationSchema = Yup.object().shape({
-    code: Yup.number().typeError('enter number').required('required'),
-    fullName: Yup.number().typeError('enter number').required('required'),
-    fromDate: Yup.string().required('required'),
-    toDate: Yup.string().required('required'),
+    code: Yup.string().typeError('enter number').required('required'),
+    name: Yup.string().typeError('enter number').required('required'),
   });
 
 
-  const handleSubmit = (values) => {
-   
-    const fiscalDataWithId = { ...values, id: id };
-    console.log(fiscalDataWithId)
-   
+  const handleSubmit = async (values) => {
     if(editMode)
-    {
-      console.log(getId)
-      const editedId = {...values,id:getId}
-      console.log(editedId)
-      dispatch(editFiscalYear(editedId))
-    }
+    {const response = await updateData(values) }
     else 
-    {
-      dispatch(addFiscalYear(fiscalDataWithId))
-    }
+    { const response = await postdata(values) }
     dispatch(addMenu({ id:'', menu:'fiscalyear'}))
-   
     setId('')
-    // Perform form submission logic here
+    
   };
 
   return (
@@ -91,17 +75,17 @@ const FiscalYearForm = () => {
                   <label className='block py-[5px] font-[500] font-inter '>Fiscal Year Name</label>
                   <Field
                     className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr '
-                    type='text'
-                    name='fullName'
+                 
+                    name='name'
                   />
-                  <ErrorMessage component='div' className='text-[14px] text-redclr' name='fullName' />
+                  <ErrorMessage component='div' className='text-[14px] text-redclr' name='name' />
                 </div>
 
                 <div className='py-[8px]'>
                   <label className='block py-[5px] font-[500] font-inter '>Code</label>
                   <Field
                     className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr '
-                    type='text'
+                  
                     name='code'
                   />
                   <ErrorMessage component='div' className='text-[14px] text-redclr ' name='code' />
@@ -112,35 +96,35 @@ const FiscalYearForm = () => {
                     <label className='block py-[8px] font-[500] font-inter '>Start Date AD</label>
                     <Field
                       className='border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr '
-                      name='fromDate'
+                      name='startDate'
                       type='date'
                     />
-                    <ErrorMessage component='div' className='text-[14px] text-redclr ' name='fromDate' />
+                    <ErrorMessage component='div' className='text-[14px] text-redclr ' name='startDate' />
                   </div>
                   <div className='py-[8px]'>
                     <label className='block py-[8px] font-[500] font-inter '>End Date AD</label>
                     <Field
                       className='border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr '
-                      name='toDate'
+                      name='endDate'
                       type='date'
                     />
-                    <ErrorMessage component='div' className='text-[14px] text-redclr ' name='toDate' />
+                    <ErrorMessage component='div' className='text-[14px] text-redclr ' name='endDate' />
                   </div>
                 </div>
 
               
-                            <div className="py-[6px]">
-                                    <div role="group">
-                                            <label className='block py-[8px] font-[500] font-inter '> Is Active <span>*</span></label>
-                                            <div>
-                                                <label className=""> <input className='mx-[5px]' type="radio"  name="isActive"  checked={formik.values.isActive === true} value={true}
-                                               onChange={() => formik.setFieldValue('isActive', true)} />Yes</label>
-                                                <label className="ml-[10px]"><input className='mx-[5px]' type="radio" name="isActive" checked={formik.values.isActive === false} value={false}
-                                                  onChange={() => formik.setFieldValue('isActive', false)} /> No</label>
-                                            </div>
-                                            <ErrorMessage component="div" className='text-[14px] text-redclr ' name="isAllBranchApplicable" />
-                                        </div>
-                                    </div>
+                   <div className="py-[6px]">
+                    <div role="group">
+                       <label className='block py-[8px] font-[500] font-inter '> Is Active <span>*</span></label>
+                           <div>
+                           <label className=""> <input className='mx-[5px]' type="radio"  name="isActive"  checked={formik.values.isActive === true} value={true}
+                             onChange={() => formik.setFieldValue('isActive', true)} />Yes</label>
+                             <label className="ml-[10px]"><input className='mx-[5px]' type="radio" name="isActive" checked={formik.values.isActive === false} value={false}
+                              onChange={() => formik.setFieldValue('isActive', false)} /> No</label>
+                               </div>
+                               <ErrorMessage component="div" className='text-[14px] text-redclr ' name="isAllBranchApplicable" />
+                             </div>
+                        </div>
 
                 <div className=' mt-[40px] flex gap-[20px] justify-end'>
                 <CancelButton onClick={()=>dispatch(addMenu({ id:'', menu:'fiscalyear'}))} className=' border-[1px] border-redclr px-[15px] py-[4px] text-redclr font-inter' text='Cancel' type='button' />

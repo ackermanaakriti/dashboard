@@ -14,7 +14,8 @@ import VoucherDetailTable from './VoucheDetailTable';
 
 const VoucherDetailform = () => {
   const chartofAccData = useSelector((state) => state.charofacc)
-  const id = uuidv4();
+  const id =uuidv4();
+
 
   const { setId, getId,voucherId,setVoucherId } = useLayouData();
   const [editMode, setEditMode] = useState(false)
@@ -22,8 +23,6 @@ const VoucherDetailform = () => {
   const [isamount,setisAmount]= useState(false);
   const dispatch = useDispatch();
  
- 
- console.log(voucherId)
 
   const initialValues = {
     chartOfAccountId: '',
@@ -52,8 +51,8 @@ const VoucherDetailform = () => {
 
   const handleSubmit = (values, { resetForm }) => {
    
-    const VoucherDataId = { ...values ,debitAmount:isamount ? values.Amount : '0',  creditAmount: isamount ? '0' : values.Amount,uid:voucherId};
-   
+    const VoucherDataId = { ...values ,debitAmount:isamount ? values.Amount : '0', id:id,  creditAmount: isamount ? '0' : values.Amount,uid:getId ? getId : voucherId};
+   console.log(VoucherDataId)
       dispatch(addVoucherDetail(VoucherDataId))
       resetForm()
 

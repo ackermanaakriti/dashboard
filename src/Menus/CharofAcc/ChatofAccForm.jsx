@@ -12,88 +12,71 @@ import { addMenu } from '../../Redux/TopTabSlice';
 import { v4 as uuidv4 } from 'uuid';
 import { addCurrency, editCurrency } from '../../Redux/Slices/CurrencySlice';
 import { addChartofAcc, editCharofAcc } from '../../Redux/Slices/CharofAccSlice';
+import usePostData from '../../Apis/usePostData';
+import axios from 'axios';
+import { baseUrl } from '../../Apis/Baseurl';
+import useUpdateData from '../../Apis/useUpdate';
+import useGetData from '../../Apis/useGetData';
 
 const CharofAccForm = () => {
-    const id = uuidv4();
-
-    const { setId, getId } = useLayouData();
+  
+    const {postdata,postError}= usePostData('ChartOfAccount/Add')
+    const {data}= useGetData('ChartOfAccount/GetAll')
+    const {updateData} = useUpdateData('ChartOfAccount/Update');
+    const { setId, getId,token } = useLayouData();
     const [editMode, setEditMode] = useState(false)
-    const [editData, seteditData] = useState('')
+    const [editData, seteditData] = useState()
     const dispatch = useDispatch();
-    const chartofAccdata = useSelector((state) => state.charofacc)
-    const accgrpData = useSelector((state) => state.accgroup)
-
-
-    console.log(getId)
+ 
     useEffect(() => {
-        if (getId) {
+        if (getId && data) {
             setEditMode(true)
-            seteditData(chartofAccdata.find((item) => item.id === getId))
-        }
-
-
-    }, [setId])
-
+            seteditData(data?.find((item) => item?.id === getId))
+        } 
+    }, [data,setId]
+    )
 
     const initialValues = {
         accountCode: '',
         accountName: '',
-        accountType: null,
+        isTransactional: null,
         accountGroupId: '',
         description: '',
-        isTaxApplicable: null,
+        isTaxApplicable: '',
         parentAccountId: '',
         mainParentId: '',
-        createdByUserId: '',
-        createdByBranchId: '',
-        treeLevel: '',
+        // createdByUserId: null,
+        // createdByBranchId: null,
+        // treeLevel: null,
         isActive: null,
         isLedger: null,
         isAllBranchApplicable: null,
-        groupName: ''
-
-
-
+        accountGroupName:'hghgj'
     };
 
     const validationSchema = Yup.object().shape({
-        // symbol: Yup.number().typeError('enter number').required('required'),
-        // currentExchangeRate: Yup.number().typeError('enter number').required('required'),
-        // name: Yup.string().required('required'),
-        
-        // syPlacement: Yup.string().required('required'),
-
-        accountCode: Yup.number().typeError('invalid data').required('required'),
+ 
+        accountCode: Yup.string().typeError('invalid data').required('required'),
         accountName: Yup.string().required('required'),
         description: Yup.string().required('required'),
         isTaxApplicable: Yup.boolean().required('required'),
         isActive: Yup.boolean().required('required'),
         isLedger: Yup.boolean().required('required'),
         isAllBranchApplicable: Yup.boolean().required('required'),
-        accountType: Yup.boolean().required('required'),
-        accountGroupId:Yup.string().required('required')
-
-
-
-
+        isTransactional: Yup.boolean().required('required'),
+        accountGroupId:Yup.number().required('required')
     });
 
 
-    const handleSubmit = (values) => {
-
-        console.log(values)
-        const chatofaccId = { ...values, id: id };
-        console.log(chatofaccId)
-
+    const handleSubmit = async (values) => {
         if (editMode) {
-
-            const editedId = { ...values, id: getId }
-            console.log(editedId)
-            dispatch(editCharofAcc(editedId))
+            const response =  updateData(values)
+            console.log(values)
         }
         else {
-            dispatch(addChartofAcc(chatofaccId))
-        }
+            const response = await postdata(values );
+           console.log(values)
+          }
        
         dispatch(addMenu({ id: '', menu: 'chartofacc' }))
         setId('')
@@ -141,16 +124,17 @@ const CharofAccForm = () => {
                                         <Field
                                             className='border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr '
                                             name='accountGroupId'
-                                            type='text'
+                                           
                                             as='select'
                                             placeholder='Select Account Group'
 
                                         >
                                             <option disabled value='' selected >Select Account Group</option>
-                                            {accgrpData?.map((item, index) =>
+                                            {/* {accgrpData?.map((item, index) =>
                                             (
                                                 <option key={index} value={item.name}>{item.name}</option>
-                                            ))}
+                                            ))} */}
+                                            <option value={1}>1</option>
                                         </Field>
                                         <ErrorMessage component='div' className='text-[14px] text-redclr ' name='accountGroupId' />
                                     </div>
@@ -163,15 +147,16 @@ const CharofAccForm = () => {
                                         <Field
                                             className='border-[1px]  py-[8px] px-[12px] pr-[10px]  w-full outline-none border-borderclr '
                                             name='mainParentId'
-                                            type='text'
+                                          
                                             as='select'
                                             placeholder='Select Main Parent Account'
                                         >
                                             <option className='text-[#717378] text-[15px]' value='' disabled  >Select Main Parent Account</option>
-                                           {chartofAccdata.map((item,index)=>
+                                            <option value={1}> 1</option>
+                                           {/* {chartofAccdata.map((item,index)=>
                                            (
-                                            <option key={index} value={item?.accountName}>{item?.accountName}</option>
-                                           ))}
+                                            <option key={index} value={item?.AccountName}>{item?.accountName}</option>
+                                           ))} */}
                                         </Field>
                                         <ErrorMessage component='div' className='text-[14px] text-redclr ' name='mainParentId' />
                                     </div>
@@ -180,14 +165,15 @@ const CharofAccForm = () => {
                                         <Field
                                             className='border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr '
                                             name='parentAccountId'
-                                            type='text'
+                                          
                                             as='select'
                                         >
                                              <option className='text-[#717378] text-[15px]' value='' disabled  >Select  Parent Account</option>
-                                           {chartofAccdata.map((item,index)=>
+                                             <option value={1}>1</option>
+                                           {/* {chartofAccdata.map((item,index)=>
                                            (
                                             <option key={index} value={item?.accountName}>{item?.accountName}</option>
-                                           ))}
+                                           ))} */}
                                         </Field>
                                         <ErrorMessage component='div' className='text-[14px] text-redclr ' name='parentAccountId' />
                                     </div>
@@ -237,9 +223,6 @@ const CharofAccForm = () => {
                                 </div>
 
 
-
-
-
                             </div>
 
                             <div>
@@ -249,12 +232,12 @@ const CharofAccForm = () => {
                                     <div role="group">
                                             <label className='block py-[8px] font-[500] font-inter '>Is Transactional <span>*</span></label>
                                             <div>
-                                                <label className=""> <input className='mx-[5px]' type="radio"  name="accountType"  checked={formik.values.accountType === true} value={true}
-                                               onChange={() => formik.setFieldValue('accountType', true)} />Yes</label>
-                                                <label className="ml-[10px]"><input className='mx-[5px]' type="radio" name="accountType" checked={formik.values.accountType === false} value={false}
-                                                  onChange={() => formik.setFieldValue('accountType', false)} /> No</label>
+                                                <label className=""> <input className='mx-[5px]' type="radio"  name="isTransactional"  checked={formik.values.isTransactional === true} value={true}
+                                               onChange={() => formik.setFieldValue('isTransactional', true)} />Yes</label>
+                                                <label className="ml-[10px]"><input className='mx-[5px]' type="radio" name="isTransactional" checked={formik.values.isTransactional === false} value={false}
+                                                  onChange={() => formik.setFieldValue('isTransactional', false)} /> No</label>
                                             </div>
-                                            <ErrorMessage component="div" className='text-[14px] text-redclr 'name="accountType" />
+                                            <ErrorMessage component="div" className='text-[14px] text-redclr 'name="isTransactional" />
                                         </div>
                                     </div>
 
