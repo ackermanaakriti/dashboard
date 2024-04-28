@@ -17,18 +17,16 @@ const useGetData = (url) => {
               {headers : { Authorization:`Bearer ${token}` }
              
             })
-            setData(response.data.data)
-        
+            setData(response.data)
            }
          catch (err)
          {
           setErrror(err)
           }
         };
-
         fetchData();
 
-},[url,token,data]);
+},[url,token]);
 
   return {data,error}
 }

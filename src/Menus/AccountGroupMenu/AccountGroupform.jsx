@@ -10,6 +10,9 @@ import { addMenu } from '../../Redux/TopTabSlice';
 import { v4 as uuidv4 } from 'uuid';
 import { addCurrency, editCurrency } from '../../Redux/Slices/CurrencySlice';
 import { addaccountGroup, editAccountgrp } from '../../Redux/Slices/AccountGroupSlice';
+import usePostData from '../../Apis/usePostData';
+import useGetById from '../../Apis/useGetById';
+import useUpdateData from '../../Apis/useUpdate';
 
 const AccountGroupForm = () => {
   const id =uuidv4();
@@ -19,14 +22,17 @@ const AccountGroupForm = () => {
   const [editData,seteditData]= useState('')
   const dispatch = useDispatch();
   const currency = useSelector((state)=>state.accgroup)
+  const {postdata}= usePostData('AccountGroup/Add')
+  const {GiveId,dataByid} = useGetById('AccountGroup/GetById/')
+  const {updateData}= useUpdateData('AccountGroup/Update')
 
-  console.log(getId)
+  console.log(dataByid)
   useEffect(()=>
   {
     if(getId)
     {
       setEditMode(true)
-    seteditData(currency.find((item)=>item.id === getId))
+      GiveId(getId)
     }   
     console.log(editData)
    
@@ -47,26 +53,37 @@ const AccountGroupForm = () => {
   });
 
 
-  const handleSubmit = (values) => {
+  // const handleSubmit = (values) => {
    
-    const accgrpData = { ...values, id: id };
-    console.log(accgrpData)
+  //   const accgrpData = { ...values, id: id };
+  //   console.log(accgrpData)
    
+  //   if(editMode)
+  //   {
+  //     console.log(getId)
+  //     const editedId = {...values,id:getId}
+  //     console.log(editedId)
+  //     dispatch(editAccountgrp(editedId))
+  //   }
+  //   else 
+  //   {
+  //     dispatch(addaccountGroup(accgrpData))
+  //   }
+  //   addMenu({ id: "", menu: "fiscalyear" })
+  //   setId('')
+  //   // Perform form submission logic here
+  // };
+  const handleSubmit =(values)=>
+  {
     if(editMode)
     {
-      console.log(getId)
-      const editedId = {...values,id:getId}
-      console.log(editedId)
-      dispatch(editAccountgrp(editedId))
+    updateData(values)
     }
     else 
     {
-      dispatch(addaccountGroup(accgrpData))
+  postdata(values)
     }
-    addMenu({ id: "", menu: "fiscalyear" })
-    setId('')
-    // Perform form submission logic here
-  };
+  }
 
   return (
     <>
@@ -76,7 +93,7 @@ const AccountGroupForm = () => {
         </div>
 
         <Formik
-          initialValues={editMode ? editData : initialValues}
+          initialValues={editMode ? dataByid : initialValues}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
           enableReinitialize={true}

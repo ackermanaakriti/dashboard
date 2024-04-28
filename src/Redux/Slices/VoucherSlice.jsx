@@ -4,7 +4,7 @@ import storage from 'redux-persist/lib/storage';
 import { persistReducer, persistStore } from 'redux-persist';
 
 const VoucherSlice = createSlice({
-    name:'voucherD',
+    name:'voucherData',
     initialState:{
         voucherType:[],
        
@@ -34,7 +34,7 @@ const VoucherSlice = createSlice({
         addVoucher:(state,action)=>
         {
             state.voucher = [...state.voucher, action.payload]; 
-            console.log(action.payload)
+           
             
         },
         removeVoucher:(state,action)=>
@@ -42,6 +42,7 @@ const VoucherSlice = createSlice({
             const idToRemove = action.payload;
             state.voucher = state.voucher.filter(item => item?.uid !== idToRemove);
         },
+        
         editVoucher: (state, action) => {
             console.log(action.payload);
             state.voucher = state.voucher.map(item =>
@@ -51,18 +52,29 @@ const VoucherSlice = createSlice({
         
         addVoucherDetail: (state, action) => {
             
-            state.voucherDetail = [...state.voucherDetail, action.payload]; 
             console.log(action.payload)
+            state.voucherDetail = [...state.voucherDetail, action.payload]; 
+           
         },
         removeVoucherdetail:(state,action)=>
         {
             const idToRemove = action.payload;
             state.voucherDetail = state.voucherDetail.filter(item => item?.id !== idToRemove);
-        }
+        },
+        removeAllVoucherDetail:(state)=>
+        {
+           return state.voucherDetail = ''
+        },
+        editvoucherDetail: (state, action) => {
+            console.log(action.payload);
+            state.voucher = state.voucher.map(item =>
+                item?.id === action.payload.id ? { ...item, ...action.payload } : item
+            );
+        },
 
         
     } 
 })
 
-export const {addVoucherType,removeVoucherType,editvouchertype,addVoucher,addVoucherDetail,removeVoucherdetail,removeVoucher,editVoucher } = VoucherSlice.actions;
+export const {addVoucherType,removeVoucherType,editvoucherDetail,editvouchertype,addVoucher,addVoucherDetail,removeAllVoucherDetail,removeVoucherdetail,removeVoucher,editVoucher } = VoucherSlice.actions;
 export default VoucherSlice.reducer;

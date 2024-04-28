@@ -7,42 +7,42 @@ import { CancelButton, GreenButton } from '../../Components/GreenButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLayouData } from '../../Context/MainLayoutContext';
 import { addMenu } from '../../Redux/TopTabSlice';
-import { v4 as uuidv4 } from 'uuid';
-import { addCurrency, editCurrency } from '../../Redux/Slices/CurrencySlice';
+import usePostData from '../../Apis/usePostData';
+import useGetById from '../../Apis/useGetById';
+import useUpdateData from '../../Apis/useUpdate';
 
 const CurrencyForm = () => {
-  const id =uuidv4();
 
+  const {postdata}= usePostData('Currency/Add')
+  const {GiveId,dataByid} = useGetById('Currency/GetById/')
+  const {updateData} = useUpdateData('Currency/Update')
   const {setId,getId}= useLayouData();
   const [editMode,setEditMode]= useState(false)
-  const [editData,seteditData]= useState('')
   const dispatch = useDispatch();
-  const currency = useSelector((state)=>state.currency)
 
   console.log(getId)
-  useEffect(()=>
-  {
-    if(getId)
-    {
-      setEditMode(true)
-    seteditData(currency.find((item)=>item.id === getId))
-    }   
-    console.log(editData)
-   
-  },[setId])
 
+  useEffect(()=>
+  { if(getId)
+        {
+      setEditMode(true)
+      
+      console.log(editMode)
+
+       GiveId(getId) }},
+       [setId])
 
   const initialValues = {
     name: '',
     country: '',
-    symbol: '',
+    currencyCode: '',
     currentExchangeRate: '',
     syPlacement: '' ,
-    isLocal: ''
+    isLocalCurrency: ''
   };
 
   const validationSchema = Yup.object().shape({
-    symbol: Yup.number().typeError('enter number').required('required'),
+    currencyCode: Yup.number().typeError('enter number').required('required'),
     currentExchangeRate: Yup.number().typeError('enter number').required('required'),
     name: Yup.string().required('required'),
     country: Yup.string().required('required'),
@@ -51,24 +51,14 @@ const CurrencyForm = () => {
 
 
   const handleSubmit = (values) => {
-   
-    const currencyId = { ...values, id: id };
-    console.log(currencyId)
-   
+    console.log(editMode)
     if(editMode)
-    {
-      console.log(getId)
-      const editedId = {...values,id:getId}
-      console.log(editedId)
-      dispatch(editCurrency(editedId))
-    }
+    {updateData(values)
+    console.log(values)}
     else 
-    {
-      dispatch(addCurrency(currencyId))
-    }
+    { postdata(values)}
     addMenu({ id: "", menu: "fiscalyear" })
     setId('')
-    // Perform form submission logic here
   };
 
   return (
@@ -79,7 +69,7 @@ const CurrencyForm = () => {
         </div>
 
         <Formik
-          initialValues={editMode ? editData : initialValues}
+          initialValues={editMode ? dataByid : initialValues}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
           enableReinitialize={true}
@@ -112,10 +102,10 @@ const CurrencyForm = () => {
                     <label className='block py-[8px] font-[500] font-inter '>Symbol</label>
                     <Field
                       className='border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr '
-                      name='symbol'
+                      name='currencyCode'
                       type='text'
                     />
-                    <ErrorMessage component='div' className='text-[14px] text-redclr ' name='symbol' />
+                    <ErrorMessage component='div' className='text-[14px] text-redclr ' name='currencyCode' />
                   </div>
                   <div className='py-[8px]'>
                     <label className='block py-[8px] font-[500] font-inter '>Symbol Align</label>
@@ -149,10 +139,10 @@ const CurrencyForm = () => {
                                     <div role="group">
                                             <label className='block py-[8px] font-[500] font-inter '>Is Local Currency <span>*</span></label>
                                             <div>
-                                                <label className=""> <input className='mx-[5px]' type="radio"  name="isLocal"  checked={formik.values.isLocal === true} value={true}
-                                               onChange={() => formik.setFieldValue('isLocal', true)} />Yes</label>
-                                                <label className="ml-[10px]"><input className='mx-[5px]' type="radio" name="isLocal" checked={formik.values.isLocal === false} value={false}
-                                                  onChange={() => formik.setFieldValue('isLocal', false)} /> No</label>
+                                                <label className=""> <input className='mx-[5px]' type="radio"  name="isLocalCurrency"  checked={formik.values.isLocalCurrency === true} value={true}
+                                               onChange={() => formik.setFieldValue('isLocalCurrency', true)} />Yes</label>
+                                                <label className="ml-[10px]"><input className='mx-[5px]' type="radio" name="isLocalCurrency" checked={formik.values.isLocalCurrency === false} value={false}
+                                                  onChange={() => formik.setFieldValue('isLocalCurrency', false)} /> No</label>
                                             </div>
                                             <ErrorMessage component="div" className='text-[14px] text-redclr ' name="isAllBranchApplicable" />
                                         </div>

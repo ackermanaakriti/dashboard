@@ -11,6 +11,10 @@ import { useLayouData } from '../../Context/MainLayoutContext';
 import { addMenu } from '../../Redux/TopTabSlice';
 import { v4 as uuidv4 } from 'uuid';
 import { addVoucherType, editvouchertype } from '../../Redux/Slices/VoucherSlice';
+import useGetData from '../../Apis/useGetData';
+import usePostData from '../../Apis/usePostData';
+import useUpdateData from '../../Apis/useUpdate';
+import useGetById from '../../Apis/useGetById';
 
 const VouchertypeForm = () => {
   const id =uuidv4();
@@ -19,23 +23,26 @@ const VouchertypeForm = () => {
   const [editMode,setEditMode]= useState(false)
   const [editData,seteditData]= useState('')
   const dispatch = useDispatch();
-  const voucherTypedata = useSelector((state)=>state.voucherD.voucherType)
-
+const {postdata}= usePostData('VoucherType/Add')
+const {data}= useGetData('VoucherType/GetAll')
+const {updateData} = useUpdateData('VoucherType/Update')
+const {GiveId,dataByid}= useGetById('VoucherType/GetById/')
 
   useEffect(()=>
   {
-    if(getId)
+    if(getId )
     {
       setEditMode(true)
-    seteditData(voucherTypedata.find((item)=>item.id === getId))
+      GiveId(getId) 
     }   
 
    
-  },[setId])
+  },[setId,data])
+  console.log(dataByid)
 
 
   const initialValues = {
-    vouchername: '',
+    name: '',
     prefix: '',
     isSystemDefined: null,
     isEditable:null,
@@ -44,28 +51,27 @@ const VouchertypeForm = () => {
 
   const validationSchema = Yup.object().shape({
     prefix: Yup.string().typeError('').required('required'),
-    vouchername: Yup.string().typeError('').required('required'),
+    name: Yup.string().typeError('').required('required'),
     isSystemDefined: Yup.boolean().required('required'),
     isEditable: Yup.boolean().required('required'),
   });
 
 
   const handleSubmit = (values) => {
-   
- 
-    const VoucherTypeId = { ...values, id: id };
-  
-   
     if(editMode)
     {
      
-      const editedId = {...values,id:getId}
-      console.log(editedId)
-      dispatch(editvouchertype(editedId))
+      console.log(values)
+      updateData(values)
+      // const editedId = {...values,id:getId}
+      // console.log(editedId)
+      // dispatch(editvouchertype(editedId))
+
     }
     else 
     {
-      dispatch(addVoucherType(VoucherTypeId))
+      console.log(values)
+       postdata(values)
     }
     dispatch(addMenu({ id:'', menu:'vouchertype'}))
    
@@ -81,7 +87,7 @@ const VouchertypeForm = () => {
         </div>
 
         <Formik
-          initialValues={editMode ? editData : initialValues}
+          initialValues={editMode ? dataByid : initialValues}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
           enableReinitialize={true}
@@ -94,9 +100,9 @@ const VouchertypeForm = () => {
                   <Field
                     className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr '
                     type='text'
-                    name='vouchername'
+                    name='name'
                   />
-                  <ErrorMessage component='div' className='text-[14px] text-redclr' name='vouchername' />
+                  <ErrorMessage component='div' className='text-[14px] text-redclr' name='name' />
                 </div>
 
                 <div className='py-[8px]'>

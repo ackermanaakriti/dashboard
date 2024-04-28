@@ -1,39 +1,48 @@
 
 import React, { useEffect, useState } from 'react'
 import { RiDeleteBin5Fill } from "react-icons/ri";
-import { MdEdit } from "react-icons/md";
 import '../FiscalYearMenu/Fiscalyear.css'
 import { useDispatch, useSelector } from 'react-redux';
-import { removeFiscalYear ,editFiscalYear} from '../../Redux/Slices/FiscalYearSlice';
-import { addMenu } from '../../Redux/TopTabSlice';
 import { useLayouData } from '../../Context/MainLayoutContext';
-import { GreenButton } from '../../Components/GreenButton';
-import { TableButton } from '../../Components/GreenButton';
-import { removeVoucherdetail } from '../../Redux/Slices/VoucherSlice';
-const VoucherDetailTable = () => {
-  const { setId, getId, voucherId, setVoucherId } = useLayouData();
-  const dispatch = useDispatch();
-  const fiscaldata = useSelector((state) => state.voucherD.voucherDetail);
-  const [voucherDetaildata,setvoucherDetaildata] = useState([])
+import useDelData from '../../Apis/useDelData';
 
-  const handleDel = (index) => {
-    dispatch(removeVoucherdetail(index));
-  };
-  console.log(getId)
-  console.log(fiscaldata)
-  
+
+const VoucherDetailTable = ({dataByid,editData}) => {
+  const { setId, getId, } = useLayouData();
+  const dispatch = useDispatch();
+  const voucherDetail = useSelector((state) => state.voucherData?.voucherDetail);
+  const [voucherDetaildata,setvoucherDetaildata] = useState([])
+  const {Deldata} = useDelData('VoucherDetail/Delete/')
+  const {data,fetchData} = useDelData('VoucherDetail/GetAll')
+
+
+
 useEffect(()=>
 {
-   if(getId)
+  if(dataByid || editData )
   {
-   setvoucherDetaildata(fiscaldata?.filter(item=> item.uid === getId))
-  }
-  else 
-  {
-    setvoucherDetaildata(fiscaldata?.filter(item=> item.uid === voucherId))
+    setvoucherDetaildata(dataByid?.voucherDetailDTOs)
+    if(editData)
+    {
+      setvoucherDetaildata([...voucherDetail,...editData])
 
+    }
+  
   }
-},[getId,voucherId,fiscaldata])
+ },
+[getId,editData,dataByid])
+
+
+
+const handleDel = (id) => {
+  console.log('hello')
+  Deldata(id)
+
+//  const updateddata = voucherDetaildata.filter(item=>item.id !== id);
+
+//  setvoucherDetaildata(updateddata)
+//  console.log(updateddata)
+};
  
 
 
@@ -52,19 +61,20 @@ useEffect(()=>
           </thead>
           
             <tbody>
-              
+             
+             
               {voucherDetaildata?.map((item, index) => (
                 <tr key={index}>
-                  <td>{item.chartOfAccountId}</td>
-                  <td>{item.debitAmount}</td>
-                  <td>{item.creditAmount}</td>
-                  <td>{item.Narration}</td>
+                  <td>{item?.chartOfAccountId}</td>
+                  <td>{item?.debitAmount}</td>
+                  <td>{item?.creditAmount}</td>
+                  <td>{item?.narration}</td>
                   <td className=''>
                     <div className='flex gap-[25px] items-center justify-center'>
                       {/* <span onClick={()=>handleEdit(item.id)} className="text-PrimaryColor cursor-pointer">
                         <MdEdit />
                       </span> */}
-                      <span onClick={() => handleDel(item.id)} className='text-[#d13838] cursor-pointer'>
+                      <span onClick={() => handleDel(item?.id)} className='text-[#d13838] cursor-pointer'>
                         <RiDeleteBin5Fill />
                       </span>
                     </div>

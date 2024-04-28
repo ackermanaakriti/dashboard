@@ -31,7 +31,7 @@ const CharofAccForm = () => {
     useEffect(() => {
         if (getId && data) {
             setEditMode(true)
-            seteditData(data?.find((item) => item?.id === getId))
+            seteditData(data?.data?.find((item) => item?.id === getId))
         } 
     }, [data,setId]
     )
@@ -70,8 +70,8 @@ const CharofAccForm = () => {
 
     const handleSubmit = async (values) => {
         if (editMode) {
-            const response =  updateData(values)
-            console.log(values)
+          updateData(values)
+            
         }
         else {
             const response = await postdata(values );

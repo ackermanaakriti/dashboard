@@ -52,7 +52,7 @@ const FiscalYearTable = () => {
               </tr>
             </thead>
             <tbody>
-              {data?.map((item, index) => (
+              {data?.data?.map((item, index) => (
                 <tr key={index}>
                   <td>{item?.name}</td>
                   <td>{item?.code}</td>

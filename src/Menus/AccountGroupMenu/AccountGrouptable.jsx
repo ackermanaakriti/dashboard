@@ -9,22 +9,26 @@ import { useLayouData } from '../../Context/MainLayoutContext';
 import { GreenButton } from '../../Components/GreenButton';
 import { removeCurrency } from '../../Redux/Slices/CurrencySlice';
 import { removeAcctountgroup } from '../../Redux/Slices/AccountGroupSlice';
+import useGetData from '../../Apis/useGetData';
+import useDelData from '../../Apis/useDelData';
 
 const AccountGrpTable = () => {
   const {setId} = useLayouData();
   const dispatch = useDispatch()
   const currencydata = useSelector((state) => state.accgroup) 
+  const {data}= useGetData('AccountGroup/GetAll')
+  const {Deldata}= useDelData('AccountGroup/Delete/')
 
 
- 
+ console.log(data)
 
-  const handleDel =(index)=>
+  const handleDel =(id)=>
   {
-    dispatch(removeAcctountgroup(index))
+   Deldata(id)
   }
-  const handleEdit = (index) => {
-    setId(index)
-    dispatch(addMenu({ id:index, menu:'accform'}))
+  const handleEdit = (id) => {
+    setId(id)
+    dispatch(addMenu({ id:id, menu:'accform'}))
   };
 
   return (
@@ -49,7 +53,7 @@ const AccountGrpTable = () => {
               </tr>
             </thead>
             <tbody>
-              {currencydata?.map((item, index) => (
+              {data?.data?.map((item, index) => (
                 <tr key={index}>
                   <td>{item?.name}</td>
                   <td>{item?.code}</td>

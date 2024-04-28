@@ -17,11 +17,12 @@ const ChartofAccTable = () => {
   const dispatch = useDispatch()
   const {data}= useGetData('ChartOfAccount/GetAll')
   const {Deldata}= useDelData('ChartOfAccount/Delete/')
+  console.log(data)
 
   const handleDel = async(id)=>
   {
     const response = await Deldata(id);
-    console.log(response)
+
     
   }
   const handleEdit = (id) => {
@@ -54,7 +55,7 @@ const ChartofAccTable = () => {
               </tr>
             </thead>
             <tbody>
-              {data?.map((item, index) => (
+              {data?.data?.map((item, index) => (
                 <tr key={index}>
                   <td>{item?.accountName}</td>
                   <td>{item?.accountCode}</td>

@@ -33,14 +33,14 @@ const {postdata,postError}= usePostData('Branch/Create',)
     ShipAddress: "",
     BillContactInfo: "",
     IsHeadOffice: '',
-    logoFile:null,
-    Logo:null,
+    // logoFile:null,
+    // Logo:null,
     Code:'',
     // billLogoFile:null,
     IsActive : true,
     // BillLogo:null,
-    LogoRelatedFileUrl:null,
-    BillLogoRelatedFileUrl:null,
+    // LogoRelatedFileUrl:null,
+    // BillLogoRelatedFileUrl:null,
     Fax:''
 
   };
@@ -62,22 +62,14 @@ const {postdata,postError}= usePostData('Branch/Create',)
   }, [setId]);
 
   const handleSubmit = async (values) => {
-    // let datas = JSON.parse(localStorage.getItem("formData")) || [];
     if (editMode) {
-      // datas = datas.map((item) =>
-      //   item.id === editIdData.id ? { ...values, id: editIdData.id } : item
-      // );
+    
     } else {
       console.log(values)
       const response = await postdata(values );
-      console.log(response)
-      // values.id = Math.floor(Math.random() * 100) + 1;
-      // datas.push(values);
+     
 
     }
-
-    // localStorage.setItem("formData", JSON.stringify(datas));
-    // toast.success("Your Data is saved");
 
     dispatch(addMenu({ id: "", menu: "Table" }));
   };
