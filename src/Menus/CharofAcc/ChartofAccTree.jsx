@@ -18,7 +18,7 @@ const TreeNode = ({ node }) => {
   const [showForm, setShowForm] = useState(false);
   const [parentAccountId, setParentId] = useState('');
   const [mainParentId, setmainParentId] = useState('');
-  const [accountGroup, setAccountGroup] = useState('');
+  const [accountGroupId, setAccountGroup] = useState('');
 
   const handleToggle = () => {
     setIsExpanded(!isExpanded);
@@ -27,13 +27,11 @@ const TreeNode = ({ node }) => {
 
   const handleAddData = (node) => {
     setShowForm(!showForm);
-    // if (!node.children.length && node.children.accountGroup) {
+    if (node.children.length === 0 && node.children.accountGroup) {
 
-    //   setAccountGroupForChildren(node.childen, node.children.accountGroup);
-    // }
-    if (node.children && node.children.length === 0 && node.accountGroup) {
-      setAccountGroupForChildren(node, node.accountGroup);
+      setAccountGroupForChildren(node, node.children.accountGroup);
     }
+    
 
   };
 
@@ -55,6 +53,7 @@ const TreeNode = ({ node }) => {
           setmainParentId(node?.mainParentId);
           setParentId(node?.id);
           handleAddData(node);
+          setAccountGroup(node?.accountGroupId)
         }} className='text-PrimaryColor px-[8px] py-[2px] mr-[5px] text-[22px]' ><IoAddCircleOutline /></span>
 
       </div>
@@ -71,7 +70,7 @@ const TreeNode = ({ node }) => {
             <div className='h-full w-full flex justify-center items-center'>
               <div className='h-[600px] w-[50%]'>
                 <span onClick={()=>setShowForm(false)} className='float-right mt-[30px] mr-[20px] text-PrimaryColor text-[24px] cursor-pointer'><RxCross2/></span>
-                <CharofAccTreeForm node={node} mainParentId={mainParentId} parentAccountId={parentAccountId} />
+                <CharofAccTreeForm node={node} mainParentId={mainParentId} parentAccountId={parentAccountId} accountGroupId={accountGroupId} />
               </div>
             </div>
           </div>

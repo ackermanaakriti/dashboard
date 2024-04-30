@@ -18,7 +18,8 @@ import { baseUrl } from '../../Apis/Baseurl';
 import useUpdateData from '../../Apis/useUpdate';
 import useGetData from '../../Apis/useGetData';
 
-const CharofAccTreeForm = ({node,mainParentId,parentAccountId,}) => {
+const CharofAccTreeForm = ({node,mainParentId,parentAccountId,accountGroupId}) => {
+    console.log(accountGroupId)
   
  
   
@@ -43,18 +44,18 @@ const CharofAccTreeForm = ({node,mainParentId,parentAccountId,}) => {
     const initialValues = {
         accountCode: '',
         accountName: '',
-        isTransactional: null,
+        isTransactional: true,
         accountGroupId: '',
         description: '',
-        isTaxApplicable: '',
+        isTaxApplicable: true,
         parentAccountId: '',
         mainParentId: '',
         // createdByUserId: null,
         // createdByBranchId: null,
         // treeLevel: null,
-        isActive: null,
-        isLedger: null,
-        isAllBranchApplicable: null,
+        isActive: true,
+        isLedger: true,
+        isAllBranchApplicable: true,
         accountGroupName:'hghgj',
         
        
@@ -138,10 +139,13 @@ const CharofAccTreeForm = ({node,mainParentId,parentAccountId,}) => {
                                             placeholder='Select Account Group'
 
                                         >
-                                            <option disabled value='' selected >Select Account Group</option>
+                                            {/* <option disabled value=''  >Select Account Group</option> */}
                                             {data?.data?.map((item, index) =>
                                             (
-                                                <option key={index} value={item.id}>{item.name}</option>
+                                                <>
+                                                {item.id === accountGroupId? <option selected value={item.id}>{item.name}</option> : <option value={item.id}>{item.name}</option>}
+                                                
+                                                </>
                                             ))}
                                             
                                         </Field>
