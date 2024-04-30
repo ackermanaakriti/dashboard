@@ -17,7 +17,7 @@ const ChartofAccTable = () => {
   const dispatch = useDispatch()
   const {data}= useGetData('ChartOfAccount/GetAll')
   const {Deldata}= useDelData('ChartOfAccount/Delete/')
-  console.log(data)
+
 
   const handleDel = async(id)=>
   {
@@ -42,6 +42,7 @@ const ChartofAccTable = () => {
           <div className='mt-[20px]' onClick={()=>dispatch(addMenu({ id:'', menu:'chartofaccForm'}))}>
             <GreenButton className='bg-PrimaryColor px-[15px] py-[4px] text-white font-inter' text='Add New +' />
           </div>
+          <div className="table--wrapper h-[500px] overflow-y-auto">
           <table className="shadow-lg">
             <thead>
               <tr>
@@ -82,6 +83,7 @@ const ChartofAccTable = () => {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       </div>
     </>

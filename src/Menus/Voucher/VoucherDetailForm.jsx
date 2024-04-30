@@ -15,7 +15,7 @@ import { editAccountgrp } from '../../Redux/Slices/AccountGroupSlice';
 
 
 
-const VoucherDetailform = ({onDataSubmit,dataByid}) => {
+const VoucherDetailform = ({onDataSubmit,dataByid,setDetailformError}) => {
   const fiscaldata = useSelector((state) => state.voucherData.voucherDetail);
 
 
@@ -104,6 +104,7 @@ const VoucherDetailform = ({onDataSubmit,dataByid}) => {
   // };
 
   const handleSubmit = (values) => {
+    setDetailformError()
    
        const VoucherDataId = { ...values ,debitAmount:isamount ? values.Amount : 0,   creditAmount: isamount ? 0 : values.Amount,};
 
@@ -124,7 +125,7 @@ const VoucherDetailform = ({onDataSubmit,dataByid}) => {
 
     }
   
-    // Perform form submission logic here
+   
   };
   return (
     <>

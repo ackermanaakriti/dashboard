@@ -24,7 +24,7 @@ const {postdata,postError}= usePostData('Branch/Create',)
   const dataLocal = JSON.parse(localStorage.getItem("formData"));
   const initialValues = {
     Name: "",
-    ParentId: "",
+    ParentId: 1,
     RegestrationNo: "",
     ContactNumber: "",
     Pan: "",
@@ -66,9 +66,7 @@ const {postdata,postError}= usePostData('Branch/Create',)
     
     } else {
       console.log(values)
-      const response = await postdata(values );
-     
-
+      await postdata(values );
     }
 
     dispatch(addMenu({ id: "", menu: "Table" }));

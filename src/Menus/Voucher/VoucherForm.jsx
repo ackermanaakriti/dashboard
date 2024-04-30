@@ -18,6 +18,7 @@ const Voucher = () => {
   const voucherType = useSelector((state)=>state.voucherData.voucherType)
   const {postdata} = usePostData('Voucher/UpSert')
   const {GiveId,dataByid}= useGetById('Voucher/GetById/')
+  const [detailformError,setDetailformError]= useState()
 
 
   const [vouhcerDetailData,setVoucherDetailData]= useState()  //state to hold voucherformDetail data
@@ -172,7 +173,7 @@ const Voucher = () => {
 
          </Formik>
         <div className='relative'>
-        <VoucherDetailform onDataSubmit={setVoucherDetailData} dataByid={dataByid}/>
+        <VoucherDetailform onDataSubmit={setVoucherDetailData} dataByid={dataByid} setDetailformError={setDetailformError}/>
         </div>
  </div>
     </>

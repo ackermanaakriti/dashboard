@@ -20,15 +20,12 @@ const CurrencyForm = () => {
   const [editMode,setEditMode]= useState(false)
   const dispatch = useDispatch();
 
-  console.log(getId)
+  
 
   useEffect(()=>
   { if(getId)
         {
       setEditMode(true)
-      
-      console.log(editMode)
-
        GiveId(getId) }},
        [setId])
 

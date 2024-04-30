@@ -13,7 +13,7 @@ const Footer = () => {
   }
   return (
     <>
-      <div className="footer relative bg-SecondaryColor">
+      <div className="footer fixed bg-SecondaryColor">
         <div className="flex justify-between items-center h-[100%]">
           <div className="flex items-center  px-[20px] firstdiv gap-[15px]  bg-PrimaryColor">
             <p className="text-white text-[15px] text-center font-inter">

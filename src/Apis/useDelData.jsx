@@ -11,7 +11,10 @@ const useDelData = (url) => {
       console.log(id)
        try 
        {
+        debugger;
         const response = await axios.post(`${baseUrl}${url}${id}`,{headers:{Authorization:` Bearer ${token}`}})
+       
+
         console.log(response)
        }
        catch(err)
