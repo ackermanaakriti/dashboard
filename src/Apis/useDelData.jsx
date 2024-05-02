@@ -6,24 +6,26 @@ import { useLayouData } from '../Context/MainLayoutContext'
 const useDelData = (url) => {
     const {token} = useLayouData()
 
-    const Deldata =async(id)=>
-    {
-      console.log(id)
-       try 
-       {
-        debugger;
-        const response = await axios.post(`${baseUrl}${url}${id}`,{headers:{Authorization:` Bearer ${token}`}})
-       
+    const Deldata = async (id) => {
+       console.log(id)
+       try {
+          const response = await axios.post(
+             `${baseUrl}${url}${id}`,
+             null, // Pass null as the data parameter since it's not needed
+             {
+                headers: {
+                   Authorization: `Bearer ${token}`
+                }
+             }
+          );
 
-        console.log(response)
-       }
-       catch(err)
-       {
-        console.log(err)
+          console.log(response);
+       } catch(err) {
+          console.log(err);
        }
     }
 
-  return {Deldata}
+    return { Deldata };
 }
 
-export default useDelData
+export default useDelData;
