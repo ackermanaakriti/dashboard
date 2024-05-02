@@ -18,8 +18,8 @@ export const MenuData =[
         icon: <LuMenuSquare className='text-[28px] text-[#4a528f]'/>,
         submenu:[
             {
-                name:'Add Branch',
-                slug:'addbranch'
+                name:'Company',
+                slug:'company'
             },
             {
                 name:'Review Branch',
