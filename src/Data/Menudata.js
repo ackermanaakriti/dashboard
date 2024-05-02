@@ -19,7 +19,7 @@ export const MenuData =[
         submenu:[
             {
                 name:'Company',
-                slug:'company'
+                slug:'companytable'
             },
             {
                 name:'Review Branch',
@@ -57,12 +57,12 @@ export const MenuData =[
         icon: <LuMenuSquare className='text-[28px] text-[#36925c]'/>,
         submenu:[]
     },
-    {
-        menu:'tree', 
-        slug:'treeview',   
-        icon: <LuMenuSquare className='text-[28px] text-[#36925c]'/>,
-        submenu:[]
-    },
+    // {
+    //     menu:'tree', 
+    //     slug:'treeview',   
+    //     icon: <LuMenuSquare className='text-[28px] text-[#36925c]'/>,
+    //     submenu:[]
+    // },
     {
         menu:'Account Group', 
         slug:'Accgrp',   

@@ -73,30 +73,27 @@ const BranchForm = () => {
   useEffect(() => {
     if (getId) {
       console.log(getId);
-    } 
-    return () => {
-      setId("");
-    };
-  }, [setId]);
+    } }, [setId]);
 
   const handleSubmit = async (values) => {
     if (editMode) {
     } 
     else {
       console.log(values)
-      await postdata(values );
       try 
-      {
-          const response = await axios.post(`${baseUrl}Branch/Create`,values,logoFile,billLogoFile,
-      {
-          headers : { Authorization:`Bearer ${token}`},  
-      })
-          console.log(response)
-      }
-      catch (err)
-      {
-        console.log(err)
-      }
+        {
+            const response = await axios.post(`${baseUrl}Branch/Create`,values,logoFile,billLogoFile,
+        {
+            headers : { Authorization:`Bearer ${token}`},  
+        })
+         
+            console.log(response)
+        }
+        catch (err)
+        {
+   
+          console.log(err)
+        }
      }
 
     dispatch(addMenu({ id: "", menu: "Table" }));
@@ -115,11 +112,9 @@ const BranchForm = () => {
   return (
     <div className="Branchform ">
       <ToastContainer />
-
       <div className="pb-[25px]">
         <h3 className="font-inter font-semibold text-[30px]">
           {editMode ? 'Update Branch' : 'Add Branch'}
-
         </h3>
       </div>
 
@@ -134,11 +129,8 @@ const BranchForm = () => {
             <div className="grid grid-cols-2 gap-[90px]">
               <div>
                 <div className="py-[5px]">
-                  <label className="block">
-                    Name <span>*</span>
-                  </label>
-                  <Field
-                    type="text"
+                  <label className="block">Name <span>*</span></label>
+                  <Field type="text"
                     name="Name"
                     className="w-[100%]"
                     placeholder=""
@@ -270,10 +262,6 @@ const BranchForm = () => {
                   </div>
                 </div>
 
-
-
-
-
                 <div className="py-[6px]">
                   <label className="block">
                     Address <span>*</span>
@@ -304,7 +292,7 @@ const BranchForm = () => {
                       name="logoFile"
                       className="w-[100%] opacity-0  absolute inset-0 "
                       id="logoFile"
-                      onChange={(e)=>setLogofile(e.target.value)}
+                      onChange={(e)=>setLogofile(e.target.files[0])}
                       onKeyDown={(event) =>
                         handleEnterKeyPress(event, "btnsubmit")
                       }
@@ -409,7 +397,7 @@ const BranchForm = () => {
                       name="billLogoFile"
                       className="w-[100%] opacity-0  absolute inset-0 "
                       id="billLogoFile"
-                      onChange={(e)=>setbillLogofile(e.target.value)}
+                      onChange={(e)=>setbillLogofile(e.target.files[0])}
                       onKeyDown={(event) =>
                         handleEnterKeyPress(event, "btnsubmit")
                       }

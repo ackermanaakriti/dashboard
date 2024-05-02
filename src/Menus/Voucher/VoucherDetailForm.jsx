@@ -163,7 +163,7 @@ const VoucherDetailform = ({onDataSubmit,dataByid,setDetailformError}) => {
                   </div>
                   <div className="py-[8px]">
                     <div role="group">
-                      <label className='block py-[8px] font-[500] font-inter '> Amount <span>*</span></label>
+                      <label className='block py-[8px] font-[500] font-inter '> Type <span>*</span></label>
                       <div>
                         <label className=""> <input className='mx-[5px]' type="radio" name="isAmount"  value={true}
                           onChange={() => setisAmount(true)} />Debit</label>

@@ -19,6 +19,8 @@ import VoucherTable from "../Menus/Voucher/VoucherTable";
 import TreeView from "../Menus/CharofAcc/ChartofAccTree";
 import TreeViewChart from "../Menus/CharofAcc/ChartofAccTree";
 import Company from "../Menus/Company";
+import CompanyForm from "../Menus/BranchMenu/Company/CompanyForm";
+import CompanyTable from "../Menus/BranchMenu/Company/CompanyTable";
 
 
 export const MenuComponentMap = {
@@ -39,7 +41,8 @@ export const MenuComponentMap = {
     voucher : <VoucherTable/>,
     voucherForm : <Voucher/>,
     treeview: <TreeViewChart/>,
-    company: <Company/>
+    companytable: <CompanyTable/>,
+    companyform : <CompanyForm/>
 
 
    
