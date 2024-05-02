@@ -44,8 +44,8 @@ export const MenuComponentMap = {
     voucherForm : <Voucher/>,
     treeview: <TreeViewChart/>,
     companytable: <CompanyTable/>,
-    companyform : <CompanyForm/>
-
+    companyform : <CompanyForm/>,
+    employee:<EmployeeForm/>
 
    
   };

@@ -21,7 +21,7 @@ const CompanyForm = () => {
  
   const dispatch = useDispatch();
   const [editMode, setEditMode] = useState(false);
-  const [logoFile,setLogofile]= useState('');
+  const [logo,setLogofile]= useState('');
   const  [billLogoFile,setbillLogofile]= useState('')
 
 
@@ -39,9 +39,9 @@ const CompanyForm = () => {
     BillContactInfo: "",
   
     // logoFile:null,
-    LogoFile:null,
+
     Code:'43543',
-    billLogoFile:null,
+    
     IsActive : true,
     // BillLogo:null,
     // LogoRelatedFileUrl:null,
@@ -55,7 +55,7 @@ const CompanyForm = () => {
     // Code: Yup.string().required("required"),
     RegestrationNo: Yup.string().typeError("invalid data").required("required"),
     Pan: Yup.string().typeError("invalid data").required("required"),
-     ContactNumber: Yup.string().typeError("invalid data").min(10, "ContactNumber number should be  between 10 to 11  characters ").required("required"),
+    //  ContactNumber: Yup.string().typeError("invalid data").min(10, "ContactNumber number should be  between 10 to 11  characters ").required("required"),
     // billadd: Yup.string().required("required"),
     // shipadd: Yup.string().required("required"),
     // billContactNumber: Yup.string().required("required"),
@@ -76,17 +76,34 @@ const CompanyForm = () => {
       setEditMode(true)
     } }, [setId]);
 
-  const handleSubmit =  (values) => {
-    console.log(values)
-    if (editMode) {
-    } 
-    else {
-
-       postdata(values );
-     }
-
-    dispatch(addMenu({ id: "", menu: "companytable" }));
-  };
+    const handleSubmit = async (values) => {
+        const formData = new FormData();
+      
+        // Append all form fields to formData
+        Object.keys(values).forEach((key) => {
+          formData.append(key, values[key]);
+        });
+      
+        // Append files to formData
+        formData.append("logoFile", logo);
+    
+      
+        try {
+          const response = await axios.post(`${baseUrl}Company/Create`, formData, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "multipart/form-data",
+            },
+          });
+      
+          console.log(response);
+        } catch (error) {
+          console.error(error);
+        }
+      
+        dispatch(addMenu({ id: "", menu: "companytable" }));
+      };
+      
 
   const handleEnterKeyPress = (event, nextField) => {
     if (event.key === "Enter") {

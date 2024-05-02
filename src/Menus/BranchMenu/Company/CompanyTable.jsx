@@ -63,10 +63,10 @@ const CompanyTable = () => {
               <table className="shadow-lg">
                 <thead>
                   <tr>
-                    <th> Branch name</th>
+                    <th> Company name</th>
                     <th> Code</th>
                     <th> Reg.no</th>
-                    <th> Head Office</th>
+                    <th> is Active</th>
                     <th> Action</th>
                   </tr>
                 </thead>

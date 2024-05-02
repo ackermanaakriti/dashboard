@@ -19,6 +19,7 @@ const BranchForm = () => {
   const { getId, setId,token, } = useLayouData();
  const {postdata,postError}= usePostData('Branch/Create',)
  const {data} = useGetData('Branch/GetParent')
+const [companyData,setCompanyData]= useState('')
   const dispatch = useDispatch();
   const [editMode, setEditMode] = useState(false);
   const [logoFile,setLogofile]= useState('');
@@ -73,7 +74,27 @@ const BranchForm = () => {
   useEffect(() => {
     if (getId) {
       console.log(getId);
-    } }, [setId]);
+    }
+      const fetchData = async ()=>
+      {
+         try {
+             const response =  await axios.get(`${baseUrl}Company/GetAll`,
+               {headers : { Authorization:`Bearer ${token}` }
+              
+             })
+             setCompanyData(response.data)
+             console.log(response.data)
+            }
+          catch (err)
+          {
+           console.log(err)
+           }
+         };
+         fetchData();
+ 
+
+
+     }, [setId]);
 
   const handleSubmit = async (values) => {
     if (editMode) {
@@ -128,6 +149,7 @@ const BranchForm = () => {
           <Form onSubmit={formik.handleSubmit}>
             <div className="grid grid-cols-2 gap-[90px]">
               <div>
+                <div className="grid grid-cols-2 gap-[30px]">
                 <div className="py-[5px]">
                   <label className="block">Name <span>*</span></label>
                   <Field type="text"
@@ -139,6 +161,29 @@ const BranchForm = () => {
                     }
                   />
                   <ErrorMessage component="div" className="error" name="Name" />
+                </div>
+
+                <div className="py-[5px]">
+                  <label className="block">Company <span>*</span></label>
+                  <Field type="text"
+                    name="Name"
+                    as='select'
+                    className="w-[100%] border-[1px] px-[8px] py-[8px] outline-0 border-[#c0d3e5"
+                    placeholder=""
+                    onKeyDown={(event) =>
+                      handleEnterKeyPress(event, "ParentId")
+                    }
+                  >
+                    <option disabled value="">
+                        select company
+                      </option>
+                      {companyData?.data?.map((item, index) => (
+                        <option key={item?.id} value={item?.id}>{item?.name}</option>
+                      ))}
+
+                  </Field>
+                  <ErrorMessage component="div" className="error" name="Name" />
+                </div>
                 </div>
                 <div className="flex  justify-between items-center">
                   <div className="py-[5px]">

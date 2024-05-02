@@ -33,22 +33,23 @@ const CurrencyForm = () => {
     name: '',
     country: '',
     currencyCode: '',
-    currentExchangeRate: '',
-    syPlacement: '' ,
+    currentExchangeRate: 500,
+    isActive: true ,
     isLocalCurrency: ''
   };
 
   const validationSchema = Yup.object().shape({
-    currencyCode: Yup.number().typeError('enter number').required('required'),
-    currentExchangeRate: Yup.number().typeError('enter number').required('required'),
-    name: Yup.string().required('required'),
-    country: Yup.string().required('required'),
-    syPlacement: Yup.string().required('required'),
+    // currencyCode: Yup.number().typeError('enter number').required('required'),
+    // currentExchangeRate: Yup.number().typeError('enter number').required('required'),
+    // name: Yup.string().required('required'),
+    // country: Yup.string().required('required'),
+    // syPlacement: Yup.string().required('required'),
   });
 
 
   const handleSubmit = (values) => {
-    console.log(editMode)
+    
+    console.log(values)
     if(editMode)
     {updateData(values)
     console.log(values)}
