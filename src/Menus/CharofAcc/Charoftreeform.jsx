@@ -18,16 +18,20 @@ import { baseUrl } from '../../Apis/Baseurl';
 import useUpdateData from '../../Apis/useUpdate';
 import useGetData from '../../Apis/useGetData';
 
-const CharofAccForm = () => {
+const CharofAccTreeForm = ({node,mainParentId,parentAccountId,accountGroupId}) => {
+    console.log(accountGroupId)
+  
+ 
   
     const {postdata,postError}= usePostData('ChartOfAccount/Add')
-    const {data}= useGetData('ChartOfAccount/GetAll')
+    // const {data}= useGetData('ChartOfAccount/GetAll')
     const {updateData} = useUpdateData('ChartOfAccount/Update');
-    const {datas}= useGetData('AccountGroup/GetAll')
+    const {data}= useGetData('AccountGroup/GetAll')
     const { setId, getId,token } = useLayouData();
     const [editMode, setEditMode] = useState(false)
     const [editData, seteditData] = useState()
     const dispatch = useDispatch();
+
  
     useEffect(() => {
         if (getId && data) {
@@ -40,19 +44,21 @@ const CharofAccForm = () => {
     const initialValues = {
         accountCode: '',
         accountName: '',
-        isTransactional: null,
+        isTransactional: true,
         accountGroupId: '',
         description: '',
-        isTaxApplicable: '',
+        isTaxApplicable: true,
         parentAccountId: '',
         mainParentId: '',
         // createdByUserId: null,
         // createdByBranchId: null,
         // treeLevel: null,
-        isActive: null,
-        isLedger: null,
-        isAllBranchApplicable: null,
-        accountGroupName:'hghgj'
+        isActive: true,
+        isLedger: true,
+        isAllBranchApplicable: true,
+        accountGroupName:'hghgj',
+        
+       
     };
 
     const validationSchema = Yup.object().shape({
@@ -65,14 +71,22 @@ const CharofAccForm = () => {
         isLedger: Yup.boolean().required('required'),
         isAllBranchApplicable: Yup.boolean().required('required'),
         isTransactional: Yup.boolean().required('required'),
-        accountGroupId:Yup.number().required('required')
+        // accountGroupId:Yup.number().required('required')
     });
 
 
     const handleSubmit = async (values) => {
+        
+        const treeData = { ...values,
+            mainParentId: mainParentId,
+          
+            parentAccountId: parentAccountId? parentAccountId : 0}
+       
+        console.log(treeData)
+       
         if (editMode) {
           updateData(values)  }
-        else { postdata(values ); }
+        else { postdata(treeData ); }
        
         dispatch(addMenu({ id: '', menu: 'chartofacc' }))
         setId('')
@@ -81,9 +95,9 @@ const CharofAccForm = () => {
 
     return (
         <>
-            <div className='px-[50px]'>
+            <div className='py-[20px] px-[80px] bg-[#def1ed] my-[20px] shadow-lg'>
                 <div>
-                    <h2 className='font-inter font-semibold text-[30px]'> {editMode ? 'Update' : 'Add'} Chart of Account</h2>
+                    <h2 className='font-inter font-semibold text-[20px]'> {editMode ? 'Update' : 'Add'} Chart of Account</h2>
                 </div>
 
                 <Formik
@@ -93,7 +107,7 @@ const CharofAccForm = () => {
                     enableReinitialize={true}
                 >
                     {(formik) => (
-                        <Form className='grid grid-cols-2 gap-[90px]'>
+                        <Form className='grid grid-cols-2 gap-[90px] relative'>
                             <div className=''>
                                 <div className='py-[8px]'>
                                     <label className='block py-[5px] font-[500] font-inter '>Name</label>
@@ -125,57 +139,19 @@ const CharofAccForm = () => {
                                             placeholder='Select Account Group'
 
                                         >
-                                            <option disabled value='' selected >Select Account Group</option>
-                                            {/* {accgrpData?.map((item, index) =>
+                                            {/* <option disabled value=''  >Select Account Group</option> */}
+                                            {data?.data?.map((item, index) =>
                                             (
-                                                <option key={index} value={item.name}>{item.name}</option>
-                                            ))} */}
-                                            <option value={1}>1</option>
+                                                <>
+                                                {item.id === accountGroupId? <option selected value={item.id}>{item.name}</option> : <option value={item.id}>{item.name}</option>}
+                                                
+                                                </>
+                                            ))}
+                                            
                                         </Field>
                                         <ErrorMessage component='div' className='text-[14px] text-redclr ' name='accountGroupId' />
                                     </div>
                                 </div>
-
-
-                                <div className='grid grid-cols-2 gap-[20px]'>
-                                    <div className='py-[8px]'>
-                                        <label className='block py-[8px] font-[500] font-inter '>Main Parent Account </label>
-                                        <Field
-                                            className='border-[1px]  py-[8px] px-[12px] pr-[10px]  w-full outline-none border-borderclr '
-                                            name='mainParentId'
-                                          
-                                            as='select'
-                                            placeholder='Select Main Parent Account'
-                                        >
-                                            <option className='text-[#717378] text-[15px]' value='' disabled  >Select Main Parent Account</option>
-                                            <option value={1}> 1</option>
-                                           {/* {chartofAccdata.map((item,index)=>
-                                           (
-                                            <option key={index} value={item?.AccountName}>{item?.accountName}</option>
-                                           ))} */}
-                                        </Field>
-                                        <ErrorMessage component='div' className='text-[14px] text-redclr ' name='mainParentId' />
-                                    </div>
-                                    <div className='py-[8px]'>
-                                        <label className='block py-[8px] font-[500] font-inter '>Parent Account</label>
-                                        <Field
-                                            className='border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr '
-                                            name='parentAccountId'
-                                          
-                                            as='select'
-                                        >
-                                             <option className='text-[#717378] text-[15px]' value='' disabled  >Select  Parent Account</option>
-                                             <option value={1}>1</option>
-                                           {/* {chartofAccdata.map((item,index)=>
-                                           (
-                                            <option key={index} value={item?.accountName}>{item?.accountName}</option>
-                                           ))} */}
-                                        </Field>
-                                        <ErrorMessage component='div' className='text-[14px] text-redclr ' name='parentAccountId' />
-                                    </div>
-                                </div>
-
-
                                 <div className='grid grid-cols-2 gap-[20px]'>
                                     <div className="py-[6px]">
                                     <div role="group">
@@ -271,7 +247,7 @@ const CharofAccForm = () => {
                                 </div>
 
 
-                                <div className=' mt-[40px] flex gap-[20px] absolute bottom-[2em] right-[5em]' >
+                                <div className=' mt-[40px] flex gap-[50px] absolute bottom-[2em] right-[5em]' >
                                     <button onClick={() => dispatch(addMenu({ id: '', menu: 'chartofacc' }))} className=' border-[1px] border-redclr px-[15px] py-[4px] text-redclr font-inter'  type='button'>Cancel</button>
 
                                     <button className='bg-PrimaryColor px-[15px] py-[4px] text-white font-inter' type='submit' >
@@ -288,4 +264,4 @@ const CharofAccForm = () => {
     )
 }
 
-export default CharofAccForm;
+export default CharofAccTreeForm;

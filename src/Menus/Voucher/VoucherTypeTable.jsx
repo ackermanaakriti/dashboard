@@ -10,22 +10,28 @@ import { GreenButton } from '../../Components/GreenButton';
 import { removeCurrency } from '../../Redux/Slices/CurrencySlice';
 import { TableButton } from '../../Components/GreenButton';
 import { removeVoucherType } from '../../Redux/Slices/VoucherSlice';
+import useGetData from '../../Apis/useGetData';
+import useDelData from '../../Apis/useDelData';
+import { baseUrl } from '../../Apis/Baseurl';
+import axios from 'axios';
 
 const VoucherTypeTable = () => {
   const {setId} = useLayouData();
   const dispatch = useDispatch()
-  const vouchertypeData = useSelector((state) => state.voucherD.voucherType) 
+  const {data}= useGetData('VoucherType/GetAll')
+  console.log(data)
+  const {Deldata}= useDelData('VoucherType/Delete/')
 
 
  
 
-  const handleDel =(index)=>
+  const handleDel =(id)=>
   {
-    dispatch(removeVoucherType(index))
+   Deldata(id)
   }
-  const handleEdit = (index) => {
-    setId(index)
-    dispatch(addMenu({ id:index, menu:'vouchertypeform'}))
+  const handleEdit = (id) => {
+    setId(id)
+    dispatch(addMenu({ id:id, menu:'vouchertypeform'}))
   };
 
   return (
@@ -52,9 +58,9 @@ const VoucherTypeTable = () => {
               </tr>
             </thead>
             <tbody>
-              {vouchertypeData?.map((item, index) => (
+              {data?.data?.map((item, index) => (
                 <tr key={index}>
-                  <td>{item?.vouchername}</td>
+                  <td>{item?.name}</td>
                   <td>{item?.prefix}</td>
                   <td>
                     {item?.isEditable ? (<TableButton className='bg-PrimaryColor rounded-[20px] px-[12px] py-[5px] text-white' text='Yes'/>)

@@ -9,22 +9,23 @@ import { useLayouData } from '../../Context/MainLayoutContext';
 import { GreenButton } from '../../Components/GreenButton';
 import { removeCurrency } from '../../Redux/Slices/CurrencySlice';
 import { TableButton } from '../../Components/GreenButton';
+import useGetData from '../../Apis/useGetData';
+import useDelData from '../../Apis/useDelData';
 
 const CurrencyTable = () => {
   const {setId} = useLayouData();
   const dispatch = useDispatch()
   const currencydata = useSelector((state) => state.currency) 
+  const {data}= useGetData('Currency/GetAll')
+  const {Deldata} = useDelData('Currency/Delete/')
 
-
- 
-
-  const handleDel =(index)=>
+  const handleDel =(id)=>
   {
-    dispatch(removeCurrency(index))
+   Deldata(id)
   }
-  const handleEdit = (index) => {
-    setId(index)
-    dispatch(addMenu({ id:index, menu:'currencyform'}))
+  const handleEdit = (id) => {
+    setId(id)
+    dispatch(addMenu({ id:id, menu:'currencyform'}))
   };
 
   return (
@@ -51,11 +52,11 @@ const CurrencyTable = () => {
               </tr>
             </thead>
             <tbody>
-              {currencydata?.map((item, index) => (
+              {data?.data?.map((item, index) => (
                 <tr key={index}>
                   <td>{item?.name}</td>
                   <td>{item?.country}</td>
-                  <td>{item?.symbol}</td>
+                  <td>{item?.currencyCode}</td>
                   <td>{item?.currentExchangeRate}</td>
                   <td>
                     {item?.isLocal ? (<TableButton className='bg-PrimaryColor rounded-[20px] px-[12px] py-[5px] text-white' text='Yes'/>)

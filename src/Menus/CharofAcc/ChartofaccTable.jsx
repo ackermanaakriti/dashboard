@@ -18,10 +18,11 @@ const ChartofAccTable = () => {
   const {data}= useGetData('ChartOfAccount/GetAll')
   const {Deldata}= useDelData('ChartOfAccount/Delete/')
 
+
   const handleDel = async(id)=>
   {
     const response = await Deldata(id);
-    console.log(response)
+
     
   }
   const handleEdit = (id) => {
@@ -41,6 +42,7 @@ const ChartofAccTable = () => {
           <div className='mt-[20px]' onClick={()=>dispatch(addMenu({ id:'', menu:'chartofaccForm'}))}>
             <GreenButton className='bg-PrimaryColor px-[15px] py-[4px] text-white font-inter' text='Add New +' />
           </div>
+          <div className="table--wrapper h-[500px] overflow-y-auto">
           <table className="shadow-lg">
             <thead>
               <tr>
@@ -54,7 +56,7 @@ const ChartofAccTable = () => {
               </tr>
             </thead>
             <tbody>
-              {data?.map((item, index) => (
+              {data?.data?.map((item, index) => (
                 <tr key={index}>
                   <td>{item?.accountName}</td>
                   <td>{item?.accountCode}</td>
@@ -81,6 +83,7 @@ const ChartofAccTable = () => {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       </div>
     </>

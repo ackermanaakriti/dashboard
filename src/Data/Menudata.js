@@ -58,6 +58,12 @@ export const MenuData =[
         submenu:[]
     },
     {
+        menu:'tree', 
+        slug:'treeview',   
+        icon: <LuMenuSquare className='text-[28px] text-[#36925c]'/>,
+        submenu:[]
+    },
+    {
         menu:'Account Group', 
         slug:'Accgrp',   
         icon: <LuMenuSquare className='text-[28px] text-[#36925c]'/>,
@@ -74,5 +80,5 @@ export const MenuData =[
         slug:'voucher',   
         icon: <LuMenuSquare className='text-[28px] text-[#36925c]'/>,
         submenu:[]
-    }
+    },
 ]

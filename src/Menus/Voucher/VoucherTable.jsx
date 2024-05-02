@@ -9,23 +9,27 @@ import { useLayouData } from '../../Context/MainLayoutContext';
 import { GreenButton } from '../../Components/GreenButton';
 import { TableButton } from '../../Components/GreenButton';
 import { removeVoucher } from '../../Redux/Slices/VoucherSlice';
+import useGetData from '../../Apis/useGetData';
+import useDelData from '../../Apis/useDelData';
 
 const VoucherTable = () => {
   const {setId,getId,voucherId, setVoucherId } = useLayouData();
   const dispatch = useDispatch()
-  const voucherData = useSelector((state) => state.voucherD.voucher) 
+  const voucherData = useSelector((state) => state.voucherData.voucher) 
+  const voucherDa = useSelector((state) => state.voucherData.voucherDetail) 
+  const {data,fetchData}= useGetData('Voucher/GetAll')
+  const {Deldata} = useDelData('Voucher/Delete/')
 
-
- 
-
-  const handleDel =(index)=>
+  const handleDel =(id)=>
   {
-    dispatch(removeVoucher(index))
+    Deldata(id)
+    
   }
-  const handleEdit = (index) => {
-    setId(index)
-   
-    dispatch(addMenu({ id:index, menu:'voucherForm'}))
+
+
+  const handleEdit = (id) => {
+    setId(id)
+    dispatch(addMenu({ id:id, menu:'voucherForm'}))
   };
 
 
@@ -53,20 +57,20 @@ const VoucherTable = () => {
               </tr>
             </thead>
             <tbody>
-              {voucherData?.map((item, index) => (
+              {data?.data?.map((item, index) => (
                 <tr key={index}>
-                  <td>{item?.VoucherTypeId}</td>
+                  <td>{item?.voucherTypeId}</td>
                   <td>{item?.voucherNumber}</td>
-                  <td>{item?.InvoiceNumber}</td>
-                  <td>{item?.TransactionDate}</td>
-                  <td>{item?.TransactionDateBS}</td>
+                  <td>{item?.invoiceNumber}</td>
+                  <td>{item?.transactionDate}</td>
+                  <td>{item?.transactionDateBS}</td>
                 
                   <td className="">
                     <div className="flex gap-[25px] items-center justify-center">
-                      <span onClick={()=>handleEdit(item?.uid)} className="text-PrimaryColor cursor-pointer">
+                      <span onClick={()=>handleEdit(item?.id)} className="text-PrimaryColor cursor-pointer">
                         <MdEdit />
                       </span>
-                      <span onClick={()=>handleDel(item?.uid)} className="text-[#d13838] cursor-pointer">
+                      <span onClick={()=>handleDel(item?.id)} className="text-[#d13838] cursor-pointer">
                         <RiDeleteBin5Fill />
                       </span>
                     </div>

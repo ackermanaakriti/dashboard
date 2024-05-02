@@ -1,89 +1,78 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import React, { useEffect, useState } from 'react';
 import * as Yup from 'yup';
-import DatePicker from 'react-date-picker';
-import 'react-date-picker/dist/DatePicker.css';
-import 'react-calendar/dist/Calendar.css';
 import { CancelButton, GreenButton } from '../../Components/GreenButton';
 import { useDispatch, useSelector } from 'react-redux';
-import { addFiscalYear, editFiscalYear } from '../../Redux/Slices/FiscalYearSlice';
 import { useLayouData } from '../../Context/MainLayoutContext';
 import { addMenu } from '../../Redux/TopTabSlice';
-import { v4 as uuidv4 } from 'uuid';
-import { addVoucher, addVoucherType, editVoucher, editvouchertype } from '../../Redux/Slices/VoucherSlice';
-import MainVoucherForm from './VoucherDetailForm';
-import VoucherDetailTable from './VoucheDetailTable';
 import VoucherDetailform from './VoucherDetailForm';
+import usePostData from '../../Apis/usePostData';
+import useGetById from '../../Apis/useGetById';
+
 
 const Voucher = () => {
-  const id =uuidv4();
 
-  const {setId,getId, voucherId,setVoucherId}= useLayouData();
-  const [editMode,setEditMode]= useState(false)
-  const [editData,seteditData]= useState(null)
-  const [editId,setEditId] = useState('')
+
+  const {setId,getId,}= useLayouData(); //getting id from the list using context api
   const dispatch = useDispatch();
-  const voucherData = useSelector((state)=>state.voucherD.voucher)
-  const voucherType = useSelector((state)=>state.voucherD.voucherType)
- 
+  const voucherType = useSelector((state)=>state.voucherData.voucherType)
+  const {postdata} = usePostData('Voucher/UpSert')
+  const {GiveId,dataByid}= useGetById('Voucher/GetById/')
+  const [detailformError,setDetailformError]= useState()
 
+
+  const [vouhcerDetailData,setVoucherDetailData]= useState()  //state to hold voucherformDetail data
+  const [editMode,setEditMode]= useState(false)
 
   useEffect(()=>
   {
     if(getId)
-    {
-      setEditMode(true)
-    seteditData(voucherData.find((item)=>item?.uid === getId))
-   setVoucherId(editData?.uid)
-    }   
-    else 
-    {
-      setVoucherId(id)
-    }
-    
+    {setEditMode(true)
+     GiveId(getId)   //passing id to the getbyid  hook
+    }    
   },[setId])
 
  
 
 
-  const initialValues = {
-    VoucherTypeId: '',
-    voucherNumber: '',
-    TransactionDate:'',
-    TransactionDateBS:'',
-    Narration:'',
-    InvoiceNumber:''
+  const initialValues = {  
+  fiscalYearId: 1,
+ // fiscalYearName: "",
+  voucherCode: "",
+  voucherNumber: "",
+  voucherTypeId: 1,
+ // voucherTypeName: "",
+  transactionDateBS: "2024-04-28T04:59:21.347Z",
+  narration: "",
+  moduleId: 1,
+  branchId: 1,
+  invoiceNumber: "",
+  approvedDate: "2024-04-28T04:59:21.347Z",
+  approvedBy: 0,
+  transactionDate: "2024-04-28T04:59:21.347Z",
+  isVoid: true,
+  isActive: true
   };
  
 
   const validationSchema = Yup.object().shape({
-    // VoucherTypeId: Yup.string().typeError('').required('required'),
+    // voucherTypeId: Yup.string().typeError('').required('required'),
     voucherNumber: Yup.number().typeError('invalid data').required('required'),
-    Narration: Yup.string().required('required'),
-    InvoiceNumber: Yup.number().typeError('invalid data').required('required'),
-
-   
+    narration: Yup.string().required('required'),
+    invoiceNumber: Yup.number().typeError('invalid data').required('required'),
   });
 
 
   const handleSubmit = (values) => {
-    const VoucherDataId = { ...values, uid:voucherId };
-
-    if(editMode )
-    {
-      const editedId = {...values,uid:editId}
-      dispatch(editVoucher(editedId))
-    
-    }
-    else 
-    {
-      dispatch(addVoucher(VoucherDataId))
-    }
- 
-    dispatch(addMenu({ id:'', menu:'voucher'}))
    
-   setId('')
-    // Perform form submission logic here
+    const combinedData= {...values,voucherDetailDTOs:vouhcerDetailData}  //combining voucherform and vocherdetail form data 
+    if(editMode )
+    {  postdata(combinedData)}
+    else 
+    { postdata(combinedData)}
+    setId('')
+    dispatch(addMenu({ id:'', menu:'voucher'}))
+  
   };
 
   return (
@@ -95,7 +84,7 @@ const Voucher = () => {
         </div>
 
         <Formik
-          initialValues={editMode ? editData : initialValues}
+          initialValues={editMode ? dataByid : initialValues}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
           enableReinitialize={true}
@@ -104,23 +93,20 @@ const Voucher = () => {
             <Form className='bg-[#e8fcfc] pb-[10px]'>
               <div className=' w-[70%] flex flex-col justify-center m-auto' >
                 <div className='grid grid-cols-3 gap-[10px]'>
+
                 <div className='py-[8px]'>
                   <label className='block py-[5px] font-[500] font-inter '>Voucher Type</label>
                   <Field
                     className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr '
                     type='text'
-                    name='VoucherTypeId'
-                    as='select'
-                  
-                  >
+                    name='voucherTypeId'
+                    as='select'>
                     <option disabled selected value=''>  Select Voucher Type</option>
                     {voucherType?.map((item,index)=>(
                     <option value={item?.vouchername}>{item?.vouchername}</option>
                     ))}
-                   
-
                   </Field>
-                  <ErrorMessage component='div' className='text-[14px] text-redclr' name='VoucherTypeId' />
+                  <ErrorMessage component='div' className='text-[14px] text-redclr' name='voucherTypeId' />
                 </div>
 
                 <div className='py-[8px]'>
@@ -128,8 +114,7 @@ const Voucher = () => {
                   <Field
                     className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr '
                     type='text'
-                    name='voucherNumber'
-                  />
+                    name='voucherNumber' />
                   <ErrorMessage component='div' className='text-[14px] text-redclr ' name='voucherNumber' />
                 </div>
 
@@ -139,11 +124,9 @@ const Voucher = () => {
                   <Field
                     className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr '
                     type='text'
-                    name='InvoiceNumber'
-                  />
-                  <ErrorMessage component='div' className='text-[14px] text-redclr ' name='InvoiceNumber' />
-                </div>
-                </div>
+                    name='invoiceNumber'/>
+                  <ErrorMessage component='div' className='text-[14px] text-redclr ' name='invoiceNumber' />
+                </div></div>
 
 
                 <div className='grid grid-cols-3 gap-[20px] items-center'>
@@ -166,34 +149,31 @@ const Voucher = () => {
                     {/* <ErrorMessage component='div' className='text-[14px] text-redclr ' name='TransactionDateBS' /> */}
                   </div>
                   <div className='py-[8px]'>
-                  <label className='block py-[8px] font-[500] font-inter '>Narration</label>
+                  <label className='block py-[8px] font-[500] font-inter '>narration</label>
                   <Field
                     className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr '
                     type='text'
-                    name='Narration'
+                    name='narration'
                    
                   />
-                  <ErrorMessage component='div' className='text-[14px] text-redclr' name='Narration' />
+                  <ErrorMessage component='div' className='text-[14px] text-redclr' name='narration' />
                 </div>
                 </div>
 
               </div>
               <div className=' mt-[10px] flex gap-[20px] justify-end  absolute right-[2em] bottom-[70px]'>
-     <CancelButton onClick={() => { dispatch(addMenu({ id:'', menu:'voucher'}));
-     }} className='border-[1px] border-redclr px-[15px] py-[4px] text-redclr font-inter' text='Cancel' type='button' />
+                    <CancelButton onClick={() => { dispatch(addMenu({ id:'', menu:'voucher'}));
+                    }} className='border-[1px] border-redclr px-[15px] py-[4px] text-redclr font-inter' text='Cancel' type='button' />
                   <button   className='bg-PrimaryColor px-[15px] py-[4px] text-white font-inter' type='submit' > 
                   {editMode ? 'Update': 'Save'} </button>
-                </div>
+                 </div>
 
-            </Form>
-          )}
+                  </Form>
+                 )}
 
-        </Formik>
+         </Formik>
         <div className='relative'>
-        <VoucherDetailform/>
-        <VoucherDetailTable/>
-   
-
+        <VoucherDetailform onDataSubmit={setVoucherDetailData} dataByid={dataByid} setDetailformError={setDetailformError}/>
         </div>
  </div>
     </>

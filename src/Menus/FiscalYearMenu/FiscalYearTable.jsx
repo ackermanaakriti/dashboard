@@ -9,19 +9,21 @@ import { useLayouData } from '../../Context/MainLayoutContext';
 import { GreenButton } from '../../Components/GreenButton';
 import { TableButton } from '../../Components/GreenButton';
 import useGetData from '../../Apis/useGetData';
+import useDelData from '../../Apis/useDelData';
 
 const FiscalYearTable = () => {
   const {setId} = useLayouData();
   const dispatch = useDispatch()
   const fiscaldata = useSelector((state) => state.fiscalyear) 
   const {data}= useGetData('FiscalYear/GetAll')
+  const {Deldata} = useDelData('FiscalYear/Delete/')
 
 
  
 
-  const handleDel =(index)=>
+  const handleDel =(id)=>
   {
-    dispatch(removeFiscalYear(index))
+    Deldata(id)
   }
   const handleEdit = (index) => {
     setId(index)
@@ -40,6 +42,7 @@ const FiscalYearTable = () => {
           <div className='mt-[20px]' onClick={()=>dispatch(addMenu({ id:'', menu:'fiscalform'}))}>
             <GreenButton className='bg-PrimaryColor px-[15px] py-[4px] text-white font-inter' text='Add New +' />
           </div>
+          <div className="table--wrapper h-[800px] overflow-y-auto">
           <table className="shadow-lg">
             <thead>
               <tr>
@@ -52,7 +55,7 @@ const FiscalYearTable = () => {
               </tr>
             </thead>
             <tbody>
-              {data?.map((item, index) => (
+              {data?.data?.map((item, index) => (
                 <tr key={index}>
                   <td>{item?.name}</td>
                   <td>{item?.code}</td>
@@ -76,6 +79,7 @@ const FiscalYearTable = () => {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       </div>
     </>

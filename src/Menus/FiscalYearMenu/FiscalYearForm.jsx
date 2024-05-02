@@ -4,16 +4,19 @@ import * as Yup from 'yup';
 import { CancelButton, GreenButton } from '../../Components/GreenButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLayouData } from '../../Context/MainLayoutContext';
+import moment from 'moment';
 import { addMenu } from '../../Redux/TopTabSlice';
 import usePostData from '../../Apis/usePostData';
 import useGetData from '../../Apis/useGetData';
 import useUpdateData from '../../Apis/useUpdate';
+import useGetById from '../../Apis/useGetById';
 
 const FiscalYearForm = () => {
 
   const {postdata} = usePostData('FiscalYear/Add')
   const {data}= useGetData('FiscalYear/GetAll')
   const {updateData} = useUpdateData('FiscalYear/Update')
+  const {GiveId,dataByid}= useGetById('FiscalYear/GetById/')
   const {setId,getId}= useLayouData();
   const [editMode,setEditMode]= useState(false)
   const [editData,seteditData]= useState('')
@@ -24,12 +27,13 @@ const FiscalYearForm = () => {
 
   useEffect(()=>
   {
-    if(getId && data)
+    if(getId )
     {
-      setEditMode(true)
-    seteditData(data.find((item)=>item.id === getId))
+  setEditMode(true)
+  GiveId(getId)
     }   
-  },[])
+  },[setId])
+
 
   const initialValues = {
     code: '',
@@ -46,10 +50,14 @@ const FiscalYearForm = () => {
 
 
   const handleSubmit = async (values) => {
+    values.startDate = moment(values.startDate).toDate();
+    values.endDate = moment(values.endDate).toDate();
+    console.log(values)
     if(editMode)
-    {const response = await updateData(values) }
+    { updateData(values) }
     else 
-    { const response = await postdata(values) }
+    {  await postdata(values) }
+    
     dispatch(addMenu({ id:'', menu:'fiscalyear'}))
     setId('')
     
@@ -63,7 +71,7 @@ const FiscalYearForm = () => {
         </div>
 
         <Formik
-          initialValues={editMode ? editData : initialValues}
+          initialValues={editMode ? dataByid : initialValues}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
           enableReinitialize={true}
