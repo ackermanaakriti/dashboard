@@ -21,6 +21,8 @@ import TreeViewChart from "../Menus/CharofAcc/ChartofAccTree";
 import Company from "../Menus/Company";
 import CompanyForm from "../Menus/BranchMenu/Company/CompanyForm";
 import CompanyTable from "../Menus/BranchMenu/Company/CompanyTable";
+import EmployeeForm from "../Menus/FiscalYearMenu/EmployeeForm";
+
 
 
 export const MenuComponentMap = {
