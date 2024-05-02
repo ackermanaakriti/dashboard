@@ -9,22 +9,29 @@ import { useDispatch } from "react-redux";
 import { addMenu } from "../../Redux/TopTabSlice";
 import { HiOutlinePhotograph } from "react-icons/hi";
 import usePostData from "../../Apis/usePostData";
+import useGetData from "../../Apis/useGetData"
+import { baseUrl } from "../../Apis/Baseurl";
+import axios from "axios";
 // import usePostData from '../../Apis/usePostData'
 
 const branchparentId = [{ id: "1" }, { id: "2" }, { id: "3" }];
 
 
 const BranchForm = () => {
-  const { getId, setId, hanldeId, setHandleId } = useLayouData();
+  const { getId, setId,token, } = useLayouData();
 const {postdata,postError}= usePostData('Branch/Create',)
+const {data} = useGetData('Branch/GetParent')
   const dispatch = useDispatch();
   const [editMode, setEditMode] = useState(false);
+  const [logoFile,setLogofile]= useState('');
+  const  [billLogoFile,setbillLogofile]= useState('')
+  console.log(logoFile,billLogoFile)
 
   const [editIdData, seteditIdData] = useState("");
   const dataLocal = JSON.parse(localStorage.getItem("formData"));
   const initialValues = {
     Name: "",
-    ParentId: 1,
+    ParentId: '',
     RegestrationNo: "",
     ContactNumber: "",
     Pan: "",
@@ -44,6 +51,29 @@ const {postdata,postError}= usePostData('Branch/Create',)
     Fax:''
 
   };
+ const  validationSchema=Yup.object().shape({
+    Name: Yup.string().required("required"),
+    ParentId: Yup.number().required("required"),
+    Code: Yup.string().required("required"),
+    RegestrationNo: Yup.string()
+      .typeError("invalid data")
+      .required("required"),
+      Pan: Yup.string().typeError("invalid data").required("required"),
+     ContactNumber: Yup.string()
+      .typeError("invalid data")
+      .min(10, "ContactNumber number should be  between 10 to 11  characters ")
+      .required("required"),
+    // billadd: Yup.string().required("required"),
+    // shipadd: Yup.string().required("required"),
+    // billContactNumber: Yup.string().required("required"),
+    Address: Yup.string().required("required"),
+    Fax:Yup.string().required('required'),
+    ShipAddress: Yup.string().required('required'),
+    BillContactInfo:Yup.string().required('required'),
+    // Logo: Yup.string().required('required'),
+    // BillLogo: Yup.string().required('required'),
+    // ParentId:Yup.number().required('required')
+  })
 
  
 
@@ -63,11 +93,23 @@ const {postdata,postError}= usePostData('Branch/Create',)
 
   const handleSubmit = async (values) => {
     if (editMode) {
-    
-    } else {
+    } 
+    else {
       console.log(values)
       await postdata(values );
-    }
+      try 
+      {
+          const response = await axios.post(`${baseUrl}Branch/Create`,values,logoFile,billLogoFile,
+      {
+          headers : { Authorization:`Bearer ${token}`},  
+      })
+          console.log(response)
+      }
+      catch (err)
+      {
+        console.log(err)
+      }
+     }
 
     dispatch(addMenu({ id: "", menu: "Table" }));
   };
@@ -96,32 +138,7 @@ const {postdata,postError}= usePostData('Branch/Create',)
       <Formik
         enableReinitialize={true}
         initialValues={editMode && editIdData ? editIdData : initialValues}
-        validationSchema={Yup.object().shape({
-          Name: Yup.string().required("required"),
-          ParentId: Yup.number().required("required"),
-          Code: Yup.string().required("required"),
-          RegestrationNo: Yup.string()
-            .typeError("invalid data")
-            .required("required"),
-            Pan: Yup.string().typeError("invalid data").required("required"),
-          ContactNumber: Yup.string()
-            .typeError("invalid data")
-            .min(10, "ContactNumber number should be  between 10 to 11  characters ")
-            .required("required"),
-          // billadd: Yup.string().required("required"),
-          // shipadd: Yup.string().required("required"),
-          // billContactNumber: Yup.string().required("required"),
-          Address: Yup.string().required("required"),
-          Fax:Yup.string().required('required'),
-          ShipAddress: Yup.string().required('required'),
-          BillContactInfo:Yup.string().required('required'),
-          // Logo: Yup.string().required('required'),
-          // BillLogo: Yup.string().required('required'),
-          // ParentId:Yup.number().required('required')
-
-
-
-        })}
+       validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
         {(formik) => (
@@ -157,10 +174,10 @@ const {postdata,postError}= usePostData('Branch/Create',)
                       onKeyDown={(event) => handleEnterKeyPress(event, "Code")}
                     >
                       <option disabled value="">
-                        Select id
+                        Select Parent 
                       </option>
-                      {branchparentId?.map((item, index) => (
-                        <option value={item.id}>{item.id}</option>
+                      {data?.data?.map((item, index) => (
+                        <option key={item?.id} value={item?.id}>{item?.name}</option>
                       ))}
                     </Field>
                     <ErrorMessage
@@ -293,12 +310,13 @@ const {postdata,postError}= usePostData('Branch/Create',)
                     Logo <span>*</span>
                   </label>
                   <div className="relative border-dotted border-[2px] border-[#c0d3e5] text-center py-[10px]">
-                    <Field
+                    <input
 
                       type="file"
-                      name="Logo"
+                      name="logoFile"
                       className="w-[100%] opacity-0  absolute inset-0 "
-                      id="Logo"
+                      id="logoFile"
+                      onChange={(e)=>setLogofile(e.target.value)}
                       onKeyDown={(event) =>
                         handleEnterKeyPress(event, "btnsubmit")
                       }
@@ -309,7 +327,7 @@ const {postdata,postError}= usePostData('Branch/Create',)
                   <ErrorMessage
                     component="div"
                     className="error"
-                    name="Logo"
+                    name="logoFile"
                   />
                 </div>
 
@@ -397,12 +415,13 @@ const {postdata,postError}= usePostData('Branch/Create',)
                     Bill Logo <span>*</span>
                   </label>
                   <div className="relative border-dotted border-[2px] border-[#c0d3e5] text-center py-[10px]">
-                    <Field
+                    <input
 
                       type="file"
-                      name="BillLogo"
+                      name="billLogoFile"
                       className="w-[100%] opacity-0  absolute inset-0 "
-                      id="BillLogo"
+                      id="billLogoFile"
+                      onChange={(e)=>setbillLogofile(e.target.value)}
                       onKeyDown={(event) =>
                         handleEnterKeyPress(event, "btnsubmit")
                       }
@@ -413,7 +432,7 @@ const {postdata,postError}= usePostData('Branch/Create',)
                   <ErrorMessage
                     component="div"
                     className="error"
-                    name="BillLogo"
+                    name="billLogoFile"
                   />
                 </div>
 

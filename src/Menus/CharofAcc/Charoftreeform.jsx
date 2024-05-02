@@ -19,10 +19,7 @@ import useUpdateData from '../../Apis/useUpdate';
 import useGetData from '../../Apis/useGetData';
 
 const CharofAccTreeForm = ({node,mainParentId,parentAccountId,accountGroupId}) => {
-    console.log(accountGroupId)
-  
- 
-  
+   
     const {postdata,postError}= usePostData('ChartOfAccount/Add')
     // const {data}= useGetData('ChartOfAccount/GetAll')
     const {updateData} = useUpdateData('ChartOfAccount/Update');
@@ -30,6 +27,7 @@ const CharofAccTreeForm = ({node,mainParentId,parentAccountId,accountGroupId}) =
     const { setId, getId,token } = useLayouData();
     const [editMode, setEditMode] = useState(false)
     const [editData, seteditData] = useState()
+    const [groupIddata,setGroupIdData]= useState()
     const dispatch = useDispatch();
 
  
@@ -38,6 +36,13 @@ const CharofAccTreeForm = ({node,mainParentId,parentAccountId,accountGroupId}) =
             setEditMode(true)
             seteditData(data?.data?.find((item) => item?.id === getId))
         } 
+        if(accountGroupId)
+        {
+            const accId = data?.data?.find((item)=>item.id === accountGroupId)
+            console.log(accId)
+            setGroupIdData(accId)
+            console.log(groupIddata)
+        }
     }, [data,setId]
     )
 
@@ -140,13 +145,29 @@ const CharofAccTreeForm = ({node,mainParentId,parentAccountId,accountGroupId}) =
 
                                         >
                                             {/* <option disabled value=''  >Select Account Group</option> */}
-                                            {data?.data?.map((item, index) =>
-                                            (
-                                                <>
-                                                {item.id === accountGroupId? <option selected value={item.id}>{item.name}</option> : <option value={item.id}>{item.name}</option>}
-                                                
-                                                </>
-                                            ))}
+                                            <>
+                                           {/* { accountGroupId  ?  <><option selected  value={groupIddata?.id} >{groupIddata?.name}</option>
+                                                 ({data?.data?.map((item)=>
+                                                <option value={item.id}>{item.name}</option>)})
+                                              </> : (data?.data?.map((item)=>
+                                              (
+                                                <option value={item.id}>{item.name}</option>
+                                              )))  
+                                           
+                                            } */}
+                                             { accountGroupId  ?  <><option selected  value={groupIddata?.id} >{groupIddata?.name}</option>
+                                                 ({data?.data?.filter((item)=>(item?.id !== accountGroupId)).map((item)=>
+                                                <option value={item.id}>{item.name}</option>)})
+                                              </> : (data?.data?.map((item)=>
+                                              (
+                                                <option value={item.id}>{item.name}</option>
+                                              )))  
+                                           
+                                            }
+                                         
+                                            </>
+                                        
+                                          {}
                                             
                                         </Field>
                                         <ErrorMessage component='div' className='text-[14px] text-redclr ' name='accountGroupId' />

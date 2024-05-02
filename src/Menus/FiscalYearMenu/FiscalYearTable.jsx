@@ -21,9 +21,9 @@ const FiscalYearTable = () => {
 
  
 
-  const handleDel =(id)=>
+  const handleDel = async(id)=>
   {
-    Deldata(id)
+     await Deldata(id)
   }
   const handleEdit = (index) => {
     setId(index)

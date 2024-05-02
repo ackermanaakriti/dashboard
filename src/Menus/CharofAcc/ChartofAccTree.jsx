@@ -1,5 +1,4 @@
 
-
 import React, { useState } from 'react';
 import CharofAccTreeForm from './Charoftreeform';
 import useGetData from '../../Apis/useGetData';
@@ -12,7 +11,6 @@ import { RxCross2 } from "react-icons/rx";
 
 
 const TreeNode = ({ node }) => {
-  console.log(node.children)
 
   const [isExpanded, setIsExpanded] = useState(false);
   const [showForm, setShowForm] = useState(false);
@@ -22,27 +20,12 @@ const TreeNode = ({ node }) => {
 
   const handleToggle = () => {
     setIsExpanded(!isExpanded);
-
   };
 
   const handleAddData = (node) => {
     setShowForm(!showForm);
-    if (node.children.length === 0 && node.children.accountGroup) {
-
-      setAccountGroupForChildren(node, node.children.accountGroup);
-    }
-    
-
   };
 
-  const setAccountGroupForChildren = (parentNode, accountGroup) => {
-    parentNode.children.forEach(child => {
-      child.accountGroup = accountGroup;
-      if (child.children && child.children.length > 0) {
-        setAccountGroupForChildren(child, accountGroup);
-      }
-    });
-  };
 
   return (
     <div className='px-[2em] '>
@@ -74,7 +57,6 @@ const TreeNode = ({ node }) => {
               </div>
             </div>
           </div>
-       
         </>
       )}
 
