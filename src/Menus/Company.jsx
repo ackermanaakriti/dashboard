@@ -23,49 +23,48 @@ const Company = () => {
     const CustomSetting = [
         {
             label:'Name',
-            type:'',
+            type:'text',
             class:'1',
             as:'input',
             name:'name'
         },
         {
             label:'Code',
-            type:'',
+            type:'number',
             class:'1',
             as:'input',
             name:'code'
         },
         {
             label:'Registration No',
-            type:'',
+            type:'number',
             class:'1',
             as:'input',
             name:'regestrationNo'
         },
         {
             label:'Pan',
-            type:'',
+            type:'number',
             class:'1',
             as:'input',
             name:'pan'
         },
         {
             label:'Contact Number',
-            type:'',
+            type:'number',
             class:'1',
             as:'input',
             name:'contactNumber'
         },
         {
             label:'Fax',
-            type:'',
+            type:'number',
             class:'1',
             as:'input',
             name:'fax'
         },
         {
             label:'Address',
-            type:'',
             class:'full',
             as:'textarea',
             name:'address'
