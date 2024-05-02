@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import * as Yup from "yup";
 import { Formik, ErrorMessage, Form, Field } from "formik";
 import { useLayouData } from "../../Context/MainLayoutContext";
-import BranchTable from "./BranchTable";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch } from "react-redux";
@@ -14,13 +13,12 @@ import { baseUrl } from "../../Apis/Baseurl";
 import axios from "axios";
 // import usePostData from '../../Apis/usePostData'
 
-const branchparentId = [{ id: "1" }, { id: "2" }, { id: "3" }];
 
 
 const BranchForm = () => {
   const { getId, setId,token, } = useLayouData();
-const {postdata,postError}= usePostData('Branch/Create',)
-const {data} = useGetData('Branch/GetParent')
+ const {postdata,postError}= usePostData('Branch/Create',)
+ const {data} = useGetData('Branch/GetParent')
   const dispatch = useDispatch();
   const [editMode, setEditMode] = useState(false);
   const [logoFile,setLogofile]= useState('');
@@ -55,14 +53,9 @@ const {data} = useGetData('Branch/GetParent')
     Name: Yup.string().required("required"),
     ParentId: Yup.number().required("required"),
     Code: Yup.string().required("required"),
-    RegestrationNo: Yup.string()
-      .typeError("invalid data")
-      .required("required"),
-      Pan: Yup.string().typeError("invalid data").required("required"),
-     ContactNumber: Yup.string()
-      .typeError("invalid data")
-      .min(10, "ContactNumber number should be  between 10 to 11  characters ")
-      .required("required"),
+    RegestrationNo: Yup.string().typeError("invalid data").required("required"),
+    Pan: Yup.string().typeError("invalid data").required("required"),
+     ContactNumber: Yup.string().typeError("invalid data").min(10, "ContactNumber number should be  between 10 to 11  characters ").required("required"),
     // billadd: Yup.string().required("required"),
     // shipadd: Yup.string().required("required"),
     // billContactNumber: Yup.string().required("required"),
@@ -80,12 +73,7 @@ const {data} = useGetData('Branch/GetParent')
   useEffect(() => {
     if (getId) {
       console.log(getId);
-      setEditMode(true);
-      seteditIdData(dataLocal.find((item) => item.id === getId));
-    } else {
-      setEditMode(false); // Set editMode to false when getId is null
-      seteditIdData({});
-    }
+    } 
     return () => {
       setId("");
     };
