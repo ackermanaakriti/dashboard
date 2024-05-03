@@ -11,6 +11,8 @@ import usePostData from "../../Apis/usePostData";
 import useGetData from "../../Apis/useGetData"
 import { baseUrl } from "../../Apis/Baseurl";
 import axios from "axios";
+import useUpdateData from "../../Apis/useUpdate";
+import useGetById from "../../Apis/useGetById";
 // import usePostData from '../../Apis/usePostData'
 
 
@@ -19,6 +21,9 @@ const BranchForm = () => {
   const { getId, setId,token, } = useLayouData();
  const {postdata,postError}= usePostData('Branch/Create',)
  const {data} = useGetData('Branch/GetParent')
+ const{GiveId,dataByid} = useGetById('Company/GetById/')
+ const {updateData} = useUpdateData('Company/Update')
+
 const [companyData,setCompanyData]= useState('')
   const dispatch = useDispatch();
   const [editMode, setEditMode] = useState(false);
@@ -29,44 +34,45 @@ const [companyData,setCompanyData]= useState('')
   const [editIdData, seteditIdData] = useState("");
   const dataLocal = JSON.parse(localStorage.getItem("formData"));
   const initialValues = {
-    Name: "",
-    ParentId: '',
-    RegestrationNo: "",
-    ContactNumber: "",
-    Pan: "",
-    Address: "",
+    name: "",
+    companyId:'',
+    parentId: '',
+    regestrationNo: "",
+    contactNumber: "",
+    pan: "",
+    address: "",
     // billadd: "",
-    ShipAddress: "",
-    BillContactInfo: "",
+    shipAddress: "",
+    billContactInfo: "",
     IsHeadOffice: '',
     // logoFile:null,
     // Logo:null,
-    Code:'',
+    code:'',
     // billLogoFile:null,
     IsActive : true,
     // BillLogo:null,
     // LogoRelatedFileUrl:null,
     // BillLogoRelatedFileUrl:null,
-    Fax:''
+    fax:''
 
   };
  const  validationSchema=Yup.object().shape({
     Name: Yup.string().required("required"),
-    ParentId: Yup.number().required("required"),
-    Code: Yup.string().required("required"),
-    RegestrationNo: Yup.string().typeError("invalid data").required("required"),
-    Pan: Yup.string().typeError("invalid data").required("required"),
-     ContactNumber: Yup.string().typeError("invalid data").min(10, "ContactNumber number should be  between 10 to 11  characters ").required("required"),
+    parentId: Yup.number().required("required"),
+    code: Yup.string().required("required"),
+    regestrationNo: Yup.string().typeError("invalid data").required("required"),
+    pan: Yup.string().typeError("invalid data").required("required"),
+     contactNumber: Yup.string().typeError("invalid data").min(10, "contactNumber number should be  between 10 to 11  characters ").required("required"),
     // billadd: Yup.string().required("required"),
     // shipadd: Yup.string().required("required"),
-    // billContactNumber: Yup.string().required("required"),
-    Address: Yup.string().required("required"),
-    Fax:Yup.string().required('required'),
-    ShipAddress: Yup.string().required('required'),
-    BillContactInfo:Yup.string().required('required'),
+    // billcontactNumber: Yup.string().required("required"),
+    address: Yup.string().required("required"),
+    fax:Yup.string().required('required'),
+    shipAddress: Yup.string().required('required'),
+    billContactInfo:Yup.string().required('required'),
     // Logo: Yup.string().required('required'),
     // BillLogo: Yup.string().required('required'),
-    // ParentId:Yup.number().required('required')
+    // parentId:Yup.number().required('required')
   })
 
  
@@ -74,6 +80,7 @@ const [companyData,setCompanyData]= useState('')
   useEffect(() => {
     if (getId) {
       console.log(getId);
+      GiveId(getId)
     }
       const fetchData = async ()=>
       {
@@ -96,29 +103,42 @@ const [companyData,setCompanyData]= useState('')
 
      }, [setId]);
 
-  const handleSubmit = async (values) => {
-    if (editMode) {
-    } 
-    else {
-      console.log(values)
-      try 
-        {
-            const response = await axios.post(`${baseUrl}Branch/Create`,values,logoFile,billLogoFile,
-        {
-            headers : { Authorization:`Bearer ${token}`},  
-        })
-         
-            console.log(response)
+     const handleSubmit = async (values) => {
+      const formData = new FormData();
+    
+      // Append all form fields to formData
+      Object.keys(values).forEach((key) => {
+        formData.append(key, values[key]);
+      });
+    
+      // Append files to formData
+      formData.append("logoFile", logoFile);
+      formData.append('billLogoFile', billLogoFile);
+      if(editMode)
+      {
+        updateData(formData)
+      }
+      else 
+      {
+        try {
+          const response = await axios.post(`${baseUrl}Branch/Create`, formData, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "multipart/form-data",
+            },
+          });
+      
+          console.log(response);
+        } catch (error) {
+          console.error(error);
         }
-        catch (err)
-        {
-   
-          console.log(err)
-        }
-     }
-
-    dispatch(addMenu({ id: "", menu: "Table" }));
-  };
+      }
+  
+    
+    
+    
+      dispatch(addMenu({ id: "", menu: "companytable" }));
+    };
 
   const handleEnterKeyPress = (event, nextField) => {
     if (event.key === "Enter") {
@@ -153,25 +173,25 @@ const [companyData,setCompanyData]= useState('')
                 <div className="py-[5px]">
                   <label className="block">Name <span>*</span></label>
                   <Field type="text"
-                    name="Name"
+                    name="name"
                     className="w-[100%]"
                     placeholder=""
                     onKeyDown={(event) =>
-                      handleEnterKeyPress(event, "ParentId")
+                      handleEnterKeyPress(event, "parentId")
                     }
                   />
-                  <ErrorMessage component="div" className="error" name="Name" />
+                  <ErrorMessage component="div" className="error" name="name" />
                 </div>
 
                 <div className="py-[5px]">
                   <label className="block">Company <span>*</span></label>
                   <Field type="text"
-                    name="Name"
+                    name="companyId"
                     as='select'
                     className="w-[100%] border-[1px] px-[8px] py-[8px] outline-0 border-[#c0d3e5"
                     placeholder=""
                     onKeyDown={(event) =>
-                      handleEnterKeyPress(event, "ParentId")
+                      handleEnterKeyPress(event, "parentId")
                     }
                   >
                     <option disabled value="">
@@ -182,7 +202,7 @@ const [companyData,setCompanyData]= useState('')
                       ))}
 
                   </Field>
-                  <ErrorMessage component="div" className="error" name="Name" />
+                  <ErrorMessage component="div" className="error" name="companyId" />
                 </div>
                 </div>
                 <div className="flex  justify-between items-center">
@@ -193,8 +213,8 @@ const [companyData,setCompanyData]= useState('')
                     <Field
                       className="border-[1px] px-[8px] py-[8px] outline-0 border-[#c0d3e5] w-[22em] "
                       as="select"
-                      id="ParentId"
-                      name="ParentId"
+                      id="parentId"
+                      name="parentId"
                       type='number'
                       onKeyDown={(event) => handleEnterKeyPress(event, "Code")}
                     >
@@ -208,7 +228,7 @@ const [companyData,setCompanyData]= useState('')
                     <ErrorMessage
                       component="div"
                       className="error"
-                      name="ParentId"
+                      name="parentId"
                     />
                   </div>
                   <div className="py-[6px]">
@@ -218,17 +238,17 @@ const [companyData,setCompanyData]= useState('')
                     <Field
                       type="text"
                       onKeyDown={(event) =>
-                        handleEnterKeyPress(event, "RegestrationNo")
+                        handleEnterKeyPress(event, "regestrationNo")
                       }
-                      name="Code"
+                      name="code"
                       className="w-[22em]"
                       placeholder=""
-                      id="Code"
+                      id="code"
                     />
                     <ErrorMessage
                       component="div"
                       className="error"
-                      name="Code"
+                      name="code"
                     />
                   </div>
                 </div>
@@ -240,16 +260,16 @@ const [companyData,setCompanyData]= useState('')
                     </label>
                     <Field
                       type="text"
-                      name="RegestrationNo"
+                      name="regestrationNo"
                       className="w-[22em]"
                       placeholder=""
-                      id="RegestrationNo"
+                      id="regestrationNo"
                       onKeyDown={(event) => handleEnterKeyPress(event, "Pan")}
                     />
                     <ErrorMessage
                       component="div"
                       className="error"
-                      name="RegestrationNo"
+                      name="regestrationNo"
                     />
                   </div>
 
@@ -259,13 +279,13 @@ const [companyData,setCompanyData]= useState('')
                     </label>
                     <Field
                       type="text"
-                      name="Pan"
+                      name="pan"
                       className="w-[22em]"
                       placeholder=""
-                      id="Pan"
-                      onKeyDown={(event) => handleEnterKeyPress(event, "ContactNumber")}
+                      id="pan"
+                      onKeyDown={(event) => handleEnterKeyPress(event, "contactNumber")}
                     />
-                    <ErrorMessage component="div" className="error" name="Pan" />
+                    <ErrorMessage component="div" className="error" name="pan" />
                   </div>
                 </div>
 
@@ -278,16 +298,16 @@ const [companyData,setCompanyData]= useState('')
                     </label>
                     <Field
                       type="text"
-                      name="ContactNumber"
+                      name="contactNumber"
                       className="w-[22em]"
                       placeholder=""
-                      id="ContactNumber"
+                      id="contactNumber"
                       onKeyDown={(event) => handleEnterKeyPress(event, "address")}
                     />
                     <ErrorMessage
                       component="div"
                       className="error"
-                      name="ContactNumber"
+                      name="contactNumber"
                     />
                   </div>
 
@@ -297,13 +317,13 @@ const [companyData,setCompanyData]= useState('')
                     </label>
                     <Field
                       type="text"
-                      name="Fax"
+                      name="fax"
                       className="w-[22em]"
                       placeholder=""
-                      id="Fax"
+                      id="fax"
                       onKeyDown={(event) => handleEnterKeyPress(event, "address")}
                     />
-                    <ErrorMessage component="div" className="error" name="Fax" />
+                    <ErrorMessage component="div" className="error" name="fax" />
                   </div>
                 </div>
 
@@ -379,14 +399,14 @@ const [companyData,setCompanyData]= useState('')
                     as="textarea"
                     type="text"
                     onKeyDown={(event) => handleEnterKeyPress(event, "shipadd")}
-                    id="BillContactInfo"
-                    name="BillContactInfo"
+                    id="billAddress"
+                    name="billAddress"
                     className="w-[100%] "
                   ></Field>
                   <ErrorMessage
                     component="div"
                     className="error"
-                    name="BillContactInfo"
+                    name="billAddress"
                   />
                 </div>
                 <div className="py-[6px]">
@@ -397,8 +417,8 @@ const [companyData,setCompanyData]= useState('')
                   <Field
                     as="textarea"
                     type="text"
-                    name="ShipAddress"
-                    id="ShipAddress"
+                    name="shipAddress"
+                    id="shipAddress"
                     onKeyDown={(event) =>
                       handleEnterKeyPress(event, "billcontact")
                     }
@@ -407,7 +427,7 @@ const [companyData,setCompanyData]= useState('')
                   <ErrorMessage
                     component="div"
                     className="error"
-                    name="ShipAddress"
+                    name="shipAddress"
                   />
                 </div>
 
@@ -418,9 +438,9 @@ const [companyData,setCompanyData]= useState('')
                   <Field
                     as="textarea"
                     type="text"
-                    name="BillContactInfo"
+                    name="billContactInfo"
                     className="w-[100%]"
-                    id="BillContactInfo"
+                    id="billContactInfo"
                     onKeyDown={(event) =>
                       handleEnterKeyPress(event, "image")
                     }
@@ -428,7 +448,7 @@ const [companyData,setCompanyData]= useState('')
                   <ErrorMessage
                     component="div"
                     className="error"
-                    name="BillContactInfo"
+                    name="billContactInfo"
                   />
                 </div>
                 <div className="py-[6px]">

@@ -11,61 +11,47 @@ import usePostData from "../../../Apis/usePostData";
 import useGetData from "../../../Apis/useGetData"
 import { baseUrl } from "../../../Apis/Baseurl";
 import axios from "axios";
+import useUpdateData from "../../../Apis/useUpdate";
+import useGetById from "../../../Apis/useGetById";
 // import usePostData from '../../Apis/usePostData'
 
 
 
 const CompanyForm = () => {
   const { getId, setId,token, } = useLayouData();
- const {postdata,postError}= usePostData('Company/Create',)
- 
+ const{GiveId,dataByid} = useGetById('Company/GetById/')
   const dispatch = useDispatch();
   const [editMode, setEditMode] = useState(false);
   const [logo,setLogofile]= useState('');
   const  [billLogoFile,setbillLogofile]= useState('')
 
-
-  const [editIdData, seteditIdData] = useState("");
  
   const initialValues = {
-    Name: "",
+    name: "",
     // ParentId: '',
-    RegestrationNo: "",
-    ContactNumber: "",
-    Pan: "",
-    Address: "",
+    regestrationNo: "",
+    contactNumber: "",
+    pan: "",
+    address: "",
     // billadd: "",
-    ShipAddress: "",
-    BillContactInfo: "",
-  
-    // logoFile:null,
-
-    Code:'43543',
-    
-    IsActive : true,
-    // BillLogo:null,
-    // LogoRelatedFileUrl:null,
-    // BillLogoRelatedFileUrl:null,
-    Fax:'sdfsdf'
+    shipAddress: "",
+    billContactInfo: "",
+    code:'43543',
+    isActive : true,
+    fax:'sdfsdf'
 
   };
  const  validationSchema=Yup.object().shape({
-    Name: Yup.string().required("required"),
+    name: Yup.string().required("required"),
     // ParentId: Yup.number().required("required"),
-    // Code: Yup.string().required("required"),
-    RegestrationNo: Yup.string().typeError("invalid data").required("required"),
-    Pan: Yup.string().typeError("invalid data").required("required"),
-    //  ContactNumber: Yup.string().typeError("invalid data").min(10, "ContactNumber number should be  between 10 to 11  characters ").required("required"),
+    // code: Yup.string().required("required"),
+    regestrationNo: Yup.string().typeError("invalid data").required("required"),
+    pan: Yup.string().typeError("invalid data").required("required"),
+    //  contactNumber: Yup.string().typeError("invalid data").min(10, "contactNumber number should be  between 10 to 11  characters ").required("required"),
     // billadd: Yup.string().required("required"),
     // shipadd: Yup.string().required("required"),
     // billContactNumber: Yup.string().required("required"),
-    Address: Yup.string().required("required"),
-    // Fax:Yup.string().required('required'),
-    // ShipAddress: Yup.string().required('required'),
-    // BillContactInfo:Yup.string().required('required'),
-    // Logo: Yup.string().required('required'),
-    // BillLogo: Yup.string().required('required'),
-    // ParentId:Yup.number().required('required')
+    address: Yup.string().required("required"),
   })
 
  
@@ -74,9 +60,13 @@ const CompanyForm = () => {
     if (getId) {
       console.log(getId);
       setEditMode(true)
+      GiveId(getId)
     } }, [setId]);
+    console.log(dataByid)
+   
 
     const handleSubmit = async (values) => {
+      console.log(values)
         const formData = new FormData();
       
         // Append all form fields to formData
@@ -85,22 +75,43 @@ const CompanyForm = () => {
         });
       
         // Append files to formData
-        formData.append("logoFile", logo);
+        formData.append("logo", logo);
+        formData.append("logoFile", billLogoFile);
+        
     
-      
-        try {
-          const response = await axios.post(`${baseUrl}Company/Create`, formData, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "multipart/form-data",
-            },
-          });
-      
-          console.log(response);
-        } catch (error) {
-          console.error(error);
+        if(editMode)
+        
+        {
+          console.log(values,formData)
+          try {
+            const response = await axios.post(`${baseUrl}Company/Update`, formData, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "multipart/form-data",
+              },
+            });
+        
+            console.log(response);
+          } catch (error) {
+            console.error(error);
+          }
         }
-      
+        
+        else 
+        {
+          try {
+            const response = await axios.post(`${baseUrl}Company/Create`, formData, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "multipart/form-data",
+              },
+            });
+        
+            console.log(response);
+          } catch (error) {
+            console.error(error);
+          }
+        }
         dispatch(addMenu({ id: "", menu: "companytable" }));
       };
       
@@ -126,7 +137,7 @@ const CompanyForm = () => {
 
       <Formik
         enableReinitialize={true}
-        initialValues={editMode && editIdData ? editIdData : initialValues}
+        initialValues={editMode  ? dataByid : initialValues}
        validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
@@ -138,7 +149,7 @@ const CompanyForm = () => {
                 <div className="py-[5px]">
                   <label className="block">Name <span>*</span></label>
                   <Field type="text"
-                    name="Name"
+                    name="name"
                     className="w-[22em]"
                     placeholder=""
                     onKeyDown={(event) =>
@@ -153,16 +164,16 @@ const CompanyForm = () => {
                     </label>
                     <Field
                       type="text"
-                      name="ContactNumber"
+                      name="contactNumber"
                       className="w-[22em]"
                       placeholder=""
-                      id="ContactNumber"
+                      id="contactNumber"
                       onKeyDown={(event) => handleEnterKeyPress(event, "address")}
                     />
                     <ErrorMessage
                       component="div"
                       className="error"
-                      name="ContactNumber"
+                      name="contactNumber"
                     />
                   </div>
                   </div>
@@ -175,16 +186,16 @@ const CompanyForm = () => {
                     </label>
                     <Field
                       type="text"
-                      name="RegestrationNo"
+                      name="regestrationNo"
                       className="w-[22em]"
                       placeholder=""
-                      id="RegestrationNo"
+                      id="regestrationNo"
                       onKeyDown={(event) => handleEnterKeyPress(event, "Pan")}
                     />
                     <ErrorMessage
                       component="div"
                       className="error"
-                      name="RegestrationNo"
+                      name="regestrationNo"
                     />
                   </div>
 
@@ -194,13 +205,13 @@ const CompanyForm = () => {
                     </label>
                     <Field
                       type="text"
-                      name="Pan"
+                      name="pan"
                       className="w-[22em]"
                       placeholder=""
-                      id="Pan"
+                      id="pan"
                       onKeyDown={(event) => handleEnterKeyPress(event, "ContactNumber")}
                     />
-                    <ErrorMessage component="div" className="error" name="Pan" />
+                    <ErrorMessage component="div" className="error" name="pan" />
                   </div>
                 </div>
 
@@ -220,14 +231,14 @@ const CompanyForm = () => {
 
                     type="text"
                     onKeyDown={(event) => handleEnterKeyPress(event, "billadd")}
-                    id="Address"
-                    name="Address"
+                    id="address"
+                    name="address"
                     className="w-[100%] "
                   ></Field>
                   <ErrorMessage
                     component="div"
                     className="error"
-                    name="Address"
+                    name="address"
                   />
                 </div>
 
@@ -242,7 +253,7 @@ const CompanyForm = () => {
                       name="logoFile"
                       className="w-[100%] opacity-0  absolute inset-0 "
                       id="logoFile"
-                      onChange={(e)=>setLogofile(e.target.value)}
+                      onChange={(e)=>setLogofile(e.target.files[0])}
                       onKeyDown={(event) =>
                         handleEnterKeyPress(event, "btnsubmit")
                       }
@@ -273,14 +284,14 @@ const CompanyForm = () => {
                     as="textarea"
                     type="text"
                     onKeyDown={(event) => handleEnterKeyPress(event, "shipadd")}
-                    id="BillContactInfo"
-                    name="BillContactInfo"
+                    id="billAddress"
+                    name="billAddress"
                     className="w-[100%] "
                   ></Field>
                   <ErrorMessage
                     component="div"
                     className="error"
-                    name="BillContactInfo"
+                    name="billAddress"
                   />
                 </div>
                 <div className="py-[6px]">
@@ -291,8 +302,8 @@ const CompanyForm = () => {
                   <Field
                     as="textarea"
                     type="text"
-                    name="ShipAddress"
-                    id="ShipAddress"
+                    name="shipAddress"
+                    id="shipAddress"
                     onKeyDown={(event) =>
                       handleEnterKeyPress(event, "billcontact")
                     }
@@ -301,7 +312,7 @@ const CompanyForm = () => {
                   <ErrorMessage
                     component="div"
                     className="error"
-                    name="ShipAddress"
+                    name="shipAddress"
                   />
                 </div>
 
@@ -312,9 +323,9 @@ const CompanyForm = () => {
                   <Field
                     as="textarea"
                     type="text"
-                    name="BillContactInfo"
+                    name="billContactInfo"
                     className="w-[100%]"
-                    id="BillContactInfo"
+                    id="billContactInfo"
                     onKeyDown={(event) =>
                       handleEnterKeyPress(event, "image")
                     }
@@ -322,7 +333,7 @@ const CompanyForm = () => {
                   <ErrorMessage
                     component="div"
                     className="error"
-                    name="BillContactInfo"
+                    name="billContactInfo"
                   />
                 </div>
                

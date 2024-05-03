@@ -58,7 +58,7 @@ const CompanyTable = () => {
             <div onClick={()=>dispatch(addMenu({ id:'', menu:'companyform'}))} className="py-[18px] addbtn">
               <button >Add New +</button>
             </div>
-            <div className="          
+            <div className="  table-wrapper        
             ">
               <table className="shadow-lg">
                 <thead>
