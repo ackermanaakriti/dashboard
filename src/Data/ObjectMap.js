@@ -18,32 +18,41 @@ import TreeViewChart from "../Menus/CharofAcc/ChartofAccTree";
 import Company from "../Menus/Company";
 import CompanyForm from "../Menus/BranchMenu/Company/CompanyForm";
 import CompanyTable from "../Menus/BranchMenu/Company/CompanyTable";
-import EmployeeForm from "../Menus/EmployeeMenu/EmployeeForm";
+import EmployeeForm from "../Menus/FiscalYearMenu/EmployeeForm";
 import EmployeeTable from "../Menus/EmployeeMenu/EmployeeTable";
 import ModuleForm from "../Menus/ModuleMenu/ModuleForm";
 import ModuleTable from "../Menus/ModuleMenu/ModuleTable";
+import DepartmentTable from "../Menus/DepartmentMenu/DepartmentTable";
+import DepartmentForm from "../Menus/DepartmentMenu/DepartMentForm";
+
 
 export const MenuComponentMap = {
-  branch: <BranchTable />,
-  fiscalyear: <FiscalYearTable />,
-  fiscalform: <FiscalYearForm />,
-  Form: <BranchForm />,
-  Table: <BranchTable />,
-  currency: <CurrencyTable />,
-  currencyform: <CurrencyForm />,
-  chartofaccForm: <CharofAccForm />,
-  chartofacc: <ChartofAccTable />,
-  Accgrp: <AccountGrpTable />,
-  accform: <AccountGroupForm />,
-  vouchertypeform: <VouchertypeForm />,
-  vouchertype: <VoucherTypeTable />,
-  voucher: <VoucherTable />,
-  voucherForm: <Voucher />,
-  treeview: <TreeViewChart />,
-  companytable: <CompanyTable />,
-  companyform: <CompanyForm />,
-  employee: <EmployeeForm />,
-  employeetable:<EmployeeTable/>,
-  moduleform:<ModuleForm/>,
-  moduletable:<ModuleTable />,
-};
+   
+    branch: <BranchTable/>,
+    fiscalyear: <FiscalYearTable/>,
+    fiscalform :<FiscalYearForm/>,  
+      Form :<BranchForm/>,
+    Table: <BranchTable/>,
+    currency: <CurrencyTable/>,
+    currencyform: <CurrencyForm/>,
+    chartofaccForm : <CharofAccForm/>,
+    chartofacc : <ChartofAccTable/>, 
+       Accgrp : <AccountGrpTable/>,
+    accform: <AccountGroupForm/>,
+    vouchertypeform : <VouchertypeForm/>,
+    vouchertype : <VoucherTypeTable/>,
+    voucher : <VoucherTable/>,
+    voucherForm : <Voucher/>,
+    treeview: <TreeViewChart/>,
+    companytable: <CompanyTable/>,
+    companyform : <CompanyForm/>,
+    employee:<EmployeeForm/>,
+    employeetable:<EmployeeTable/>,
+    moduleform:<ModuleForm/>,
+    moduletable:<ModuleTable />,
+    departmenttable: <DepartmentTable/>,
+    departmentform: <DepartmentForm/>,
+  };
+
+
+  

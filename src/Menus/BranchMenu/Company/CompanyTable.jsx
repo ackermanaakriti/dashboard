@@ -7,6 +7,7 @@ import { addMenu, addTab } from "../../../Redux/TopTabSlice";
 import { TableButton } from "../../../Components/GreenButton";
 import axios from 'axios'; 
 import useGetData from "../../../Apis/useGetData";
+import useDelData from "../../../Apis/useDelData";
 
 
 
@@ -14,6 +15,7 @@ const CompanyTable = () => {
   const{ setId,hanldeId,setHandleId,token}= useLayouData();
 
   const {data}= useGetData('Company/GetAll')
+  const {Deldata}= useDelData('Company/Delete/')
   
   const dispatch = useDispatch()
 
@@ -31,11 +33,8 @@ const CompanyTable = () => {
 
 
   
-  const handleDeletebtn = (index) => {
-    const updatedData = contactD.filter((item, i) => i !== index);
-    // Update localStorage and contactD state with the updated data
-    localStorage.setItem('formData', JSON.stringify(updatedData));
-    setcontactD(updatedData);
+  const handleDeletebtn = (id) => {
+   Deldata(id)
   };
 
   const handleEditdd =(id)=>
