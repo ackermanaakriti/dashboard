@@ -83,7 +83,13 @@ export const MenuData =[
     },
     {
         menu:'Employee ', 
-        slug:'employee',   
+        slug:'employeetable',   
+        icon: <LuMenuSquare className='text-[28px] text-[#36925c]'/>,
+        submenu:[]
+    },
+    {
+        menu:'Module ', 
+        slug:'moduletable',   
         icon: <LuMenuSquare className='text-[28px] text-[#36925c]'/>,
         submenu:[]
     },
@@ -94,6 +100,11 @@ export const MenuData =[
         submenu:[]
     },
     {
+        menu:'Customer ', 
+        slug:'customertable',   
+        icon: <LuMenuSquare className='text-[28px] text-[#36925c]'/>,
+        submenu:[]
+    },{
         menu:'Vendor ', 
         slug:'vendorTable',   
         icon: <LuMenuSquare className='text-[28px] text-[#36925c]'/>,

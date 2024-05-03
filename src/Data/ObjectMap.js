@@ -1,6 +1,3 @@
-
-
-
 import BranchForm from "../Menus/BranchMenu/BranchForm";
 import BranchTable from "../Menus/BranchMenu/BranchTable";
 import FiscalYearForm from "../Menus/FiscalYearMenu/FiscalYearForm";
@@ -21,13 +18,16 @@ import TreeViewChart from "../Menus/CharofAcc/ChartofAccTree";
 import Company from "../Menus/Company";
 import CompanyForm from "../Menus/BranchMenu/Company/CompanyForm";
 import CompanyTable from "../Menus/BranchMenu/Company/CompanyTable";
-import EmployeeForm from "../Menus/FiscalYearMenu/EmployeeForm";
+import EmployeeForm from "../Menus/EmployeeMenu/EmployeeForm";
+import EmployeeTable from "../Menus/EmployeeMenu/EmployeeTable";
+import ModuleForm from "../Menus/ModuleMenu/ModuleForm";
+import ModuleTable from "../Menus/ModuleMenu/ModuleTable";
 import DepartmentTable from "../Menus/DepartmentMenu/DepartmentTable";
 import DepartmentForm from "../Menus/DepartmentMenu/DepartMentForm";
-import VendorTable from "../Menus/Vendor/VendorTable";
+
+import CustomerForm from "../Menus/CustomerMenu/CustomerForm";
+import CustomerTable from "../Menus/CustomerMenu/CustomerTable";import VendorTable from "../Menus/Vendor/VendorTable";
 import VendorForm from "../Menus/Vendor/VendorForm";
-
-
 
 export const MenuComponentMap = {
    
@@ -50,9 +50,13 @@ export const MenuComponentMap = {
     companytable: <CompanyTable/>,
     companyform : <CompanyForm/>,
     employee:<EmployeeForm/>,
+    employeetable:<EmployeeTable/>,
+    moduleform:<ModuleForm/>,
+    moduletable:<ModuleTable />,
     departmenttable: <DepartmentTable/>,
     departmentform: <DepartmentForm/>,
-    vendorTable: <VendorTable/>,
+    customerform:<CustomerForm/>,
+    customertable:<CustomerTable/>, vendorTable: <VendorTable/>,
     vendorForm : <VendorForm/>
 
    
