@@ -7,6 +7,7 @@ import { addMenu, addTab } from "../../Redux/TopTabSlice";
 import { TableButton } from "../../Components/GreenButton";
 import axios from 'axios'; 
 import useGetData from "../../Apis/useGetData";
+import useDelData from "../../Apis/useDelData";
 
 
 
@@ -14,6 +15,7 @@ const BranchTable = () => {
   const{ setId,hanldeId,setHandleId,token}= useLayouData();
 
   const {data}= useGetData('Branch/GetAll')
+  const {Deldata}= useDelData('Branch/Delete/')
   
   const dispatch = useDispatch()
 
@@ -46,11 +48,8 @@ const BranchTable = () => {
 
 
   
-  const handleDeletebtn = (index) => {
-    const updatedData = contactD.filter((item, i) => i !== index);
-    // Update localStorage and contactD state with the updated data
-    localStorage.setItem('formData', JSON.stringify(updatedData));
-    setcontactD(updatedData);
+  const handleDeletebtn = (id) => {
+    Deldata(id)
   };
 
   const handleEditdd =(id)=>

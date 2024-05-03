@@ -29,33 +29,23 @@ const [companyData,setCompanyData]= useState('')
   const [editMode, setEditMode] = useState(false);
   const [logoFile,setLogofile]= useState('');
   const  [billLogoFile,setbillLogofile]= useState('')
-  console.log(logoFile,billLogoFile)
 
-  const [editIdData, seteditIdData] = useState("");
-  const dataLocal = JSON.parse(localStorage.getItem("formData"));
-  const initialValues = {
+  const [CompanyAutofillData, setCompanyAutofillData] = useState("");
+  const [initialValues, setInitialValues] = useState({
     name: "",
-    companyId:'',
+    companyId: '',
     parentId: '',
     regestrationNo: "",
     contactNumber: "",
     pan: "",
     address: "",
-    // billadd: "",
     shipAddress: "",
     billContactInfo: "",
     IsHeadOffice: '',
-    // logoFile:null,
-    // Logo:null,
-    code:'',
-    // billLogoFile:null,
-    IsActive : true,
-    // BillLogo:null,
-    // LogoRelatedFileUrl:null,
-    // BillLogoRelatedFileUrl:null,
-    fax:''
-
-  };
+    code: '',
+    IsActive: true,
+    fax: ''
+  });
  const  validationSchema=Yup.object().shape({
     Name: Yup.string().required("required"),
     parentId: Yup.number().required("required"),
@@ -87,10 +77,9 @@ const [companyData,setCompanyData]= useState('')
          try {
              const response =  await axios.get(`${baseUrl}Company/GetAll`,
                {headers : { Authorization:`Bearer ${token}` }
-              
              })
              setCompanyData(response.data)
-             console.log(response.data)
+             console.log(response.data.data)
             }
           catch (err)
           {
@@ -98,10 +87,21 @@ const [companyData,setCompanyData]= useState('')
            }
          };
          fetchData();
+
+         if(CompanyAutofillData)
+         {
+          const autofillCompanyData = companyData?.data?.find((item) => item?.id === parseInt(CompanyAutofillData));
+          setInitialValues(prevValues => ({
+            ...prevValues,
+            address: autofillCompanyData.address,
+            contactNumber: autofillCompanyData.contactNumber,
+            shipAddress: autofillCompanyData.shipAddress
+        }));
+          
+         }
  
+     }, [setId,CompanyAutofillData]);
 
-
-     }, [setId]);
 
      const handleSubmit = async (values) => {
       const formData = new FormData();
@@ -140,6 +140,7 @@ const [companyData,setCompanyData]= useState('')
       dispatch(addMenu({ id: "", menu: "companytable" }));
     };
 
+ 
   const handleEnterKeyPress = (event, nextField) => {
     if (event.key === "Enter") {
       event.preventDefault();
@@ -161,7 +162,7 @@ const [companyData,setCompanyData]= useState('')
 
       <Formik
         enableReinitialize={true}
-        initialValues={editMode && editIdData ? editIdData : initialValues}
+        initialValues={editMode && CompanyAutofillData ? CompanyAutofillData : initialValues}
        validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
@@ -188,8 +189,11 @@ const [companyData,setCompanyData]= useState('')
                   <Field type="text"
                     name="companyId"
                     as='select'
+                 
                     className="w-[100%] border-[1px] px-[8px] py-[8px] outline-0 border-[#c0d3e5"
                     placeholder=""
+                    value={CompanyAutofillData}
+                    onChange={(e) => setCompanyAutofillData((e.target.value))}
                     onKeyDown={(event) =>
                       handleEnterKeyPress(event, "parentId")
                     }
@@ -216,6 +220,12 @@ const [companyData,setCompanyData]= useState('')
                       id="parentId"
                       name="parentId"
                       type='number'
+                      onChange={(e) => {
+                        formik.setFieldValue('parentId', e.target.value);
+                        // You can set the value of another field here if needed
+                        // formik.setFieldValue('fieldName', newValue);
+                      }}
+                    
                       onKeyDown={(event) => handleEnterKeyPress(event, "Code")}
                     >
                       <option disabled value="">
@@ -233,7 +243,7 @@ const [companyData,setCompanyData]= useState('')
                   </div>
                   <div className="py-[6px]">
                     <label className="block">
-                      Branch Code <span>*</span>
+                      Branch Code <span></span>
                     </label>
                     <Field
                       type="text"
@@ -313,7 +323,7 @@ const [companyData,setCompanyData]= useState('')
 
                   <div className="py-[6px]">
                     <label className="block">
-                      Fax <span>*</span>
+                      Fax <span></span>
                     </label>
                     <Field
                       type="text"
@@ -348,7 +358,7 @@ const [companyData,setCompanyData]= useState('')
 
                 <div className="py-[6px]">
                   <label className="block">
-                    Logo <span>*</span>
+                    Logo <span></span>
                   </label>
                   <div className="relative border-dotted border-[2px] border-[#c0d3e5] text-center py-[10px]">
                     <input
@@ -393,7 +403,7 @@ const [companyData,setCompanyData]= useState('')
                 <h2 className="text-PrimaryColor font-semibold text-center text-[20px] ">Billing Information</h2>
                 <div className="py-[6px]">
                   <label className="block">
-                    Bill Address <span>*</span>
+                    Bill Address <span></span>
                   </label>
                   <Field
                     as="textarea"
@@ -412,7 +422,7 @@ const [companyData,setCompanyData]= useState('')
                 <div className="py-[6px]">
                   <label className="block">
                     {" "}
-                    Ship Address <span>*</span>
+                    Ship Address <span></span>
                   </label>
                   <Field
                     as="textarea"
@@ -433,7 +443,7 @@ const [companyData,setCompanyData]= useState('')
 
                 <div className="py-[6px]">
                   <label className="block">
-                    Bill Contact Info <span>*</span>
+                    Bill Contact Info <span></span>
                   </label>
                   <Field
                     as="textarea"
@@ -453,7 +463,7 @@ const [companyData,setCompanyData]= useState('')
                 </div>
                 <div className="py-[6px]">
                   <label className="block">
-                    Bill Logo <span>*</span>
+                    Bill Logo <span></span>
                   </label>
                   <div className="relative border-dotted border-[2px] border-[#c0d3e5] text-center py-[10px]">
                     <input

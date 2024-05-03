@@ -22,6 +22,8 @@ import Company from "../Menus/Company";
 import CompanyForm from "../Menus/BranchMenu/Company/CompanyForm";
 import CompanyTable from "../Menus/BranchMenu/Company/CompanyTable";
 import EmployeeForm from "../Menus/FiscalYearMenu/EmployeeForm";
+import DepartmentTable from "../Menus/DepartmentMenu/DepartmentTable";
+import DepartmentForm from "../Menus/DepartmentMenu/DepartMentForm";
 
 
 
@@ -45,7 +47,9 @@ export const MenuComponentMap = {
     treeview: <TreeViewChart/>,
     companytable: <CompanyTable/>,
     companyform : <CompanyForm/>,
-    employee:<EmployeeForm/>
+    employee:<EmployeeForm/>,
+    departmenttable: <DepartmentTable/>,
+    departmentform: <DepartmentForm/>
 
    
   };
