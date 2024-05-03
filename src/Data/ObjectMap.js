@@ -18,12 +18,14 @@ import TreeViewChart from "../Menus/CharofAcc/ChartofAccTree";
 import Company from "../Menus/Company";
 import CompanyForm from "../Menus/BranchMenu/Company/CompanyForm";
 import CompanyTable from "../Menus/BranchMenu/Company/CompanyTable";
-import EmployeeForm from "../Menus/FiscalYearMenu/EmployeeForm";
+import EmployeeForm from "../Menus/EmployeeMenu/EmployeeForm";
 import EmployeeTable from "../Menus/EmployeeMenu/EmployeeTable";
 import ModuleForm from "../Menus/ModuleMenu/ModuleForm";
 import ModuleTable from "../Menus/ModuleMenu/ModuleTable";
 import DepartmentTable from "../Menus/DepartmentMenu/DepartmentTable";
 import DepartmentForm from "../Menus/DepartmentMenu/DepartMentForm";
+import CustomerForm from "../Menus/CustomerMenu/CustomerForm";
+import CustomerTable from "../Menus/CustomerMenu/CustomerTable";
 
 
 export const MenuComponentMap = {
@@ -52,6 +54,8 @@ export const MenuComponentMap = {
     moduletable:<ModuleTable />,
     departmenttable: <DepartmentTable/>,
     departmentform: <DepartmentForm/>,
+    customerform:<CustomerForm/>,
+    customertable:<CustomerTable/>,
   };
 
 
