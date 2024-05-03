@@ -24,6 +24,8 @@ import CompanyTable from "../Menus/BranchMenu/Company/CompanyTable";
 import EmployeeForm from "../Menus/FiscalYearMenu/EmployeeForm";
 import DepartmentTable from "../Menus/DepartmentMenu/DepartmentTable";
 import DepartmentForm from "../Menus/DepartmentMenu/DepartMentForm";
+import VendorTable from "../Menus/Vendor/VendorTable";
+import VendorForm from "../Menus/Vendor/VendorForm";
 
 
 
@@ -49,7 +51,9 @@ export const MenuComponentMap = {
     companyform : <CompanyForm/>,
     employee:<EmployeeForm/>,
     departmenttable: <DepartmentTable/>,
-    departmentform: <DepartmentForm/>
+    departmentform: <DepartmentForm/>,
+    vendorTable: <VendorTable/>,
+    vendorForm : <VendorForm/>
 
    
   };

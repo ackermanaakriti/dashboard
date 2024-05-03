@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import { MdEdit } from "react-icons/md";
-import './Fiscalyear.css'
+import '../FiscalYearMenu/Fiscalyear.css'
 import { useDispatch, useSelector } from 'react-redux';
 import { removeFiscalYear ,editFiscalYear} from '../../Redux/Slices/FiscalYearSlice';
 import { addMenu } from '../../Redux/TopTabSlice';
@@ -27,7 +27,7 @@ const VendorTable = () => {
   }
   const handleEdit = (index) => {
     setId(index)
-    dispatch(addMenu({ id:index, menu:'fiscalform'}))
+    dispatch(addMenu({ id:index, menu:'vendorForm'}))
   };
 
   return (
@@ -35,11 +35,11 @@ const VendorTable = () => {
       <div className='px-[50px]'>
         <div>
           <h2 className='font-inter font-semibold text-[30px]'>
-            Fiscal Year Table
+            Vendor Table
           </h2>
         </div>
         <div>
-          <div className='mt-[20px]' onClick={()=>dispatch(addMenu({ id:'', menu:'fiscalform'}))}>
+          <div className='mt-[20px]' onClick={()=>dispatch(addMenu({ id:'', menu:'vendorForm'}))}>
             <GreenButton className='bg-PrimaryColor px-[15px] py-[4px] text-white font-inter' text='Add New +' />
           </div>
           <div className="table--wrapper h-[800px] overflow-y-auto">
@@ -57,7 +57,7 @@ const VendorTable = () => {
               {data?.data?.map((item, index) => (
                 <tr key={index}>
                   <td>{item?.name}</td>
-                  <td>{item?.charOfAccountId}</td>
+                  <td>{item?.chartOfAccountId}</td>
                   <td>{item?.companyName}</td>
                 
                   <td className="">

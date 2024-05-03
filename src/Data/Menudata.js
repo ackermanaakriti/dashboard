@@ -93,4 +93,10 @@ export const MenuData =[
         icon: <LuMenuSquare className='text-[28px] text-[#36925c]'/>,
         submenu:[]
     },
+    {
+        menu:'Vendor ', 
+        slug:'vendorTable',   
+        icon: <LuMenuSquare className='text-[28px] text-[#36925c]'/>,
+        submenu:[]
+    },
 ]

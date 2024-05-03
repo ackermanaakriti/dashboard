@@ -10,6 +10,8 @@ import usePostData from '../../Apis/usePostData';
 import useGetData from '../../Apis/useGetData';
 import useUpdateData from '../../Apis/useUpdate';
 import useGetById from '../../Apis/useGetById';
+import { baseUrl } from '../../Apis/Baseurl';
+import axios from 'axios';
 
 const VendorForm = () => {
 
@@ -17,9 +19,9 @@ const VendorForm = () => {
   const {data}= useGetData('ChartOfAccount/GetAll')
   const {updateData} = useUpdateData('Vendor/Update')
   const {GiveId,dataByid}= useGetById('Vendor/GetById/')
-  const {setId,getId}= useLayouData();
+  const {setId,getId,token}= useLayouData();
   const [editMode,setEditMode]= useState(false)
-  const [editData,seteditData]= useState('')
+const [companyData,setCompanyData]= useState([])
   const dispatch = useDispatch();
 
 
@@ -27,12 +29,30 @@ const VendorForm = () => {
 
   useEffect(()=>
   {
+   
     if(getId )
     {
   setEditMode(true)
   GiveId(getId)
+    }
+  const fetchData = async ()=>
+  {
+     try {
+         const response =  await axios.get(`${baseUrl}Company/GetAll`,
+           {headers : { Authorization:`Bearer ${token}` }
+          
+         })
+         setCompanyData(response.data)
+         console.log(response)
+        }
+      catch (err)
+      {
+       console.log(err)
+       }
+     };
+     fetchData();
     }   
-  },[setId])
+  ,[setId])
 
 
   const initialValues = {
@@ -47,21 +67,19 @@ const VendorForm = () => {
   };
 
   const validationSchema = Yup.object().shape({
-    code: Yup.string().typeError('enter number').required('required'),
+   
     name: Yup.string().typeError('enter number').required('required'),
   });
 
 
   const handleSubmit = async (values) => {
-    values.startDate = moment(values.startDate).toDate();
-    values.endDate = moment(values.endDate).toDate();
-    console.log(values)
+
     if(editMode)
     { updateData(values) }
     else 
     {  await postdata(values) }
     
-    dispatch(addMenu({ id:'', menu:'fiscalyear'}))
+    dispatch(addMenu({ id:'', menu:'vendorTable'}))
     setId('')
     
   };
@@ -70,7 +88,7 @@ const VendorForm = () => {
     <>
       <div className='px-[50px]'>
         <div>
-          <h2 className='font-inter font-semibold text-[30px]'>{editMode ? 'Update' : 'Add'} Fiscal Year</h2>
+          <h2 className='font-inter font-semibold text-[30px]'>{editMode ? 'Update' : 'Add'} Vendor</h2>
         </div>
 
         <Formik
@@ -81,6 +99,7 @@ const VendorForm = () => {
         >
           {(formik) => (
             <Form className='grid grid-cols-2 gap-[90px]'>
+                <div>
               <div className='grid grid-cols-2 gap-[30px]'>
                 <div className='py-[8px]'>
                   <label className='block py-[5px] font-[500] font-inter '> Name</label>
@@ -92,13 +111,13 @@ const VendorForm = () => {
                   <ErrorMessage component='div' className='text-[14px] text-redclr' name='name' />
                 </div>
 
-                <div className="py-[5px]">
-                  <label className="block">Company <span>*</span></label>
+                <div className="py-[8px]">
+                  <label className="block py-[5px] font-[500] font-inter ">Company <span>*</span></label>
                   <Field type="text"
                     name="companyId"
                     as='select'
                  
-                    className="w-[100%] border-[1px] px-[8px] py-[8px] outline-0 border-[#c0d3e5"
+                    className="w-[100%] border-[1px] px-[8px] py-[8px] outline-none border-borderclr"
                     placeholder=""
                     // value={CompanyAutofillData}
                     // onChange={(e) => setCompanyAutofillData((e.target.value))}
@@ -107,7 +126,7 @@ const VendorForm = () => {
                     <option disabled value="">
                         select company
                       </option>
-                      {data?.data?.map((item, index) => (
+                      {companyData?.data?.map((item, index) => (
                         <option key={item?.id} value={item?.id}>{item?.name}</option>
                       ))}
 
@@ -129,23 +148,23 @@ const VendorForm = () => {
                     <ErrorMessage component='div' className='text-[14px] text-redclr ' name='contactNumber' />
                   </div>
                   
-                <div className="py-[5px]">
-                  <label className="block">ChartOfAccount <span>*</span></label>
+                <div className="py-[8px]">
+                  <label className="block  py-[8px] font-[500] font-inter ">ChartOfAccount <span>*</span></label>
                   <Field type="text"
                     name="chartOfAccountId"
                     as='select'
                  
-                    className="w-[100%] border-[1px] px-[8px] py-[8px] outline-0 border-[#c0d3e5"
+                    className="w-[100%] border-[1px] px-[8px] py-[8px] outline-none border-borderclr"
                     placeholder=""
                     // value={CompanyAutofillData}
                     // onChange={(e) => setCompanyAutofillData((e.target.value))}
                     
                   >
                     <option disabled value="">
-                        select company
+                      CharotAccount
                       </option>
                       {data?.data?.map((item, index) => (
-                        <option key={item?.id} value={item?.id}>{item?.name}</option>
+                        <option key={item?.id} value={item?.id}>{item?.accountName}</option>
                       ))}
 
                   </Field>
@@ -194,8 +213,7 @@ const VendorForm = () => {
                   <button  className='bg-PrimaryColor px-[15px] py-[4px] text-white font-inter' type='submit' > 
                   {editMode ? 'Update': 'Save'} </button>
                 </div>
-              
-
+                </div>
             </Form>
           )}
 
