@@ -19,14 +19,14 @@ const VoucherTable = () => {
   const voucherDa = useSelector((state) => state.voucherData.voucherDetail) 
   const {data,fetchData}= useGetData('Voucher/GetAll')
   const {Deldata} = useDelData('Voucher/Delete/')
+  console.log(data?.data)
 
   const handleDel =(id)=>
   {
     Deldata(id)
     
   }
-
-
+  
   const handleEdit = (id) => {
     setId(id)
     dispatch(addMenu({ id:id, menu:'voucherForm'}))
@@ -59,7 +59,7 @@ const VoucherTable = () => {
             <tbody>
               {data?.data?.map((item, index) => (
                 <tr key={index}>
-                  <td>{item?.voucherTypeId}</td>
+                  <td>{item?.voucherTypeName}</td>
                   <td>{item?.voucherNumber}</td>
                   <td>{item?.invoiceNumber}</td>
                   <td>{item?.transactionDate}</td>

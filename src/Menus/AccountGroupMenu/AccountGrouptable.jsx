@@ -1,80 +1,97 @@
-import React, { useEffect } from 'react'
-import { RiDeleteBin5Fill } from "react-icons/ri";
+
+import React, { useEffect, useState } from "react";
+import useDelData from "../../Apis/useDelData";
+import { useLayouData } from "../../Context/MainLayoutContext";
+import { useDispatch } from "react-redux";
+import { addMenu } from "../../Redux/TopTabSlice";
 import { MdEdit } from "react-icons/md";
-import '../FiscalYearMenu/Fiscalyear.css'
-import { useDispatch, useSelector } from 'react-redux';
-import { removeFiscalYear ,editFiscalYear} from '../../Redux/Slices/FiscalYearSlice';
-import { addMenu } from '../../Redux/TopTabSlice';
-import { useLayouData } from '../../Context/MainLayoutContext';
-import { GreenButton } from '../../Components/GreenButton';
-import { removeCurrency } from '../../Redux/Slices/CurrencySlice';
-import { removeAcctountgroup } from '../../Redux/Slices/AccountGroupSlice';
-import useGetData from '../../Apis/useGetData';
-import useDelData from '../../Apis/useDelData';
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { TableDataComp } from "../../Global/Table/TableData";
+import { TableButton } from "../../Components/GreenButton";
+import useGetData from "../../Apis/useGetData";
 
 const AccountGrpTable = () => {
-  const {setId} = useLayouData();
-  const dispatch = useDispatch()
-  const currencydata = useSelector((state) => state.accgroup) 
-  const {data}= useGetData('AccountGroup/GetAll')
+  const { setId } = useLayouData();
+  const dispatch = useDispatch();
   const {Deldata}= useDelData('AccountGroup/Delete/')
+  const { data } = useGetData('AccountGroup/GetAll')
 
 
- console.log(data)
-
-  const handleDel =(id)=>
-  {
-   Deldata(id)
-  }
+  const handleDelete = async (id) => {
+    await Deldata(id);
+  };
   const handleEdit = (id) => {
-    setId(id)
-    dispatch(addMenu({ id:id, menu:'accform'}))
+    console.log(id)
+    setId(id);
+    dispatch(addMenu({ id: id, menu: "Accgrp" }));
   };
 
+  const columns = [
+    {
+      name: 'Name',
+      selector: row => row.name,
+      sortable: true,
+      // grow: 2,
+      width: 'fit-content',
+
+    },
+    {
+      name: ' Code',
+      selector: row => row.code,
+      width: 'fit-content',
+    },
+    {
+      name: 'isActive',
+      hide: 'md',
+      selector: row => row.isActive,
+      width: 'fit-content',
+      cell: row => (
+        <>
+            {row.isActive ? (
+               <TableButton className='bg-PrimaryColor rounded-[20px] px-[12px] py-[5px] text-white' text='Yes'/>
+            ) :  <TableButton
+            className="bg-[#378f80] rounded-[20px] px-[12px] py-[5px] text-white"
+            text="No"
+          />}
+        </>
+    ),
+    },
+  
+    {
+      name: 'Actions',
+      cell: row => (
+        <div className="flex gap-[24px]">
+
+          <button onClick={() => handleEdit(row.id)}> <span className="text-[20px] text-PrimaryColor  mx-[3px]"><MdEdit /></span></button>
+          <button onClick={() => handleDelete(row.id)}><span className="text-[20px] text-redclr  mx-[3px]"><RiDeleteBin6Line /></span></button>
+          {/* <button onClick={() => handleView(row)}> <span className="text-[20px]   mx-[3px]"><IoEyeOutline/></span></button> */}
+        </div>
+      ),
+      allowOverflow: true,
+      button: true,
+      width: 'fit-content',
+    
+
+    }
+  ];
+
   return (
-    <>
-      <div className='px-[50px]'>
-        <div>
-          <h2 className='font-inter font-semibold text-[30px]'>
-           Account Group Table
-          </h2>
-        </div>
-        <div>
-          <div className='mt-[20px]' onClick={()=>dispatch(addMenu({ id:'', menu:'accform'}))}>
-            <GreenButton className='bg-PrimaryColor px-[15px] py-[4px] text-white font-inter' text='Add New +' />
-          </div>
-          <table className="shadow-lg">
-            <thead>
-              <tr>
-                <th> Name</th>
-                <th> Code</th>
-                
-                <th> Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data?.data?.map((item, index) => (
-                <tr key={index}>
-                  <td>{item?.name}</td>
-                  <td>{item?.code}</td>
-                  <td className="">
-                    <div className="flex gap-[25px] items-center justify-center">
-                      <span onClick={()=>handleEdit(item?.id)} className="text-PrimaryColor cursor-pointer">
-                        <MdEdit />
-                      </span>
-                      <span onClick={()=>handleDel(item?.id)} className="text-[#d13838] cursor-pointer">
-                        <RiDeleteBin5Fill />
-                      </span>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+    <div className="px-[50px]">
+      <div>
+        <h2 className="font-inter font-semibold text-[30px]">Employee Table</h2>
       </div>
-    </>
-  )
-}
+      <TableDataComp width='50%' columns={columns} data={data} />
+    </div>
+  );
+};
 
 export default AccountGrpTable;
+
+
+
+
+
+
+
+
+
