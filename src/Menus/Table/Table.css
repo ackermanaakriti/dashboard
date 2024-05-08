@@ -1,0 +1,149 @@
+
+.rdt_Pagination {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    margin-top: 20px;
+    border-top: none !important;
+    border-top-style: none !important;
+  
+    /* select field */
+    .bQjddt
+    {svg 
+      {
+        fill:#fff;
+      }
+      select 
+      {
+        background-color: var(--Primarycolor);
+        color:#fff;
+        border-radius: 4px;
+        option 
+        {
+          color:#ffffff; 
+          background-color: var(--Primarycolor);
+          &:hover 
+          {
+            background-color: var(--Primarycolor);
+            color: red;
+          }
+        }
+      }
+      
+    }
+   
+  
+    /* buttons  */
+   
+    .hNPFtm
+    {
+      height: 26px !important;
+      min-height: 26px !important;
+      color:#fff;
+      svg 
+      {
+        fill:#fff;
+        height: 20px;
+        width: 20px;
+      }
+    }
+  & button {
+    margin: 0 5px;
+    padding: 1px 8px;
+    background-color:var(--Primarycolor);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 15px;
+    &:hover {
+        background-color:var(--Primarycolor);
+      }
+      &:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+  }
+
+}
+.wrap-datatable
+{
+    header
+    {
+        display: flex;
+        justify-content: space-between;
+        padding:0;
+    }
+}
+.huyunb
+{
+  height: calc(100% - 50px) !important;
+}
+.hUdreG {
+  height: 100%;
+}
+.rdt_Table
+{
+ 
+    overflow-y: auto;
+    .rdt_TableHead
+    {
+        position: sticky;
+        top: 0;
+        z-index: 999;
+        
+        .rdt_TableHeadRow
+        {
+          
+            .rdt_TableCol
+            {
+                border-right: 0.5px solid rgba(61, 99, 99, 0.4);
+                background-color: var(--Tablebg);
+                padding: 10px;
+                font-weight: 600;
+                font-family: var(--inter);
+                text-align: center;
+                font-size: 18px;
+                &:last-child {
+                    border-right: none;
+                  }
+            }
+        }
+    }
+    .rdt_TableBody
+    {
+      
+        .rdt_TableRow
+        {
+            min-height: none;
+            max-height: 40px;
+            border-bottom:0.5px solid rgba(61, 99, 99, 0.4) ;
+            &:first-child {
+                border-top: none;
+              }
+            &:last-child {
+             
+                border-bottom:0.5px solid rgba(61, 99, 99, 0.4) ;
+              }
+            .rdt_TableCell
+            {
+                border-left: 0.5px solid rgba(61, 99, 99, 0.4);
+                background-color: white;
+                border-bottom: none;
+                padding: 10px;
+                font-weight: 400;
+                font-family: var(--inter);
+                text-align: center;
+                font-size: 16px;
+                margin: 0 !important;
+                &:first-child {
+                    border-left: none;
+                  }
+                  &:last-child {
+                    border-right: none;
+                   
+                  }
+            }
+        }
+    }
+}

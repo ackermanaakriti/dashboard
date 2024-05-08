@@ -110,4 +110,16 @@ export const MenuData =[
         icon: <LuMenuSquare className='text-[28px] text-[#36925c]'/>,
         submenu:[]
     },
+    {
+        menu:'Bank ', 
+        slug:'banktable',   
+        icon: <LuMenuSquare className='text-[28px] text-[#36925c]'/>,
+        submenu:[]
+    },
+    {
+        menu:'Vocuher Sequence ', 
+        slug:'voucherseqtable',   
+        icon: <LuMenuSquare className='text-[28px] text-[#36925c]'/>,
+        submenu:[]
+    },
 ]

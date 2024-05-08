@@ -14,7 +14,7 @@ export const MainLayoutProvider = ({ children }) => {
   const [menuTab,setmenuTab]= useState([])
   const [  hanleInquiry,setHandleInquiry]= useState(false)
   const [voucherId,setVoucherId] = useState('');
-  const [authorized,setAuthorized]= useState(true);
+  const [authorized,setAuthorized]= useState(false);
   const [token,setToken]= useState('')
 
 
@@ -33,16 +33,22 @@ export const MainLayoutProvider = ({ children }) => {
         token,setToken
         
       }}
+    
     >
 
-      {authorized ? <Login/> : ( <> <Header />
+      {authorized ?( <> <Header />
       <div className="flex">
+        <div>
         <SideBar />
+        </div>
+        {/* 'calc(100% - 268px)' */}
+       
+      
 
-        <div className="w-[100%]">{children}</div>
+        <div style={{ width: sidebarToggle ? 'calc(100% - 80px)' : 'calc(100% - 268px)' }} className="items-center">{children}</div>
       </div>
       <Footer />
-      </>)}
+      </>) : <Login/> }
 
       
       {/* <> <Header />

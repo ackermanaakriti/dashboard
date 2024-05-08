@@ -10,6 +10,7 @@
     background-color: var(--Secondarycolor);
     width: 260px;
     height: 100%;
+    padding-bottom:30px ;
 
     overflow-x: visible;
     ::-webkit-scrollbar {

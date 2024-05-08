@@ -71,7 +71,7 @@ const EmployeeForm = () => {
       >
         {(formik) => (
           <Form className="grid grid-cols-2 gap-[90px]">
-            <div className="">
+            <div className="relative">
               <div className="py-[8px]">
                 <label className="block py-[5px] font-[500] font-inter ">
                   First Name
@@ -91,7 +91,7 @@ const EmployeeForm = () => {
               <div className="grid grid-cols-2 gap-[20px]">
                 <div className="py-[8px]">
                   <label className="block py-[8px] font-[500] font-inter ">
-                    lastName
+                    last Name
                   </label>
                   <Field
                     className="border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr "
@@ -106,7 +106,7 @@ const EmployeeForm = () => {
                 </div>
                 <div className="py-[8px]">
                   <label className="block py-[8px] font-[500] font-inter ">
-                    positon
+                    Positon
                   </label>
                   <Field
                     className="border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr "
@@ -124,7 +124,7 @@ const EmployeeForm = () => {
               <div className="grid grid-cols-2 gap-[20px]">
                 <div className="py-[8px]">
                   <label className="block py-[8px] font-[500] font-inter ">
-                    email
+                    Email
                   </label>
                   <Field
                     className="border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr "
@@ -139,7 +139,7 @@ const EmployeeForm = () => {
                 </div>
                 <div className="py-[8px]">
                   <label className="block py-[8px] font-[500] font-inter ">
-                    contactNumber
+                    Contact Number
                   </label>
                   <Field
                     className="border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr "
@@ -153,9 +153,7 @@ const EmployeeForm = () => {
                   />
                 </div>
               </div>
-            </div>
-
-            <div>
+              <div>
               <div className="grid grid-cols-2 gap-[20px]">
                 <div className="py-[8px]">
                   <label className="block py-[8px] font-[500] font-inter ">
@@ -172,21 +170,7 @@ const EmployeeForm = () => {
                     name="departmentId"
                   />
                 </div>
-                {/* <div className="py-[8px]">
-                  <label className="block py-[8px] font-[500] font-inter ">
-                  Department Name
-                  </label>
-                  <Field
-                    className="border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr "
-                    name="departmentName"
-                    type="text"
-                  />
-                  <ErrorMessage
-                    component="div"
-                    className="text-[14px] text-redclr "
-                    name="departmentName"
-                  />
-                </div> */}
+                
               </div>
               <div className="grid grid-cols-2 gap-[20px]">
                 <div className="py-[6px]">
@@ -230,7 +214,9 @@ const EmployeeForm = () => {
                   </div>
                 </div>
               </div>
-              <div className=" mt-[40px] flex gap-[20px] absolute bottom-[2em] right-[5em]">
+             
+             </div>
+             <div className=" mt-[40px] flex gap-[20px] float-right bottom-[2em] right-[5em]">
                 <button
                   onClick={() =>
                     dispatch(addMenu({ id: "", menu: "employee" }))
@@ -249,6 +235,8 @@ const EmployeeForm = () => {
                 </button>
               </div>
             </div>
+
+          
           </Form>
         )}
       </Formik>

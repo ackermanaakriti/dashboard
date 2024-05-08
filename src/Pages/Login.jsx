@@ -37,7 +37,7 @@ const Login = () => {
       );
       console.log(response.data)
     setToken(response?.data?.token);
-    setAuthorized(false)
+    setAuthorized(true)
     } catch (error) {
       console.error('Error:', error);
     }

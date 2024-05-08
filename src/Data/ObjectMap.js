@@ -28,6 +28,10 @@ import DepartmentForm from "../Menus/DepartmentMenu/DepartMentForm";
 import CustomerForm from "../Menus/CustomerMenu/CustomerForm";
 import CustomerTable from "../Menus/CustomerMenu/CustomerTable";import VendorTable from "../Menus/Vendor/VendorTable";
 import VendorForm from "../Menus/Vendor/VendorForm";
+import BankForm from "../Menus/Bank/BankForm";
+import BankTable from "../Menus/Bank/BankTable";
+import VocherSequenceForm from "../Menus/Voucher/VoucherSequenceForm";
+import VoucherSeqTable from "../Menus/Voucher/VoucherSequenceTable";
 
 export const MenuComponentMap = {
    
@@ -57,8 +61,11 @@ export const MenuComponentMap = {
     departmentform: <DepartmentForm/>,
     customerform:<CustomerForm/>,
     customertable:<CustomerTable/>, vendorTable: <VendorTable/>,
-    vendorForm : <VendorForm/>
-
+    vendorForm : <VendorForm/>,
+    bankForm : <BankForm/>,
+    banktable: <BankTable/>,
+    voucherseqform: <VocherSequenceForm/>,
+    voucherseqtable: <VoucherSeqTable/>
    
   };
 

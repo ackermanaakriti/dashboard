@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect, useState} from "react";
 import useGetData from "../../Apis/useGetData";
 import { GreenButton, TableButton } from "../../Components/GreenButton";
 import { MdEdit } from "react-icons/md";
@@ -7,14 +7,44 @@ import useDelData from "../../Apis/useDelData";
 import { useLayouData } from "../../Context/MainLayoutContext";
 import { useDispatch } from "react-redux";
 import { addMenu } from "../../Redux/TopTabSlice";
+import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
+import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
+import "ag-grid-community/styles/ag-theme-quartz.css"; 
+import { baseUrl } from "../../Apis/Baseurl";
+import axios from "axios";
+import { Filtering } from "../Table/Data";
 
 const EmployeeTable = () => {
-  const { setId } = useLayouData();
+  const { setId,token } = useLayouData();
   const dispatch = useDispatch();
+ 
 
-  const { data } = useGetData("Employee/GetAll");
+  // const { data } = useGetData("Employee/GetAll");
+  // console.log(data)
   const { Deldata } = useDelData("Employee/Delete/");
+  const [rowData,setRowData]= useState([])
+  
+  console.log(rowData)
 
+  useEffect(()=>
+  {
+    const fetchData = async ()=>
+      {
+         try {
+             const response =  await axios.get(`${baseUrl}Employee/GetAll`,
+               {headers : { Authorization:`Bearer ${token}` }
+              
+             })
+             setRowData(response.data?.data)
+            }
+          catch (err)
+          {
+           console.log(err)
+           }
+         };
+         fetchData();
+ 
+  },[token])
   const handleDel = async (id) => {
     await Deldata(id);
   };
@@ -30,16 +60,17 @@ const EmployeeTable = () => {
       </div>
       <div>
         <div
-          className="mt-[20px]"
+          className=""
           //   onClick={() => dispatch(addMenu({ id: "", menu: "fiscalform" }))}
         >
-          <GreenButton
+          {/* <GreenButton
             className="bg-PrimaryColor px-[15px] py-[4px] text-white font-inter"
             text="Add New +"
-          />
+          /> */}
         </div>
-        <div className="table--wrapper h-[500px] overflow-y-auto">
-          <table className="shadow-lg">
+        <div className="overflow-y-auto">
+     
+          {/* <table className="shadow-lg">
             <thead>
               <tr>
                 <th> First Name</th>
@@ -54,7 +85,7 @@ const EmployeeTable = () => {
               </tr>
             </thead>
             <tbody>
-              {data?.data?.map((item, index) => (
+              {rowData?.data?.map((item, index) => (
                 <tr key={index}>
                   <td>{item?.firstName}</td>
                   <td>{item?.lastName}</td>
@@ -95,11 +126,19 @@ const EmployeeTable = () => {
                 </tr>
               ))}
             </tbody>
-          </table>
+          </table> */}
         </div>
       </div>
+      <Filtering/>
+     
     </div>
   );
 };
 
 export default EmployeeTable;
+
+
+
+
+
+

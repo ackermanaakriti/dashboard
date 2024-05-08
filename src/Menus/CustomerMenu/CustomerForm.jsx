@@ -25,7 +25,7 @@ const CustomerForm = () => {
       GiveId(getId);
     }
   }, [setId]);
-console.log(data)
+
   const initialValues = {
     name: "",
     address: "",
@@ -126,7 +126,7 @@ console.log(data)
                   </div>
                   <div className="py-[8px]">
                     <label className="block py-[5px] font-[500] font-inter ">
-                      Company Number
+                      Contact Number
                     </label>
                     <Field
                       className="border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr "
@@ -140,8 +140,7 @@ console.log(data)
                     />
                   </div>
                 </div>
-              </div>
-              <div>
+                <div>
                 <div className="grid grid-cols-2 gap-[20px]">
                   <div className="py-[8px]">
                     <label className="block py-[5px] font-[500] font-inter ">
@@ -159,14 +158,14 @@ console.log(data)
                     />
                   </div>
                   <div className="py-[8px]">
-                    <label className="block">
+                    <label className="block py-[5px] font-[500] font-inter">
                       Chart of Account Id <span>*</span>
                     </label>
                     <Field
                       type="text"
                       name="chartOfAccountId"
                       as="select"
-                      className="w-[100%] border-[1px] px-[8px] py-[8px] outline-0 border-[#c0d3e5"
+                      className="w-[100%] border-[1px] px-[8px] py-[8px]  outline-none border-borderclr"
                       placeholder=""
                       // value={CompanyAutofillData}
                       // onChange={(e) => setCompanyAutofillData((e.target.value))}
@@ -248,6 +247,8 @@ console.log(data)
                   </button>
                 </div>
               </div>
+              </div>
+             
             </Form>
           )}
         </Formik>

@@ -16,6 +16,7 @@ table
     font-family: var(--inter);
     text-align: center;
     width: 5em;
+    position: sticky;
     &:last-child {
       border-right: none;
     }
