@@ -1,93 +1,106 @@
-import React, { useEffect } from 'react'
-import { RiDeleteBin5Fill } from "react-icons/ri";
+
+import React, { useEffect, useState } from "react";
+import useDelData from "../../Apis/useDelData";
+import { useLayouData } from "../../Context/MainLayoutContext";
+import { useDispatch } from "react-redux";
+import { addMenu } from "../../Redux/TopTabSlice";
 import { MdEdit } from "react-icons/md";
-import '../FiscalYearMenu/Fiscalyear.css'
-import { useDispatch, useSelector } from 'react-redux';
-import { removeFiscalYear ,editFiscalYear} from '../../Redux/Slices/FiscalYearSlice';
-import { addMenu } from '../../Redux/TopTabSlice';
-import { useLayouData } from '../../Context/MainLayoutContext';
-import { GreenButton, TableButton } from '../../Components/GreenButton';
-import { removeCurrency } from '../../Redux/Slices/CurrencySlice';
-import { removeCharofAcc } from '../../Redux/Slices/CharofAccSlice';
-import useGetData from '../../Apis/useGetData';
-import useDelData from '../../Apis/useDelData';
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { TableDataComp } from "../../Global/Table/TableData";
+import { TableButton } from "../../Components/GreenButton";
+import useGetData from "../../Apis/useGetData";
 
 const ChartofAccTable = () => {
-  const {setId,getId} = useLayouData();
-  const dispatch = useDispatch()
-  const {data}= useGetData('ChartOfAccount/GetAll')
+  const { setId } = useLayouData();
+  const dispatch = useDispatch();
   const {Deldata}= useDelData('ChartOfAccount/Delete/')
+  const { data } = useGetData('ChartOfAccount/GetAll')
+  const [tableData,setTableData]= useState([])
+  const [filterText, setFilterText] = React.useState('');
 
-
-  const handleDel = async(id)=>
+  
+  useEffect(()=>
   {
-    const response = await Deldata(id);
+     setTableData(data?.data)
+  },[tableData,data])
 
-    
-  }
-  const handleEdit = (id) => {
-    setId(id)
-    dispatch(addMenu({ id:id, menu:'chartofaccForm'}))
+  console.log(data?.data)
+  
+
+  const handleDelete = async (id) => {
+    await Deldata(id);
   };
+  const handleEdit = (id) => {
+    console.log(id)
+    setId(id);
+    dispatch(addMenu({ id: id, menu: "chartofaccForm" }));
+  };
+  const filteredItems = tableData?.filter(
+    item =>  item?.accountName.toLowerCase().includes(filterText.toLowerCase()),
+);
+
+// const filteredItems =[]
+  const columns = [
+    {
+      name: 'Name',
+      selector: row => row.accountName,
+      sortable: true,
+      // grow: 2,
+     
+    },
+    {
+      name: ' Code',
+      selector: row => row.accountCode,
+      
+    },
+    {
+      name: 'Account Group',
+      hide: 'md',
+      selector: row => row.accountGroupId,
+    },
+    {
+      name: 'Main Parent Account',
+      hide: 'md',
+      selector: row => row.mainParentId,
+    },
+    {
+      name: 'Parent Account',
+      hide: 'md',
+      selector: row => row.parentAccountId,
+    },
+  
+    {
+      name: 'Actions',
+      cell: row => (
+        <div className="flex gap-[24px]">
+
+          <button onClick={() => handleEdit(row.id)}> <span className="text-[20px] text-PrimaryColor  mx-[3px]"><MdEdit /></span></button>
+          <button onClick={() => handleDelete(row.id)}><span className="text-[20px] text-redclr  mx-[3px]"><RiDeleteBin6Line /></span></button>
+          {/* <button onClick={() => handleView(row)}> <span className="text-[20px]   mx-[3px]"><IoEyeOutline/></span></button> */}
+        </div>
+      ),
+      allowOverflow: true,
+      button: true,
+      width: 'fit-content',
+    
+
+    }
+  ];
 
   return (
-    <>
-      <div className='px-[50px]'>
-        <div>
-          <h2 className='font-inter font-semibold text-[30px]'>
-      Chart of Account Table
-          </h2>
-        </div>
-        <div>
-          <div className='mt-[20px]' onClick={()=>dispatch(addMenu({ id:'', menu:'chartofaccForm'}))}>
-            <GreenButton className='bg-PrimaryColor px-[15px] py-[4px] text-white font-inter' text='Add New +' />
-          </div>
-          <div className="table--wrapper h-[500px] overflow-y-auto">
-          <table className="shadow-lg">
-            <thead>
-              <tr>
-                <th> Name</th>
-                <th> Code</th>
-                <th>  Account Group</th>
-                <th>Main Parent</th>
-                <th> Parent</th>
-                <th> Active</th>
-                <th> Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data?.data?.map((item, index) => (
-                <tr key={index}>
-                  <td>{item?.accountName}</td>
-                  <td>{item?.accountCode}</td>
-                  <td>{item?.accountGroupId}</td>
-                  <td>{item?.mainParentId}</td>
-                  <td>{item?.parentAccountId}</td>
-                  {/* <td>
-                    {item?.isActive ? (<TableButton className='bg-PrimaryColor rounded-[20px] px-[12px] py-[5px] text-white' text='Yes'/>)
-                    : (<TableButton className='bg-[#378f80] rounded-[20px] px-[12px] py-[5px] text-white' text='No'/>)}
-                    </td> */}
-
-                    <td><TableButton className={item.isActive? `bg-PrimaryColor rounded-[20px] px-[12px] py-[5px] text-white` : `bg-[#378f80] rounded-[20px] px-[12px] py-[5px] text-white`} text={item.isActive ? 'yes' : 'No'}/> </td>
-                  <td className="">
-                    <div className="flex gap-[25px] items-center justify-center">
-                      <span onClick={()=>handleEdit(item?.id)} className="text-PrimaryColor cursor-pointer">
-                        <MdEdit />
-                      </span>
-                      <span onClick={()=>handleDel(item?.id)} className="text-[#d13838] cursor-pointer">
-                        <RiDeleteBin5Fill />
-                      </span>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          </div>
-        </div>
+    <div className="px-[50px]">
+      <div>
+        <h2 className="font-inter font-semibold text-[30px]">CharofAccount Table</h2>
       </div>
-    </>
-  )
-}
+      <TableDataComp 
+       columns={columns}
+        filteredItems={filteredItems}
+         filterText={filterText} 
+         setFilterText={setFilterText}
+         menuname='chartofaccForm' />
+    </div>
+  );
+};
 
 export default ChartofAccTable;
+

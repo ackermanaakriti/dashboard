@@ -30,7 +30,7 @@ export const MenuData =[
     },
     {
         menu:'Fiscal Year',
-        slug:'fiscalyear',
+        slug:'fiscalyeartable',
         icon:<LuSchool2 className='text-[28px] text-[#ab243d]' />
         ,
         submenu:[
@@ -44,7 +44,7 @@ export const MenuData =[
     },
     {
         menu:'Currency',  
-        slug:'currency'  ,  
+        slug:'currencytable'  ,  
           icon: <LuMenuSquare className='text-[28px] text-[#267bd1]'/>,
 
         submenu:[
@@ -53,19 +53,19 @@ export const MenuData =[
     },
     {
         menu:'Chart of Account', 
-        slug:'chartofacc',   
+        slug:'chartofacctable',   
         icon: <LuMenuSquare className='text-[28px] text-[#36925c]'/>,
         submenu:[]
     },
-    // {
-    //     menu:'tree', 
-    //     slug:'treeview',   
-    //     icon: <LuMenuSquare className='text-[28px] text-[#36925c]'/>,
-    //     submenu:[]
-    // },
+    {
+        menu:'tree', 
+        slug:'treeview',   
+        icon: <LuMenuSquare className='text-[28px] text-[#36925c]'/>,
+        submenu:[]
+    },
     {
         menu:'Account Group', 
-        slug:'Accgrp',   
+        slug:'Accgrptable',   
         icon: <LuMenuSquare className='text-[28px] text-[#36925c]'/>,
         submenu:[]
     },

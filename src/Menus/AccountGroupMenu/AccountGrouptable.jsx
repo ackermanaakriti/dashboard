@@ -15,7 +15,15 @@ const AccountGrpTable = () => {
   const dispatch = useDispatch();
   const {Deldata}= useDelData('AccountGroup/Delete/')
   const { data } = useGetData('AccountGroup/GetAll')
+  const [tableData,setTableData]= useState([])
+  const [filterText, setFilterText] = React.useState('');
+  useEffect(()=>
+  {
+     setTableData(data?.data)
+  },[tableData,data])
 
+  console.log(data?.data)
+  
 
   const handleDelete = async (id) => {
     await Deldata(id);
@@ -23,28 +31,30 @@ const AccountGrpTable = () => {
   const handleEdit = (id) => {
     console.log(id)
     setId(id);
-    dispatch(addMenu({ id: id, menu: "Accgrp" }));
+    dispatch(addMenu({ id: id, menu: "accgroupform" }));
   };
+  const filteredItems = tableData?.filter(
+    item =>  item?.name.toLowerCase().includes(filterText.toLowerCase()),
+);
 
+// const filteredItems =[]
   const columns = [
     {
       name: 'Name',
       selector: row => row.name,
       sortable: true,
       // grow: 2,
-      width: 'fit-content',
-
+     
     },
     {
       name: ' Code',
       selector: row => row.code,
-      width: 'fit-content',
+      
     },
     {
       name: 'isActive',
       hide: 'md',
       selector: row => row.isActive,
-      width: 'fit-content',
       cell: row => (
         <>
             {row.isActive ? (
@@ -78,9 +88,14 @@ const AccountGrpTable = () => {
   return (
     <div className="px-[50px]">
       <div>
-        <h2 className="font-inter font-semibold text-[30px]">Employee Table</h2>
+        <h2 className="font-inter font-semibold text-[30px]">Account Group Table</h2>
       </div>
-      <TableDataComp width='50%' columns={columns} data={data} />
+      <TableDataComp 
+       columns={columns}
+        filteredItems={filteredItems} 
+        filterText={filterText}
+         setFilterText={setFilterText}
+         menuname='accgroupform' />
     </div>
   );
 };

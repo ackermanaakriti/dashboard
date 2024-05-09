@@ -1,81 +1,121 @@
-import React, { useEffect } from 'react'
-import { RiDeleteBin5Fill } from "react-icons/ri";
+
+import React, { useEffect, useState } from "react";
+import useDelData from "../../Apis/useDelData";
+import { useLayouData } from "../../Context/MainLayoutContext";
+import { useDispatch } from "react-redux";
+import { addMenu } from "../../Redux/TopTabSlice";
 import { MdEdit } from "react-icons/md";
-import '../FiscalYearMenu/Fiscalyear.css'
-import { useDispatch, useSelector } from 'react-redux';
-import { removeFiscalYear ,editFiscalYear} from '../../Redux/Slices/FiscalYearSlice';
-import { addMenu } from '../../Redux/TopTabSlice';
-import { useLayouData } from '../../Context/MainLayoutContext';
-import { GreenButton } from '../../Components/GreenButton';
-import { removeCurrency } from '../../Redux/Slices/CurrencySlice';
-import { TableButton } from '../../Components/GreenButton';
-import useGetData from '../../Apis/useGetData';
-import useDelData from '../../Apis/useDelData';
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { TableDataComp } from "../../Global/Table/TableData";
+import { TableButton } from "../../Components/GreenButton";
+import useGetData from "../../Apis/useGetData";
+import { BackgroundColor, Width } from "devextreme-react/cjs/chart";
 
 const DepartmentTable = () => {
-  const {setId} = useLayouData();
-  const dispatch = useDispatch()
-  const currencydata = useSelector((state) => state.currency) 
-  const {data}= useGetData('Department/GetAll')
-  const {Deldata} = useDelData('Department/Delete/')
+  const { setId } = useLayouData(); // setId to get the id for form editing --not using react-router So setting id manually
+  const dispatch = useDispatch();
+  const { Deldata } = useDelData('Department/Delete/')   //use custom delete hook
+  const { data } = useGetData('Department/GetAll')   //use custom hook to get all data...passing url
+  const [tableData, setTableData] = useState([])
+  const [filterText, setFilterText] = React.useState('');
 
-  const handleDel =(id)=>
-  {
-   Deldata(id)
-  }
-  const handleEdit = (id) => {
-    setId(id)
-    dispatch(addMenu({ id:id, menu:'departmentform'}))
+
+  useEffect(() => {
+    setTableData(data?.data)  //set fetched data to tableData for filtering 
+  }, [tableData, data])
+
+  const handleDelete = async (id) => {
+    await Deldata(id);
   };
 
+  const handleEdit = (id) => {
+    console.log(id)
+    setId(id);
+    dispatch(addMenu({ id: id, menu: "departmentform" }));   // dispatched menu for component navigation..using object mapping for navigation so passing menu as key
+  };
+
+  const filteredItems = tableData?.filter(
+    item => item?.name.toLowerCase().includes(filterText.toLowerCase()),  //filter fetched data on the basis of name
+  );
+  const customStyles = {
+    headCells: {
+      style: {
+        backgroundColor: "#000",
+        color: "#fff",
+        fontSize: "16px",
+        fontWeight: "bold",
+      },
+    },
+    rows: {
+      style: {
+        fontSize: "14px",
+      },
+    },
+  };
+
+  // set columns acc to the menu
+  const columns = [
+    {
+      name: 'Name',
+      selector: row => row.name,
+      sortable: true,
+      // grow: 2,
+
+    },
+    {
+      name: ' Code',
+      selector: row => row.code,
+    },
+    {
+      name: ' Company Name',
+      selector: row => row.companyName,
+    },
+
+    {
+      name: 'Actions',
+      cell: row => (
+        <div className="flex gap-[24px]">
+          <button onClick={() => handleEdit(row.id)}> <span className="text-[20px] text-PrimaryColor  mx-[3px]"><MdEdit /></span></button>
+          <button onClick={() => handleDelete(row.id)}><span className="text-[20px] text-redclr  mx-[3px]"><RiDeleteBin6Line /></span></button>
+          {/* <button onClick={() => handleView(row)}> <span className="text-[20px]   mx-[3px]"><IoEyeOutline/></span></button> */}
+        </div>
+      ),
+      allowOverflow: true,
+      button: true,
+
+    }
+  ];
+
   return (
-    <>
-      <div className='px-[50px]'>
-        <div >
-          <h2 className='font-inter font-semibold text-[30px]'>
-           Department Table
-          </h2>
-        </div>
-        <div>
-          <div className='mt-[20px] ' onClick={()=>dispatch(addMenu({ id:'', menu:'departmentform'}))}>
-            <GreenButton className='bg-PrimaryColor px-[15px] py-[4px] text-white font-inter' text='Add New +' />
-          </div>
-          <table className="shadow-lg">
-            <thead>
-              <tr>
-                <th> Name</th>
-                <th> Code</th>
-                <th>Company</th>
-              
-                <th> Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data?.data?.map((item, index) => (
-                <tr key={index}>
-                  <td>{item?.name}</td>
-                  <td>{item?.code}</td>
-                  <td>{item?.companyName}</td>
-                 
-                  
-                  <td className="">
-                    <div className="flex gap-[25px] items-center justify-center">
-                      <span onClick={()=>handleEdit(item?.id)} className="text-PrimaryColor cursor-pointer">
-                        <MdEdit />
-                      </span>
-                      <span onClick={()=>handleDel(item?.id)} className="text-[#d13838] cursor-pointer">
-                        <RiDeleteBin5Fill />
-                      </span>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+    <div className="px-[50px]">
+      <div>
+        <h2 className="font-inter font-semibold text-[30px]">Department Table</h2>
       </div>
-    </>
-  )
-}
+      <TableDataComp
+        columns={columns}
+        filteredItems={filteredItems}
+        filterText={filterText} 
+        customStyles={customStyles}
+        setFilterText={setFilterText}
+        menuname='departmentform' />
+    </div>
+  );
+};
 
 export default DepartmentTable;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -6,11 +6,24 @@ import { addMenu } from "../../Redux/TopTabSlice";
 import { MdEdit } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { TableDataComp } from "../../Global/Table/TableData";
+import useGetData from "../../Apis/useGetData";
 
 const EmployeeTable = () => {
   const { setId } = useLayouData();
   const dispatch = useDispatch();
   const { Deldata } = useDelData("Employee/Delete/");
+  const {data} = useGetData('Employee/GetAll')
+  const [tableData,setTableData]= useState([])
+  const [filterText, setFilterText] = React.useState('');
+
+
+  useEffect(()=>
+  {
+     setTableData(data?.data)
+  },[tableData,data])
+
+
+  console.log(data?.data)
 
 
   const handleDelete = async (id) => {
@@ -19,8 +32,13 @@ const EmployeeTable = () => {
   const handleEdit = (id) => {
     console.log(id)
     setId(id);
-    dispatch(addMenu({ id: id, menu: "employee" }));
+    dispatch(addMenu({ id: id, menu: "employeeform" }));
   };
+  const filteredItems = tableData?.filter(
+    item =>  item?.firstName.toLowerCase().includes(filterText.toLowerCase()),
+);
+// const filteredItems = []
+
 
   const columns = [
     {
@@ -87,7 +105,12 @@ const EmployeeTable = () => {
       <div>
         <h2 className="font-inter font-semibold text-[30px]">Employee Table</h2>
       </div>
-      <TableDataComp columns={columns} />
+      <TableDataComp
+       columns={columns} 
+        filteredItems={filteredItems}
+         filterText={filterText}
+          setFilterText={setFilterText}
+          menuname='employeeform' />
     </div>
   );
 };

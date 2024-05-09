@@ -93,7 +93,7 @@ const CharofAccTreeForm = ({node,mainParentId,parentAccountId,accountGroupId}) =
           updateData(values)  }
         else { postdata(treeData ); }
        
-        dispatch(addMenu({ id: '', menu: 'chartofacc' }))
+        dispatch(addMenu({ id: '', menu: 'chartofacctable' }))
         setId('')
 
     };

@@ -74,7 +74,7 @@ const CharofAccForm = () => {
           updateData(values)  }
         else { postdata(values ); }
        
-        dispatch(addMenu({ id: '', menu: 'chartofacc' }))
+        dispatch(addMenu({ id: '', menu: 'chartofacctable' }))
         setId('')
 
     };
