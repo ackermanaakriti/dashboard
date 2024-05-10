@@ -65,6 +65,7 @@ const DepartmentTable = () => {
     {
       name: ' Code',
       selector: row => row.code,
+      width:'20%'
     },
     {
       name: ' Company Name',
@@ -73,6 +74,7 @@ const DepartmentTable = () => {
 
     {
       name: 'Actions',
+      width:'20%',
       cell: row => (
         <div className="flex gap-[24px]">
           <button onClick={() => handleEdit(row.id)}> <span className="text-[20px] text-PrimaryColor  mx-[3px]"><MdEdit /></span></button>

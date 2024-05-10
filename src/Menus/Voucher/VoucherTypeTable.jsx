@@ -45,17 +45,19 @@ const VoucherTypeTable = () => {
       selector: row => row.name,
       sortable: true,
       // grow: 2,
+      // width:'30%'
      
     },
     {
       name: ' Prefix',
       selector: row => row.prefix,
-      
+      // width:'20%'
     },
   
     {
       name: 'System Define',
       hide: 'md',
+      // width:'20%',
       selector: row => row.isSystemDefined,
       cell: row => (
         <>
@@ -71,6 +73,7 @@ const VoucherTypeTable = () => {
     {
       name: 'Editable',
       hide: 'md',
+      // width:'20%',
       selector: row => row.isEditable,
       cell: row => (
         <>
@@ -95,7 +98,7 @@ const VoucherTypeTable = () => {
       ),
       allowOverflow: true,
       button: true,
-      width: 'fit-content',
+      // width: '10%',
     
 
     }
@@ -110,7 +113,8 @@ const VoucherTypeTable = () => {
       filteredItems={filteredItems} 
       filterText={filterText} 
       setFilterText={setFilterText} 
-      menuname='vouchertypeform'/>
+      menuname='vouchertypeform'
+     />
     </div>
   );
 };

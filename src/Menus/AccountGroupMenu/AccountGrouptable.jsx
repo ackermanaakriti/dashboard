@@ -44,16 +44,19 @@ const AccountGrpTable = () => {
       selector: row => row.name,
       sortable: true,
       // grow: 2,
+      // width:'30%'
      
     },
     {
       name: ' Code',
       selector: row => row.code,
+      // width:'30%'
       
     },
     {
       name: 'isActive',
       hide: 'md',
+      // width:'20%',
       selector: row => row.isActive,
       cell: row => (
         <>
@@ -69,6 +72,7 @@ const AccountGrpTable = () => {
   
     {
       name: 'Actions',
+      // width:'20%',
       cell: row => (
         <div className="flex gap-[24px]">
 
@@ -79,7 +83,7 @@ const AccountGrpTable = () => {
       ),
       allowOverflow: true,
       button: true,
-      width: 'fit-content',
+     
     
 
     }

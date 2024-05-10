@@ -32,39 +32,18 @@ export const TableDataComp = ({ columns, width, filteredItems, filterText, setFi
     }, [tableHeight, filteredItems]);
 
     const customStyles = {
-        // rows: {
-        //     style: {
-        //         // minHeight: '72px', // override the row height
-        //         // border:'1px solid rgba(61, 99, 99, 0.4)',
-        //         borderLeft: '0px',
-        //         borderRight: '0px',
-        //         // borderTop:'0px',
-        //         '&:nth-child(1)': {
-
-        //         },
-        //         '&:last-child': { // Target the last child
-        //             borderRight: 'none',
-        //         }
-        //     },
-        // },
-        cells: {
-            style: {
-                font:'inter',
-                fontSize:'16px',
-                margin:'0px',
-                textAlign:'center',
-            },
-        },
+    
         header: {
             style: {
-                minHeight: '56px',
+                // minHeight: '56px',
             },
         },
         headRow: {
             style: {
+                // 0.5px solid rgba(61, 99, 99, 0.4);
                 borderTopStyle: 'solid',
-                borderTopWidth: '1px',
-                borderTopColor: 'red',
+                borderTopWidth: '0.5px',
+                borderTopColor: 'rgba(61, 99, 99, 0.4)',
             },
         },
         headCells: {
@@ -77,17 +56,20 @@ export const TableDataComp = ({ columns, width, filteredItems, filterText, setFi
                 fontSize: '16px',
                 '&:not(:last-of-type)': {
                     borderRightStyle: 'solid',
-                    borderRightWidth: '1px',
-                    borderRightColor: 'red',
+                    borderRightWidth: '0.5px',
+                    borderRightColor: 'rgba(61, 99, 99, 0.4)',
                 },
             },
         },
         cells: {
             style: {
+                fontFamily: 'inter',
+                fontWeight: '500',
+                fontSize: '16px',
                 '&:not(:last-of-type)': {
                     borderRightStyle: 'solid',
-                    borderRightWidth: '1px',
-                    borderRightColor: 'red',
+                    borderRightWidth: '0.5px',
+                    borderRightColor: 'rgba(61, 99, 99, 0.4)',
                 },
             },
         },
@@ -116,7 +98,7 @@ export const TableDataComp = ({ columns, width, filteredItems, filterText, setFi
     }, [filterText, resetPaginationToggle]);
 
     return (
-        <div className={`wrap-datatable`} style={{ height: windowHeight < 600 ? `${tableHeight}px` : '', width: `${width}` }}
+        <div className={`wrap-datatable`} style={{ height: windowHeight < 600 ? `${tableHeight}px` : '', width: `${width}`, }}
         >
             <DataTable
                 columns={columns}

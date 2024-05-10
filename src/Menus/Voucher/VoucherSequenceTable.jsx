@@ -134,22 +134,25 @@ const VoucherSeqTable = () => {
       selector: row => row.name,
       sortable: true,
       // grow: 2,
+      // width:'30%'
      
     },
     {
       name: ' Fiscal Year',
       selector: row => row.fiscalYearId,
+      // width:'20%'
       
     },
     {
       name: ' Number',
       selector: row => row.Number,
-      
+      // width:'30%'
     },
   
   
     {
       name: 'Actions',
+      // width:'full',
       cell: row => (
         <div className="flex gap-[24px]">
           <button onClick={() => handleEdit(row.id)}> <span className="text-[20px] text-PrimaryColor  mx-[3px]"><MdEdit /></span></button>
@@ -159,7 +162,7 @@ const VoucherSeqTable = () => {
       ),
       allowOverflow: true,
       button: true,
-      width: 'fit-content',
+      
     
 
     }
@@ -168,15 +171,16 @@ const VoucherSeqTable = () => {
   return (
     <div className="px-[50px]">
       <div>
-        <h2 className="font-inter font-semibold text-[30px]">Vendor Table</h2>
+        <h2 className="font-inter font-semibold text-[30px]">Voucher Sequence Table</h2>
       </div>
       <TableDataComp 
        columns={columns}
         filteredItems={filteredItems}
          filterText={filterText}
           setFilterText={setFilterText}
-          menuname='voucherseqform' />
-          paginationRowsPerPageOptions=[10,20,30]
+          menuname='voucherseqform'
+          width='70%' />
+                         
     </div>
   );
 };

@@ -46,26 +46,31 @@ const FiscalYearTable = () => {
       selector: row => row.name,
       sortable: true,
       // grow: 2,
+      width:'30%'
      
     },
     {
       name: ' Code',
       selector: row => row.code,
+      width:'10%'
       
     },
     {
       name: 'Start Date',
       hide: 'md',
       selector: row => row.startDate,
+      width:'20%'
     },
     {
       name: 'End Date',
       hide: 'md',
       selector: row => row.endDate,
+      width:'20%'
     },
   
     {
       name: 'Actions',
+      width:'20%',
       cell: row => (
         <div className="flex gap-[24px]">
 
@@ -76,8 +81,7 @@ const FiscalYearTable = () => {
       ),
       allowOverflow: true,
       button: true,
-      width: 'fit-content',
-    
+
 
     }
   ];
@@ -92,7 +96,8 @@ const FiscalYearTable = () => {
         filteredItems={filteredItems}
          filterText={filterText}
           setFilterText={setFilterText}
-          menuname='fiscalform' />
+          menuname='fiscalform'
+          width='90%' />
     </div>
   );
 };

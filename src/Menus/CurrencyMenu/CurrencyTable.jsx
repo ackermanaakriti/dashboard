@@ -48,27 +48,32 @@ const CurrencyTable = () => {
       selector: row => row.name,
       sortable: true,
       // grow: 2,
+      width:'30%'
      
     },
     {
       name: ' Country',
       selector: row => row.country,
+      width:'20%'
       
     },
     {
       name: 'Country Code',
       hide: 'md',
       selector: row => row.currencyCode,
+      width:'15%'
     },
     {
       name: 'Exchange Rate',
       hide: 'md',
+      width:'15%',
       selector: row => row.currentExchangeRate,
     },
   
     {
       name: 'Actions',
-      cell: row => (
+      width:'20%'
+,      cell: row => (
         <div className="flex gap-[24px]">
 
           <button onClick={() => handleEdit(row.id)}> <span className="text-[20px] text-PrimaryColor  mx-[3px]"><MdEdit /></span></button>
@@ -78,7 +83,7 @@ const CurrencyTable = () => {
       ),
       allowOverflow: true,
       button: true,
-      width: 'fit-content',
+    
     
 
     }

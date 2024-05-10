@@ -46,31 +46,36 @@ const ChartofAccTable = () => {
       selector: row => row.accountName,
       sortable: true,
       // grow: 2,
+      width:'25%',
      
     },
     {
       name: ' Code',
       selector: row => row.accountCode,
-      
+      width:'15%',
     },
     {
       name: 'Account Group',
       hide: 'md',
-      selector: row => row.accountGroupId,
+      selector: row => row.accountName,
+      width:'20%',
     },
     {
       name: 'Main Parent Account',
       hide: 'md',
       selector: row => row.mainParentId,
+      width:'15%',
     },
     {
       name: 'Parent Account',
       hide: 'md',
       selector: row => row.parentAccountId,
+      width:'10%',
     },
   
     {
       name: 'Actions',
+      width:'15%',
       cell: row => (
         <div className="flex gap-[24px]">
 
@@ -81,7 +86,7 @@ const ChartofAccTable = () => {
       ),
       allowOverflow: true,
       button: true,
-      width: 'fit-content',
+    
     
 
     }
