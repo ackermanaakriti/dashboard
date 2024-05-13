@@ -16,8 +16,7 @@ import { editAccountgrp } from '../../Redux/Slices/AccountGroupSlice';
 
 
 const VoucherDetailform = ({ onDataSubmit, dataByid,editMode }) => {
-const id = uuidv4();
-console.log(id)
+// const id = uuidv4();
   const { postdata } = usePostData('VoucherDetail/Add')
   const { data } = useGetData('ChartOfAccount/GetAll')
   // const [editMode, setEditMode] = useState(false)
@@ -28,7 +27,7 @@ console.log(id)
   const dispatch = useDispatch();
   const [detailformError, setDetailformError] = useState('')
   const [selectedChartOfAccount, setSelectedChartOfAccount] = useState([]); // State to store the selected ChartofAccount
-
+  const [id, setIdCounter] = useState(1);
 
   // useEffect(() => {
   //   if (dataByid.length>0) {
@@ -36,7 +35,15 @@ console.log(id)
   //   }
   // }, [dataByid])
 
-
+useEffect(()=>
+{
+  const generateId = () => {
+    const ids = id + 1;
+    setIdCounter(ids);
+    return ids;
+  };
+  generateId();
+},[])
 
 
 
@@ -44,14 +51,15 @@ console.log(id)
 
     voucherId: 0,
     chartOfAccountId: '',
-    code: "",
+    // code: "",
     chequeNumber: "",
-    voucherNumber: "",
+    // voucherNumber: "",
     // debitAmount: 0,
     // creditAmount: 0,
     narration: "",
     exchangeRate: 0,
     currencyId: 1,
+    currencyName:'jjj',
     // accountName: "",
     // currencyName: "",
     isActive: true,
@@ -78,22 +86,24 @@ console.log(id)
     formik.setFieldValue('chartOfAccountAccountName',selectedOption.accountName ); // Update the formik field value
   };
 
+ 
+ 
+
   const handleSubmit = async (values, { resetForm }) => {
     
       const VoucherDataId = { ...values, debitAmount: isamount ? values.Amount : 0, creditAmount: isamount ? 0 : values.Amount };
       if (editMode) {
-        const dataWithId = {...VoucherDataId,id:id,voucherId:dataByid.id}
-        console.log(dataWithId)
+        const dataWithId = {...VoucherDataId,id: id ,voucherId:dataByid.id}
+      
         setD(prevD => [...prevD, dataWithId]);
-        seteditData([...d, dataWithId]);
-        onDataSubmit([...d, dataWithId]);
-        console.log('hello')
+        console.log(d)
+        seteditData(d);
+        console.log(editData)
+        onDataSubmit([...d,dataWithId]);
       } else {
         setD(prevD => [...prevD, VoucherDataId]);
         setdetailData(d);
-        console.log(detaildata)
         onDataSubmit([...d, VoucherDataId]);
-        console.log('bye')
         // dispatch(addVoucherDetail(VoucherDataId)); //redux ma add gardeko
       }
       // Reset the form

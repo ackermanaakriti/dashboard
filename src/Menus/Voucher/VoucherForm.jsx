@@ -23,6 +23,9 @@ const Voucher = () => {
   const {data}= useGetData(`VoucherType/GetAll?IsDeleted=${false}`)
   const [vouhcerDetailData,setVoucherDetailData]= useState([])  //state to hold voucherformDetail data
   const [editMode,setEditMode]= useState(false)
+  const [dataFetchedById,setDatafetchedByid]= useState([])
+
+  
 
   useEffect(()=>
   {
@@ -30,11 +33,11 @@ const Voucher = () => {
     {setEditMode(true)
      GiveId(getId)   //passing id to the getbyid  hook
     }  
-    console.log(getId)
 
 
-  },[setId,])
-  console.log(getId)
+
+  },[setId,vouhcerDetailData])
+
   
 
   const initialValues = {  
@@ -63,16 +66,37 @@ const Voucher = () => {
     narration: Yup.string().required('required'),
     invoiceNumber: Yup.number().typeError('invalid data').required('required'),
   });
+  console.log(vouhcerDetailData)
+ 
 
 
   const handleSubmit = (values) => {
+    console.log(vouhcerDetailData)
+    
    
-    const combinedData= {...values,voucherDetailDTOs:vouhcerDetailData}  //combining voucherform and vocherdetail form data 
-    console.log('combined data ',combinedData)
+     //combining voucherform and vocherdetail form data 
+   
     if(editMode )
-    {  postdata(combinedData)}
+    {
+      console.log(values)
+      // setDatafetchedByid([...values.voucherDetailDTOs, ...vouhcerDetailData])
+      // setDatafetchedByid([...values.voucherDetailDTOs, ...vouhcerDetailData]);
+    
+      const mergedData = [...values.voucherDetailDTOs, ...vouhcerDetailData];
+
+      const combinedData= {...values,voucherDetailDTOs:mergedData}
+      console.log(combinedData)
+      
+  
+
+      // setDatafetchedByid([...values, ...combinedData])
+      // console.log(dataFetchedById)
+        postdata(combinedData)}
     else 
-    { postdata(combinedData)}
+    { 
+      const combinedData= {...values,voucherDetailDTOs:vouhcerDetailData}
+
+      postdata(combinedData)}
     setId('')
     dispatch(addMenu({ id:'', menu:'voucher'}))
   

@@ -16,37 +16,30 @@ const VoucherDetailTable = ({dataByid,editData,detaildata,editMode}) => {
   const {data,fetchData} = useDelData(`VoucherDetail/GetAll/IsDeleted=${true}`)
   const [dataFetchedById,setDatafetchedByid]= useState([])
 
-
-console.log(editData)
 useEffect(()=>
 {
-
-console.log('useEffect')
+  console.log(editData)
   if(editMode)
   {
-    console.log('edit data')
+  
     setDatafetchedByid(dataByid?.voucherDetailDTOs)
-    console.log(dataFetchedById)
-    console.log(dataByid)
     if(editData.length>0)
       {
         setDatafetchedByid([...dataFetchedById,...editData])
-        console.log(dataFetchedById)
+       
       }
-  }
-   
-    else {
+  }    else {
       setvoucherDetaildata(detaildata);
     }
+   
 
  },
-[voucherDetaildata,dataByid,editData])
+[voucherDetaildata,dataByid])
 
 const handleDel = (id,name) => {
   if(dataByid && editData)
     {
       Deldata(id)
-      console.log('hello')
     }
     else 
     {

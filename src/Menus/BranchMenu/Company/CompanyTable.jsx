@@ -99,7 +99,7 @@ const CompanyTable = () => {
   return (
     <div className="px-[50px] flex flex-col  items-center">
       <div>
-        <h2 className="font-inter font-semibold text-[30px]">Branch Table</h2>
+        <h2 className="font-inter font-semibold text-[30px]">Company Table</h2>
       </div>
       <TableDataComp 
        columns={columns}
