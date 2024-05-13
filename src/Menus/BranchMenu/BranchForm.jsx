@@ -137,7 +137,7 @@ const [companyData,setCompanyData]= useState('')
     
     
     
-      dispatch(addMenu({ id: "", menu: "companytable" }));
+      dispatch(addMenu({ id: "", menu: "branchtable" }));
     };
 
  
@@ -492,7 +492,7 @@ const [companyData,setCompanyData]= useState('')
 
                 <div className="flex gap-[30px] items-center formbutton">
                   <button
-                    onClick={() => dispatch(addMenu({ id: "", menu: "Table" }))}
+                    onClick={() => dispatch(addMenu({ id: "", menu: "branchtable" }))}
                     type="reset"
                     className="bg-transparent border-[#d13838] border-solid py-[4px] px-[20px] border-[1px] text-[16px] font-inter font-[600] text-[#d13838]"
                   >

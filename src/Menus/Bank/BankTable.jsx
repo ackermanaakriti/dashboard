@@ -132,22 +132,22 @@ const BankTable = () => {
       selector: row => row.name,
       sortable: true,
       // grow: 2,
-      width:'25%'
+      // width:'25%'
      
     },
     {
       name: ' Account Number',
       selector: row => row.accountNumber,
-      width:'30%'
+      // width:'30%'
     },
     {
       name: ' Company Name',
       selector: row => row.companyName,
-      width:'25%'
+      // width:'25%'
     },
     {
       name: 'Actions',
-      width:'20%',
+      // width:'20%',
       cell: row => (
         <div className="flex gap-[24px]">
           <button onClick={() => handleEdit(row.id)}> <span className="text-[20px] text-PrimaryColor  mx-[3px]"><MdEdit /></span></button>

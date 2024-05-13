@@ -8,6 +8,7 @@ import { addMenu } from '../../Redux/TopTabSlice';
 import VoucherDetailform from './VoucherDetailForm';
 import usePostData from '../../Apis/usePostData';
 import useGetById from '../../Apis/useGetById';
+import useGetData from '../../Apis/useGetData';
 
 
 const Voucher = () => {
@@ -15,13 +16,12 @@ const Voucher = () => {
 
   const {setId,getId,}= useLayouData(); //getting id from the list using context api
   const dispatch = useDispatch();
-  const voucherType = useSelector((state)=>state.voucherData.voucherType)
   const {postdata} = usePostData('Voucher/UpSert')
   const {GiveId,dataByid}= useGetById('Voucher/GetById/')
   const [detailformError,setDetailformError]= useState()
-
-
-  const [vouhcerDetailData,setVoucherDetailData]= useState()  //state to hold voucherformDetail data
+  const [voucherType,setVouhcerType]= useState([])
+  const {data}= useGetData(`VoucherType/GetAll?IsDeleted=${false}`)
+  const [vouhcerDetailData,setVoucherDetailData]= useState([])  //state to hold voucherformDetail data
   const [editMode,setEditMode]= useState(false)
 
   useEffect(()=>
@@ -29,19 +29,21 @@ const Voucher = () => {
     if(getId)
     {setEditMode(true)
      GiveId(getId)   //passing id to the getbyid  hook
-    }    
-  },[setId])
+    }  
+    console.log(getId)
 
- 
 
+  },[setId,])
+  console.log(getId)
+  
 
   const initialValues = {  
   fiscalYearId: 1,
  // fiscalYearName: "",
-  voucherCode: "",
+  voucherCode: null,
   voucherNumber: "",
-  voucherTypeId: 1,
- // voucherTypeName: "",
+  voucherTypeId: '',
+ voucherTypeName: "sdfs",
   transactionDateBS: "2024-04-28T04:59:21.347Z",
   narration: "",
   moduleId: 1,
@@ -57,7 +59,7 @@ const Voucher = () => {
 
   const validationSchema = Yup.object().shape({
     // voucherTypeId: Yup.string().typeError('').required('required'),
-    voucherNumber: Yup.number().typeError('invalid data').required('required'),
+    // voucherNumber: Yup.number().typeError('invalid data').required('required'),
     narration: Yup.string().required('required'),
     invoiceNumber: Yup.number().typeError('invalid data').required('required'),
   });
@@ -66,6 +68,7 @@ const Voucher = () => {
   const handleSubmit = (values) => {
    
     const combinedData= {...values,voucherDetailDTOs:vouhcerDetailData}  //combining voucherform and vocherdetail form data 
+    console.log('combined data ',combinedData)
     if(editMode )
     {  postdata(combinedData)}
     else 
@@ -102,8 +105,8 @@ const Voucher = () => {
                     name='voucherTypeId'
                     as='select'>
                     <option disabled selected value=''>  Select Voucher Type</option>
-                    {voucherType?.map((item,index)=>(
-                    <option value={item?.vouchername}>{item?.vouchername}</option>
+                    {data?.data?.map((item,index)=>(
+                    <option value={item?.id}>{item?.name}</option>
                     ))}
                   </Field>
                   <ErrorMessage component='div' className='text-[14px] text-redclr' name='voucherTypeId' />
@@ -134,19 +137,19 @@ const Voucher = () => {
                     <label className='block py-[8px] font-[500] font-inter '> Date AD</label>
                     <Field
                       className='border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr '
-                      name='TransactionDate'
+                      name='transactionDate'
                       type='date'
                     />
-                    {/* <ErrorMessage component='div' className='text-[14px] text-redclr ' name='TransactionDate' /> */}
+                    {/* <ErrorMessage component='div' className='text-[14px] text-redclr ' name='transactionDate' /> */}
                   </div>
                   <div className='py-[8px]'>
                     <label className='block py-[8px] font-[500] font-inter '> Date BS</label>
                     <Field
                       className='border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr '
-                      name='TransactionDateBS'
+                      name='transactionDateBS'
                       type='date'
                     />
-                    {/* <ErrorMessage component='div' className='text-[14px] text-redclr ' name='TransactionDateBS' /> */}
+                    {/* <ErrorMessage component='div' className='text-[14px] text-redclr ' name='transactionDateBS' /> */}
                   </div>
                   <div className='py-[8px]'>
                   <label className='block py-[8px] font-[500] font-inter '>narration</label>
@@ -173,7 +176,12 @@ const Voucher = () => {
 
          </Formik>
         <div className='relative'>
-        <VoucherDetailform onDataSubmit={setVoucherDetailData} dataByid={dataByid} setDetailformError={setDetailformError}/>
+        <VoucherDetailform
+        onDataSubmit={setVoucherDetailData}
+         dataByid={dataByid} 
+         setDetailformError={setDetailformError}
+         editMode={editMode}
+         />
         </div>
  </div>
     </>

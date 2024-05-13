@@ -7,41 +7,54 @@ import { useLayouData } from '../../Context/MainLayoutContext';
 import useDelData from '../../Apis/useDelData';
 
 
-const VoucherDetailTable = ({dataByid,editData}) => {
+const VoucherDetailTable = ({dataByid,editData,detaildata,editMode}) => {
   const { setId, getId, } = useLayouData();
   const dispatch = useDispatch();
   const voucherDetail = useSelector((state) => state.voucherData?.voucherDetail);
   const [voucherDetaildata,setvoucherDetaildata] = useState([])
   const {Deldata} = useDelData('VoucherDetail/Delete/')
-  const {data,fetchData} = useDelData('VoucherDetail/GetAll')
+  const {data,fetchData} = useDelData(`VoucherDetail/GetAll/IsDeleted=${true}`)
+  const [dataFetchedById,setDatafetchedByid]= useState([])
 
 
-
+console.log(editData)
 useEffect(()=>
 {
-  if(dataByid || editData )
+
+console.log('useEffect')
+  if(editMode)
   {
-    setvoucherDetaildata(dataByid?.voucherDetailDTOs)
-    if(editData)
-    {
-      setvoucherDetaildata([...voucherDetail,...editData])
-
-    }
-  
+    console.log('edit data')
+    setDatafetchedByid(dataByid?.voucherDetailDTOs)
+    console.log(dataFetchedById)
+    console.log(dataByid)
+    if(editData.length>0)
+      {
+        setDatafetchedByid([...dataFetchedById,...editData])
+        console.log(dataFetchedById)
+      }
   }
+   
+    else {
+      setvoucherDetaildata(detaildata);
+    }
+
  },
-[getId,editData,dataByid])
+[voucherDetaildata,dataByid,editData])
 
-
-
-const handleDel = (id) => {
-  console.log('hello')
-  Deldata(id)
-
-//  const updateddata = voucherDetaildata.filter(item=>item.id !== id);
-
-//  setvoucherDetaildata(updateddata)
-//  console.log(updateddata)
+const handleDel = (id,name) => {
+  if(dataByid && editData)
+    {
+      Deldata(id)
+      console.log('hello')
+    }
+    else 
+    {
+      console.log(voucherDetaildata)
+ const updateddata = voucherDetaildata.filter(item=>item.chartOfAccountName!== name);
+ setvoucherDetaildata(updateddata)
+ console.log(updateddata)
+    }
 };
  
 
@@ -63,9 +76,9 @@ const handleDel = (id) => {
             <tbody>
              
              
-              {voucherDetaildata?.map((item, index) => (
+              { dataFetchedById?.map((item, index) => (
                 <tr key={index}>
-                  <td>{item?.chartOfAccountId}</td>
+                  <td>{item?.chartOfAccountAccountName}</td>
                   <td>{item?.debitAmount}</td>
                   <td>{item?.creditAmount}</td>
                   <td>{item?.narration}</td>
@@ -74,7 +87,7 @@ const handleDel = (id) => {
                       {/* <span onClick={()=>handleEdit(item.id)} className="text-PrimaryColor cursor-pointer">
                         <MdEdit />
                       </span> */}
-                      <span onClick={() => handleDel(item?.id)} className='text-[#d13838] cursor-pointer'>
+                      <span onClick={() => handleDel(item?.id,item?.chartOfAccountName)} className='text-[#d13838] cursor-pointer'>
                         <RiDeleteBin5Fill />
                       </span>
                     </div>

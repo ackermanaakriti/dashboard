@@ -15,67 +15,52 @@ import { editAccountgrp } from '../../Redux/Slices/AccountGroupSlice';
 
 
 
-const VoucherDetailform = ({onDataSubmit,dataByid,setDetailformError}) => {
-  const fiscaldata = useSelector((state) => state.voucherData.voucherDetail);
-
-
-  const id =uuidv4();
-  const {postdata} = usePostData('VoucherDetail/Add')
-  const {data}= useGetData('ChartOfAccount/GetAll')
-
-
-  const { setId, getId,voucherId,setVoucherId } = useLayouData();
-  const [editMode, setEditMode] = useState(false)
-  const [editData, seteditData] = useState();
-  const[detaildata,setdetailData]= useState()
-  const [isamount,setisAmount]= useState(false);
-  const [d,setD] =useState([])
+const VoucherDetailform = ({ onDataSubmit, dataByid,editMode }) => {
+const id = uuidv4();
+console.log(id)
+  const { postdata } = usePostData('VoucherDetail/Add')
+  const { data } = useGetData('ChartOfAccount/GetAll')
+  // const [editMode, setEditMode] = useState(false)
+  const [editData, seteditData] = useState([]);
+  const [detaildata, setdetailData] = useState([])
+  const [isamount, setisAmount] = useState(false);
+  const [d, setD] = useState([])
   const dispatch = useDispatch();
+  const [detailformError, setDetailformError] = useState('')
+  const [selectedChartOfAccount, setSelectedChartOfAccount] = useState([]); // State to store the selected ChartofAccount
 
 
-  useEffect(()=>
-{
-  if(dataByid)
-  {
-    setEditMode(true)
-  }
-},[dataByid])
- 
+  // useEffect(() => {
+  //   if (dataByid.length>0) {
+  //     setEditMode(true)
+  //   }
+  // }, [dataByid])
+
+
+
 
 
   const initialValues = {
-    // chartOfAccountId: '',
-    // debitAmount: '', 
-    // creditAmount: '', 
-    // chequeNumber: '',
-    // narration: '',
-    // Amount:'',
-    // voucherId:'',
-    // code:'',
-    // voucherNumber:'',
-    // exchangeRate:'0',
-    // currencyId:'',
-    // accountName:'',
-    // currencyName:''
-    
-      voucherId: 0,
-      chartOfAccountId: 1,
-      code: "",
-      chequeNumber: "",
-      voucherNumber: "",
-      // debitAmount: 0,
-      // creditAmount: 0,
-      narration: "",
-      exchangeRate: 0,
-       currencyId: 1,
-      // accountName: "",
-      // currencyName: "",
-      isActive: true
+
+    voucherId: 0,
+    chartOfAccountId: '',
+    code: "",
+    chequeNumber: "",
+    voucherNumber: "",
+    // debitAmount: 0,
+    // creditAmount: 0,
+    narration: "",
+    exchangeRate: 0,
+    currencyId: 1,
+    // accountName: "",
+    // currencyName: "",
+    isActive: true,
+    chartOfAccountAccountName: '',
 
 
   };
 
-  
+
   const validationSchema = Yup.object().shape({
     // chartOfAccountId: Yup.string().required('required'),
     // debitAmount: Yup.number().typeError('enter number').required('required'),
@@ -86,58 +71,48 @@ const VoucherDetailform = ({onDataSubmit,dataByid,setDetailformError}) => {
     chequeNumber: Yup.number().required('required')
 
   });
-
-  
-
-
-
-  // const handleSubmit = (values, { resetForm }) => {
-  //   const VoucherDataId = { ...values ,debitAmount:isamount ? values.Amount : '0',   creditAmount: isamount ? '0' : values.Amount,};
-  //   // postdata(VoucherDataId)
-  //   setD(prevD => [...prevD, VoucherDataId])
-  //   console.log(d)
-  //   // onDataSubmit([...d, VoucherDataId]);
-  //  console.log(VoucherDataId)
-  //     // dispatch(addVoucherDetail(VoucherDataId))
-  //     resetForm()
-
-  // };
-
-  const handleSubmit = (values) => {
-    setDetailformError()
-   
-       const VoucherDataId = { ...values ,debitAmount:isamount ? values.Amount : 0,   creditAmount: isamount ? 0 : values.Amount,};
-
-   
-    if(editMode)
-    {
-      setD(prevD => [...prevD, VoucherDataId])
-      seteditData([...d, VoucherDataId])
-      onDataSubmit([...d, VoucherDataId]);
-    }
-    else 
-    {
-      setD(prevD => [...prevD, VoucherDataId])
-      setdetailData([...d, VoucherDataId])
-       onDataSubmit([...d, VoucherDataId]);
-       dispatch(addVoucherDetail(VoucherDataId))
-       
-
-    }
-  
-   
+  const handleChartOfAccountChange = (event, formik) => {
+    const selectedOption = data?.data?.find(item => item?.id.toString() === event.target.value);
+    setSelectedChartOfAccount(selectedOption);
+    formik.setFieldValue('chartOfAccountId',selectedOption.id ); // Update the formik field value
+    formik.setFieldValue('chartOfAccountAccountName',selectedOption.accountName ); // Update the formik field value
   };
+
+  const handleSubmit = async (values, { resetForm }) => {
+    
+      const VoucherDataId = { ...values, debitAmount: isamount ? values.Amount : 0, creditAmount: isamount ? 0 : values.Amount };
+      if (editMode) {
+        const dataWithId = {...VoucherDataId,id:id,voucherId:dataByid.id}
+        console.log(dataWithId)
+        setD(prevD => [...prevD, dataWithId]);
+        seteditData([...d, dataWithId]);
+        onDataSubmit([...d, dataWithId]);
+        console.log('hello')
+      } else {
+        setD(prevD => [...prevD, VoucherDataId]);
+        setdetailData(d);
+        console.log(detaildata)
+        onDataSubmit([...d, VoucherDataId]);
+        console.log('bye')
+        // dispatch(addVoucherDetail(VoucherDataId)); //redux ma add gardeko
+      }
+      // Reset the form
+      resetForm();
+    } 
+  
+  
+
   return (
     <>
       <div className=' '>
 
-     
+
         {/* <div className='pt-[20px]'>
           <h4 className='text-[18px] font-semibold text-center my-[10px]'>Voucher Detail</h4>
         </div> */}
         <Formik
-          initialValues={ initialValues}
-            validationSchema={validationSchema}
+          initialValues={initialValues}
+          validationSchema={validationSchema}
           onSubmit={(values, { resetForm }) => handleSubmit(values, { resetForm })}
           enableReinitialize={true}
         >
@@ -148,15 +123,17 @@ const VoucherDetailform = ({onDataSubmit,dataByid,setDetailformError}) => {
                   <div className='py-[8px]'>
                     <label className='block py-[5px] font-[500] font-inter '>ChartofAccount</label>
                     <Field
-                      className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr '
-                      type='text'
-                      name='chartOfAccountId'
                       as='select'
+                      name='chartOfAccountId'
+                      className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr'
+                      onChange={(event) => {
+                        formik.handleChange(event); // This ensures that Formik handles the change event
+                        handleChartOfAccountChange(event,formik); // Your custom handler
+                      }}
                     >
                       <option disabled selected value=''>Select ChartofAccount</option>
-                      {data?.data?.map((item, index) =>
-                      (
-                        <option key={index} name='chartOfAccountId' value={parseInt(item?.id)}>{item?.accountName}</option>
+                      {data?.data?.map((item, index) => (
+                        <option key={index} value={item.id}>{item.accountName}</option>
                       ))}
                     </Field>
                     <ErrorMessage component='div' className='text-[14px] text-redclr' name='chartOfAccountId' />
@@ -165,9 +142,9 @@ const VoucherDetailform = ({onDataSubmit,dataByid,setDetailformError}) => {
                     <div role="group">
                       <label className='block py-[8px] font-[500] font-inter '> Type <span>*</span></label>
                       <div>
-                        <label className=""> <input className='mx-[5px]' type="radio" name="isAmount"  value={true}
+                        <label className=""> <input className='mx-[5px]' type="radio" name="isAmount" value={true}
                           onChange={() => setisAmount(true)} />Debit</label>
-                        <label className="ml-[10px]"><input className='ml-[30px]' type="radio" name="isAmount"  value={false}
+                        <label className="ml-[10px]"><input className='ml-[30px]' type="radio" name="isAmount" value={false}
                           onChange={() => setisAmount(false)} /> Credit</label>
                       </div>
                       <ErrorMessage component="div" className='text-[14px] text-redclr ' name="isAmount" />
@@ -180,8 +157,8 @@ const VoucherDetailform = ({onDataSubmit,dataByid,setDetailformError}) => {
                       className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr '
                       type='number'
                       name='Amount'
-                      //  onChange={(e)=>setAmount(e.target.value)}
-                      //  value={amount}
+                    //  onChange={(e)=>setAmount(e.target.value)}
+                    //  value={amount}
                     />
                     <ErrorMessage component='div' className='text-[14px] text-redclr ' name='Amount' />
                   </div>
@@ -207,7 +184,7 @@ const VoucherDetailform = ({onDataSubmit,dataByid,setDetailformError}) => {
                       className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none  border-borderclr '
                       type='text'
                       name='narration'
-                     
+
                     />
                     <ErrorMessage component='div' className='text-[14px] text-redclr' name='narration' />
                   </div>
@@ -222,7 +199,7 @@ const VoucherDetailform = ({onDataSubmit,dataByid,setDetailformError}) => {
           )}
 
         </Formik>
-        <VoucherDetailTable dataByid={dataByid} editData={editData}/>
+        <VoucherDetailTable dataByid={dataByid} editMode={editMode} editData={editData} detaildata={detaildata} />
       </div>
 
     </>
