@@ -1,3 +1,4 @@
+import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 
 const Protected = () => {
@@ -6,5 +7,4 @@ const Protected = () => {
 
   return token ? <Outlet /> : <Navigate to="signin" />;
 };
-
 export default Protected;

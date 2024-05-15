@@ -14,10 +14,10 @@ root.render(
     <Provider store={store}>
       
     <PersistGate loading={null} persistor={persistor}>
-    
+    <MainLayoutProvider>
       <App />
       
-   
+      </MainLayoutProvider>
     </PersistGate>
     </Provider>
    

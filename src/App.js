@@ -1,20 +1,20 @@
-
 import './App.css';
+import Footer from './Components/Footer';
 import Header from './Components/Header';
+import SideBar from './Components/SideBar';
 import { MainLayoutProvider } from './Context/MainLayoutContext';
+import Routess from './Router';
 import Routes from './Router';
 
-import Index from './Router';
-
 function App() {
-
   return (
     <>
+       
+      <Routess/>
+     
+     
+      </>
 
-<Routes/>
-
-    </>
   );
 }
-
-export default App;
+export default App

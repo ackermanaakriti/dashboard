@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { LuMenuSquare } from "react-icons/lu";
 import { FaRegUserCircle } from "react-icons/fa";
 import { useLayouData } from "../Context/MainLayoutContext";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Link, NavLink, Navigate, useNavigate } from "react-router-dom";
 
 
 const Header = () => {
@@ -48,7 +48,8 @@ const handleSingout=()=>
                   />
                 </figure>
                 <p className="text-white text-[14px] text-center font-inter">
-                  Company Name
+                  {/* <NavLink to='/signin'> Company Name</NavLink> */}
+                  {/* <Link to="/branch">Link Text</Link> */}
                 </p>
               </div>
             </div>

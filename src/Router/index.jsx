@@ -1,7 +1,5 @@
-// Router.js
-
 import React from "react";
-import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from "react-router-dom";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Protected from "./ProtectedRoutes";
 import Dashboard from "../Components/Dashboard";
 import Login from "../Pages/Login";
@@ -10,31 +8,27 @@ import Footer from "../Components/Footer";
 import MainLayout from "../Layout/MainLayout";
 import BranchTable from "../Menus/BranchMenu/BranchTable";
 import { MainLayoutProvider } from "../Context/MainLayoutContext";
+import Header from "../Components/Header";
+import SideBar from "../Components/SideBar";
 
-const token = localStorage.getItem('token')
-
-const routes = createRoutesFromElements(
-  <Route path="/">
-    <Route element={<Protected />}>
-      <Route index element={<MainLayout/> } />
-      <Route path='branch' element={<BranchTable token={token}/>}/>
-       
-
-
-    </Route>
-    <Route path="signin" element={<Login />} />
-    {/* <Route path="/bank" element={<BankForm/>}/> */}
-    <Route path="*" element={<h1>Page not found</h1>} />
-  </Route>
-);
-
-const router = createBrowserRouter(routes);
-
-const Routes = () => {
+const Routess = () => {
   return (
-  
-  <RouterProvider router={router} />
-  ) ;
+    <Router>
+      <Header />
+      <div className="flex">
+        <SideBar />
+        <Routes>
+          <Route path="/" element={<Protected />}>
+            <Route index element={<Dashboard />} />
+            <Route path="branch" element={<BranchTable />} />
+          </Route>
+          <Route path="signin" element={<Login />} />
+          <Route path="*" element={<h1>Page not found</h1>} />
+        </Routes>
+      </div>
+      <Footer />
+    </Router>
+  );
 };
 
-export default Routes;
+export default Routess;
