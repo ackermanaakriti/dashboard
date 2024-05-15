@@ -14,7 +14,7 @@ const VoucherTypeTable = () => {
   const { setId } = useLayouData(); // setId to get the id for form editing --not using react-router So setting id manually
   const dispatch = useDispatch();
   const {Deldata}= useDelData('VoucherType/Delete/')   //use custom delete hook
-  const { data } = useGetData('VoucherType/GetAll')   //use custom hook to get all data...passing url
+  const { data ,fetchData} = useGetData(`VoucherType/GetAll?IsDeleted=${false}`)   //use custom hook to get all data...passing url
   const [tableData,setTableData]= useState([])          
   const [filterText, setFilterText] = React.useState('');
 
@@ -26,6 +26,7 @@ const VoucherTypeTable = () => {
 
   const handleDelete = async (id) => {
     await Deldata(id);
+  fetchData()
   };
 
   const handleEdit = (id) => {
@@ -54,38 +55,38 @@ const VoucherTypeTable = () => {
       // width:'20%'
     },
   
-    {
-      name: 'System Define',
-      hide: 'md',
-      // width:'20%',
-      selector: row => row.isSystemDefined,
-      cell: row => (
-        <>
-            {row.isSystemDefined ? (
-               <TableButton className='bg-PrimaryColor rounded-[20px] px-[12px] py-[5px] text-white' text='Yes'/>
-            ) :  <TableButton
-            className="bg-[#378f80] rounded-[20px] px-[12px] py-[5px] text-white"
-            text="No"
-          />}
-        </>
-    ),
-    },
-    {
-      name: 'Editable',
-      hide: 'md',
-      // width:'20%',
-      selector: row => row.isEditable,
-      cell: row => (
-        <>
-            {row.isEditable ? (
-               <TableButton className='bg-PrimaryColor rounded-[20px] px-[12px] py-[5px] text-white' text='Yes'/>
-            ) :  <TableButton
-            className="bg-[#378f80] rounded-[20px] px-[12px] py-[5px] text-white"
-            text="No"
-          />}
-        </>
-    ),
-    },
+    // {
+    //   name: 'System Define',
+    //   hide: 'md',
+    //   // width:'20%',
+    //   selector: row => row.isSystemDefined,
+    //   cell: row => (
+    //     <>
+    //         {row.isSystemDefined === true ? (
+    //            <TableButton className='bg-PrimaryColor rounded-[20px] px-[12px] py-[5px] text-white' text='Yes'/>
+    //         ) :  <TableButton
+    //         className="bg-[#378f80] rounded-[20px] px-[12px] py-[5px] text-white"
+    //         text="No"
+    //       />}
+    //     </>
+    // ),
+    // },
+    // {
+    //   name: 'Editable',
+    //   hide: 'md',
+    //   // width:'20%',
+    //   selector: row => row.isEditable,
+    //   cell: row => (
+    //     <>
+    //         {row.isEditable ? (
+    //            <TableButton className='bg-PrimaryColor rounded-[20px] px-[12px] py-[5px] text-white' text='Yes'/>
+    //         ) :  <TableButton
+    //         className="bg-[#378f80] rounded-[20px] px-[12px] py-[5px] text-white"
+    //         text="No"
+    //       />}
+    //     </>
+    // ),
+    // },
   
     {
       name: 'Actions',

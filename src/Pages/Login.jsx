@@ -9,9 +9,10 @@ import { baseUrl } from '../Apis/Baseurl';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios'; 
 import { useLayouData } from '../Context/MainLayoutContext';
+import { useNavigate } from 'react-router';
 
 const Login = () => {
-    const {token,setToken,setAuthorized} = useLayouData();
+   const navigate = useNavigate()
   const initialValues = {
     username: '',
     password: '',
@@ -35,9 +36,14 @@ const Login = () => {
           id: id,
         }
       );
-      console.log(response.data)
-    setToken(response?.data?.token);
-    setAuthorized(true)
+  
+      localStorage.setItem('token', response?.data?.token);
+      if(response?.data?.token)
+        {
+          navigate('/')
+        }
+   
+      // setToken(response?.data?.token);
     } catch (error) {
       console.error('Error:', error);
     }

@@ -32,7 +32,7 @@ const ModuleForm = () => {
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("required"),
-    code: Yup.string().required("required"),
+    // code: Yup.string().required("required"),
     prefix: Yup.string().required("required"),
     isActive: Yup.boolean().required("required"),
   });
@@ -44,7 +44,7 @@ const ModuleForm = () => {
       await postdata(values);
     }
 
-    dispatch(addMenu({ id: "", menu: "moduleform" }));
+    dispatch(addMenu({ id: "", menu: "moduletable" }));
     setId("");
   };
   return (
@@ -86,9 +86,10 @@ const ModuleForm = () => {
                     Code
                   </label>
                   <Field
-                    className="border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr "
+                    className="border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr cursor-not-allowed"
                     name="code"
                     type="text"
+                    disabled
                   />
                   <ErrorMessage
                     component="div"
@@ -101,9 +102,10 @@ const ModuleForm = () => {
                     Prefix
                   </label>
                   <Field
-                    className="border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr "
+                    className="border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr cursor-not-allowed "
                     name="prefix"
                     type="text"
+                    
                   />
                   <ErrorMessage
                     component="div"

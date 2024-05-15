@@ -1,10 +1,11 @@
 import axios from 'axios'
-import React from 'react'
+import React, { useState } from 'react'
 import { baseUrl } from './Baseurl'
 import { useLayouData } from '../Context/MainLayoutContext'
 
-const useDelData = (url) => {
+const useDelData = (url,fetchData) => {
     const {token} = useLayouData()
+    const [data,setData]= useState([])
 
     const Deldata = async (id) => {
        console.log(id)
@@ -20,6 +21,7 @@ const useDelData = (url) => {
           );
 
           console.log(response);
+        
        } catch(err) {
           console.log(err);
        }

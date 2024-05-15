@@ -2,11 +2,17 @@ import React, { useState } from "react";
 import { LuMenuSquare } from "react-icons/lu";
 import { FaRegUserCircle } from "react-icons/fa";
 import { useLayouData } from "../Context/MainLayoutContext";
+import { Navigate, useNavigate } from "react-router-dom";
+
 
 const Header = () => {
-  const { menuClose, setMenuClose, menuOpen,setMenuOpen,collapsed, setCollapsed,sidebarToggle,setSidebarToggle } = useLayouData();
+  const navigate = useNavigate()
+ 
+  // const { menuClose, setMenuClose, menuOpen,setMenuOpen,collapsed, setCollapsed,sidebarToggle,setSidebarToggle } = useLayouData();
+  const [sidebarToggle,setSidebarToggle]= useState(false)
   const handleToggleSidebar = () => {
     setSidebarToggle(!sidebarToggle);
+   
 };
 const [profileView,setProfileView]= useState(false)
 const handleProfile =()=>
@@ -14,6 +20,12 @@ const handleProfile =()=>
     setProfileView(!profileView)
     console.log(profileView)
 }
+const handleSingout=()=>
+  {
+    localStorage.removeItem('token');
+    navigate('/signin')
+    
+  }
 
   return (
     <>
@@ -64,7 +76,7 @@ const handleProfile =()=>
                         <li>
                           <a>Setting </a>
                         </li>
-                        <li>
+                        <li onClick={handleSingout}>
                           <a>Sign Out</a>
                         </li>
                       </ul>

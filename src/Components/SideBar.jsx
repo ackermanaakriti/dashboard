@@ -5,10 +5,11 @@ import { FaChevronDown, FaChevronRight } from 'react-icons/fa';
 import './Sidebar.css';
 import { UseDispatch, useDispatch } from 'react-redux';
 import { addTab } from '../Redux/TopTabSlice';
+import { NavLink } from 'react-router-dom';
 
 const SideBar = () => {
     const dispatch = useDispatch()
-    const { sidebarToggle,setSidebarToggle } = useLayouData();
+    const [ sidebarToggle,setSidebarToggle ] = useState();
     const [activeLink, setActiveLink] = useState(null);
     const [activeSubMenu, setActiveSubMenu] = useState(null);
     const [menuopen, setMenuopen] = useState(false);
@@ -42,7 +43,7 @@ const SideBar = () => {
                         <ul>
                             {MenuData.map((menu, index) => (
                                 <li key={index}>
-                                    <a onClick={() => handleClick(menu.slug,index)} className={activeLink === menu.menu ? 'active' : ''}>
+                                    <NavLink to={menu.slug} onClick={() => handleClick(menu.slug,index)} className={activeLink === menu.menu ? 'active' : ''}>
                                         <div className='menuitems-flex'>
                                         <span className='menuicons'>{menu.icon}</span>
                                         <span className='menuname cursor-pointer'> {menu.menu}</span>
@@ -51,7 +52,7 @@ const SideBar = () => {
                                         {
                                            menu.submenu.length > 0 ? ( activeLink === menu.slug &&  menuopen ? <span className='chev-icon'><FaChevronDown /></span> : <span className='chev-icon'><FaChevronRight /></span>):''
                                         }
-                                      </a>
+                                      </NavLink >
                                     {activeLink === menu.slug && menu.submenu.length > 0 && menuopen && (
                                         <ul>
                                             {menu.submenu.map((submenu, subIndex) => (

@@ -14,8 +14,8 @@ import { Width } from "devextreme-react/cjs/chart";
 const CustomerTable = () => {
   const { setId } = useLayouData(); // setId to get the id for form editing --not using react-router So setting id manually
   const dispatch = useDispatch();
-  const {Deldata}= useDelData('Customer/Delete/')   //use custom delete hook
-  const { data } = useGetData('Customer/GetAll')   //use custom hook to get all data...passing url
+  const {Deldata}= useDelData('Debtors/Delete/')   //use custom delete hook
+  const { data ,fetchData} = useGetData(`Debtors/GetAll?IsDeleted=${false}`)   //use custom hook to get all data...passing url
   const [tableData,setTableData]= useState([])          
   const [filterText, setFilterText] = React.useState('');
 
@@ -27,6 +27,7 @@ const CustomerTable = () => {
 
   const handleDelete = async (id) => {
     await Deldata(id);
+    fetchData()
   };
 
   const handleEdit = (id) => {

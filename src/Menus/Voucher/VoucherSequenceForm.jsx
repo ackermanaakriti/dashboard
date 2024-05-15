@@ -64,12 +64,17 @@ const [ChartofAccData,setChartofAccData]= useState([])
   voucherTypeId: '',
   fiscalYearId: '',
   charCount: '',
-    isActive: null 
+    isActive: true 
   };
 
   const validationSchema = Yup.object().shape({
    
-    name: Yup.string().typeError('enter number').required('required'),
+    name: Yup.string().required('required'),
+    currentNumber: Yup.string().required('required'),
+    prefix: Yup.string().required('required'),
+    voucherTypeId: Yup.string().required('required'),
+    charCount: Yup.string().required('required'),
+    fiscalYearId: Yup.string().required('required'),
   });
 
 
@@ -103,7 +108,7 @@ const [ChartofAccData,setChartofAccData]= useState([])
                 <div>
               <div className='grid grid-cols-2 gap-[30px]'>
                 <div className='py-[8px]'>
-                  <label className='block py-[5px] font-[500] font-inter '> Name</label>
+                  <label className='block py-[5px] font-[500] font-inter '> Name <span className='text-redclr'> *</span></label>
                   <Field
                     className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr '
                  
@@ -112,7 +117,7 @@ const [ChartofAccData,setChartofAccData]= useState([])
                   <ErrorMessage component='div' className='text-[14px] text-redclr' name='name' />
                 </div>
                 <div className='py-[8px]'>
-                  <label className='block py-[5px] font-[500] font-inter '> Number</label>
+                  <label className='block py-[5px] font-[500] font-inter '> Number <span className='text-redclr'> *</span></label>
                   <Field
                     className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr '
                  
@@ -149,7 +154,7 @@ const [ChartofAccData,setChartofAccData]= useState([])
 
                 <div className='grid grid-cols-2 gap-[20px]'>
                   <div className='py-[8px]'>
-                    <label className='block py-[8px] font-[500] font-inter '>Prefix</label>
+                    <label className='block py-[8px] font-[500] font-inter '>Prefix <span className='text-redclr'> *</span></label>
                     <Field
                       className='border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr '
                       name='prefix'
@@ -158,7 +163,7 @@ const [ChartofAccData,setChartofAccData]= useState([])
                     <ErrorMessage component='div' className='text-[14px] text-redclr ' name='prefix' />
                   </div>
                   <div className="py-[8px]">
-                  <label className="block py-[5px] font-[500] font-inter ">Voucher Type <span>*</span></label>
+                  <label className="block py-[5px] font-[500] font-inter ">Voucher Type <span className='text-redclr'> *</span></label>
                   <Field type="text"
                     name="voucherTypeId"
                     as='select'
@@ -184,7 +189,7 @@ const [ChartofAccData,setChartofAccData]= useState([])
                 </div>
                 <div className='grid grid-cols-2 gap-[20px]'>
                 <div className="py-[8px]">
-                  <label className="block py-[5px] font-[500] font-inter ">Fiscal Year <span>*</span></label>
+                  <label className="block py-[5px] font-[500] font-inter ">Fiscal Year <span className='text-redclr'> *</span></label>
                   <Field type="text"
                     name="fiscalYearId"
                     as='select'
@@ -207,7 +212,7 @@ const [ChartofAccData,setChartofAccData]= useState([])
                 </div>
                  
                   <div className="py-[8px]">
-                  <label className="block py-[5px] font-[500] font-inter ">ChartofAccount <span>*</span></label>
+                  <label className="block py-[5px] font-[500] font-inter ">ChartofAccount <span className='text-redclr'> *</span></label>
                   <Field type="text"
                     name="charCount"
                     as='select'
@@ -237,7 +242,7 @@ const [ChartofAccData,setChartofAccData]= useState([])
               
                    <div className="py-[6px]">
                     <div role="group">
-                       <label className='block py-[8px] font-[500] font-inter '> Is Active <span>*</span></label>
+                       <label className='block py-[8px] font-[500] font-inter '>  Active </label>
                            <div>
                            <label className=""> <input className='mx-[5px]' type="radio"  name="isActive"  checked={formik.values.isActive === true} value={true}
                              onChange={() => formik.setFieldValue('isActive', true)} />Yes</label>

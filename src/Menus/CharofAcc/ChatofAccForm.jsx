@@ -16,60 +16,79 @@ import usePostData from '../../Apis/usePostData';
 import axios from 'axios';
 import { baseUrl } from '../../Apis/Baseurl';
 import useUpdateData from '../../Apis/useUpdate';
+import useGetById from '../../Apis/useGetById';
 import useGetData from '../../Apis/useGetData';
 
 const CharofAccForm = () => {
   
     const {postdata,postError}= usePostData('ChartOfAccount/Add')
-    const {data}= useGetData('ChartOfAccount/GetAll')
     const {updateData} = useUpdateData('ChartOfAccount/Update');
-    const {datas}= useGetData('AccountGroup/GetAll')
+    const {data}= useGetData(`AccountGroup/GetAll?isDeleted=${false}`)
+    const {GiveId,dataByid} = useGetById('ChartOfAccount/GetById/')
     const { setId, getId,token } = useLayouData();
+    const [mainparentAcc,setMainparentAcc]= useState([])
+    const [parentAcc,setparentAcc]= useState([])
     const [editMode, setEditMode] = useState(false)
-    const [editData, seteditData] = useState()
+    
     const dispatch = useDispatch();
  
     useEffect(() => {
         if (getId && data) {
             setEditMode(true)
-            seteditData(data?.data?.find((item) => item?.id === getId))
+            GiveId(getId)
         } 
+        const  fetchDropDownsData=async()=>
+            {
+              const responseA = await axios.get(`${baseUrl}ChartOfAccount/GetMainParentDDL`,{headers:{Authorization: `Bearer ${token}`}})
+              setMainparentAcc(responseA.data.data)
+              const responseB = await axios.get(`${baseUrl}ChartOfAccount/GetParentDDL`,{headers:{Authorization: `Bearer ${token}`}})
+              setparentAcc(responseB.data.data)
+            }
+            fetchDropDownsData()
     }, [data,setId]
     )
 
+
+
     const initialValues = {
+        id:0,
         accountCode: '',
         accountName: '',
-        isTransactional: null,
+        isTransactional: true,
         accountGroupId: '',
         description: '',
-        isTaxApplicable: '',
-        parentAccountId: '',
-        mainParentId: '',
-        // createdByUserId: null,
-        // createdByBranchId: null,
-        // treeLevel: null,
-        isActive: null,
-        isLedger: null,
-        isAllBranchApplicable: null,
-        accountGroupName:'hghgj'
+        isTaxApplicable: true,
+        parentAccountId: 0,
+        mainParentId: 0,
+        // createdByUserId: true,
+        // createdByBranchId: true,
+         treeLevel: 0,
+        isActive: true,
+        isLedger: true,
+        isAllBranchApplicable: true,
+        // accountGroupName:''
     };
 
     const validationSchema = Yup.object().shape({
  
-        accountCode: Yup.string().typeError('invalid data').required('required'),
+        // accountCode: Yup.string().typeError('invalid data').required('required'),
         accountName: Yup.string().required('required'),
-        description: Yup.string().required('required'),
-        isTaxApplicable: Yup.boolean().required('required'),
-        isActive: Yup.boolean().required('required'),
-        isLedger: Yup.boolean().required('required'),
-        isAllBranchApplicable: Yup.boolean().required('required'),
-        isTransactional: Yup.boolean().required('required'),
-        accountGroupId:Yup.number().required('required')
+        parentAccountId:Yup.string().required('required'),
+        mainParentId: Yup.string().required('required'),
+        accountName:Yup.string().required('required')
+        // description: Yup.string().required('required'),
+        // isTaxApplicable: Yup.boolean().required('required'),
+        // isActive: Yup.boolean().required('required'),
+        // isLedger: Yup.boolean().required('required'),
+        // isAllBranchApplicable: Yup.boolean().required('required'),
+        // isTransactional: Yup.boolean().required('required'),
+        // accountGroupId:Yup.number().required('required')
     });
 
-
     const handleSubmit = async (values) => {
+        
+debugger;
+        console.log(values)
         if (editMode) {
           updateData(values)  }
         else { postdata(values ); }
@@ -87,7 +106,7 @@ const CharofAccForm = () => {
                 </div>
 
                 <Formik
-                    initialValues={editMode ? editData : initialValues}
+                    initialValues={editMode ? dataByid : initialValues}
                     validationSchema={validationSchema}
                     onSubmit={handleSubmit}
                     enableReinitialize={true}
@@ -96,7 +115,7 @@ const CharofAccForm = () => {
                         <Form className='grid grid-cols-2 gap-[90px]'>
                             <div className=''>
                                 <div className='py-[8px]'>
-                                    <label className='block py-[5px] font-[500] font-inter '>Name</label>
+                                    <label className='block py-[5px] font-[500] font-inter '>Name <span className='text-redclr'>*</span></label>
                                     <Field
                                         className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr '
                                         type='text'
@@ -109,14 +128,15 @@ const CharofAccForm = () => {
                                     <div className='py-[8px]'>
                                         <label className='block py-[8px] font-[500] font-inter '>Code </label>
                                         <Field
-                                            className='border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr '
+                                            className='border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr  cursor-not-allowed'
                                             name='accountCode'
                                             type='text'
+                                            disabled
                                         />
                                         <ErrorMessage component='div' className='text-[14px] text-redclr ' name='accountCode' />
                                     </div>
                                     <div className='py-[8px]'>
-                                        <label className='block py-[8px] font-[500] font-inter '>Account Group</label>
+                                        <label className='block py-[8px] font-[500] font-inter '>Account Group <span className='text-redclr'>*</span></label>
                                         <Field
                                             className='border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr '
                                             name='accountGroupId'
@@ -126,11 +146,11 @@ const CharofAccForm = () => {
 
                                         >
                                             <option disabled value='' selected >Select Account Group</option>
-                                            {/* {accgrpData?.map((item, index) =>
+                                            {data?.data?.map((item, index) =>
                                             (
-                                                <option key={index} value={item.name}>{item.name}</option>
-                                            ))} */}
-                                            <option value={1}>1</option>
+                                                <option key={index} value={item?.id}>{item.name}</option>
+                                            ))}
+                                            
                                         </Field>
                                         <ErrorMessage component='div' className='text-[14px] text-redclr ' name='accountGroupId' />
                                     </div>
@@ -139,7 +159,7 @@ const CharofAccForm = () => {
 
                                 <div className='grid grid-cols-2 gap-[20px]'>
                                     <div className='py-[8px]'>
-                                        <label className='block py-[8px] font-[500] font-inter '>Main Parent Account </label>
+                                        <label className='block py-[8px] font-[500] font-inter '>Main Parent Account <span className='text-redclr'>*</span> </label>
                                         <Field
                                             className='border-[1px]  py-[8px] px-[12px] pr-[10px]  w-full outline-none border-borderclr '
                                             name='mainParentId'
@@ -148,16 +168,15 @@ const CharofAccForm = () => {
                                             placeholder='Select Main Parent Account'
                                         >
                                             <option className='text-[#717378] text-[15px]' value='' disabled  >Select Main Parent Account</option>
-                                            <option value={1}> 1</option>
-                                           {/* {chartofAccdata.map((item,index)=>
+                                           {mainparentAcc?.map((item,index)=>
                                            (
-                                            <option key={index} value={item?.AccountName}>{item?.accountName}</option>
-                                           ))} */}
+                                            <option key={index} value={item?.id}>{item?.accountName}</option>
+                                           ))}
                                         </Field>
                                         <ErrorMessage component='div' className='text-[14px] text-redclr ' name='mainParentId' />
                                     </div>
                                     <div className='py-[8px]'>
-                                        <label className='block py-[8px] font-[500] font-inter '>Parent Account</label>
+                                        <label className='block py-[8px] font-[500] font-inter '>Parent Account <span className='text-redclr'>*</span></label>
                                         <Field
                                             className='border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr '
                                             name='parentAccountId'
@@ -165,11 +184,10 @@ const CharofAccForm = () => {
                                             as='select'
                                         >
                                              <option className='text-[#717378] text-[15px]' value='' disabled  >Select  Parent Account</option>
-                                             <option value={1}>1</option>
-                                           {/* {chartofAccdata.map((item,index)=>
+                                           {parentAcc?.map((item,index)=>
                                            (
-                                            <option key={index} value={item?.accountName}>{item?.accountName}</option>
-                                           ))} */}
+                                            <option key={index} value={item?.id}>{item?.accountName}</option>
+                                           ))}
                                         </Field>
                                         <ErrorMessage component='div' className='text-[14px] text-redclr ' name='parentAccountId' />
                                     </div>
@@ -179,7 +197,7 @@ const CharofAccForm = () => {
                                 <div className='grid grid-cols-2 gap-[20px]'>
                                     <div className="py-[6px]">
                                     <div role="group">
-                                            <label className='block py-[8px] font-[500] font-inter '>Is Tax Applicable <span>*</span></label>
+                                            <label className='block py-[8px] font-[500] font-inter '> Tax Applicable </label>
                                             <div>
                                                 <label className=""> <input className='mx-[5px]' type="radio"  name="isTaxApplicable"  checked={formik.values.isTaxApplicable === true} value={true}
                                                onChange={() => formik.setFieldValue('isTaxApplicable', true)} />Yes</label>
@@ -193,7 +211,7 @@ const CharofAccForm = () => {
 
                                     <div className="py-[6px]">
                                         <div role="group">
-                                            <label className='block py-[8px] font-[500] font-inter '>Is Active <span>*</span></label>
+                                            <label className='block py-[8px] font-[500] font-inter '>Active</label>
                                             <div>
                                                 <label className=""> <input className='mx-[5px]' type="radio"  name="isActive"  checked={formik.values.isActive === true} value={true}
                                                onChange={() => formik.setFieldValue('isActive', true)} />Yes</label>
@@ -226,7 +244,7 @@ const CharofAccForm = () => {
                                 <div className='grid grid-cols-2 gap-[20px]'>
                                     <div className="py-[6px]">
                                     <div role="group">
-                                            <label className='block py-[8px] font-[500] font-inter '>Is Transactional <span>*</span></label>
+                                            <label className='block py-[8px] font-[500] font-inter '> Transactional </label>
                                             <div>
                                                 <label className=""> <input className='mx-[5px]' type="radio"  name="isTransactional"  checked={formik.values.isTransactional === true} value={true}
                                                onChange={() => formik.setFieldValue('isTransactional', true)} />Yes</label>
@@ -244,7 +262,7 @@ const CharofAccForm = () => {
                                 <div className='grid grid-cols-2 gap-[20px]'>
                                     <div className="py-[6px]">
                                     <div role="group">
-                                            <label className='block py-[8px] font-[500] font-inter '>Is Apply for All Branch <span>*</span></label>
+                                            <label className='block py-[8px] font-[500] font-inter '> Apply for All Branch </label>
                                             <div>
                                                 <label className=""> <input className='mx-[5px]' type="radio"  name="isAllBranchApplicable"  checked={formik.values.isAllBranchApplicable === true} value={true}
                                                onChange={() => formik.setFieldValue('isAllBranchApplicable', true)} />Yes</label>
@@ -258,7 +276,7 @@ const CharofAccForm = () => {
 
                                     <div className="py-[6px]">
                                     <div role="group">
-                                            <label className='block py-[8px] font-[500] font-inter '>Is Ledger <span>*</span></label>
+                                            <label className='block py-[8px] font-[500] font-inter '>Ledger </label>
                                             <div>
                                                 <label className=""> <input className='mx-[5px]' type="radio"  name="isLedger"  checked={formik.values.isLedger === true} value={true}
                                                onChange={() => formik.setFieldValue('isLedger', true)} />Yes</label>

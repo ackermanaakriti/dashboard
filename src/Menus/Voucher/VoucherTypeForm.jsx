@@ -44,20 +44,21 @@ const {GiveId,dataByid}= useGetById('VoucherType/GetById/')
   const initialValues = {
     name: '',
     prefix: '',
-    isSystemDefined: null,
-    isEditable:null,
+    isSystemDefined: false,
+    // isEditable:true,
     
   };
 
   const validationSchema = Yup.object().shape({
-    prefix: Yup.string().typeError('').required('required'),
-    name: Yup.string().typeError('').required('required'),
-    isSystemDefined: Yup.boolean().required('required'),
-    isEditable: Yup.boolean().required('required'),
+    prefix: Yup.string().required('required'),
+    name: Yup.string().required('required'),
+    // isSystemDefined: Yup.boolean().required('required'),
+    // isEditable: Yup.boolean().required('required'),
   });
 
 
   const handleSubmit = (values) => {
+    console.log('hello')
     if(editMode)
     {
      
@@ -96,7 +97,7 @@ const {GiveId,dataByid}= useGetById('VoucherType/GetById/')
             <Form className='grid grid-cols-2 gap-[90px]'>
               <div className=''>
                 <div className='py-[8px]'>
-                  <label className='block py-[5px] font-[500] font-inter '>Name</label>
+                  <label className='block py-[5px] font-[500] font-inter '>Name <span className='text-redclr'> *</span></label>
                   <Field
                     className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr '
                     type='text'
@@ -106,7 +107,7 @@ const {GiveId,dataByid}= useGetById('VoucherType/GetById/')
                 </div>
 
                 <div className='py-[8px]'>
-                  <label className='block py-[5px] font-[500] font-inter '>Prefix</label>
+                  <label className='block py-[5px] font-[500] font-inter '>Prefix <span className='text-redclr'> *</span></label>
                   <Field
                     className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr '
                     type='text'
@@ -114,23 +115,12 @@ const {GiveId,dataByid}= useGetById('VoucherType/GetById/')
                   />
                   <ErrorMessage component='div' className='text-[14px] text-redclr ' name='prefix' />
                 </div>
-                <div className="py-[6px]">
-                                    <div role="group">
-                                            <label className='block py-[8px] font-[500] font-inter '> Is Separate Voucher <span>*</span></label>
-                                            <div>
-                                                <label className=""> <input className='mx-[5px]' type="radio"  name="isSystemDefined"  checked={formik.values.isSystemDefined === true} value={true}
-                                               onChange={() => formik.setFieldValue('isSystemDefined', true)} />Yes</label>
-                                                <label className="ml-[10px]"><input className='mx-[5px]' type="radio" name="isSystemDefined" checked={formik.values.isSystemDefined === false} value={false}
-                                                  onChange={() => formik.setFieldValue('isSystemDefined', false)} /> No</label>
-                                            </div>
-                                            <ErrorMessage component="div" className='text-[14px] text-redclr ' name="isSystemDefined" />
-                                        </div>
-                                    </div>
+              
                
               
 
               
-                            <div className="py-[6px]">
+                            {/* <div className="py-[6px]">
                                     <div role="group">
                                             <label className='block py-[8px] font-[500] font-inter '> Is Editable <span>*</span></label>
                                             <div>
@@ -141,7 +131,7 @@ const {GiveId,dataByid}= useGetById('VoucherType/GetById/')
                                             </div>
                                             <ErrorMessage component="div" className='text-[14px] text-redclr ' name="isEditable" />
                                         </div>
-                                    </div>
+                                    </div> */}
 
                 <div className=' mt-[40px] flex gap-[20px] justify-end'>
                 <CancelButton onClick={()=>dispatch(addMenu({ id:'', menu:'vouchertype'}))} className=' border-[1px] border-redclr px-[15px] py-[4px] text-redclr font-inter' text='Cancel' type='button' />

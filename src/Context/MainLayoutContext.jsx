@@ -1,8 +1,9 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { Children, createContext, useContext, useState } from "react";
 import Header from "../Components/Header";
 import Footer from "../Components/Footer";
 import SideBar from "../Components/SideBar";
 import Login from "../Pages/Login";
+import MainLayout from "../Layout/MainLayout";
 
 const MainLayoutContext = createContext();
 
@@ -17,7 +18,7 @@ export const MainLayoutProvider = ({ children }) => {
   const [authorized,setAuthorized]= useState(false);
   const [token,setToken]= useState('')
 
-
+  setToken(localStorage.getItem("token")) ;
 
   return (
     <MainLayoutContext.Provider
@@ -35,30 +36,13 @@ export const MainLayoutProvider = ({ children }) => {
       }}
     
     >
-
-      {authorized ?( <> <Header />
-      <div className="flex">
-        <div>
-        <SideBar />
-        </div>
-        {/* 'calc(100% - 268px)' */}
-       
-      
-
-        <div style={{ width: sidebarToggle ? 'calc(100% - 80px)' : 'calc(100% - 268px)' }} className="items-center">{children}</div>
-      </div>
-      <Footer />
-      </>) : <Login/> }
-
-      
-      {/* <> <Header />
-      <div className="flex">
-        <SideBar />
-
-        <div className="w-[100%]">{children}</div>
-      </div>
-      <Footer />
-      </> */}
+      <Header/>
+<div className="flex">
+  <SideBar/>
+  {children}
+</div>
+   
+   <Footer/>
       
      
     </MainLayoutContext.Provider>

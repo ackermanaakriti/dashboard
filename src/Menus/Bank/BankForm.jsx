@@ -48,12 +48,15 @@ const [companyData,setCompanyData]= useState([])
     
    
    
-    isActive: null 
+    isActive: true 
   };
 
   const validationSchema = Yup.object().shape({
    
-    name: Yup.string().typeError('enter number').required('required'),
+    name: Yup.string().required('required'),
+    companyId: Yup.string().required('required'),
+    accountNumber: Yup.string().required('required'),
+    balance: Yup.string().required('required'),
   });
 
 
@@ -73,7 +76,7 @@ const [companyData,setCompanyData]= useState([])
     <>
       <div className='px-[50px]'>
         <div>
-          <h2 className='font-inter font-semibold text-[30px]'>{editMode ? 'Update' : 'Add'} Vendor</h2>
+          <h2 className='font-inter font-semibold text-[30px]'>{editMode ? 'Update' : 'Add'} Bank</h2>
         </div>
 
         <Formik
@@ -87,7 +90,7 @@ const [companyData,setCompanyData]= useState([])
                 <div>
               <div className='grid grid-cols-2 gap-[30px]'>
                 <div className='py-[8px]'>
-                  <label className='block py-[5px] font-[500] font-inter '> Name</label>
+                  <label className='block py-[5px] font-[500] font-inter '> Name <span className='text-redclr'>*</span></label>
                   <Field
                     className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr '
                  
@@ -97,7 +100,7 @@ const [companyData,setCompanyData]= useState([])
                 </div>
 
                 <div className="py-[8px]">
-                  <label className="block py-[5px] font-[500] font-inter ">Company <span>*</span></label>
+                  <label className="block py-[5px] font-[500] font-inter ">Company <span className='text-redclr'>*</span></label>
                   <Field type="text"
                     name="companyId"
                     as='select'
@@ -124,7 +127,7 @@ const [companyData,setCompanyData]= useState([])
 
                 <div className='grid grid-cols-2 gap-[20px]'>
                   <div className='py-[8px]'>
-                    <label className='block py-[8px] font-[500] font-inter '>Account Number</label>
+                    <label className='block py-[8px] font-[500] font-inter '>Account Number <span className='text-redclr'>*</span></label>
                     <Field
                       className='border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr '
                       name='accountNumber'
@@ -133,7 +136,7 @@ const [companyData,setCompanyData]= useState([])
                     <ErrorMessage component='div' className='text-[14px] text-redclr ' name='accountNumber' />
                   </div>
                   <div className='py-[8px]'>
-                    <label className='block py-[8px] font-[500] font-inter '>Balance</label>
+                    <label className='block py-[8px] font-[500] font-inter '>Balance <span className='text-redclr'>*</span></label>
                     <Field
                       className='border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr '
                       name='balance'
@@ -150,7 +153,7 @@ const [companyData,setCompanyData]= useState([])
               
                    <div className="py-[6px]">
                     <div role="group">
-                       <label className='block py-[8px] font-[500] font-inter '> Is Active <span>*</span></label>
+                       <label className='block py-[8px] font-[500] font-inter '> Active </label>
                            <div>
                            <label className=""> <input className='mx-[5px]' type="radio"  name="isActive"  checked={formik.values.isActive === true} value={true}
                              onChange={() => formik.setFieldValue('isActive', true)} />Yes</label>

@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { addMenu } from "../../Redux/TopTabSlice";
 import useGetById from "../../Apis/useGetById";
 import useUpdateData from "../../Apis/useUpdate";
+import useGetData from "../../Apis/useGetData";
 
 const EmployeeForm = () => {
   const { postdata, postError } = usePostData("Employee/Add");
@@ -15,6 +16,8 @@ const EmployeeForm = () => {
   const { dataByid,GiveId } = useGetById("Employee/GetById/");
   const [editMode, setEditMode] = useState(false);
   const dispatch = useDispatch();
+  const {data}= useGetData(`Department/GetAll?IsDeleted?isDeleted=${false}`)
+
 
   useEffect(() => {
     if (getId) {
@@ -31,7 +34,7 @@ const EmployeeForm = () => {
     contactNumber: "",
     departmentId: "",
     departmentName: "",
-    isActive: null,
+    isActive: true,
   };
 
   const validationSchema = Yup.object().shape({
@@ -41,11 +44,13 @@ const EmployeeForm = () => {
     email: Yup.string().required("required"),
     contactNumber: Yup.number().positive().required("required"),
     departmentId: Yup.number().required("required"),
-    // departmentName: Yup.string().required("required"),
-    isActive: Yup.boolean().required("required"),
+    // // departmentName: Yup.string().required("required"),
+    // isActive: Yup.boolean().required("required"),
   });
   const handleSubmit = async (values) => {
     // postdata(values);
+    console.log('hell')
+
     if (editMode) {
       updateData(values);
     } else {
@@ -74,7 +79,7 @@ const EmployeeForm = () => {
             <div className="relative">
               <div className="py-[8px]">
                 <label className="block py-[5px] font-[500] font-inter ">
-                  First Name
+                  First Name <span className="text-redclr">*</span>
                 </label>
                 <Field
                   className="border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr "
@@ -91,7 +96,7 @@ const EmployeeForm = () => {
               <div className="grid grid-cols-2 gap-[20px]">
                 <div className="py-[8px]">
                   <label className="block py-[8px] font-[500] font-inter ">
-                    last Name
+                    last Name <span className="text-redclr">*</span>
                   </label>
                   <Field
                     className="border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr "
@@ -106,7 +111,7 @@ const EmployeeForm = () => {
                 </div>
                 <div className="py-[8px]">
                   <label className="block py-[8px] font-[500] font-inter ">
-                    Positon
+                    Positon <span className="text-redclr">*</span>
                   </label>
                   <Field
                     className="border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr "
@@ -124,7 +129,7 @@ const EmployeeForm = () => {
               <div className="grid grid-cols-2 gap-[20px]">
                 <div className="py-[8px]">
                   <label className="block py-[8px] font-[500] font-inter ">
-                    Email
+                    Email <span className="text-redclr">*</span>
                   </label>
                   <Field
                     className="border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr "
@@ -139,7 +144,7 @@ const EmployeeForm = () => {
                 </div>
                 <div className="py-[8px]">
                   <label className="block py-[8px] font-[500] font-inter ">
-                    Contact Number
+                    Contact Number <span className="text-redclr">*</span>
                   </label>
                   <Field
                     className="border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr "
@@ -155,28 +160,32 @@ const EmployeeForm = () => {
               </div>
               <div>
               <div className="grid grid-cols-2 gap-[20px]">
-                <div className="py-[8px]">
-                  <label className="block py-[8px] font-[500] font-inter ">
-                    Department Id
-                  </label>
-                  <Field
-                    className="border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr "
-                    name="departmentId"
-                    type="number"
-                  />
-                  <ErrorMessage
-                    component="div"
-                    className="text-[14px] text-redclr "
-                    name="departmentId"
-                  />
-                </div>
+              <div className='py-[8px]'>
+                                        <label className='block py-[8px] font-[500] font-inter '>Department <span className="text-redclr">*</span></label>
+                                        <Field
+                                            className='border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr '
+                                            name='departmentId'
+                                           
+                                            as='select'
+                                            placeholder='Select Account Group'
+
+                                        >
+                                            <option disabled value='' selected >Select Department</option>
+                                            {data?.data?.map((item, index) =>
+                                            (
+                                                <option key={item.id} value={item.id}>{item.name}</option>
+                                            ))}
+                                           
+                                        </Field>
+                                        <ErrorMessage component='div' className='text-[14px] text-redclr ' name='departmentId' />
+                                    </div>
                 
               </div>
               <div className="grid grid-cols-2 gap-[20px]">
                 <div className="py-[6px]">
                   <div role="group">
                     <label className="block py-[8px] font-[500] font-inter ">
-                      Is Active <span>*</span>
+                       Active
                     </label>
                     <div>
                       <label className="">
@@ -227,12 +236,8 @@ const EmployeeForm = () => {
                   Cancel
                 </button>
 
-                <button
-                  className="bg-PrimaryColor px-[15px] py-[4px] text-white font-inter"
-                  type="submit"
-                >
-                  {editMode ? "Update" : "Save"}{" "}
-                </button>
+                <button   className='bg-PrimaryColor px-[15px] py-[4px] text-white font-inter' type='submit' > 
+                  {editMode ? 'Update': 'Save'} </button>
               </div>
             </div>
 

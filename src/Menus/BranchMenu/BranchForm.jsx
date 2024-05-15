@@ -75,7 +75,7 @@ const [companyData,setCompanyData]= useState('')
       const fetchData = async ()=>
       {
          try {
-             const response =  await axios.get(`${baseUrl}Company/GetAll`,
+             const response =  await axios.get(`${baseUrl}Company/GetAll?IsDeleted=${false}`,
                {headers : { Authorization:`Bearer ${token}` }
              })
              setCompanyData(response.data)

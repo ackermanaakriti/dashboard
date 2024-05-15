@@ -14,7 +14,7 @@ const AccountGrpTable = () => {
   const { setId } = useLayouData();
   const dispatch = useDispatch();
   const {Deldata}= useDelData('AccountGroup/Delete/')
-  const { data } = useGetData('AccountGroup/GetAll')
+  const { data,fetchData } = useGetData(`AccountGroup/GetAll?isDeleted=${false}`)
   const [tableData,setTableData]= useState([])
   const [filterText, setFilterText] = React.useState('');
   useEffect(()=>
@@ -22,11 +22,9 @@ const AccountGrpTable = () => {
      setTableData(data?.data)
   },[tableData,data])
 
-  console.log(data?.data)
-  
-
   const handleDelete = async (id) => {
     await Deldata(id);
+    fetchData()
   };
   const handleEdit = (id) => {
     console.log(id)

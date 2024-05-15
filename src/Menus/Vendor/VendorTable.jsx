@@ -15,8 +15,8 @@ import useGetData from "../../Apis/useGetData";
 const VendorTable = () => {
   const { setId } = useLayouData(); // setId to get the id for form editing --not using react-router So setting id manually
   const dispatch = useDispatch();
-  const {Deldata}= useDelData('Vendor/Delete/')   //use custom delete hook
-  const { data } = useGetData('Vendor/GetAll')   //use custom hook to get all data...passing url
+  const {Deldata}= useDelData('Creditors/Delete/')   //use custom delete hook
+  const { data,fetchData } = useGetData(`Creditors/GetAll?IsDeleted=${false}`)   //use custom hook to get all data...passing url
   const [tableData,setTableData]= useState([])          
   const [filterText, setFilterText] = React.useState('');
 
@@ -28,6 +28,7 @@ const VendorTable = () => {
 
   const handleDelete = async (id) => {
     await Deldata(id);
+    fetchData()
   };
 
   const handleEdit = (id) => {
@@ -51,44 +52,26 @@ const VendorTable = () => {
      
     },
     {
-      name: ' Prefix',
-      selector: row => row.prefix,
+      name: ' Company',
+      selector: row => row.companyName,
       // width:'20%'
       
     },
+    {
+      name: ' Contact No',
+      selector: row => row.contactNumber,
+      // width:'20%'
+      
+    },
+    {
+      name: ' Email',
+      selector: row => row.email,
+      // width:'20%'
+      
+    },
+    
   
-    {
-      name: 'System Define',
-      // width:'15%',
-      hide: 'md',
-      selector: row => row.isSystemDefined,
-      cell: row => (
-        <>
-            {row.isSystemDefined ? (
-               <TableButton className='bg-PrimaryColor rounded-[20px] px-[12px] py-[5px] text-white' text='Yes'/>
-            ) :  <TableButton
-            className="bg-[#378f80] rounded-[20px] px-[12px] py-[5px] text-white"
-            text="No"
-          />}
-        </>
-    ),
-    },
-    {
-      name: 'Editable',
-      hide: 'md',
-      // width:'15%',
-      selector: row => row.isEditable,
-      cell: row => (
-        <>
-            {row.isEditable ? (
-               <TableButton className='bg-PrimaryColor rounded-[20px] px-[12px] py-[5px] text-white' text='Yes'/>
-            ) :  <TableButton
-            className="bg-[#378f80] rounded-[20px] px-[12px] py-[5px] text-white"
-            text="No"
-          />}
-        </>
-    ),
-    },
+    
   
     {
       name: 'Actions',
@@ -118,7 +101,8 @@ const VendorTable = () => {
          filterText={filterText}
           setFilterText={setFilterText}
           menuname='vendorForm'
-          width='70%' />
+          width='100%'
+          />
     </div>
   );
 };

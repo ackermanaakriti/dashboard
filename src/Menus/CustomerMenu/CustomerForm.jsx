@@ -11,9 +11,9 @@ import useUpdateData from "../../Apis/useUpdate";
 import useGetData from "../../Apis/useGetData";
 
 const CustomerForm = () => {
-  const { postdata } = usePostData("Customer/Add");
-  const { GiveId, dataByid } = useGetById("Customer/GetById/");
-  const { updateData } = useUpdateData("Customer/Update");
+  const { postdata } = usePostData("Debtors/Add");
+  const { GiveId, dataByid } = useGetById("Debtors/GetById/");
+  const { updateData } = useUpdateData("Debtors/Update");
   const { data } = useGetData("ChartOfAccount/GetAll");
   const { setId, getId } = useLayouData();
   const [editMode, setEditMode] = useState(false);
@@ -33,13 +33,16 @@ const CustomerForm = () => {
     contactNumber: "",
     email: "",
     chartOfAccountId: "",
-    isActive: null,
+    isActive: true,
   };
 
   const validationSchema = Yup.object().shape({
     // description: Yup.number().typeError('enter number').required('required'),
-    // companyId: Yup.number().typeError('enter number').required('required'),
-    // name: Yup.string().required('required'),
+    companyId: Yup.number().typeError('enter number').required('required'),
+    name: Yup.string().required('required'),
+    contactNumber: Yup.string().required('required'),
+    chartOfAccountId: Yup.string().required('required'),
+    address:Yup.string().required('required')
     // code: Yup.string().required('required'),
     // syPlacement: Yup.string().required('required'),
   });
@@ -48,7 +51,6 @@ const CustomerForm = () => {
     console.log(values);
     if (editMode) {
       updateData(values);
-      console.log(values);
     } else {
       postdata(values);
     }
@@ -78,7 +80,7 @@ const CustomerForm = () => {
                 <div className="grid grid-cols-2 gap-[20px]">
                   <div className="py-[8px]">
                     <label className="block py-[5px] font-[500] font-inter ">
-                      Name
+                      Name <span className="text-redclr">*</span>
                     </label>
                     <Field
                       className="border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr "
@@ -94,7 +96,7 @@ const CustomerForm = () => {
 
                   <div className="py-[8px]">
                     <label className="block py-[5px] font-[500] font-inter ">
-                      Address
+                      Address <span className="text-redclr">*</span>
                     </label>
                     <Field
                       className="border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr "
@@ -111,7 +113,7 @@ const CustomerForm = () => {
                 <div className="grid grid-cols-2 gap-[20px]">
                   <div className="py-[8px]">
                     <label className="block py-[5px] font-[500] font-inter ">
-                      Company Name
+                      Company Name <span className="text-redclr">*</span>
                     </label>
                     <Field
                       className="border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr "
@@ -126,7 +128,7 @@ const CustomerForm = () => {
                   </div>
                   <div className="py-[8px]">
                     <label className="block py-[5px] font-[500] font-inter ">
-                      Contact Number
+                      Contact Number <span className="text-redclr">*</span>
                     </label>
                     <Field
                       className="border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr "
@@ -144,7 +146,7 @@ const CustomerForm = () => {
                 <div className="grid grid-cols-2 gap-[20px]">
                   <div className="py-[8px]">
                     <label className="block py-[5px] font-[500] font-inter ">
-                      Email
+                      Email 
                     </label>
                     <Field
                       className="border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr "
@@ -159,7 +161,7 @@ const CustomerForm = () => {
                   </div>
                   <div className="py-[8px]">
                     <label className="block py-[5px] font-[500] font-inter">
-                      Chart of Account Id <span>*</span>
+                      Chart of Account Id <span className="text-redclr">*</span>
                     </label>
                     <Field
                       type="text"
@@ -189,7 +191,7 @@ const CustomerForm = () => {
                 <div className="py-[6px]">
                   <div role="group">
                     <label className="block py-[8px] font-[500] font-inter ">
-                      Is Active <span>*</span>
+                       Active 
                     </label>
                     <div>
                       <label className="">

@@ -13,8 +13,8 @@ import useGetData from "../../Apis/useGetData";
 const FiscalYearTable = () => {
   const { setId } = useLayouData();
   const dispatch = useDispatch();
-  const {Deldata}= useDelData('FiscalYear/Delete')
-  const { data } = useGetData('FiscalYear/GetAll')
+  const {Deldata}= useDelData('FiscalYear/Delete/')
+  const { data ,fetchData} = useGetData(`FiscalYear/GetAll?isDeleted=${false}`)
   const [tableData,setTableData]= useState([])
   const [filterText, setFilterText] = React.useState('');
 
@@ -29,6 +29,7 @@ const FiscalYearTable = () => {
 
   const handleDelete = async (id) => {
     await Deldata(id);
+    fetchData()
   };
   const handleEdit = (id) => {
     console.log(id)

@@ -43,8 +43,8 @@ const DepartmentForm = () => {
 
   const validationSchema = Yup.object().shape({
     // description: Yup.number().typeError('enter number').required('required'),
-    // companyId: Yup.number().typeError('enter number').required('required'),
-    // name: Yup.string().required('required'),
+    companyId: Yup.number().typeError('enter number').required('required'),
+    name: Yup.string().required('required'),
     // code: Yup.string().required('required'),
     // syPlacement: Yup.string().required('required'),
   });
@@ -79,7 +79,7 @@ const DepartmentForm = () => {
             <Form className='grid grid-cols-2 gap-[90px]'>
               <div className=''>
                 <div className='py-[8px]'>
-                  <label className='block py-[5px] font-[500] font-inter '>Name</label>
+                  <label className='block py-[5px] font-[500] font-inter '>Name <span className='text-redclr'> *</span></label>
                   <Field
                     className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr '
                     type='text'
@@ -94,16 +94,17 @@ const DepartmentForm = () => {
                     className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr '
                     type='text'
                     name='code'
+                    disabled
                   />
                   <ErrorMessage component='div' className='text-[14px] text-redclr ' name='code' />
                 </div>
                 <div className="py-[5px]">
-                  <label className="block">Company <span>*</span></label>
+                  <label className="block py-[5px] font-[500] font-inter">Company <span className='text-redclr'>*</span></label>
                   <Field type="text"
                     name="companyId"
                     as='select'
                  
-                    className="w-[100%] border-[1px] px-[8px] py-[8px] outline-0 border-[#c0d3e5"
+                    className="w-[100%] border-[1px] px-[8px] py-[8px] outline-0 border-borderclr"
                     placeholder=""
                     // value={CompanyAutofillData}
                     // onChange={(e) => setCompanyAutofillData((e.target.value))}

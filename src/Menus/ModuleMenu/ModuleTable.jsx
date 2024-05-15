@@ -16,7 +16,7 @@ const ModuleTable = () => {
   const { setId } = useLayouData();
   const dispatch = useDispatch();
   const {Deldata}= useDelData('Module/Delete/')
-  const { data } = useGetData('Module/GetAll')
+  const { data,fetchData } = useGetData(`Module/GetAll?IsDeleted=${false}`)
   const [tableData,setTableData]= useState([])
   const [filterText, setFilterText] = React.useState('');
 
@@ -31,6 +31,7 @@ const ModuleTable = () => {
 
   const handleDelete = async (id) => {
     await Deldata(id);
+    fetchData()
   };
   const handleEdit = (id) => {
     console.log(id)

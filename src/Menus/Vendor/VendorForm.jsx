@@ -15,10 +15,10 @@ import axios from 'axios';
 
 const VendorForm = () => {
 
-  const {postdata} = usePostData('Vendor/Add')
+  const {postdata} = usePostData('Creditors/Add')
   const {data}= useGetData('ChartOfAccount/GetAll')
-  const {updateData} = useUpdateData('Vendor/Update')
-  const {GiveId,dataByid}= useGetById('Vendor/GetById/')
+  const {updateData} = useUpdateData('Creditors/Update')
+  const {GiveId,dataByid}= useGetById('Creditors/GetById/')
   const {setId,getId,token}= useLayouData();
   const [editMode,setEditMode]= useState(false)
 const [companyData,setCompanyData]= useState([])
@@ -38,7 +38,7 @@ const [companyData,setCompanyData]= useState([])
   const fetchData = async ()=>
   {
      try {
-         const response =  await axios.get(`${baseUrl}Company/GetAll`,
+         const response =  await axios.get(`${baseUrl}Company/GetAll?IsDeleted=${false}`,
            {headers : { Authorization:`Bearer ${token}` }
           
          })
@@ -63,12 +63,16 @@ const [companyData,setCompanyData]= useState([])
     email:'',
     chartOfAccountId:'',
    
-    isActive: null 
+    isActive: true 
   };
 
   const validationSchema = Yup.object().shape({
    
-    name: Yup.string().typeError('enter number').required('required'),
+    name: Yup.string().required('required'),
+    companyName: Yup.string().required('required'),
+    chartOfAccountId: Yup.string().required('required'),
+    address: Yup.string().required('required'),
+    
   });
 
 
@@ -102,7 +106,7 @@ const [companyData,setCompanyData]= useState([])
                 <div>
               <div className='grid grid-cols-2 gap-[30px]'>
                 <div className='py-[8px]'>
-                  <label className='block py-[5px] font-[500] font-inter '> Name</label>
+                  <label className='block py-[5px] font-[500] font-inter '> Name <span className='text-redclr'>*</span></label>
                   <Field
                     className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr '
                  
@@ -112,7 +116,7 @@ const [companyData,setCompanyData]= useState([])
                 </div>
 
                 <div className="py-[8px]">
-                  <label className="block py-[5px] font-[500] font-inter ">Company <span>*</span></label>
+                  <label className="block py-[5px] font-[500] font-inter ">Company  <span className='text-redclr'>*</span></label>
                   <Field type="text"
                     name="companyId"
                     as='select'
@@ -139,7 +143,7 @@ const [companyData,setCompanyData]= useState([])
 
                 <div className='grid grid-cols-2 gap-[20px]'>
                   <div className='py-[8px]'>
-                    <label className='block py-[8px] font-[500] font-inter '>Contact Number</label>
+                    <label className='block py-[8px] font-[500] font-inter '>Contact Number  <span className='text-redclr'>*</span></label>
                     <Field
                       className='border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr '
                       name='contactNumber'
@@ -149,7 +153,7 @@ const [companyData,setCompanyData]= useState([])
                   </div>
                   
                 <div className="py-[8px]">
-                  <label className="block  py-[8px] font-[500] font-inter ">ChartOfAccount <span>*</span></label>
+                  <label className="block  py-[8px] font-[500] font-inter ">ChartOfAccount  <span className='text-redclr'>*</span></label>
                   <Field type="text"
                     name="chartOfAccountId"
                     as='select'
@@ -184,7 +188,7 @@ const [companyData,setCompanyData]= useState([])
                 </div>
 
                 <div className='py-[8px]'>
-                  <label className='block py-[5px] font-[500] font-inter '> Address</label>
+                  <label className='block py-[5px] font-[500] font-inter '> Address  <span className='text-redclr'>*</span></label>
                   <Field
                     className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr '
                  
@@ -197,7 +201,7 @@ const [companyData,setCompanyData]= useState([])
               
                    <div className="py-[6px]">
                     <div role="group">
-                       <label className='block py-[8px] font-[500] font-inter '> Is Active <span>*</span></label>
+                       <label className='block py-[8px] font-[500] font-inter '>  Active </label>
                            <div>
                            <label className=""> <input className='mx-[5px]' type="radio"  name="isActive"  checked={formik.values.isActive === true} value={true}
                              onChange={() => formik.setFieldValue('isActive', true)} />Yes</label>

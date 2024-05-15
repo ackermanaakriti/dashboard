@@ -23,15 +23,16 @@ const Voucher = () => {
   const {data}= useGetData(`VoucherType/GetAll?IsDeleted=${false}`)
   const [vouhcerDetailData,setVoucherDetailData]= useState([])  //state to hold voucherformDetail data
   const [editMode,setEditMode]= useState(false)
-  const [dataFetchedById,setDatafetchedByid]= useState([])
+const [debCredAmount,setdebCredAmount]= useState(null)
 
-  
+ 
 
   useEffect(()=>
   {
     if(getId)
     {setEditMode(true)
-     GiveId(getId)   //passing id to the getbyid  hook
+     GiveId(getId) 
+      //passing id to the getbyid  hook
     }  
 
 
@@ -39,11 +40,11 @@ const Voucher = () => {
   },[setId,vouhcerDetailData])
 
   
-
+  console.log(debCredAmount)
   const initialValues = {  
   fiscalYearId: 1,
  // fiscalYearName: "",
-  voucherCode: null,
+  // voucherCode: null,
   voucherNumber: "",
   voucherTypeId: '',
  voucherTypeName: "sdfs",
@@ -66,42 +67,28 @@ const Voucher = () => {
     narration: Yup.string().required('required'),
     invoiceNumber: Yup.number().typeError('invalid data').required('required'),
   });
-  console.log(vouhcerDetailData)
+  
  
 
 
   const handleSubmit = (values) => {
-    console.log(vouhcerDetailData)
-    
-   
-     //combining voucherform and vocherdetail form data 
-   
-    if(editMode )
-    {
-      console.log(values)
-      // setDatafetchedByid([...values.voucherDetailDTOs, ...vouhcerDetailData])
-      // setDatafetchedByid([...values.voucherDetailDTOs, ...vouhcerDetailData]);
-    
-      const mergedData = [...values.voucherDetailDTOs, ...vouhcerDetailData];
-
-      const combinedData= {...values,voucherDetailDTOs:mergedData}
-      console.log(combinedData)
-      
-  
-
-      // setDatafetchedByid([...values, ...combinedData])
-      // console.log(dataFetchedById)
-        postdata(combinedData)}
-    else 
-    { 
-      const combinedData= {...values,voucherDetailDTOs:vouhcerDetailData}
-
-      postdata(combinedData)}
-    setId('')
-    dispatch(addMenu({ id:'', menu:'voucher'}))
-  
+    if (debCredAmount) {
+      // Combining voucherform and vocherdetail form data
+      if (editMode) {
+        const mergedData = [...values.voucherDetailDTOs, ...vouhcerDetailData];
+        const combinedData = { ...values, voucherDetailDTOs: mergedData };
+        postdata(combinedData);
+      } else {
+        const combinedData = { ...values, voucherDetailDTOs: vouhcerDetailData };
+        postdata(combinedData);
+      }
+      setId('');
+      dispatch(addMenu({ id: '', menu: 'voucher' }));
+    } else {
+      setDetailformError("Please ensure debCredAmount is true before submitting.");
+    }
   };
-
+  
   return (
     <>
       <div className='px-[50px] pb-[120px]'>
@@ -126,6 +113,7 @@ const Voucher = () => {
                   <Field
                     className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr '
                     type='text'
+                   disabled={editMode}
                     name='voucherTypeId'
                     as='select'>
                     <option disabled selected value=''>  Select Voucher Type</option>
@@ -139,8 +127,9 @@ const Voucher = () => {
                 <div className='py-[8px]'>
                   <label className='block py-[5px] font-[500] font-inter '>Voucher Number</label>
                   <Field
-                    className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr '
+                    className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr  cursor-not-allowed'
                     type='text'
+                    disabled
                     name='voucherNumber' />
                   <ErrorMessage component='div' className='text-[14px] text-redclr ' name='voucherNumber' />
                 </div>
@@ -205,6 +194,7 @@ const Voucher = () => {
          dataByid={dataByid} 
          setDetailformError={setDetailformError}
          editMode={editMode}
+        setdebCredAmount={setdebCredAmount}
          />
         </div>
  </div>

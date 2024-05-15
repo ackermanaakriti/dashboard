@@ -103,7 +103,7 @@ const VoucherSeqTable = () => {
   const { setId } = useLayouData(); // setId to get the id for form editing --not using react-router So setting id manually
   const dispatch = useDispatch();
   const {Deldata}= useDelData('VoucherSequence/Delete/')   //use custom delete hook
-  const { data } = useGetData('VoucherSequence/GetAll')   //use custom hook to get all data...passing url
+  const { data } = useGetData(`VoucherSequence/GetAll?IsDeleted=${false}`)   //use custom hook to get all data...passing url
   const [tableData,setTableData]= useState([])          
   const [filterText, setFilterText] = React.useState('');
 

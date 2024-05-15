@@ -124,6 +124,14 @@ left: 0;
     }
   }
 }
+.select 
+{
+  .css-13cymwt-control
+  {
+    border: 1px solid var(--Tablebg);
+    border-radius: 0;
+  }
+}
 
 .footer {
 

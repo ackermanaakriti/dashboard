@@ -1,22 +1,19 @@
 
 import './App.css';
-import Footer from './Components/Footer';
-import Header from './Components/Header'
-import { MainLayoutProvider, useLayouData } from './Context/MainLayoutContext';
+import Header from './Components/Header';
+import { MainLayoutProvider } from './Context/MainLayoutContext';
+import Routes from './Router';
 
-import HomeMenu from './Menus/HomeMenu';
+import Index from './Router';
 
 function App() {
-  // const [authorized,setAuthorized] = useState(false)
-  return (
-   <>
-   
 
-   
-   <HomeMenu/>
-    
-  
-   </>
+  return (
+    <>
+
+<Routes/>
+
+    </>
   );
 }
 

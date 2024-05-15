@@ -15,8 +15,8 @@ import useGetData from "../../Apis/useGetData";
 const CurrencyTable = () => {
   const { setId } = useLayouData();
   const dispatch = useDispatch();
-  const {Deldata}= useDelData('Currency/Delete')
-  const { data } = useGetData('Currency/GetAll')
+  const {Deldata}= useDelData('Currency/Delete/')
+  const { data ,fetchData} = useGetData(`Currency/GetAll?IsDeleted=${false}`)
   const [tableData,setTableData]= useState([])
   const [filterText, setFilterText] = React.useState('');
 
@@ -24,13 +24,16 @@ const CurrencyTable = () => {
   useEffect(()=>
   {
      setTableData(data?.data)
+     console.log(tableData)
   },[tableData,data])
 
-  console.log(data?.data)
+  console.log(data.data)
   
 
   const handleDelete = async (id) => {
     await Deldata(id);
+    fetchData()
+    
   };
   const handleEdit = (id) => {
     console.log(id)
@@ -48,32 +51,27 @@ const CurrencyTable = () => {
       selector: row => row.name,
       sortable: true,
       // grow: 2,
-      width:'30%'
+      // width:'30%'
      
     },
-    {
-      name: ' Country',
-      selector: row => row.country,
-      width:'20%'
-      
-    },
+   
     {
       name: 'Country Code',
       hide: 'md',
       selector: row => row.currencyCode,
-      width:'15%'
+      // width:'15%'
     },
     {
       name: 'Exchange Rate',
       hide: 'md',
-      width:'15%',
+      // width:'15%',
       selector: row => row.currentExchangeRate,
     },
   
     {
       name: 'Actions',
-      width:'20%'
-,      cell: row => (
+      // width:'20%',
+            cell: row => (
         <div className="flex gap-[24px]">
 
           <button onClick={() => handleEdit(row.id)}> <span className="text-[20px] text-PrimaryColor  mx-[3px]"><MdEdit /></span></button>
@@ -98,7 +96,8 @@ const CurrencyTable = () => {
        filteredItems={filteredItems}
         filterText={filterText}
        setFilterText={setFilterText}
-       menuname='currencyform' />
+       menuname='currencyform' 
+       width='100%'/>
     </div>
   );
 };

@@ -35,13 +35,13 @@ const CurrencyForm = () => {
     currencyCode: '',
     currentExchangeRate: 500,
     isActive: true ,
-    isLocalCurrency: ''
+    isLocalCurrency: true
   };
 
   const validationSchema = Yup.object().shape({
-    // currencyCode: Yup.number().typeError('enter number').required('required'),
-    // currentExchangeRate: Yup.number().typeError('enter number').required('required'),
-    // name: Yup.string().required('required'),
+    currencyCode: Yup.number().typeError('enter number').required('required'),
+    currentExchangeRate: Yup.number().typeError('enter number').required('required'),
+    name: Yup.string().required('required'),
     // country: Yup.string().required('required'),
     // syPlacement: Yup.string().required('required'),
   });
@@ -49,13 +49,14 @@ const CurrencyForm = () => {
 
   const handleSubmit = (values) => {
     
-    console.log(values)
+    
     if(editMode)
     {updateData(values)
-    console.log(values)}
+    }
+
     else 
     { postdata(values)}
-    addMenu({ id: "", menu: "fiscalyear" })
+    addMenu({ id: "", menu: "currencytable" })
     setId('')
   };
 
@@ -76,7 +77,7 @@ const CurrencyForm = () => {
             <Form className='grid grid-cols-2 gap-[90px]'>
               <div className=''>
                 <div className='py-[8px]'>
-                  <label className='block py-[5px] font-[500] font-inter '>Name</label>
+                  <label className='block py-[5px] font-[500] font-inter '>Name <span className='text-redclr'>*</span></label>
                   <Field
                     className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr '
                     type='text'
@@ -86,7 +87,7 @@ const CurrencyForm = () => {
                 </div>
 
                 <div className='py-[8px]'>
-                  <label className='block py-[5px] font-[500] font-inter '>Country</label>
+                  <label className='block py-[5px] font-[500] font-inter '>Country <span className='text-redclr'>*</span></label>
                   <Field
                     className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr '
                     type='text'
@@ -97,7 +98,7 @@ const CurrencyForm = () => {
 
                 <div className='grid grid-cols-2 gap-[20px]'>
                   <div className='py-[8px]'>
-                    <label className='block py-[8px] font-[500] font-inter '>Symbol</label>
+                    <label className='block py-[8px] font-[500] font-inter '>Symbol <span className='text-redclr'>*</span></label>
                     <Field
                       className='border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr '
                       name='currencyCode'
@@ -135,7 +136,7 @@ const CurrencyForm = () => {
 
                 <div className="py-[6px]">
                                     <div role="group">
-                                            <label className='block py-[8px] font-[500] font-inter '>Is Local Currency <span>*</span></label>
+                                            <label className='block py-[8px] font-[500] font-inter '> Local Currency </label>
                                             <div>
                                                 <label className=""> <input className='mx-[5px]' type="radio"  name="isLocalCurrency"  checked={formik.values.isLocalCurrency === true} value={true}
                                                onChange={() => formik.setFieldValue('isLocalCurrency', true)} />Yes</label>
@@ -148,9 +149,9 @@ const CurrencyForm = () => {
 
 
                 <div className=' mt-[40px] flex gap-[20px] justify-end'>
-                <CancelButton onClick={()=>dispatch(addMenu({ id:'', menu:'currency'}))} className=' border-[1px] border-redclr px-[15px] py-[4px] text-redclr font-inter' text='Cancel' type='button' />
+                <CancelButton onClick={()=>dispatch(addMenu({ id:'', menu:'currencytable'}))} className=' border-[1px] border-redclr px-[15px] py-[4px] text-redclr font-inter' text='Cancel' type='button' />
 
-                  <button onClick={()=>dispatch(addMenu({ id:'', menu:'currency'}))}  className='bg-PrimaryColor px-[15px] py-[4px] text-white font-inter' type='submit' > 
+                  <button onClick={()=>dispatch(addMenu({ id:'', menu:'currencytable'}))}  className='bg-PrimaryColor px-[15px] py-[4px] text-white font-inter' type='submit' > 
                   {editMode ? 'Update': 'Save'} </button>
                 </div>
               </div>

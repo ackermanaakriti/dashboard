@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useCallback } from "react";
 import useDelData from "../../Apis/useDelData";
 import { useLayouData } from "../../Context/MainLayoutContext";
 import { useDispatch } from "react-redux";
@@ -7,34 +7,31 @@ import { MdEdit } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { TableDataComp } from "../../Global/Table/TableData";
 import useGetData from "../../Apis/useGetData";
+import { baseUrl } from "../../Apis/Baseurl";
+import axios from "axios";
 
 const EmployeeTable = () => {
-  const { setId } = useLayouData();
+  const { setId ,token} = useLayouData();
   const dispatch = useDispatch();
   const { Deldata } = useDelData("Employee/Delete/");
-  const {data} = useGetData('Employee/GetAll')
+  const {data,fetchData } = useGetData(`Employee/GetAll?isDeleted=${false}`,token)
   const [tableData,setTableData]= useState([])
   const [filterText, setFilterText] = React.useState('');
+  
 
 
-  useEffect(()=>
-  {
-     setTableData(data?.data)
-  },[tableData,data])
-
-
-  console.log(data?.data)
 
 
   const handleDelete = async (id) => {
     await Deldata(id);
+    fetchData()
   };
   const handleEdit = (id) => {
     console.log(id)
     setId(id);
     dispatch(addMenu({ id: id, menu: "employeeform" }));
   };
-  const filteredItems = tableData?.filter(
+  const filteredItems = data?.data?.filter(
     item =>  item?.firstName.toLowerCase().includes(filterText.toLowerCase()),
 );
 // const filteredItems = []

@@ -40,11 +40,11 @@ const FiscalYearForm = () => {
     name: '',
     startDate: '',
     endDate: '',
-    isActive: null 
+    isActive: true 
   };
 
   const validationSchema = Yup.object().shape({
-    code: Yup.string().typeError('enter number').required('required'),
+    // code: Yup.string().typeError('enter number').required('required'),
     name: Yup.string().typeError('enter number').required('required'),
   });
 
@@ -58,7 +58,7 @@ const FiscalYearForm = () => {
     else 
     {  await postdata(values) }
     
-    dispatch(addMenu({ id:'', menu:'fiscalyear'}))
+    dispatch(addMenu({ id:'', menu:'fiscalyeartable'}))
     setId('')
     
   };
@@ -80,7 +80,7 @@ const FiscalYearForm = () => {
             <Form className='grid grid-cols-2 gap-[90px]'>
               <div className=''>
                 <div className='py-[8px]'>
-                  <label className='block py-[5px] font-[500] font-inter '>Fiscal Year Name</label>
+                  <label className='block py-[5px] font-[500] font-inter '>Fiscal Year Name <span className='text-redclr'>*</span></label>
                   <Field
                     className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr '
                  
@@ -92,8 +92,8 @@ const FiscalYearForm = () => {
                 <div className='py-[8px]'>
                   <label className='block py-[5px] font-[500] font-inter '>Code</label>
                   <Field
-                    className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr '
-                  
+                    className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr cursor-not-allowed'
+                    disabled
                     name='code'
                   />
                   <ErrorMessage component='div' className='text-[14px] text-redclr ' name='code' />
@@ -123,7 +123,7 @@ const FiscalYearForm = () => {
               
                    <div className="py-[6px]">
                     <div role="group">
-                       <label className='block py-[8px] font-[500] font-inter '> Is Active <span>*</span></label>
+                       <label className='block py-[8px] font-[500] font-inter '>  Active</label>
                            <div>
                            <label className=""> <input className='mx-[5px]' type="radio"  name="isActive"  checked={formik.values.isActive === true} value={true}
                              onChange={() => formik.setFieldValue('isActive', true)} />Yes</label>

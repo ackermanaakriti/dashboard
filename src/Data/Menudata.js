@@ -14,7 +14,7 @@ export const MenuData =[
   
     {
         menu:'Branch',
-        slug:'branchtable',
+        slug:'branch',
         icon: <LuMenuSquare className='text-[28px] text-[#4a528f]'/>,
         submenu:[
             {

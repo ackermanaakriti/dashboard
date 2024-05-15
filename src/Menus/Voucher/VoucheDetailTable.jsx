@@ -1,56 +1,76 @@
-
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState,useCallback } from 'react';
 import { RiDeleteBin5Fill } from "react-icons/ri";
-import '../FiscalYearMenu/Fiscalyear.css'
+import '../FiscalYearMenu/Fiscalyear.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLayouData } from '../../Context/MainLayoutContext';
 import useDelData from '../../Apis/useDelData';
 
-
-const VoucherDetailTable = ({dataByid,editData,detaildata,editMode}) => {
-  const { setId, getId, } = useLayouData();
+const VoucherDetailTable = ({ dataByid, editData, detaildata, editMode, setdebCredAmount }) => {
+  const { setId, getId } = useLayouData();
   const dispatch = useDispatch();
   const voucherDetail = useSelector((state) => state.voucherData?.voucherDetail);
-  const [voucherDetaildata,setvoucherDetaildata] = useState([])
-  const {Deldata} = useDelData('VoucherDetail/Delete/')
-  const {data,fetchData} = useDelData(`VoucherDetail/GetAll/IsDeleted=${true}`)
-  const [dataFetchedById,setDatafetchedByid]= useState([])
-
-useEffect(()=>
-{
-  console.log(editData)
-  if(editMode)
-  {
-  
-    setDatafetchedByid(dataByid?.voucherDetailDTOs)
-    if(editData.length>0)
-      {
-        setDatafetchedByid([...dataFetchedById,...editData])
-       
-      }
-  }    else {
-      setvoucherDetaildata(detaildata);
-    }
-   
-
- },
-[voucherDetaildata,dataByid])
-
-const handleDel = (id,name) => {
-  if(dataByid && editData)
-    {
-      Deldata(id)
-    }
-    else 
-    {
-      console.log(voucherDetaildata)
- const updateddata = voucherDetaildata.filter(item=>item.chartOfAccountName!== name);
- setvoucherDetaildata(updateddata)
- console.log(updateddata)
-    }
-};
+  const [voucherDetaildata, setVoucherDetaildata] = useState([]);
+  const { Deldata } = useDelData('VoucherDetail/Delete/');
+  const { data, fetchData } = useDelData(`VoucherDetail/GetAll/IsDeleted=${true}`);
  
 
+  useEffect(() => {
+    setdebCredAmount(false);
+  
+    if (editMode) {
+      setVoucherDetaildata(dataByid?.voucherDetailDTOs);
+      if (editData.length > 0) {
+        setVoucherDetaildata(prevData => [...prevData, ...editData]);
+      }
+    } else {
+      setVoucherDetaildata(detaildata);
+    }
+  }, [editMode, dataByid, detaildata, editData, setdebCredAmount]);
+
+  useEffect(() => {
+    calculateSumEquality(voucherDetaildata);
+  }, [voucherDetaildata]);
+
+  // const calculateSumEquality = (data) => {
+  //   // if (!data || data.length === 0) {
+  //   //   setIsSumEqual(false); // Handle case when data is undefined or empty
+  //   //   return console.log('hello err');
+  //   // }
+  
+  //   const debitSum = data?.reduce((total, item) => total + (item.debitAmount || 0), 0);
+  //   const creditSum = data?.reduce((total, item) => total + (item.creditAmount || 0), 0);
+  //   console.log(debitSum);
+  //   console.log(creditSum)
+  //   if(debitSum === creditSum)
+  //     {
+  //       setIsSumEqual(true);
+  //       console.log('hello')
+  //     }
+   
+    
+  // };
+  const calculateSumEquality = useCallback((data) => {
+    const debitSum = data?.reduce((total, item) => total + (item.debitAmount || 0), 0);
+    const creditSum = data?.reduce((total, item) => total + (item.creditAmount || 0), 0);
+    console.log(debitSum)
+    console.log(creditSum)
+    if(debitSum === creditSum)
+      {
+        setdebCredAmount(true)
+      }
+
+    
+  }, []);
+  
+
+  const handleDel = (id, name) => {
+    if (dataByid && editData) {
+      Deldata(id);
+    } else {
+      const updateddata = voucherDetaildata.filter(item => item.chartOfAccountName !== name);
+      setVoucherDetaildata(updateddata);
+    }
+  };
 
   return (
     <>
@@ -65,31 +85,23 @@ const handleDel = (id,name) => {
               <th>Action</th>
             </tr>
           </thead>
-          
-            <tbody>
-             
-             
-              { dataFetchedById?.map((item, index) => (
-                <tr key={index}>
-                  <td>{item?.chartOfAccountAccountName}</td>
-                  <td>{item?.debitAmount}</td>
-                  <td>{item?.creditAmount}</td>
-                  <td>{item?.narration}</td>
-                  <td className=''>
-                    <div className='flex gap-[25px] items-center justify-center'>
-                      {/* <span onClick={()=>handleEdit(item.id)} className="text-PrimaryColor cursor-pointer">
-                        <MdEdit />
-                      </span> */}
-                      <span onClick={() => handleDel(item?.id,item?.chartOfAccountName)} className='text-[#d13838] cursor-pointer'>
-                        <RiDeleteBin5Fill />
-                      </span>
-                    </div>
-                  </td>
-                </tr>
-              )) }
-              
-            </tbody>
-          
+          <tbody>
+            {voucherDetaildata?.map((item, index) => (
+              <tr key={index}>
+                <td>{item?.chartOfAccountAccountName}</td>
+                <td>{item?.debitAmount}</td>
+                <td>{item?.creditAmount}</td>
+                <td>{item?.narration}</td>
+                <td>
+                  <div className='flex gap-[25px] items-center justify-center'>
+                    <span onClick={() => handleDel(item?.id, item?.chartOfAccountName)} className='text-[#d13838] cursor-pointer'>
+                      <RiDeleteBin5Fill />
+                    </span>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
         </table>
       </div>
     </>

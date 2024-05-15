@@ -13,8 +13,8 @@ import useGetData from "../../Apis/useGetData";
 const ChartofAccTable = () => {
   const { setId } = useLayouData();
   const dispatch = useDispatch();
-  const {Deldata}= useDelData('ChartOfAccount/Delete/')
-  const { data } = useGetData('ChartOfAccount/GetAll')
+  const {Deldata}= useDelData('ChartOfAccount/Delete/', `ChartOfAccount/GetAll?ShowTransactionalOnly=${false}`)
+  const { data,fetchData } = useGetData(`ChartOfAccount/GetAll?ShowTransactionalOnly=${false}`)
   const [tableData,setTableData]= useState([])
   const [filterText, setFilterText] = React.useState('');
 
@@ -29,6 +29,11 @@ const ChartofAccTable = () => {
 
   const handleDelete = async (id) => {
     await Deldata(id);
+    fetchData()
+    // const newData = tableData.filter(item=>item.id !== id)  
+    // console.log(newData)
+    // setTableData(newData)
+    // console.log(tableData)
   };
   const handleEdit = (id) => {
     console.log(id)
@@ -63,13 +68,13 @@ const ChartofAccTable = () => {
     {
       name: 'Main Parent Account',
       hide: 'md',
-      selector: row => row.mainParentId,
+      selector: row => row.mainParentName,
       width:'15%',
     },
     {
       name: 'Parent Account',
       hide: 'md',
-      selector: row => row.parentAccountId,
+      selector: row => row.parentAccountName,
       width:'10%',
     },
   
