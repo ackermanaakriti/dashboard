@@ -1,0 +1,42 @@
+import React from 'react'
+import useDelData from '../Apis/useDelData'
+import { useLayouData } from '../Context/MainLayoutContext'
+import useGetData from '../Apis/useGetData'
+
+
+const DeletePopup = ({id,url,handleDeleteConfirmation}) => {
+    console.log(id)
+    const { Deldata,delresponse } = useDelData(url) 
+    const { DeleteList,setDeleteList} = useLayouData()
+    const handleAbort=()=>
+        {
+            setDeleteList(false)
+        }
+        const handleDel = async () => {
+            await Deldata(id); 
+            setDeleteList(false); 
+            handleDeleteConfirmation(); 
+        }
+        
+    console.log('delete')
+    return (
+        <>
+            <div className='overlay fixed inset-0 w-full h-full bg-[rgba(36,35,35,0.12)] ' style={{ zIndex: 9999 }}>
+                <div className=' flex justify-center items-center h-full '>
+                    <div className=' h-[180px] w-[20%] bg-bgclr p-[20px] rounded-[10px]'>
+                       
+                        <div className='py-[20px]  '>
+                            <p className='text-center text-inter text-[20px]'>Do you want to delete?</p>
+                        </div>
+                        <div className='flex justify-center gap-[20px] items-center pt-[10px]'>
+                            <button onClick={handleAbort} className='bg-[#bfbfbd] px-[12px] rounded-[7px] text-black py-[4px]  font-inter'>Cancel</button>
+                            <button onClick={handleDel} className='bg-redclr px-[12px] py-[4px] font-inter rounded-[7px] text-white'>Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </>
+    )
+}
+
+export default DeletePopup

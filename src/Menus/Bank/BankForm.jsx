@@ -12,6 +12,7 @@ import useUpdateData from '../../Apis/useUpdate';
 import useGetById from '../../Apis/useGetById';
 import { baseUrl } from '../../Apis/Baseurl';
 import axios from 'axios';
+import { useNavigate, useParams } from 'react-router';
 
 const BankForm = () => {
 
@@ -23,6 +24,8 @@ const BankForm = () => {
   const [editMode,setEditMode]= useState(false)
 const [companyData,setCompanyData]= useState([])
   const dispatch = useDispatch();
+  const navigate= useNavigate()
+  const paramId = useParams()
 
 
 
@@ -30,12 +33,12 @@ const [companyData,setCompanyData]= useState([])
   useEffect(()=>
   {
    
-    if(getId )
+    if(paramId?.id)
     {
   setEditMode(true)
-  GiveId(getId)
+  GiveId(paramId?.id)
     } }   
-  ,[setId])
+  ,[paramId?.id])
 
 
   const initialValues = {
@@ -67,8 +70,7 @@ const [companyData,setCompanyData]= useState([])
     else 
     {  await postdata(values) }
     
-    dispatch(addMenu({ id:'', menu:'banktable'}))
-    setId('')
+   navigate('/bank')
     
   };
 
@@ -165,7 +167,7 @@ const [companyData,setCompanyData]= useState([])
                         </div>
 
                 <div className=' mt-[40px] flex gap-[20px] justify-end'>
-                <CancelButton onClick={()=>dispatch(addMenu({ id:'', menu:'banktable'}))} className=' border-[1px] border-redclr px-[15px] py-[4px] text-redclr font-inter' text='Cancel' type='button' />
+                <CancelButton onClick={()=>   navigate('/bank')} className=' border-[1px] border-redclr px-[15px] py-[4px] text-redclr font-inter' text='Cancel' type='button' />
                   <button  className='bg-PrimaryColor px-[15px] py-[4px] text-white font-inter' type='submit' > 
                   {editMode ? 'Update': 'Save'} </button>
                 </div>

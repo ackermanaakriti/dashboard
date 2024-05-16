@@ -9,6 +9,7 @@ import VoucherDetailform from './VoucherDetailForm';
 import usePostData from '../../Apis/usePostData';
 import useGetById from '../../Apis/useGetById';
 import useGetData from '../../Apis/useGetData';
+import { useNavigate, useParams } from 'react-router';
 
 
 const Voucher = () => {
@@ -24,20 +25,22 @@ const Voucher = () => {
   const [vouhcerDetailData,setVoucherDetailData]= useState([])  //state to hold voucherformDetail data
   const [editMode,setEditMode]= useState(false)
 const [debCredAmount,setdebCredAmount]= useState(null)
+const navigate = useNavigate()
+const paramId = useParams()
 
  
 
   useEffect(()=>
   {
-    if(getId)
+    if(paramId?.id)
     {setEditMode(true)
-     GiveId(getId) 
+     GiveId(paramId?.id) 
       //passing id to the getbyid  hook
     }  
 
 
 
-  },[setId,vouhcerDetailData])
+  },[paramId?.id,vouhcerDetailData])
 
   
   console.log(debCredAmount)
@@ -82,8 +85,7 @@ const [debCredAmount,setdebCredAmount]= useState(null)
         const combinedData = { ...values, voucherDetailDTOs: vouhcerDetailData };
         postdata(combinedData);
       }
-      setId('');
-      dispatch(addMenu({ id: '', menu: 'voucher' }));
+      navigate('/voucher')
     } else {
       setDetailformError("Please ensure debCredAmount is true before submitting.");
     }
@@ -178,8 +180,8 @@ const [debCredAmount,setdebCredAmount]= useState(null)
 
               </div>
               <div className=' mt-[10px] flex gap-[20px] justify-end  absolute right-[2em] bottom-[70px]'>
-                    <CancelButton onClick={() => { dispatch(addMenu({ id:'', menu:'voucher'}));
-                    }} className='border-[1px] border-redclr px-[15px] py-[4px] text-redclr font-inter' text='Cancel' type='button' />
+                    <CancelButton onClick={() =>  navigate('/voucher')
+                    } className='border-[1px] border-redclr px-[15px] py-[4px] text-redclr font-inter' text='Cancel' type='button' />
                   <button   className='bg-PrimaryColor px-[15px] py-[4px] text-white font-inter' type='submit' > 
                   {editMode ? 'Update': 'Save'} </button>
                  </div>

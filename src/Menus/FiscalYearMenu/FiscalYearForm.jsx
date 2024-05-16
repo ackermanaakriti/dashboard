@@ -10,6 +10,7 @@ import usePostData from '../../Apis/usePostData';
 import useGetData from '../../Apis/useGetData';
 import useUpdateData from '../../Apis/useUpdate';
 import useGetById from '../../Apis/useGetById';
+import { useParams } from 'react-router';
 
 const FiscalYearForm = () => {
 
@@ -21,18 +22,19 @@ const FiscalYearForm = () => {
   const [editMode,setEditMode]= useState(false)
   const [editData,seteditData]= useState('')
   const dispatch = useDispatch();
+  const paramId = useParams()
 
 
 
 
   useEffect(()=>
   {
-    if(getId )
+    if(paramId?.id )
     {
   setEditMode(true)
-  GiveId(getId)
+  GiveId(paramId?.id)
     }   
-  },[setId])
+  },[paramId?.id])
 
 
   const initialValues = {

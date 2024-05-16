@@ -1,6 +1,3 @@
-
-
-
 import React, { useEffect, useState } from "react";
 import useDelData from "../../Apis/useDelData";
 import { useLayouData } from "../../Context/MainLayoutContext";
@@ -11,79 +8,72 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { TableDataComp } from "../../Global/Table/TableData";
 import { TableButton } from "../../Components/GreenButton";
 import useGetData from "../../Apis/useGetData";
+import DeletePopup from "../../Components/DeletePopup";
 
 const CurrencyTable = () => {
   const { setId } = useLayouData();
   const dispatch = useDispatch();
-  const {Deldata}= useDelData('Currency/Delete/')
-  const { data ,fetchData} = useGetData(`Currency/GetAll?IsDeleted=${false}`)
-  const [tableData,setTableData]= useState([])
+  const { Deldata } = useDelData('Currency/Delete/');
+  const { data, fetchData } = useGetData(`Currency/GetAll?IsDeleted=${false}`);
+  const [tableData, setTableData] = useState([]);
   const [filterText, setFilterText] = React.useState('');
+  const { DeleteList, setDeleteList } = useLayouData();
+  const [DeleteId, setDeleteId] = useState("");
 
-  
-  useEffect(()=>
-  {
-     setTableData(data?.data)
-     console.log(tableData)
-  },[tableData,data])
-
-  console.log(data.data)
-  
+  useEffect(() => {
+    setTableData(data?.data);
+    console.log(tableData);
+  }, [tableData, data]);
 
   const handleDelete = async (id) => {
-    await Deldata(id);
-    fetchData()
-    
+    setDeleteList(true);
+    setDeleteId(id);
   };
+
+  const handleDeleteConfirmation = async () => {
+    fetchData();
+  };
+
   const handleEdit = (id) => {
-    console.log(id)
+    console.log(id);
     setId(id);
     dispatch(addMenu({ id: id, menu: "currencyform" }));
   };
-  const filteredItems = tableData?.filter(
-    item =>  item?.name.toLowerCase().includes(filterText.toLowerCase()),
-);
 
-// const filteredItems =[]
+  const filteredItems = tableData?.filter(
+    item => item?.name.toLowerCase().includes(filterText.toLowerCase())
+  );
+
   const columns = [
     {
       name: 'Name',
       selector: row => row.name,
       sortable: true,
-      // grow: 2,
-      // width:'30%'
-     
     },
-   
     {
       name: 'Country Code',
       hide: 'md',
       selector: row => row.currencyCode,
-      // width:'15%'
     },
     {
       name: 'Exchange Rate',
       hide: 'md',
-      // width:'15%',
       selector: row => row.currentExchangeRate,
     },
-  
     {
       name: 'Actions',
-      // width:'20%',
-            cell: row => (
+      cell: row => (
         <div className="flex gap-[24px]">
-
-          <button onClick={() => handleEdit(row.id)}> <span className="text-[20px] text-PrimaryColor  mx-[3px]"><MdEdit /></span></button>
-          <button onClick={() => handleDelete(row.id)}><span className="text-[20px] text-redclr  mx-[3px]"><RiDeleteBin6Line /></span></button>
-          {/* <button onClick={() => handleView(row)}> <span className="text-[20px]   mx-[3px]"><IoEyeOutline/></span></button> */}
+          <button onClick={() => handleEdit(row.id)}>
+            <span className="text-[20px] text-PrimaryColor mx-[3px]"><MdEdit /></span>
+          </button>
+          <button onClick={() => handleDelete(row.id)}>
+            <span className="text-[20px] text-redclr mx-[3px]"><RiDeleteBin6Line /></span>
+          </button>
         </div>
       ),
       allowOverflow: true,
       button: true,
-    
-    
-
     }
   ];
 
@@ -92,12 +82,21 @@ const CurrencyTable = () => {
       <div>
         <h2 className="font-inter font-semibold text-[30px]">Currency Table</h2>
       </div>
-      <TableDataComp  columns={columns}
-       filteredItems={filteredItems}
+      <TableDataComp
+        columns={columns}
+        filteredItems={filteredItems}
         filterText={filterText}
-       setFilterText={setFilterText}
-       menuname='currencyform' 
-       width='100%'/>
+        setFilterText={setFilterText}
+        menuname='currencyform'
+        width='100%'
+      />
+      {DeleteList && (
+        <DeletePopup
+          url="Currency/Delete/"
+          id={DeleteId}
+          handleDeleteConfirmation={handleDeleteConfirmation}
+        />
+      )}
     </div>
   );
 };

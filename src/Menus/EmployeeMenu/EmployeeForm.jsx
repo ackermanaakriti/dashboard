@@ -8,6 +8,7 @@ import { addMenu } from "../../Redux/TopTabSlice";
 import useGetById from "../../Apis/useGetById";
 import useUpdateData from "../../Apis/useUpdate";
 import useGetData from "../../Apis/useGetData";
+import { useNavigate, useParams } from "react-router";
 
 const EmployeeForm = () => {
   const { postdata, postError } = usePostData("Employee/Add");
@@ -17,14 +18,16 @@ const EmployeeForm = () => {
   const [editMode, setEditMode] = useState(false);
   const dispatch = useDispatch();
   const {data}= useGetData(`Department/GetAll?IsDeleted?isDeleted=${false}`)
+  const navigate = useNavigate()
+  const paramId = useParams()
 
 
   useEffect(() => {
-    if (getId) {
+    if (paramId?.id) {
       setEditMode(true);
-      GiveId(getId);
+      GiveId(paramId?.id);
     }
-  }, [setId]);
+  }, [paramId?.id]);
 
   const initialValues = {
     firstName: "",
@@ -56,9 +59,7 @@ const EmployeeForm = () => {
     } else {
       await postdata(values);
     }
-
-    dispatch(addMenu({ id: "", menu: "employeetable" }));
-    setId("");
+navigate('/employee')
   };
   return (
     <div className="px-[50px]">
@@ -228,7 +229,7 @@ const EmployeeForm = () => {
              <div className=" mt-[40px] flex gap-[20px] float-right bottom-[2em] right-[5em]">
                 <button
                   onClick={() =>
-                    dispatch(addMenu({ id: "", menu: "employee" }))
+                    navigate('/employee')
                   }
                   className=" border-[1px] border-redclr px-[15px] py-[4px] text-redclr font-inter"
                   type="button"

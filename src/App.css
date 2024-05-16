@@ -9,6 +9,7 @@
 }
 .header {
   position: relative;
+  z-index: 99999;
   .hamicons {
     color: rgba(255, 255, 255, 0.479);
   }
@@ -124,14 +125,7 @@ left: 0;
     }
   }
 }
-.select 
-{
-  .css-13cymwt-control
-  {
-    border: 1px solid var(--Tablebg);
-    border-radius: 0;
-  }
-}
+
 
 .footer {
 

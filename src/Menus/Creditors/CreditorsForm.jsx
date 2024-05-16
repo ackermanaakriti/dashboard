@@ -12,6 +12,7 @@ import useUpdateData from '../../Apis/useUpdate';
 import useGetById from '../../Apis/useGetById';
 import { baseUrl } from '../../Apis/Baseurl';
 import axios from 'axios';
+import { useNavigate, useParams } from 'react-router';
 
 const VendorForm = () => {
 
@@ -23,6 +24,8 @@ const VendorForm = () => {
   const [editMode,setEditMode]= useState(false)
 const [companyData,setCompanyData]= useState([])
   const dispatch = useDispatch();
+  const navigate = useNavigate()
+  const paramId = useParams()
 
 
 
@@ -30,10 +33,10 @@ const [companyData,setCompanyData]= useState([])
   useEffect(()=>
   {
    
-    if(getId )
+    if(paramId?.id )
     {
   setEditMode(true)
-  GiveId(getId)
+  GiveId(paramId?.id)
     }
   const fetchData = async ()=>
   {
@@ -52,7 +55,7 @@ const [companyData,setCompanyData]= useState([])
      };
      fetchData();
     }   
-  ,[setId])
+  ,[paramId?.id])
 
 
   const initialValues = {
@@ -69,7 +72,7 @@ const [companyData,setCompanyData]= useState([])
   const validationSchema = Yup.object().shape({
    
     name: Yup.string().required('required'),
-    companyName: Yup.string().required('required'),
+    // companyName: Yup.string().required('required'),
     chartOfAccountId: Yup.string().required('required'),
     address: Yup.string().required('required'),
     
@@ -77,14 +80,14 @@ const [companyData,setCompanyData]= useState([])
 
 
   const handleSubmit = async (values) => {
+    console.log(values)
 
     if(editMode)
     { updateData(values) }
     else 
-    {  await postdata(values) }
+    {   postdata(values) }
     
-    dispatch(addMenu({ id:'', menu:'vendorTable'}))
-    setId('')
+   navigate('/creditors')
     
   };
 
@@ -92,7 +95,7 @@ const [companyData,setCompanyData]= useState([])
     <>
       <div className='px-[50px]'>
         <div>
-          <h2 className='font-inter font-semibold text-[30px]'>{editMode ? 'Update' : 'Add'} Vendor</h2>
+          <h2 className='font-inter font-semibold text-[30px]'>{editMode ? 'Update' : 'Add'} Creditors</h2>
         </div>
 
         <Formik
@@ -213,8 +216,8 @@ const [companyData,setCompanyData]= useState([])
                         </div>
 
                 <div className=' mt-[40px] flex gap-[20px] justify-end'>
-                <CancelButton onClick={()=>dispatch(addMenu({ id:'', menu:'fiscalyear'}))} className=' border-[1px] border-redclr px-[15px] py-[4px] text-redclr font-inter' text='Cancel' type='button' />
-                  <button  className='bg-PrimaryColor px-[15px] py-[4px] text-white font-inter' type='submit' > 
+                <CancelButton onClick={()=>navigate('/creditors')} className=' border-[1px] border-redclr px-[15px] py-[4px] text-redclr font-inter' text='Cancel' type='button' />
+                <button  className='bg-PrimaryColor px-[15px] py-[4px] text-white font-inter' type='submit' > 
                   {editMode ? 'Update': 'Save'} </button>
                 </div>
                 </div>

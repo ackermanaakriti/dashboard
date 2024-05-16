@@ -1,18 +1,29 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
+import useDelData from "../../Apis/useDelData";
 import { useLayouData } from "../../Context/MainLayoutContext";
+import { useDispatch } from "react-redux";
+import { addMenu } from "../../Redux/TopTabSlice";
 import { MdEdit } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { TableDataComp } from "../../Global/Table/TableData";
+import { TableButton } from "../../Components/GreenButton";
 import useGetData from "../../Apis/useGetData";
 import { useNavigate } from "react-router";
 import DeletePopup from "../../Components/DeletePopup";
-const EmployeeTable = () => {
-  const { data, fetchData } = useGetData(`Employee/GetAll?isDeleted=${false}`);
+
+const VendorTable = () => {
+  const dispatch = useDispatch();
+  const { Deldata } = useDelData('Creditors/Delete/');   //use custom delete hook
+  const { data, fetchData } = useGetData(`Creditors/GetAll?IsDeleted=${false}`);   //use custom hook to get all data...passing url
   const [tableData, setTableData] = useState([]);
   const [filterText, setFilterText] = React.useState('');
   const navigate = useNavigate();
-  const { DeleteList, setDeleteList,token } = useLayouData();
+  const { DeleteList, setDeleteList } = useLayouData();
   const [DeleteId, setDeleteId] = useState("");
+
+  useEffect(() => {
+    setTableData(data?.data);  //set fetched data to tableData for filtering 
+  }, [tableData, data]);
 
   const handleDelete = async (id) => {
     setDeleteList(true);
@@ -24,48 +35,27 @@ const EmployeeTable = () => {
   };
 
   const handleEdit = (id) => {
-    navigate(`/employee/form/${id}`);
+    navigate(`/creditors/form/${id}`);
   };
 
-  const filteredItems = data?.data?.filter(
-    item => item?.firstName.toLowerCase().includes(filterText.toLowerCase())
+  const filteredItems = tableData?.filter(
+    item => item?.name.toLowerCase().includes(filterText.toLowerCase())  //filter fetched data on the basis of name
   );
 
+  // set columns acc to the menu
   const columns = [
     {
-      name: 'First Name',
-      selector: row => row.firstName,
+      name: 'Name',
+      selector: row => row.name,
       sortable: true,
-      width: '15%',
     },
     {
-      name: 'Last Name',
-      selector: row => row.lastName,
-      width: '15%',
-    },
-    {
-      name: 'Position',
-      hide: 'md',
-      selector: row => row.positon,
-      width: '15%',
-      conditionalCellStyles: [
-        {
-          when: row => row.positon === 'string',
-          style: {
-            backgroundColor: 'rgba(63, 195, 128, 0.9)',
-            color: 'white',
-            '&:hover': {
-              cursor: 'pointer',
-            },
-          },
-        },
-      ]
+      name: 'Company',
+      selector: row => row.companyName,
     },
     {
       name: 'Contact No',
       selector: row => row.contactNumber,
-      hide: 'md',
-      width: '15%',
     },
     {
       name: 'Email',
@@ -76,34 +66,34 @@ const EmployeeTable = () => {
       cell: row => (
         <div className="flex gap-[24px]">
           <button onClick={() => handleEdit(row.id)}>
-            <span className="text-[20px] text-PrimaryColor  mx-[3px]"><MdEdit /></span>
+            <span className="text-[20px] text-PrimaryColor mx-[3px]"><MdEdit /></span>
           </button>
           <button onClick={() => handleDelete(row.id)}>
-            <span className="text-[20px] text-redclr  mx-[3px]"><RiDeleteBin6Line /></span>
+            <span className="text-[20px] text-redclr mx-[3px]"><RiDeleteBin6Line /></span>
           </button>
         </div>
       ),
       allowOverflow: true,
       button: true,
-      width: '10%',
     }
   ];
 
   return (
-    <div className="px-[50px]">
+    <div className="px-[50px] flex flex-col">
       <div>
-        <h2 className="font-inter font-semibold text-[30px]">Employee Table</h2>
+        <h2 className="font-inter font-semibold text-[30px]">Creditors Table</h2>
       </div>
       <TableDataComp
         columns={columns}
         filteredItems={filteredItems}
         filterText={filterText}
         setFilterText={setFilterText}
-        link='/employee/form'
+        link='/creditors/form'
+        width='100%'
       />
       {DeleteList && (
         <DeletePopup
-          url="Employee/Delete/"
+          url="Creditors/Delete/"
           id={DeleteId}
           handleDeleteConfirmation={handleDeleteConfirmation}
         />
@@ -112,4 +102,4 @@ const EmployeeTable = () => {
   );
 };
 
-export default EmployeeTable;
+export default VendorTable;

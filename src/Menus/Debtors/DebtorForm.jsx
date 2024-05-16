@@ -9,22 +9,41 @@ import usePostData from "../../Apis/usePostData";
 import useGetById from "../../Apis/useGetById";
 import useUpdateData from "../../Apis/useUpdate";
 import useGetData from "../../Apis/useGetData";
+import { useNavigate, useParams } from "react-router";
+import axios from "axios";
+import { baseUrl } from "../../Apis/Baseurl";
 
 const CustomerForm = () => {
   const { postdata } = usePostData("Debtors/Add");
   const { GiveId, dataByid } = useGetById("Debtors/GetById/");
   const { updateData } = useUpdateData("Debtors/Update");
-  const { data } = useGetData("ChartOfAccount/GetAll");
-  const { setId, getId } = useLayouData();
+  const { data } = useGetData(`ChartOfAccount/GetAll?IsTransactionOnly=${false}`);
+  const { token } = useLayouData();
   const [editMode, setEditMode] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate()
+  const paramId = useParams()
+  const [companyData,setcompanyData]= useState([])
 
   useEffect(() => {
-    if (getId) {
+    if (paramId?.id) {
       setEditMode(true);
-      GiveId(getId);
+      GiveId(paramId?.id);
     }
-  }, [setId]);
+    const fetchData =async()=>
+      {
+        try{
+          const response = await axios.get(`${baseUrl}Company/GetAll?IsDeleted=${false}`,{headers: { Authorization: `Bearer ${token}` }});
+          setcompanyData(response?.data?.data)
+        }
+        catch (err)
+        {
+          console.log(err)
+        }
+          
+      }
+      fetchData()
+  }, [paramId?.id,data]);
 
   const initialValues = {
     name: "",
@@ -38,7 +57,7 @@ const CustomerForm = () => {
 
   const validationSchema = Yup.object().shape({
     // description: Yup.number().typeError('enter number').required('required'),
-    companyId: Yup.number().typeError('enter number').required('required'),
+    // companyId: Yup.number().typeError('enter number').required('required'),
     name: Yup.string().required('required'),
     contactNumber: Yup.string().required('required'),
     chartOfAccountId: Yup.string().required('required'),
@@ -47,15 +66,14 @@ const CustomerForm = () => {
     // syPlacement: Yup.string().required('required'),
   });
 
-  const handleSubmit = (values) => {
+  const handleSubmit = async (values) => {
     console.log(values);
     if (editMode) {
       updateData(values);
     } else {
-      postdata(values);
+     await  postdata(values);
     }
-    addMenu({ id: "", menu: "customertable" });
-    setId("");
+   navigate('/debtors')
   };
 
   return (
@@ -64,7 +82,7 @@ const CustomerForm = () => {
         <div>
           <h2 className="font-inter font-semibold text-[30px]">
             {" "}
-            {editMode ? "Update" : "Add"} Customer
+            {editMode ? "Update" : "Add"} Debtor
           </h2>
         </div>
 
@@ -116,14 +134,27 @@ const CustomerForm = () => {
                       Company Name <span className="text-redclr">*</span>
                     </label>
                     <Field
-                      className="border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr "
                       type="text"
-                      name="companyName"
-                    />
+                      name="companyId"
+                      as="select"
+                      className="w-[100%] border-[1px] px-[8px] py-[8px]  outline-none border-borderclr"
+                      placeholder=""
+                      // value={CompanyAutofillData}
+                      // onChange={(e) => setCompanyAutofillData((e.target.value))}
+                    >
+                      <option disabled value="">
+                        select ChartOfAccount
+                      </option>
+                      {companyData?.map((item, index) => (
+                        <option key={item?.id} value={item?.id}>
+                          {item?.name}
+                        </option>
+                      ))}
+                    </Field>
                     <ErrorMessage
                       component="div"
                       className="text-[14px] text-redclr"
-                      name="companyName"
+                      name="companyId"
                     />
                   </div>
                   <div className="py-[8px]">
@@ -229,24 +260,18 @@ const CustomerForm = () => {
                   </div>
                 </div>
                 <div className=" mt-[40px] flex gap-[20px] justify-end">
-                  <CancelButton
-                    onClick={() =>
-                      dispatch(addMenu({ id: "", menu: "customertable" }))
-                    }
-                    className=" border-[1px] border-redclr px-[15px] py-[4px] text-redclr font-inter"
-                    text="Cancel"
-                    type="button"
-                  />
+                <button
+                  onClick={() =>
+                    navigate('/debtors')
+                  }
+                  className=" border-[1px] border-redclr px-[15px] py-[4px] text-redclr font-inter"
+                  type="button"
+                >
+                  Cancel
+                </button>
 
-                  <button
-                    onClick={() =>
-                      dispatch(addMenu({ id: "", menu: "customertable" }))
-                    }
-                    className="bg-PrimaryColor px-[15px] py-[4px] text-white font-inter"
-                    type="submit"
-                  >
-                    {editMode ? "Update" : "Save"}{" "}
-                  </button>
+                <button className='bg-PrimaryColor px-[15px] py-[4px] text-white font-inter' type='submit' > 
+                  {editMode ? 'Update': 'Save'} </button>
                 </div>
               </div>
               </div>

@@ -12,6 +12,7 @@ import useUpdateData from '../../Apis/useUpdate';
 import useGetById from '../../Apis/useGetById';
 import { baseUrl } from '../../Apis/Baseurl';
 import axios from 'axios';
+import { useNavigate, useParams } from 'react-router';
 
 const VocherSequenceForm = () => {
 
@@ -24,15 +25,17 @@ const VocherSequenceForm = () => {
 const [fiscalYearData,setfiscalYearData]= useState([])
 const [ChartofAccData,setChartofAccData]= useState([])
   const dispatch = useDispatch();
+  const navigate = useNavigate()
+  const paramId = useParams()
 
 
 
 
   useEffect(() => {
 
-    if (getId) {
+    if (paramId?.id) {
         setEditMode(true);
-        GiveId(getId);
+        GiveId(paramId?.id);
     }
     const fetchData = async () => {
       try {
@@ -52,7 +55,7 @@ const [ChartofAccData,setChartofAccData]= useState([])
     };
   
     fetchData();
-  }, [getId]); 
+  }, [paramId?.id]); 
   console.log(fiscalYearData,ChartofAccData)
 
 
@@ -85,8 +88,7 @@ const [ChartofAccData,setChartofAccData]= useState([])
     else 
     {  await postdata(values) }
     
-    dispatch(addMenu({ id:'', menu:'voucherseqtable'}))
-    setId('')
+   navigate('/vouchersequence')
     
   };
 
@@ -254,7 +256,7 @@ const [ChartofAccData,setChartofAccData]= useState([])
                         </div>
 
                 <div className=' mt-[40px] flex gap-[20px] justify-end'>
-                <CancelButton onClick={()=>dispatch(addMenu({ id:'', menu:'voucherseqtable'}))} className=' border-[1px] border-redclr px-[15px] py-[4px] text-redclr font-inter' text='Cancel' type='button' />
+                <CancelButton onClick={()=> navigate('/vouchersequence')} className=' border-[1px] border-redclr px-[15px] py-[4px] text-redclr font-inter' text='Cancel' type='button' />
                   <button  className='bg-PrimaryColor px-[15px] py-[4px] text-white font-inter' type='submit' > 
                   {editMode ? 'Update': 'Save'} </button>
                 </div>

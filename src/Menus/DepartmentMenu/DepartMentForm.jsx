@@ -11,6 +11,7 @@ import usePostData from '../../Apis/usePostData';
 import useGetById from '../../Apis/useGetById';
 import useUpdateData from '../../Apis/useUpdate';
 import useGetData from '../../Apis/useGetData';
+import { useNavigate, useParams } from 'react-router';
 
 const DepartmentForm = () => {
 
@@ -21,15 +22,17 @@ const DepartmentForm = () => {
   const {setId,getId}= useLayouData();
   const [editMode,setEditMode]= useState(false)
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const paramid = useParams()
 
   
 
   useEffect(()=>
-  { if(getId)
+  { if(paramid?.id)
         {
       setEditMode(true)
-       GiveId(getId) }},
-       [setId])
+       GiveId(paramid?.id) }},
+       [paramid?.id])
 
   const initialValues = {
     name: '',
@@ -58,7 +61,7 @@ const DepartmentForm = () => {
     console.log(values)}
     else 
     { postdata(values)}
-    addMenu({ id: "", menu: "departmenttable" })
+   navigate('/department')
     setId('')
   };
 
@@ -141,7 +144,7 @@ const DepartmentForm = () => {
               
 
                 <div className=' mt-[40px] flex gap-[20px] justify-end'>
-                <CancelButton onClick={()=>dispatch(addMenu({ id:'', menu:'departmenttable'}))} className=' border-[1px] border-redclr px-[15px] py-[4px] text-redclr font-inter' text='Cancel' type='button' />
+                <CancelButton onClick={()=>navigate('/department')} className=' border-[1px] border-redclr px-[15px] py-[4px] text-redclr font-inter' text='Cancel' type='button' />
 
                   <button onClick={()=>dispatch(addMenu({ id:'', menu:'departmenttable'}))}  className='bg-PrimaryColor px-[15px] py-[4px] text-white font-inter' type='submit' > 
                   {editMode ? 'Update': 'Save'} </button>

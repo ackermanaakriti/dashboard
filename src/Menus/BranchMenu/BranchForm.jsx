@@ -13,11 +13,13 @@ import { baseUrl } from "../../Apis/Baseurl";
 import axios from "axios";
 import useUpdateData from "../../Apis/useUpdate";
 import useGetById from "../../Apis/useGetById";
+import { useNavigate, useParams } from "react-router";
 // import usePostData from '../../Apis/usePostData'
 
 
 
 const BranchForm = () => {
+  const navigate = useNavigate();
   const { getId, setId,token, } = useLayouData();
  const {postdata,postError}= usePostData('Branch/Create',)
  const {data} = useGetData('Branch/GetParent')
@@ -29,6 +31,7 @@ const [companyData,setCompanyData]= useState('')
   const [editMode, setEditMode] = useState(false);
   const [logoFile,setLogofile]= useState('');
   const  [billLogoFile,setbillLogofile]= useState('')
+  const paramId = useParams()
 
   const [CompanyAutofillData, setCompanyAutofillData] = useState("");
   const [initialValues, setInitialValues] = useState({
@@ -48,7 +51,7 @@ const [companyData,setCompanyData]= useState('')
   });
  const  validationSchema=Yup.object().shape({
     Name: Yup.string().required("required"),
-    parentId: Yup.number().required("required"),
+    // parentId: Yup.number().required("required"),
     code: Yup.string().required("required"),
     regestrationNo: Yup.string().typeError("invalid data").required("required"),
     pan: Yup.string().typeError("invalid data").required("required"),
@@ -68,9 +71,9 @@ const [companyData,setCompanyData]= useState('')
  
 
   useEffect(() => {
-    if (getId) {
+    if (paramId?.id) {
       console.log(getId);
-      GiveId(getId)
+      GiveId(paramId?.id)
     }
       const fetchData = async ()=>
       {
@@ -100,7 +103,7 @@ const [companyData,setCompanyData]= useState('')
           
          }
  
-     }, [setId,CompanyAutofillData]);
+     }, [paramId?.id,CompanyAutofillData]);
 
 
      const handleSubmit = async (values) => {
@@ -135,9 +138,8 @@ const [companyData,setCompanyData]= useState('')
       }
   
     
-    
-    
-      dispatch(addMenu({ id: "", menu: "branchtable" }));
+      navigate('/branch')
+
     };
 
  
@@ -492,7 +494,7 @@ const [companyData,setCompanyData]= useState('')
 
                 <div className="flex gap-[30px] items-center formbutton">
                   <button
-                    onClick={() => dispatch(addMenu({ id: "", menu: "branchtable" }))}
+                    onClick={() => navigate('/branch')}
                     type="reset"
                     className="bg-transparent border-[#d13838] border-solid py-[4px] px-[20px] border-[1px] text-[16px] font-inter font-[600] text-[#d13838]"
                   >

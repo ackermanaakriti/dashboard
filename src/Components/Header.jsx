@@ -29,7 +29,7 @@ const handleSingout=()=>
 
   return (
     <>
-      <nav className="py-[10px] bg-PrimaryColor px-[30px] header">
+      <nav className="py-[10px] bg-PrimaryColor px-[30px] header z-1000">
         <div className="flex justify-between items-center">
           <div>
             <div className="flex  gap-[28px] items-center">

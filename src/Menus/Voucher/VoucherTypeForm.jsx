@@ -15,6 +15,7 @@ import useGetData from '../../Apis/useGetData';
 import usePostData from '../../Apis/usePostData';
 import useUpdateData from '../../Apis/useUpdate';
 import useGetById from '../../Apis/useGetById';
+import { useNavigate, useParams } from 'react-router';
 
 const VouchertypeForm = () => {
   const id =uuidv4();
@@ -27,17 +28,18 @@ const {postdata}= usePostData('VoucherType/Add')
 const {data}= useGetData('VoucherType/GetAll')
 const {updateData} = useUpdateData('VoucherType/Update')
 const {GiveId,dataByid}= useGetById('VoucherType/GetById/')
-
+const navigate = useNavigate()
+const paramid = useParams()
   useEffect(()=>
   {
-    if(getId )
+    if(paramid?.id )
     {
       setEditMode(true)
-      GiveId(getId) 
+      GiveId(paramid?.id) 
     }   
 
    
-  },[setId,data])
+  },[paramid?.id,data])
   console.log(dataByid)
 
 
@@ -74,7 +76,7 @@ const {GiveId,dataByid}= useGetById('VoucherType/GetById/')
       console.log(values)
        postdata(values)
     }
-    dispatch(addMenu({ id:'', menu:'vouchertype'}))
+    navigate('/vouchertype')
    
     setId('')
     // Perform form submission logic here
@@ -134,7 +136,7 @@ const {GiveId,dataByid}= useGetById('VoucherType/GetById/')
                                     </div> */}
 
                 <div className=' mt-[40px] flex gap-[20px] justify-end'>
-                <CancelButton onClick={()=>dispatch(addMenu({ id:'', menu:'vouchertype'}))} className=' border-[1px] border-redclr px-[15px] py-[4px] text-redclr font-inter' text='Cancel' type='button' />
+                <CancelButton onClick={()=> navigate('/vouchertype')} className=' border-[1px] border-redclr px-[15px] py-[4px] text-redclr font-inter' text='Cancel' type='button' />
                   <button  className='bg-PrimaryColor px-[15px] py-[4px] text-white font-inter' type='submit' > 
                   {editMode ? 'Update': 'Save'} </button>
                 </div>

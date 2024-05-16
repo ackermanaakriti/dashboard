@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router';
 
 const Login = () => {
    const navigate = useNavigate()
+   const {setToken}= useLayouData()
   const initialValues = {
     username: '',
     password: '',
@@ -43,7 +44,7 @@ const Login = () => {
           navigate('/')
         }
    
-      // setToken(response?.data?.token);
+      setToken(response?.data?.token);
     } catch (error) {
       console.error('Error:', error);
     }

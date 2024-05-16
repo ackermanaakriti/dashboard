@@ -6,6 +6,10 @@ import { IoAddCircleOutline } from "react-icons/io5";
 import { AiFillFolderOpen } from "react-icons/ai";
 import { AiFillFolder } from "react-icons/ai";
 import { RxCross2 } from "react-icons/rx";
+import { useNavigate } from "react-router";
+import { CiViewTable } from "react-icons/ci";
+
+
 
 
 
@@ -19,7 +23,7 @@ const TreeNode = ({ node }) => {
   const [accountGroupId, setAccountGroup] = useState('');
 
   const handleToggle = () => {
-    setIsExpanded(!isExpanded);
+    setIsExpanded(prevIsExpanded => !prevIsExpanded);
   };
 
   const handleAddData = (node) => {
@@ -30,7 +34,7 @@ const TreeNode = ({ node }) => {
   return (
     <div className='px-[2em] '>
       <div onClick={handleToggle} className='flex gap-[10px] py-[15px] px-[8px] align-center hover:bg-[#ecf3f2]'>
-        {node?.isTransactional ? <span className='text-PrimaryColor px-[8px] py-[2px] mr-[5px] text-[22px]'><AiFillFolderOpen /></span> : <span className='px-[8px] py-[2px] mr-[5px] '></span>}
+        {node?.isTransactional ? <span className='text-PrimaryColor px-[8px] py-[2px] mr-[5px] text-[22px]'><AiFillFolderOpen /></span> : <span className='px-[8px] py-[2px] mr-[5px] '><AiFillFolderOpen style={{ opacity: 0 }}/></span>}
         <h2 className='text-[20px] text-PrimaryColor cursor-pointer'> {node.accountName}</h2>
         <span onClick={() => {
           setmainParentId(node?.mainParentId);
@@ -42,7 +46,7 @@ const TreeNode = ({ node }) => {
       </div>
       {isExpanded && (
         <div style={{ paddingLeft: '20px' }}>
-          {node.children.map(child => (
+          {node?.children?.map(child => (
             <TreeNode key={child.id} node={child} />
           ))}
         </div>
@@ -64,21 +68,31 @@ const TreeNode = ({ node }) => {
   );
 };
 
+
 const TreeViewChart = () => {
+  const navigate = useNavigate()
   const { data } = useGetData('ChartOfAccount/GetTree')
   console.log(data)
 
 
   return (
-    <div>
+    <div className="py-[30px] ">
+      <div className="flex gap-[30px] items-center">
+      <h1 className="px-[2em] text-PrimaryColor text-[25px] font-inter font-700">Chart of Account</h1>
+      <p onClick={()=>navigate('/chartofaccount/listview')} className="text-PrimaryColor cursor-pointer flex items-center gap-[15px] ">View List
+       <span className="text-PrimaryColor text-[24px]"><CiViewTable/></span></p>
+      </div>
+      <div>
       {data?.data?.map(node => (
         <TreeNode key={node.id} node={node} />
       ))}
+      </div>
     </div>
   );
 };
 
 export default TreeViewChart;
+
 
 
 

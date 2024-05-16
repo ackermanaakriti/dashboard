@@ -1,6 +1,4 @@
 
-
-
 import React, { useEffect, useState } from "react";
 import useDelData from "../../Apis/useDelData";
 import { useLayouData } from "../../Context/MainLayoutContext";
@@ -8,17 +6,19 @@ import { useDispatch } from "react-redux";
 import { addMenu } from "../../Redux/TopTabSlice";
 import { MdEdit } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { TableDataComp } from "../../Global/Table/TableData";
-import { TableButton } from "../../Components/GreenButton";
-import useGetData from "../../Apis/useGetData";
+import { TableDataComp } from "../../Global/Table/TableData";import useGetData from "../../Apis/useGetData";
+import { useNavigate } from "react-router";
+import DeletePopup from "../../Components/DeletePopup";
 
-const VendorTable = () => {
-  const { setId } = useLayouData(); // setId to get the id for form editing --not using react-router So setting id manually
-  const dispatch = useDispatch();
-  const {Deldata}= useDelData('Creditors/Delete/')   //use custom delete hook
-  const { data,fetchData } = useGetData(`Creditors/GetAll?IsDeleted=${false}`)   //use custom hook to get all data...passing url
+const CustomerTable = () => {
+  //use custom delete hook
+  const { data ,fetchData} = useGetData(`Debtors/GetAll?IsDeleted=${false}`)   //use custom hook to get all data...passing url
   const [tableData,setTableData]= useState([])          
   const [filterText, setFilterText] = React.useState('');
+  const navigate=useNavigate()
+  const { DeleteList, setDeleteList } = useLayouData();
+  const [DeleteId, setDeleteId] = useState("");
+
 
   
   useEffect(()=>
@@ -27,14 +27,16 @@ const VendorTable = () => {
   },[tableData,data])
 
   const handleDelete = async (id) => {
-    await Deldata(id);
-    fetchData()
+    setDeleteList(true);
+    setDeleteId(id);
+  };
+
+  const handleDeleteConfirmation = async () => {
+    fetchData();
   };
 
   const handleEdit = (id) => {
-    console.log(id)
-    setId(id);
-    dispatch(addMenu({ id: id, menu: "vendorForm" }));   // dispatched menu for component navigation..using object mapping for navigation so passing menu as key
+    navigate(`/debtors/form/${id}`)
   };
 
   const filteredItems = tableData?.filter(
@@ -48,33 +50,39 @@ const VendorTable = () => {
       selector: row => row.name,
       sortable: true,
       // grow: 2,
-      // width:'30%'
+   
      
     },
     {
-      name: ' Company',
-      selector: row => row.companyName,
-      // width:'20%'
-      
+      name: ' Address',
+      selector: row => row.address,
+   
     },
     {
-      name: ' Contact No',
+      name: ' Company Name',
+      selector: row => row.companyName,
+      width:'20%'
+   
+    },
+    {
+      name: ' Contact Number',
       selector: row => row.contactNumber,
-      // width:'20%'
-      
+   
     },
     {
       name: ' Email',
       selector: row => row.email,
-      // width:'20%'
-      
+    width:'25%'
+   
     },
-    
-  
-    
-  
+    {
+      name: ' ChartofAccount',
+      selector: row => row.chartOfAccountId,
+   
+    },
     {
       name: 'Actions',
+     
       cell: row => (
         <div className="flex gap-[24px]">
           <button onClick={() => handleEdit(row.id)}> <span className="text-[20px] text-PrimaryColor  mx-[3px]"><MdEdit /></span></button>
@@ -84,30 +92,37 @@ const VendorTable = () => {
       ),
       allowOverflow: true,
       button: true,
-      // width: '20%',
-    
-
+  
     }
   ];
 
   return (
-    <div className="px-[50px] flex flex-col  items-center">
+    <div className="px-[50px]">
       <div>
-        <h2 className="font-inter font-semibold text-[30px]">Vendor Table</h2>
+        <h2 className="font-inter font-semibold text-[30px]">Debtors Table</h2>
       </div>
       <TableDataComp 
        columns={columns}
         filteredItems={filteredItems}
          filterText={filterText}
           setFilterText={setFilterText}
-          menuname='vendorForm'
-          width='100%'
-          />
+          link='/debtors/form' />
+                {DeleteList && (
+        <DeletePopup
+          url="Debtors/Delete/"
+          id={DeleteId}
+          handleDeleteConfirmation={handleDeleteConfirmation}
+        />
+      )}
     </div>
   );
 };
 
-export default VendorTable;
+export default CustomerTable;
+
+
+
+
 
 
 

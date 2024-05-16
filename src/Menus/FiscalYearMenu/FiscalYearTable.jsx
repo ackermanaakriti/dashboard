@@ -1,90 +1,87 @@
-
 import React, { useEffect, useState } from "react";
 import useDelData from "../../Apis/useDelData";
 import { useLayouData } from "../../Context/MainLayoutContext";
-import { useDispatch } from "react-redux";
-import { addMenu } from "../../Redux/TopTabSlice";
 import { MdEdit } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { TableDataComp } from "../../Global/Table/TableData";
-import { TableButton } from "../../Components/GreenButton";
 import useGetData from "../../Apis/useGetData";
+import { Outlet, useNavigate } from "react-router";
+import DeletePopup from "../../Components/DeletePopup";
 
 const FiscalYearTable = () => {
-  const { setId } = useLayouData();
-  const dispatch = useDispatch();
-  const {Deldata}= useDelData('FiscalYear/Delete/')
-  const { data ,fetchData} = useGetData(`FiscalYear/GetAll?isDeleted=${false}`)
-  const [tableData,setTableData]= useState([])
+  const { data, fetchData } = useGetData(`FiscalYear/GetAll?isDeleted=${false}`);
+  const [tableData, setTableData] = useState([]);
   const [filterText, setFilterText] = React.useState('');
+  const navigate = useNavigate();
+  const { DeleteList, setDeleteList } = useLayouData();
+  const [DeleteId, setDeleteId] = useState("");
 
+  useEffect(() => {
+    setTableData(data?.data);
+  }, [tableData, data]);
 
-  useEffect(()=>
-  {
-     setTableData(data?.data)
-  },[tableData,data])
-
-  console.log(data?.data)
-  
+  console.log(data?.data);
 
   const handleDelete = async (id) => {
-    await Deldata(id);
-    fetchData()
+    setDeleteList(true);
+    setDeleteId(id);
   };
+
+  const handleDeleteConfirmation = async () => {
+    fetchData();
+  };
+
   const handleEdit = (id) => {
-    console.log(id)
-    setId(id);
-    dispatch(addMenu({ id: id, menu: "fiscalform" }));
+    navigate(`/fiscalyear/form/${id}`);
   };
   const filteredItems = tableData?.filter(
-    item =>  item?.name.toLowerCase().includes(filterText.toLowerCase()),
-);
+    (item) => item?.name.toLowerCase().includes(filterText.toLowerCase())
+  );
 
-// const filteredItems =[]
   const columns = [
     {
       name: 'Name',
-      selector: row => row.name,
+      selector: (row) => row.name,
       sortable: true,
-      // grow: 2,
-      width:'30%'
-     
+      width: '30%',
     },
     {
       name: ' Code',
-      selector: row => row.code,
-      width:'10%'
-      
+      selector: (row) => row.code,
+      width: '10%',
     },
     {
       name: 'Start Date',
       hide: 'md',
-      selector: row => row.startDate,
-      width:'20%'
+      selector: (row) => row.startDate,
+      width: '20%',
     },
     {
       name: 'End Date',
       hide: 'md',
-      selector: row => row.endDate,
-      width:'20%'
+      selector: (row) => row.endDate,
+      width: '20%',
     },
-  
     {
       name: 'Actions',
-      width:'20%',
-      cell: row => (
+      width: '20%',
+      cell: (row) => (
         <div className="flex gap-[24px]">
-
-          <button onClick={() => handleEdit(row.id)}> <span className="text-[20px] text-PrimaryColor  mx-[3px]"><MdEdit /></span></button>
-          <button onClick={() => handleDelete(row.id)}><span className="text-[20px] text-redclr  mx-[3px]"><RiDeleteBin6Line /></span></button>
-          {/* <button onClick={() => handleView(row)}> <span className="text-[20px]   mx-[3px]"><IoEyeOutline/></span></button> */}
+          <button onClick={() => handleEdit(row?.id)}>
+            <span className="text-[20px] text-PrimaryColor  mx-[3px]">
+              <MdEdit />
+            </span>
+          </button>
+          <button onClick={() => handleDelete(row?.id)}>
+            <span className="text-[20px] text-redclr  mx-[3px]">
+              <RiDeleteBin6Line />
+            </span>
+          </button>
         </div>
       ),
       allowOverflow: true,
       button: true,
-
-
-    }
+    },
   ];
 
   return (
@@ -92,25 +89,23 @@ const FiscalYearTable = () => {
       <div>
         <h2 className="font-inter font-semibold text-[30px]">Fiscal Year Table</h2>
       </div>
-      <TableDataComp 
-       columns={columns}
+      <TableDataComp
+        columns={columns}
         filteredItems={filteredItems}
-         filterText={filterText}
-          setFilterText={setFilterText}
-          menuname='fiscalform'
-          width='90%' />
+        filterText={filterText}
+        setFilterText={setFilterText}
+        link="/fiscalyear/form"
+        width="100%"
+      />
+      {DeleteList && (
+        <DeletePopup
+          url="FiscalYear/Delete/"
+          id={DeleteId}
+          handleDeleteConfirmation={handleDeleteConfirmation}
+        />
+      )}
     </div>
   );
 };
 
 export default FiscalYearTable;
-
-
-
-
-
-
-
-
-
-

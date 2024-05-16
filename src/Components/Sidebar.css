@@ -4,6 +4,7 @@
   padding: 76px 0 0;
   min-height: 100vh;
   transition: 0.3s ease-in;
+  flex: none;
   /* overflow-y: auto; */
 
   .sidenavlist {
@@ -21,7 +22,7 @@
     }
 
     &.sidebar-open {
-      width: 80px;
+      width: 90px;
       transition: 0.3s ease-in;
       ul {
         li {
@@ -68,7 +69,7 @@
     }
 
     nav {
-      padding: 20px 20px 20px 0;
+      padding: 20px 14px 20px 0;
       ul {
         li {
           padding: 10px 0;
@@ -101,7 +102,7 @@
                 }
               }
               .menuicons {
-                padding: 5px 10px 5px 20px;
+                padding: 5px 10px 5px 10px;
                 border: 3px solid transparent;
               }
             }
@@ -116,7 +117,7 @@
             .menuitems-flex {
               display: flex;
               align-items: center;
-              gap: 20px;
+              gap: 14px;
             }
             .chev-icon {
               font-size: 15px !important;
@@ -129,7 +130,7 @@
               }
             }
             .menuicons {
-              padding: 5px 10px 5px 20px;
+              padding: 5px 10px 5px 10px;
               border: 3px solid transparent;
               cursor: pointer;
             }

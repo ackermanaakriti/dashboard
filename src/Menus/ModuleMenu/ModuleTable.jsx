@@ -1,60 +1,54 @@
-
-
-
 import React, { useEffect, useState } from "react";
 import useDelData from "../../Apis/useDelData";
 import { useLayouData } from "../../Context/MainLayoutContext";
-import { useDispatch } from "react-redux";
-import { addMenu } from "../../Redux/TopTabSlice";
 import { MdEdit } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { TableDataComp } from "../../Global/Table/TableData";
 import { TableButton } from "../../Components/GreenButton";
 import useGetData from "../../Apis/useGetData";
+import { useNavigate } from "react-router";
+import DeletePopup from "../../Components/DeletePopup";
 
 const ModuleTable = () => {
-  const { setId } = useLayouData();
-  const dispatch = useDispatch();
-  const {Deldata}= useDelData('Module/Delete/')
-  const { data,fetchData } = useGetData(`Module/GetAll?IsDeleted=${false}`)
-  const [tableData,setTableData]= useState([])
+  const { data, fetchData } = useGetData(`Module/GetAll?IsDeleted=${false}`);
+  const [tableData, setTableData] = useState([]);
   const [filterText, setFilterText] = React.useState('');
-
+  const navigate = useNavigate();
+  const { DeleteList, setDeleteList } = useLayouData();
+  const [DeleteId, setDeleteId] = useState("");
   
-  useEffect(()=>
-  {
-     setTableData(data?.data)
-  },[tableData,data])
+  useEffect(() => {
+    setTableData(data?.data);
+  }, [tableData, data]);
 
-  console.log(data?.data)
-  
+  console.log(data?.data);
 
   const handleDelete = async (id) => {
-    await Deldata(id);
-    fetchData()
+    setDeleteList(true);
+    setDeleteId(id);
   };
-  const handleEdit = (id) => {
-    console.log(id)
-    setId(id);
-    dispatch(addMenu({ id: id, menu: "moduleform" }));
-  };
-  const filteredItems = tableData?.filter(
-    item =>  item?.name.toLowerCase().includes(filterText.toLowerCase()),
-);
 
-// const filteredItems =[]
+  const handleDeleteConfirmation = async () => {
+    fetchData();
+  };
+  
+  const handleEdit = (id) => {
+    navigate(`/module/form/${id}`);
+  };
+
+  const filteredItems = tableData?.filter(
+    item => item?.name.toLowerCase().includes(filterText.toLowerCase())
+  );
+
   const columns = [
     {
       name: 'Name',
       selector: row => row.name,
       sortable: true,
-      // grow: 2,
-     
     },
     {
-      name: ' Code',
+      name: 'Code',
       selector: row => row.code,
-      
     },
     {
       name: 'Prefix',
@@ -67,33 +61,33 @@ const ModuleTable = () => {
       selector: row => row.isActive, 
       cell: row => (
         <>
-            {row.isActive ? (
-               <TableButton className='bg-PrimaryColor rounded-[20px] px-[12px] py-[5px] text-white' text='Yes'/>
-            ) :  <TableButton
-            className="bg-[#378f80] rounded-[20px] px-[12px] py-[5px] text-white"
-            text="No"
-          />}
+          {row.isActive ? (
+            <TableButton className='bg-PrimaryColor rounded-[20px] px-[12px] py-[5px] text-white' text='Yes'/>
+          ) :  (
+            <TableButton className="bg-[#378f80] rounded-[20px] px-[12px] py-[5px] text-white" text="No"/>
+          )}
         </>
-    ),
+      ),
     },
-    
-    
-  
     {
       name: 'Actions',
       cell: row => (
         <div className="flex gap-[24px]">
-
-          <button onClick={() => handleEdit(row.id)}> <span className="text-[20px] text-PrimaryColor  mx-[3px]"><MdEdit /></span></button>
-          <button onClick={() => handleDelete(row.id)}><span className="text-[20px] text-redclr  mx-[3px]"><RiDeleteBin6Line /></span></button>
-          {/* <button onClick={() => handleView(row)}> <span className="text-[20px]   mx-[3px]"><IoEyeOutline/></span></button> */}
+          <button onClick={() => handleEdit(row.id)}>
+            <span className="text-[20px] text-PrimaryColor mx-[3px]">
+              <MdEdit />
+            </span>
+          </button>
+          <button onClick={() => handleDelete(row.id)}>
+            <span className="text-[20px] text-redclr mx-[3px]">
+              <RiDeleteBin6Line />
+            </span>
+          </button>
         </div>
       ),
       allowOverflow: true,
       button: true,
       width: '15%',
-    
-
     }
   ];
 
@@ -102,12 +96,20 @@ const ModuleTable = () => {
       <div>
         <h2 className="font-inter font-semibold text-[30px]">Module Table</h2>
       </div>
-      <TableDataComp 
-       columns={columns}
+      <TableDataComp
+        columns={columns}
         filteredItems={filteredItems}
-         filterText={filterText} 
-         setFilterText={setFilterText}
-         menuname='moduleform' />
+        filterText={filterText}
+        setFilterText={setFilterText}
+        link='/module/form'
+      />
+      {DeleteList && (
+        <DeletePopup
+          url="Module/Delete/"
+          id={DeleteId}
+          handleDeleteConfirmation={handleDeleteConfirmation}
+        />
+      )}
     </div>
   );
 };

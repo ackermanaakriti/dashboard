@@ -7,119 +7,105 @@ import { MdDashboardCustomize } from "react-icons/md";
 export const MenuData =[
     {
         menu:'Dashboard',
+        slug:'dashboard',
         icon: <MdDashboardCustomize className='text-[28px] text-[#049268ec]'/>,
         submenu: []
 
     },
   
     {
-        menu:'Branch',
-        slug:'branch',
+        menu:'Company Settings',
+        slug:'companusetting',
         icon: <LuMenuSquare className='text-[28px] text-[#4a528f]'/>,
         submenu:[
             {
                 name:'Company',
-                slug:'companytable'
+                slug:'company'
             },
             {
-                name:'Review Branch',
+                name:' Branch',
+                slug:'branch',
+                icon:<LuSchool2 className='text-[25px] text-[#ab243d]' />
+            },
+            {
+                name:' Module',
+                slug:'module',
+                icon:<LuSchool2 className='text-[25px] text-[#ab243d]' />
+            },
+            {
+                name:' Department',
+                slug:'department',
                 icon:<LuSchool2 className='text-[25px] text-[#ab243d]' />
             },
             
         ]
     },
     {
-        menu:'Fiscal Year',
-        slug:'fiscalyeartable',
+        menu:'Transaction', 
+        slug:'transaction',
+        icon: <LuMenuSquare className='text-[28px] text-[#36925c]'/>,
+        submenu:[
+            {
+                name:'Voucher ',
+                slug:'voucher',
+                icon:<LuSchool2 className='text-[25px] text-[#ab243d]' />
+            },
+        ]
+    },
+    {
+        menu:'Account Settings',
+        slug:'fiscalyear',
         icon:<LuSchool2 className='text-[28px] text-[#ab243d]' />
         ,
         submenu:[
             {
-                name:'Add Fiscal Year',
-                slug:'fiscalform',
+                name:'Chart of Accounts',
+                slug:'chartofaccount',
+                icon:<LuSchool2 className='text-[25px] text-[#ab243d]' />
+            },
+            {
+                name:'Voucher Types ',
+                slug:'vouchertype',
+                icon:<LuSchool2 className='text-[25px] text-[#ab243d]' />
+            },
+            {
+                name:'Voucher Sequence ',
+                slug:'vouchersequence',
                 icon:<LuSchool2 className='text-[25px] text-[#ab243d]' />
             },
             
         ]
     },
+   
     {
-        menu:'Currency',  
+        menu:'Other Settings',  
         slug:'currencytable'  ,  
           icon: <LuMenuSquare className='text-[28px] text-[#267bd1]'/>,
 
-        submenu:[
-           
+          submenu:[
+            {
+                name:'Bank',
+                slug:'bank',
+                icon:<LuSchool2 className='text-[25px] text-[#ab243d]' />
+            },
+            {
+                name:'Debtors ',
+                slug:'debtors',
+                icon:<LuSchool2 className='text-[25px] text-[#ab243d]' />
+            },
+            {
+                name:'Credtitors ',
+                slug:'creditors',
+                icon:<LuSchool2 className='text-[25px] text-[#ab243d]' />
+            },
+            {
+                name:'Employee ',
+                slug:'employee',
+                icon:<LuSchool2 className='text-[25px] text-[#ab243d]' />
+            },
+            
         ]
     },
-    {
-        menu:'Chart of Account', 
-        slug:'chartofacctable',   
-        icon: <LuMenuSquare className='text-[28px] text-[#36925c]'/>,
-        submenu:[]
-    },
-    {
-        menu:'tree', 
-        slug:'treeview',   
-        icon: <LuMenuSquare className='text-[28px] text-[#36925c]'/>,
-        submenu:[]
-    },
-    {
-        menu:'Account Group', 
-        slug:'Accgrptable',   
-        icon: <LuMenuSquare className='text-[28px] text-[#36925c]'/>,
-        submenu:[]
-    },
-    {
-        menu:'Voucher Type', 
-        slug:'vouchertype',   
-        icon: <LuMenuSquare className='text-[28px] text-[#36925c]'/>,
-        submenu:[]
-    },
-    {
-        menu:'Voucher ', 
-        slug:'voucher',   
-        icon: <LuMenuSquare className='text-[28px] text-[#36925c]'/>,
-        submenu:[]
-    },
-    {
-        menu:'Employee ', 
-        slug:'employeetable',   
-        icon: <LuMenuSquare className='text-[28px] text-[#36925c]'/>,
-        submenu:[]
-    },
-    {
-        menu:'Module ', 
-        slug:'moduletable',   
-        icon: <LuMenuSquare className='text-[28px] text-[#36925c]'/>,
-        submenu:[]
-    },
-    {
-        menu:'Department ', 
-        slug:'departmenttable',   
-        icon: <LuMenuSquare className='text-[28px] text-[#36925c]'/>,
-        submenu:[]
-    },
-    {
-        menu:'Customer ', 
-        slug:'customertable',   
-        icon: <LuMenuSquare className='text-[28px] text-[#36925c]'/>,
-        submenu:[]
-    },{
-        menu:'Vendor ', 
-        slug:'vendorTable',   
-        icon: <LuMenuSquare className='text-[28px] text-[#36925c]'/>,
-        submenu:[]
-    },
-    {
-        menu:'Bank ', 
-        slug:'banktable',   
-        icon: <LuMenuSquare className='text-[28px] text-[#36925c]'/>,
-        submenu:[]
-    },
-    {
-        menu:'Vocuher Sequence ', 
-        slug:'voucherseqtable',   
-        icon: <LuMenuSquare className='text-[28px] text-[#36925c]'/>,
-        submenu:[]
-    },
+    
+   
 ]

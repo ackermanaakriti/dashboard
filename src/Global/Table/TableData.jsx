@@ -5,12 +5,15 @@ import './Table.css'
 import { GreenButton } from "../../Components/GreenButton";
 import { addMenu } from '../../Redux/TopTabSlice';
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
 
-export const TableDataComp = ({ columns, width, filteredItems, filterText, setFilterText, menuname }) => {
+export const TableDataComp = ({ columns, width, filteredItems, filterText, setFilterText, link,tabletree }) => {
+    console.log(link)
 
     const [resetPaginationToggle, setResetPaginationToggle] = React.useState(false);
     const [tableHeight, setTableHeight] = useState(0);
     const dispatch = useDispatch();
+    const navigate = useNavigate()
 
 
 
@@ -87,11 +90,17 @@ export const TableDataComp = ({ columns, width, filteredItems, filterText, setFi
         };
         return (
             <>
-                <div onClick={() => dispatch(addMenu({ id: '', menu: menuname }))}>
+            <div className="flex gap-[20px]">
+                <div  onClick={() => navigate(link)}>
                     <GreenButton
                         className="bg-PrimaryColor px-[15px] py-[4px] text-white font-inter"
                         text="Add New +" />
+                         
+                         </div>
+                         <div className="flex float-right">{tabletree ? tabletree():''}</div>
                 </div>
+               
+                
                 <FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} />
             </>
         );

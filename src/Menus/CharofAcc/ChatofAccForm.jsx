@@ -18,6 +18,7 @@ import { baseUrl } from '../../Apis/Baseurl';
 import useUpdateData from '../../Apis/useUpdate';
 import useGetById from '../../Apis/useGetById';
 import useGetData from '../../Apis/useGetData';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const CharofAccForm = () => {
   
@@ -29,13 +30,17 @@ const CharofAccForm = () => {
     const [mainparentAcc,setMainparentAcc]= useState([])
     const [parentAcc,setparentAcc]= useState([])
     const [editMode, setEditMode] = useState(false)
-    
+    const navigate = useNavigate()
     const dispatch = useDispatch();
+    const paramId = useParams()
+ 
  
     useEffect(() => {
-        if (getId && data) {
+        
+        if (paramId?.id && data) {
             setEditMode(true)
-            GiveId(getId)
+            GiveId(paramId?.id)
+            
         } 
         const  fetchDropDownsData=async()=>
             {
@@ -45,7 +50,7 @@ const CharofAccForm = () => {
               setparentAcc(responseB.data.data)
             }
             fetchDropDownsData()
-    }, [data,setId]
+    }, [data,paramId?.id]
     )
 
 
@@ -87,14 +92,14 @@ const CharofAccForm = () => {
 
     const handleSubmit = async (values) => {
         
-debugger;
+// debugger;
         console.log(values)
         if (editMode) {
           updateData(values)  }
         else { postdata(values ); }
        
-        dispatch(addMenu({ id: '', menu: 'chartofacctable' }))
-        setId('')
+       navigate('/chartofaccount')
+       
 
     };
 
@@ -290,7 +295,7 @@ debugger;
 
 
                                 <div className=' mt-[40px] flex gap-[20px] absolute bottom-[2em] right-[5em]' >
-                                    <button onClick={() => dispatch(addMenu({ id: '', menu: 'chartofacc' }))} className=' border-[1px] border-redclr px-[15px] py-[4px] text-redclr font-inter'  type='button'>Cancel</button>
+                                    <button onClick={() =>  navigate('/chartofaccount')} className=' border-[1px] border-redclr px-[15px] py-[4px] text-redclr font-inter'  type='button'>Cancel</button>
 
                                     <button className='bg-PrimaryColor px-[15px] py-[4px] text-white font-inter' type='submit' >
                                         {editMode ? 'Update' : 'Save'} </button>

@@ -10,6 +10,7 @@ import { addMenu } from '../../Redux/TopTabSlice';
 import usePostData from '../../Apis/usePostData';
 import useGetById from '../../Apis/useGetById';
 import useUpdateData from '../../Apis/useUpdate';
+import { useNavigate, useParams } from 'react-router';
 
 const CurrencyForm = () => {
 
@@ -19,15 +20,17 @@ const CurrencyForm = () => {
   const {setId,getId}= useLayouData();
   const [editMode,setEditMode]= useState(false)
   const dispatch = useDispatch();
+  const navigate = useNavigate()
+  const paramId = useParams()
 
   
 
   useEffect(()=>
-  { if(getId)
+  { if(paramId?.id)
         {
       setEditMode(true)
-       GiveId(getId) }},
-       [setId])
+       GiveId(paramId?.id) }},
+       [paramId?.id])
 
   const initialValues = {
     name: '',
@@ -56,8 +59,7 @@ const CurrencyForm = () => {
 
     else 
     { postdata(values)}
-    addMenu({ id: "", menu: "currencytable" })
-    setId('')
+   navigate('/company')
   };
 
   return (
@@ -149,9 +151,9 @@ const CurrencyForm = () => {
 
 
                 <div className=' mt-[40px] flex gap-[20px] justify-end'>
-                <CancelButton onClick={()=>dispatch(addMenu({ id:'', menu:'currencytable'}))} className=' border-[1px] border-redclr px-[15px] py-[4px] text-redclr font-inter' text='Cancel' type='button' />
+                <CancelButton onClick={()=>navigate('/company')} className=' border-[1px] border-redclr px-[15px] py-[4px] text-redclr font-inter' text='Cancel' type='button' />
 
-                  <button onClick={()=>dispatch(addMenu({ id:'', menu:'currencytable'}))}  className='bg-PrimaryColor px-[15px] py-[4px] text-white font-inter' type='submit' > 
+                  <button   className='bg-PrimaryColor px-[15px] py-[4px] text-white font-inter' type='submit' > 
                   {editMode ? 'Update': 'Save'} </button>
                 </div>
               </div>

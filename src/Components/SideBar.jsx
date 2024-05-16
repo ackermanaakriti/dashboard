@@ -19,7 +19,7 @@ const SideBar = () => {
 
     const handleClick = (name,index) => {
     
-         dispatch(addTab({ id:index, menu:name}))
+        
          
         if (activeLink === name) {
             setMenuopen(!menuopen);
@@ -29,8 +29,8 @@ const SideBar = () => {
         }
     };
 
-    const handleSubMenuClick = (menu, submenu,index) => {
-        setActiveLink(menu);
+    const handleSubMenuClick = ( submenu,index) => {
+        // setActiveLink(menu);
         dispatch(addTab({ id:index, menu:submenu}))
         setActiveSubMenu(submenu);
        
@@ -44,7 +44,7 @@ const SideBar = () => {
                         <ul>
                             {MenuData.map((menu, index) => (
                                 <li key={index}>
-                                    <NavLink to={`/${menu?.slug}`} onClick={() => handleClick(menu.slug,index)} className={activeLink === menu.menu ? 'active' : ''}>
+                                    <a onClick={() => handleClick(menu.slug,index)} className={activeLink === menu.menu ? 'active' : ''}>
                                         <div className='menuitems-flex'>
                                         <span className='menuicons'>{menu.icon}</span>
                                         <span className='menuname cursor-pointer'> {menu.menu}</span>
@@ -53,18 +53,18 @@ const SideBar = () => {
                                         {
                                            menu.submenu.length > 0 ? ( activeLink === menu.slug &&  menuopen ? <span className='chev-icon'><FaChevronDown /></span> : <span className='chev-icon'><FaChevronRight /></span>):''
                                         }
-                                      </NavLink>
+                                      </a>
                                     {activeLink === menu.slug && menu.submenu.length > 0 && menuopen && (
                                         <ul>
                                             {menu.submenu.map((submenu, subIndex) => (
                                                 <li key={subIndex}>
-                                                    <a onClick={() => handleSubMenuClick(menu.slug, submenu.slug ,index)} className={activeSubMenu === submenu.name ? 'activesubmenu' : ''}>
+                                                    <NavLink to={`/${submenu?.slug}`} onClick={() => handleSubMenuClick( submenu.slug ,index)} className={activeSubMenu === submenu.name ? 'activesubmenu' : ''}>
                                                         <span className='menuicons'>{menu.icon}</span>
                                                         <span className='menuname'>
                                                         {submenu.name}
                                                         </span>
                                                       
-                                                    </a>
+                                                    </NavLink>
                                                 </li>
                                             ))}
                                         </ul>

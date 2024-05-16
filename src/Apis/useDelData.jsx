@@ -5,7 +5,7 @@ import { useLayouData } from '../Context/MainLayoutContext'
 
 const useDelData = (url,fetchData) => {
     const {token} = useLayouData()
-    const [data,setData]= useState([])
+    const [delresponse,setDelresponse]= useState([])
 
     const Deldata = async (id) => {
        console.log(id)
@@ -21,13 +21,15 @@ const useDelData = (url,fetchData) => {
           );
 
           console.log(response);
+          setDelresponse(response?.statusText)
+
         
        } catch(err) {
           console.log(err);
        }
     }
 
-    return { Deldata };
+    return { Deldata ,delresponse};
 }
 
 export default useDelData;

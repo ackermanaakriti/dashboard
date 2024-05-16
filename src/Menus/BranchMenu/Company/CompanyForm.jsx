@@ -10,14 +10,17 @@ import { HiOutlinePhotograph } from "react-icons/hi";
 import axios from "axios";
 import useGetById from "../../../Apis/useGetById";
 import { baseUrl } from "../../../Apis/Baseurl";
+import { useNavigate, useParams } from "react-router";
 
 const CompanyForm = () => {
-  const { getId, setId, token } = useLayouData();
+  const {  token } = useLayouData();
   const { GiveId, dataByid } = useGetById('Company/GetById/');
   const dispatch = useDispatch();
   const [editMode, setEditMode] = useState(false);
   const [logo, setLogoFile] = useState('');
   const [billLogoFile, setBillLogoFile] = useState('');
+  const navigate = useNavigate();
+  const paramId = useParams()
 
   console.log(logo, billLogoFile);
 
@@ -42,12 +45,13 @@ const CompanyForm = () => {
   });
 
   useEffect(() => {
-    if (getId) {
-      console.log(getId);
+    if (paramId?.id) {
+      
       setEditMode(true);
-      GiveId(getId);
+      GiveId(paramId?.id);
     }
-  }, [setId]);
+  }, [paramId?.id]);
+  console.log(editMode)
 
   const handleSubmit = async (values) => {
     const formData = new FormData();
@@ -76,8 +80,7 @@ formData.append("logoFile", billLogoFile);
       console.error(error);
     }
 
-    setId('');
-    dispatch(addMenu({ id: "", menu: "companytable" }));
+    navigate('/company')
   };
 
   const handleEnterKeyPress = (event, nextField) => {
@@ -233,7 +236,7 @@ formData.append("logoFile", billLogoFile);
 
                 <div className="mt-[70px] flex gap-[20px] float-right">
                   <button
-                    onClick={() => dispatch(addMenu({ id: "", menu: "Table" }))}
+                    onClick={() =>navigate('/company`')}
                     type="button"
                     className="bg-transparent border-[#d13838] border-solid py-[4px] px-[20px] border-[1px] text-[16px] font-inter font-[600] text-[#d13838]"
                   >

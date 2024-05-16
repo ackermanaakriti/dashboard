@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { addMenu } from "../../Redux/TopTabSlice";
 import useGetById from "../../Apis/useGetById";
 import useUpdateData from "../../Apis/useUpdate";
+import { useNavigate, useParams } from "react-router";
 
 const ModuleForm = () => {
   const { postdata, postError } = usePostData("Module/Add");
@@ -15,13 +16,15 @@ const ModuleForm = () => {
   const { dataByid, GiveId } = useGetById("Module/GetById/");
   const [editMode, setEditMode] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate()
+  const paramId = useParams()
 
   useEffect(() => {
-    if (getId) {
+    if (paramId?.id) {
       setEditMode(true);
-      GiveId(getId);
+      GiveId(paramId?.id);
     }
-  }, [setId]);
+  }, [paramId?.id]);
 
   const initialValues = {
     name: "",
@@ -44,7 +47,7 @@ const ModuleForm = () => {
       await postdata(values);
     }
 
-    dispatch(addMenu({ id: "", menu: "moduletable" }));
+   navigate('/module')
     setId("");
   };
   return (
@@ -114,14 +117,10 @@ const ModuleForm = () => {
                   />
                 </div>
               </div>
-            </div>
-            <div>
-             
-              <div className="grid grid-cols-2 gap-[20px]">
-                <div className="py-[6px]">
+              <div className="py-[6px]">
                   <div role="group">
                     <label className="block py-[8px] font-[500] font-inter ">
-                      Is Active <span>*</span>
+                      Active
                     </label>
                     <div>
                       <label className="">
@@ -158,11 +157,10 @@ const ModuleForm = () => {
                     />
                   </div>
                 </div>
-              </div>
-              <div className=" mt-[40px] flex gap-[20px] absolute bottom-[2em] right-[5em]">
+                <div className=" mt-[40px] flex gap-[20px]  justify-end ">
                 <button
                   onClick={() =>
-                    dispatch(addMenu({ id: "", menu: "moduletable" }))
+                   navigate('/module')
                   }
                   className=" border-[1px] border-redclr px-[15px] py-[4px] text-redclr font-inter"
                   type="button"
@@ -178,6 +176,7 @@ const ModuleForm = () => {
                 </button>
               </div>
             </div>
+           
           </Form>
         )}
       </Formik>
