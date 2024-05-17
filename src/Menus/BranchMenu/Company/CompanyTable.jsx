@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,use } from "react";
 import useDelData from "../../../Apis/useDelData";
 import { useLayouData } from "../../../Context/MainLayoutContext";
 import { useDispatch } from "react-redux";
@@ -22,7 +22,8 @@ const CompanyTable = () => {
   useEffect(() => {
     setTableData(data?.data); //set fetched data to tableData for filtering
   }, [tableData, data]);
-
+  // const users = use(fetchData());
+  // console.log(users)
   const handleDelete = async (id) => {
     setDeleteList(true);
     setDeleteId(id);

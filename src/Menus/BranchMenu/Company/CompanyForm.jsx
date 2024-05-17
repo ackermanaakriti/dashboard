@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import * as Yup from "yup";
 import { Formik, ErrorMessage, Form, Field } from "formik";
 import { useLayouData } from "../../../Context/MainLayoutContext";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch } from "react-redux";
 import { addMenu } from "../../../Redux/TopTabSlice";
@@ -11,6 +11,8 @@ import axios from "axios";
 import useGetById from "../../../Apis/useGetById";
 import { baseUrl } from "../../../Apis/Baseurl";
 import { useNavigate, useParams } from "react-router";
+import { FaArrowLeft } from "react-icons/fa6";
+
 
 const CompanyForm = () => {
   const {  token } = useLayouData();
@@ -20,9 +22,19 @@ const CompanyForm = () => {
   const [logo, setLogoFile] = useState('');
   const [billLogoFile, setBillLogoFile] = useState('');
   const navigate = useNavigate();
-  const paramId = useParams()
+  const paramId = useParams();
+  const [error,setError] =useState('');
+  const [errorMessages, setErrorMessages] = useState([]);
 
-  console.log(logo, billLogoFile);
+  // Assuming this is your mapping logic
+  const addErrorMessagesToState = (error) => {
+    setErrorMessages(Object.values(error).flat());
+  };
+  
+  useEffect(() => {
+    addErrorMessagesToState(error);
+  }, [error]);
+  console.log(errorMessages);
 
   const initialValues = {
     name: "",
@@ -53,7 +65,7 @@ const CompanyForm = () => {
   }, [paramId?.id]);
   console.log(editMode)
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (values,{resetForm}) => {
     const formData = new FormData();
 
     Object.keys(values).forEach((key) => {
@@ -76,37 +88,74 @@ formData.append("logoFile", billLogoFile);
         }
       );
       console.log(response);
+      toast.success('Data added Successfully!', {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        
+        });
+      resetForm()
     } catch (error) {
-      console.error(error);
+      console.log(error.response?.data.errors);
+      setError(error.response?.data.errors);
+     
+      if(errorMessages.length>0)
+        {
+          errorMessages.map((item)=>
+          toast.error(item))
+        }
+      // toast.error(errorMessages.toString())
     }
-
-    navigate('/company')
+    
+    
   };
-
-  const handleEnterKeyPress = (event, nextField) => {
-    if (event.key === "Enter") {
+  
+  const handleEnterKeyPress = (event, nextField,formik) => {
+    if (event.key === "Enter" || event.key === 'Tab') {
       event.preventDefault();
       const nextInput = document.getElementById(nextField);
+      if (nextField === 'name') {
+        console.log('hello')
+        handleSubmit(formik.values, { resetForm: formik.resetForm });
+      }
       if (nextInput) {
         nextInput.focus();
       }
+      
     }
   };
 
   return (
     <div className="Branchform">
-      <ToastContainer />
-      <div className="pb-[25px]">
+      
+      <div className="pb-[25px] flex justify-between">
         <h3 className="font-inter font-semibold text-[30px]">
           {editMode ? 'Update Company' : 'Add Company'}
         </h3>
+        <span onClick={()=>navigate('/company')} className="text-PrimaryColor text-[24px] "><FaArrowLeft/></span>
       </div>
-
+      <ToastContainer
+position="bottom-center"
+autoClose={10000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="light"
+/>
       <Formik
         enableReinitialize={true}
         initialValues={editMode ? dataByid : initialValues}
         validationSchema={validationSchema}
-        onSubmit={handleSubmit}
+        onSubmit={(values, { resetForm }) => handleSubmit(values, { resetForm })}
       >
         {(formik) => (
           <Form onSubmit={formik.handleSubmit}>
@@ -118,12 +167,14 @@ formData.append("logoFile", billLogoFile);
                     <Field
                       type="text"
                       name="name"
+                      id='name'
                       className="w-[22em]"
                       placeholder=""
-                      onKeyDown={(event) => handleEnterKeyPress(event, "ParentId")}
+                      onKeyDown={(event) => handleEnterKeyPress(event, "contactNumber",formik)}
                     />
                     <ErrorMessage component="div" className="error" name="Name" />
                   </div>
+                 
                   <div className="py-[6px]">
                     <label className="block">Contact Number <span>*</span></label>
                     <Field
@@ -132,7 +183,7 @@ formData.append("logoFile", billLogoFile);
                       className="w-[22em]"
                       placeholder=""
                       id="contactNumber"
-                      onKeyDown={(event) => handleEnterKeyPress(event, "address")}
+                      onKeyDown={(event) => handleEnterKeyPress(event, "regestrationNo",formik)}
                     />
                     <ErrorMessage component="div" className="error" name="contactNumber" />
                   </div>
@@ -147,7 +198,7 @@ formData.append("logoFile", billLogoFile);
                       className="w-[22em]"
                       placeholder=""
                       id="regestrationNo"
-                      onKeyDown={(event) => handleEnterKeyPress(event, "Pan")}
+                      onKeyDown={(event) => handleEnterKeyPress(event, "pan",formik)}
                     />
                     <ErrorMessage component="div" className="error" name="regestrationNo" />
                   </div>
@@ -159,7 +210,7 @@ formData.append("logoFile", billLogoFile);
                       className="w-[22em]"
                       placeholder=""
                       id="pan"
-                      onKeyDown={(event) => handleEnterKeyPress(event, "ContactNumber")}
+                      onKeyDown={(event) => handleEnterKeyPress(event, "address",formik)}
                     />
                     <ErrorMessage component="div" className="error" name="pan" />
                   </div>
@@ -169,7 +220,7 @@ formData.append("logoFile", billLogoFile);
                   <label className="block">Address <span>*</span></label>
                   <Field
                     type="text"
-                    onKeyDown={(event) => handleEnterKeyPress(event, "billadd")}
+                    onKeyDown={(event) => handleEnterKeyPress(event, "logoFile",formik)}
                     id="address"
                     name="address"
                     className="w-[100%]"
@@ -186,7 +237,7 @@ formData.append("logoFile", billLogoFile);
                       className="w-[100%] opacity-0 absolute inset-0"
                       id="logoFile"
                       onChange={(e) => setLogoFile(e.target.files[0])}
-                      onKeyDown={(event) => handleEnterKeyPress(event, "btnsubmit")}
+                      onKeyDown={(event) => handleEnterKeyPress(event, "billAddress",formik)}
                     />
                     <span className="text-[#c0d3e5] text-[30px] flex justify-center "> <HiOutlinePhotograph /></span>
                     <p className="text-[#c0d3e5]">Click to upload photo</p>
@@ -202,7 +253,7 @@ formData.append("logoFile", billLogoFile);
                   <Field
                     as="textarea"
                     type="text"
-                    onKeyDown={(event) => handleEnterKeyPress(event, "shipadd")}
+                    onKeyDown={(event) => handleEnterKeyPress(event, "shipAddress",formik)}
                     id="billAddress"
                     name="billAddress"
                     className="w-[100%]"
@@ -216,7 +267,7 @@ formData.append("logoFile", billLogoFile);
                     type="text"
                     name="shipAddress"
                     id="shipAddress"
-                    onKeyDown={(event) => handleEnterKeyPress(event, "billcontact")}
+                    onKeyDown={(event) => handleEnterKeyPress(event, "billContactInfo",formik)}
                     className="w-[100%]"
                   />
                   <ErrorMessage component="div" className="error" name="shipAddress" />
@@ -229,7 +280,7 @@ formData.append("logoFile", billLogoFile);
                     name="billContactInfo"
                     className="w-[100%]"
                     id="billContactInfo"
-                    onKeyDown={(event) => handleEnterKeyPress(event, "image")}
+                    onKeyDown={(event) => handleEnterKeyPress(event, "btnsubmit",formik)}
                   />
                   <ErrorMessage component="div" className="error" name="billContactInfo" />
                 </div>
@@ -238,6 +289,7 @@ formData.append("logoFile", billLogoFile);
                   <button
                     onClick={() =>navigate('/company`')}
                     type="button"
+                    id='cancel'
                     className="bg-transparent border-[#d13838] border-solid py-[4px] px-[20px] border-[1px] text-[16px] font-inter font-[600] text-[#d13838]"
                   >
                     Cancel
@@ -245,7 +297,9 @@ formData.append("logoFile", billLogoFile);
                   <button
                     type="submit"
                     id="btnsubmit"
-                    className="bg-PrimaryColor py-[4px] px-[20px] text-[16px] font-inter text-white"
+                    onKeyDown={(event) => handleEnterKeyPress(event, "name",formik)}
+                  
+                    className="bg-PrimaryColor py-[4px] px-[20px] text-[16px] font-inter text-white focus:bg-[#6bc2eb]"
                   >
                     Save
                   </button>

@@ -5,6 +5,8 @@ import usePostData from "../../Apis/usePostData";
 import { useLayouData } from "../../Context/MainLayoutContext";
 import { useDispatch } from "react-redux";
 import { addMenu } from "../../Redux/TopTabSlice";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import useGetById from "../../Apis/useGetById";
 import useUpdateData from "../../Apis/useUpdate";
 import { useNavigate, useParams } from "react-router";
@@ -30,7 +32,7 @@ const ModuleForm = () => {
     name: "",
     code: "",
     prefix: "",
-    isActive: null,
+    isActive: true,
   };
 
   const validationSchema = Yup.object().shape({
@@ -39,6 +41,21 @@ const ModuleForm = () => {
     prefix: Yup.string().required("required"),
     isActive: Yup.boolean().required("required"),
   });
+  
+  const handleEnterKeyPress = (event, nextField,formik) => {
+    if (event.key === "Enter" || event.key === 'Tab') {
+      event.preventDefault();
+      const nextInput = document.getElementById(nextField);
+      if (nextField === 'name') {
+        console.log('hello')
+        handleSubmit(formik.values, { resetForm: formik.resetForm });
+      }
+      if (nextInput) {
+        nextInput.focus();
+      }
+      
+    }
+  };
   const handleSubmit = async (values) => {
     // postdata(values);
     if (editMode) {
@@ -47,8 +64,8 @@ const ModuleForm = () => {
       await postdata(values);
     }
 
-   navigate('/module')
-    setId("");
+  //  navigate('/module')
+   
   };
   return (
     <div className="px-[50px]">
@@ -61,7 +78,7 @@ const ModuleForm = () => {
       <Formik
         initialValues={editMode ? dataByid : initialValues}
         validationSchema={validationSchema}
-        onSubmit={handleSubmit}
+        onSubmit={(values, { resetForm }) => handleSubmit(values, { resetForm })}
         enableReinitialize={true}
       >
         {(formik) => (
@@ -75,6 +92,8 @@ const ModuleForm = () => {
                   className="border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr "
                   type="text"
                   name="name"
+                  id='name'
+                  onKeyDown={(event) => handleEnterKeyPress(event, "prefix",formik)}
                 />
                 <ErrorMessage
                   component="div"
@@ -92,7 +111,9 @@ const ModuleForm = () => {
                     className="border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr cursor-not-allowed"
                     name="code"
                     type="text"
+                    id='code'
                     disabled
+
                   />
                   <ErrorMessage
                     component="div"
@@ -108,6 +129,8 @@ const ModuleForm = () => {
                     className="border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr cursor-not-allowed "
                     name="prefix"
                     type="text"
+                    id='prefix'
+                    onKeyDown={(event) => handleEnterKeyPress(event, "isActive",formik)}
                     
                   />
                   <ErrorMessage
@@ -128,6 +151,8 @@ const ModuleForm = () => {
                           className="mx-[5px]"
                           type="radio"
                           name="isActive"
+                          id='isActive'
+                          onKeyDown={(event) => handleEnterKeyPress(event, "btnsubmit",formik)}
                           checked={formik.values.isActive === true}
                           value={true}
                           onChange={() =>
@@ -141,7 +166,9 @@ const ModuleForm = () => {
                           className="mx-[5px]"
                           type="radio"
                           name="isActive"
+                          id='isActive'
                           checked={formik.values.isActive === false}
+                          onKeyDown={(event) => handleEnterKeyPress(event, "btnsubmit",formik)}
                           value={false}
                           onChange={() =>
                             formik.setFieldValue("isActive", false)
@@ -171,6 +198,8 @@ const ModuleForm = () => {
                 <button
                   className="bg-PrimaryColor px-[15px] py-[4px] text-white font-inter"
                   type="submit"
+                  id='btnsubmit'
+                  onKeyDown={(event) => handleEnterKeyPress(event, "name",formik)}
                 >
                   {editMode ? "Update" : "Save"}{" "}
                 </button>

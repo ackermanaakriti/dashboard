@@ -47,7 +47,7 @@ const DepartmentForm = () => {
   const validationSchema = Yup.object().shape({
     // description: Yup.number().typeError('enter number').required('required'),
     companyId: Yup.number().typeError('enter number').required('required'),
-    name: Yup.string().required('required'),
+    // name: Yup.string().required('required'),
     // code: Yup.string().required('required'),
     // syPlacement: Yup.string().required('required'),
   });

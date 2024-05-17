@@ -19,6 +19,7 @@ const VoucherTypeTable = () => {
   const { DeleteList, setDeleteList } = useLayouData();
   const [DeleteId, setDeleteId] = useState("");
 
+  console.log('hello')
   useEffect(() => {
     setTableData(data?.data);
     // set fetched data to tableData for filtering 
@@ -31,6 +32,7 @@ const VoucherTypeTable = () => {
 
   const handleDeleteConfirmation = async () => {
     fetchData();
+    console.log('hello')
   };
 
   const handleEdit = (id) => {

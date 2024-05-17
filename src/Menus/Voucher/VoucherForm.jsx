@@ -67,8 +67,8 @@ const paramId = useParams()
   const validationSchema = Yup.object().shape({
     // voucherTypeId: Yup.string().typeError('').required('required'),
     // voucherNumber: Yup.number().typeError('invalid data').required('required'),
-    narration: Yup.string().required('required'),
-    invoiceNumber: Yup.number().typeError('invalid data').required('required'),
+    // narration: Yup.string().required('required'),
+    // invoiceNumber: Yup.number().typeError('invalid data').required('required'),
   });
   
  

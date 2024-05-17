@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CharofAccTreeForm from './Charoftreeform';
 import useGetData from '../../Apis/useGetData';
 import { IoAddCircleOutline } from "react-icons/io5";
@@ -25,6 +25,11 @@ const TreeNode = ({ node }) => {
   const handleToggle = () => {
     setIsExpanded(prevIsExpanded => !prevIsExpanded);
   };
+  useEffect(()=>
+  {
+
+
+  },[showForm])
 
   const handleAddData = (node) => {
     setShowForm(!showForm);
@@ -57,7 +62,7 @@ const TreeNode = ({ node }) => {
             <div className='h-full w-full flex justify-center items-center'>
               <div className='h-[600px] w-[50%]'>
                 <span onClick={()=>setShowForm(false)} className='float-right mt-[30px] mr-[20px] text-PrimaryColor text-[24px] cursor-pointer'><RxCross2/></span>
-                <CharofAccTreeForm node={node} mainParentId={mainParentId} parentAccountId={parentAccountId} accountGroupId={accountGroupId} />
+                <CharofAccTreeForm setShowForm={setShowForm} node={node} mainParentId={mainParentId} parentAccountId={parentAccountId} accountGroupId={accountGroupId} />
               </div>
             </div>
           </div>
@@ -71,8 +76,12 @@ const TreeNode = ({ node }) => {
 
 const TreeViewChart = () => {
   const navigate = useNavigate()
-  const { data } = useGetData('ChartOfAccount/GetTree')
+  const { data,fetchData } = useGetData('ChartOfAccount/GetTree')
   console.log(data)
+  useEffect(()=>
+  {
+   
+  },[data])
 
 
   return (

@@ -17,8 +17,9 @@ import axios from 'axios';
 import { baseUrl } from '../../Apis/Baseurl';
 import useUpdateData from '../../Apis/useUpdate';
 import useGetData from '../../Apis/useGetData';
+import { useNavigate } from 'react-router';
 
-const CharofAccTreeForm = ({node,mainParentId,parentAccountId,accountGroupId}) => {
+const CharofAccTreeForm = ({node,mainParentId,parentAccountId,accountGroupId,setShowForm}) => {
    
     const {postdata,postError}= usePostData('ChartOfAccount/Add')
     // const {data}= useGetData('ChartOfAccount/GetAll')
@@ -29,6 +30,7 @@ const CharofAccTreeForm = ({node,mainParentId,parentAccountId,accountGroupId}) =
     const [editData, seteditData] = useState()
     const [groupIddata,setGroupIdData]= useState()
     const dispatch = useDispatch();
+    const navigate = useNavigate()
 
  
     useEffect(() => {
@@ -55,6 +57,7 @@ const CharofAccTreeForm = ({node,mainParentId,parentAccountId,accountGroupId}) =
         isTaxApplicable: true,
         parentAccountId: '',
         mainParentId: '',
+        id:0,
         // createdByUserId: null,
         // createdByBranchId: null,
         // treeLevel: null,
@@ -92,10 +95,7 @@ const CharofAccTreeForm = ({node,mainParentId,parentAccountId,accountGroupId}) =
         if (editMode) {
           updateData(values)  }
         else { postdata(treeData ); }
-       
-        dispatch(addMenu({ id: '', menu: 'chartofacctable' }))
-        setId('')
-
+    setShowForm(false)
     };
 
     return (
@@ -176,7 +176,7 @@ const CharofAccTreeForm = ({node,mainParentId,parentAccountId,accountGroupId}) =
                                 <div className='grid grid-cols-2 gap-[20px]'>
                                     <div className="py-[6px]">
                                     <div role="group">
-                                            <label className='block py-[8px] font-[500] font-inter '>Is Tax Applicable <span>*</span></label>
+                                            <label className='block py-[8px] font-[500] font-inter '> Tax Applicable </label>
                                             <div>
                                                 <label className=""> <input className='mx-[5px]' type="radio"  name="isTaxApplicable"  checked={formik.values.isTaxApplicable === true} value={true}
                                                onChange={() => formik.setFieldValue('isTaxApplicable', true)} />Yes</label>
@@ -190,7 +190,7 @@ const CharofAccTreeForm = ({node,mainParentId,parentAccountId,accountGroupId}) =
 
                                     <div className="py-[6px]">
                                         <div role="group">
-                                            <label className='block py-[8px] font-[500] font-inter '>Is Active <span>*</span></label>
+                                            <label className='block py-[8px] font-[500] font-inter '> Active </label>
                                             <div>
                                                 <label className=""> <input className='mx-[5px]' type="radio"  name="isActive"  checked={formik.values.isActive === true} value={true}
                                                onChange={() => formik.setFieldValue('isActive', true)} />Yes</label>
@@ -223,7 +223,7 @@ const CharofAccTreeForm = ({node,mainParentId,parentAccountId,accountGroupId}) =
                                 <div className='grid grid-cols-2 gap-[20px]'>
                                     <div className="py-[6px]">
                                     <div role="group">
-                                            <label className='block py-[8px] font-[500] font-inter '>Is Transactional <span>*</span></label>
+                                            <label className='block py-[8px] font-[500] font-inter '>Transactional </label>
                                             <div>
                                                 <label className=""> <input className='mx-[5px]' type="radio"  name="isTransactional"  checked={formik.values.isTransactional === true} value={true}
                                                onChange={() => formik.setFieldValue('isTransactional', true)} />Yes</label>
@@ -241,7 +241,7 @@ const CharofAccTreeForm = ({node,mainParentId,parentAccountId,accountGroupId}) =
                                 <div className='grid grid-cols-2 gap-[20px]'>
                                     <div className="py-[6px]">
                                     <div role="group">
-                                            <label className='block py-[8px] font-[500] font-inter '>Is Apply for All Branch <span>*</span></label>
+                                            <label className='block py-[8px] font-[500] font-inter '> Apply for All Branch </label>
                                             <div>
                                                 <label className=""> <input className='mx-[5px]' type="radio"  name="isAllBranchApplicable"  checked={formik.values.isAllBranchApplicable === true} value={true}
                                                onChange={() => formik.setFieldValue('isAllBranchApplicable', true)} />Yes</label>
@@ -255,7 +255,7 @@ const CharofAccTreeForm = ({node,mainParentId,parentAccountId,accountGroupId}) =
 
                                     <div className="py-[6px]">
                                     <div role="group">
-                                            <label className='block py-[8px] font-[500] font-inter '>Is Ledger <span>*</span></label>
+                                            <label className='block py-[8px] font-[500] font-inter '> Ledger </label>
                                             <div>
                                                 <label className=""> <input className='mx-[5px]' type="radio"  name="isLedger"  checked={formik.values.isLedger === true} value={true}
                                                onChange={() => formik.setFieldValue('isLedger', true)} />Yes</label>
@@ -269,7 +269,7 @@ const CharofAccTreeForm = ({node,mainParentId,parentAccountId,accountGroupId}) =
 
 
                                 <div className=' mt-[40px] flex gap-[50px] absolute bottom-[2em] right-[5em]' >
-                                    <button onClick={() => dispatch(addMenu({ id: '', menu: 'chartofacc' }))} className=' border-[1px] border-redclr px-[15px] py-[4px] text-redclr font-inter'  type='button'>Cancel</button>
+                                    <button onClick={() => navigate('/chartofaccount')} className=' border-[1px] border-redclr px-[15px] py-[4px] text-redclr font-inter'  type='button'>Cancel</button>
 
                                     <button className='bg-PrimaryColor px-[15px] py-[4px] text-white font-inter' type='submit' >
                                         {editMode ? 'Update' : 'Save'} </button>

@@ -5,8 +5,20 @@ import { useLayouData } from '../Context/MainLayoutContext';
 
 const usePostData = (url) => {
     const [postData,setPostData]= useState(); 
-    const [postError,setPostError]= useState();
+    const [postError,setPostError]= useState([]);
+    const [error,setError]= useState('')
     const {token }= useLayouData()
+   
+    const addErrorMessagesToState = (error) => {
+        console.log(error)
+        const msg =(Object.values(error).flat());
+        console.log(msg)
+        setPostError(msg)
+      };
+      useEffect(() => {
+        addErrorMessagesToState(error);
+      }, [error]);
+      
 
     const postdata = async (values)=>
     {
@@ -22,9 +34,15 @@ const usePostData = (url) => {
         catch (err)
         {
             
-          setPostError(err)
-          console.log(err)
+            setError(err.response?.data.errors);
+            console.log(err.response?.data.errors);
+
+            
+          
+          
         }
+        console.log(error)
+        console.log(postError)
     }
 
 
