@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import useDelData from "../../Apis/useDelData";
+// import useDelData from "../../Apis/useDelData";
 import { useLayouData } from "../../Context/MainLayoutContext";
 import { useDispatch } from "react-redux";
 import { addMenu } from "../../Redux/TopTabSlice";
@@ -12,7 +12,7 @@ import { useNavigate } from "react-router";
 import DeletePopup from "../../Components/DeletePopup";
 
 const VoucherTable = () => {
-  const { data, fetchData } = useGetData(`Voucher/GetAll?IsDeleted=${false}`);   // use custom hook to get all data...passing url
+  const { data, fetchData,Deldata } = useGetData(`Voucher/GetAll?IsDeleted=${false}`);   // use custom hook to get all data...passing url
   const [tableData, setTableData] = useState([]);          
   const [filterText, setFilterText] = React.useState('');
   const navigate = useNavigate();

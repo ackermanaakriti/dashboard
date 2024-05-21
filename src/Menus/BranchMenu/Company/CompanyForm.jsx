@@ -73,7 +73,7 @@ const CompanyForm = () => {
     });
     formData.append("name",values.name)
     formData.append("logo", logo);
-formData.append("logoFile", billLogoFile);
+   formData.append("logoFile", billLogoFile);
     console.log(formData)
 
     try {
@@ -103,13 +103,13 @@ formData.append("logoFile", billLogoFile);
     } catch (error) {
       console.log(error.response?.data.errors);
       setError(error.response?.data.errors);
-     
-      if(errorMessages.length>0)
-        {
-          errorMessages.map((item)=>
-          toast.error(item))
-        }
-      // toast.error(errorMessages.toString())
+      // errorMessages?.map((item)=>
+      //   toast.error(item))
+      // if(errorMessages.length>0)
+      //   {
+          
+      //   }
+      toast.error(errorMessages.toString())
     }
     
     

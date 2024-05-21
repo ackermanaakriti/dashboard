@@ -10,33 +10,27 @@ import { useNavigate } from "react-router";
 import DeletePopup from "../../Components/DeletePopup";
 
 const ModuleTable = () => {
-  const { data, fetchData } = useGetData(`Module/GetAll?IsDeleted=${false}`);
+  const { data, fetchData,Deldata } = useGetData(`Module/GetAll?IsDeleted=${false}`,'Module/Delete/');
   const [tableData, setTableData] = useState([]);
   const [filterText, setFilterText] = React.useState('');
   const navigate = useNavigate();
   const { DeleteList, setDeleteList } = useLayouData();
   const [DeleteId, setDeleteId] = useState("");
   
-  useEffect(() => {
-    setTableData(data?.data);
-  }, [tableData, data]);
 
-  console.log(data?.data);
 
   const handleDelete = async (id) => {
     setDeleteList(true);
     setDeleteId(id);
   };
 
-  const handleDeleteConfirmation = async () => {
-    fetchData();
-  };
+  
   
   const handleEdit = (id) => {
     navigate(`/module/form/${id}`);
   };
 
-  const filteredItems = tableData?.filter(
+  const filteredItems = data?.filter(
     item => item?.name.toLowerCase().includes(filterText.toLowerCase())
   );
 
@@ -105,9 +99,9 @@ const ModuleTable = () => {
       />
       {DeleteList && (
         <DeletePopup
-          url="Module/Delete/"
-          id={DeleteId}
-          handleDeleteConfirmation={handleDeleteConfirmation}
+        
+          DeleteId={DeleteId}
+          Deldata={Deldata}
         />
       )}
     </div>

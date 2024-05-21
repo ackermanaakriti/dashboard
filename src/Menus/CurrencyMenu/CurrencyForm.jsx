@@ -11,6 +11,7 @@ import usePostData from '../../Apis/usePostData';
 import useGetById from '../../Apis/useGetById';
 import useUpdateData from '../../Apis/useUpdate';
 import { useNavigate, useParams } from 'react-router';
+import useFormNavigation from '../../Components/FormNavigation';
 
 const CurrencyForm = () => {
 
@@ -22,6 +23,7 @@ const CurrencyForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
   const paramId = useParams()
+  const formref = useFormNavigation()
 
   
 
@@ -76,7 +78,7 @@ const CurrencyForm = () => {
           enableReinitialize={true}
         >
           {(formik) => (
-            <Form className='grid grid-cols-2 gap-[90px]'>
+            <Form ref={formref} className='grid grid-cols-2 gap-[90px]'>
               <div className=''>
                 <div className='py-[8px]'>
                   <label className='block py-[5px] font-[500] font-inter '>Name <span className='text-redclr'>*</span></label>

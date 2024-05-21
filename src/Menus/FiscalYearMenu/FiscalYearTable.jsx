@@ -79,8 +79,7 @@ const FiscalYearTable = () => {
           </button>
         </div>
       ),
-      allowOverflow: true,
-      button: true,
+     
     },
   ];
 

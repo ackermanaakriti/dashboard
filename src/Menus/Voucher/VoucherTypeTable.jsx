@@ -19,11 +19,11 @@ const VoucherTypeTable = () => {
   const { DeleteList, setDeleteList } = useLayouData();
   const [DeleteId, setDeleteId] = useState("");
 
-  console.log('hello')
-  useEffect(() => {
-    setTableData(data?.data);
-    // set fetched data to tableData for filtering 
-  }, [tableData, data]);
+  // console.log('hello')
+  // useEffect(() => {
+  //   setTableData(data?.data);
+  //   // set fetched data to tableData for filtering 
+  // }, [tableData, data]);
 
   const handleDelete = async (id) => {
     setDeleteList(true);
@@ -39,7 +39,7 @@ const VoucherTypeTable = () => {
     navigate(`/vouchertype/form/${id}`);
   };
 
-  const filteredItems = tableData?.filter(
+  const filteredItems = data?.filter(
     item => item?.name.toLowerCase().includes(filterText.toLowerCase())  // filter fetched data on the basis of name
   );
 

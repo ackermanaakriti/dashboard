@@ -1,52 +1,57 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { baseUrl } from './Baseurl';
 import { useLayouData } from '../Context/MainLayoutContext';
+import { toast } from 'react-toastify'; // Import the toast library
 
 const usePostData = (url) => {
-    const [postData,setPostData]= useState(); 
-    const [postError,setPostError]= useState([]);
-    const [error,setError]= useState('')
-    const {token }= useLayouData()
-   
-    const addErrorMessagesToState = (error) => {
-        console.log(error)
-        const msg =(Object.values(error).flat());
-        console.log(msg)
-        setPostError(msg)
-      };
-      useEffect(() => {
-        addErrorMessagesToState(error);
-      }, [error]);
-      
+    const [postDataResponse, setPostData] = useState('');
+    const [error, setError] = useState('');
+    const { token } = useLayouData();
 
-    const postdata = async (values)=>
-    {
-        try 
-        {
-            const response = await axios.post(`${baseUrl}${url}`,values,
-        {
-            headers : { Authorization:`Bearer ${token}`},  
-        })
-            setPostData(response)
-            console.log(response)
-        }
-        catch (err)
-        {
+    const postdata = async (values) => {
+        try {
+            const response = await axios.post(`${baseUrl}${url}`, values, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            setPostData(response);
+            console.log(response);
             
-            setError(err.response?.data.errors);
-            console.log(err.response?.data.errors);
-
+            // Show success toast notification
+            if(response?.statusText === 'OK')
+                {
+                    toast.success('Data added successfully!', {
+                        position: "bottom-center",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+                }
             
+        } catch (error) {
           
-          
+
+            console.log(error)
+            // Show error toast notification
+            if(error)
+            toast.error('Failed to add data. Please try again later.', {
+                position: "bottom-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
         }
-        console.log(error)
-        console.log(postError)
-    }
+    };
 
-
-  return  {postdata,postError}
-}
+    return { postdata, error, postDataResponse };
+};
 
 export default usePostData;

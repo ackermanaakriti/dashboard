@@ -15,7 +15,7 @@ const SideBar = () => {
     const [activeSubMenu, setActiveSubMenu] = useState(null);
     const [menuopen, setMenuopen] = useState(false);
    
-   console.log(sidebarToggle)
+
 
     const handleClick = (name,index) => {
     

@@ -12,32 +12,26 @@ import { useNavigate } from "react-router";
 import DeletePopup from "../../../Components/DeletePopup";
 
 const CompanyTable = () => {
-  const { data, fetchData } = useGetData(`Company/GetAll?IsDeleted=${false}`); //use custom hook to get all data...passing url
+  const { data,Deldata } = useGetData(`Company/GetAll?IsDeleted=${false}`,'Company/Delete/'); //use custom hook to get all data...passing url
   const [tableData, setTableData] = useState([]);
   const [filterText, setFilterText] = React.useState("");
   const navigate = useNavigate();
   const { DeleteList, setDeleteList } = useLayouData();
   const [DeleteId, setDeleteId] = useState("");
 
-  useEffect(() => {
-    setTableData(data?.data); //set fetched data to tableData for filtering
-  }, [tableData, data]);
-  // const users = use(fetchData());
-  // console.log(users)
-  const handleDelete = async (id) => {
-    setDeleteList(true);
-    setDeleteId(id);
+
+
+  const handleDelete =  async (id) => {
+    setDeleteList(true)
+    setDeleteId(id)
   };
 
-  const handleDeleteConfirmation = async () => {
-    fetchData();
-  };
-
+ 
   const handleEdit = (id) => {
     navigate(`/company/form/${id}`);
   };
 
-  const filteredItems = tableData?.filter((item) =>
+  const filteredItems = data?.filter((item) =>
     item?.name.toLowerCase().includes(filterText.toLowerCase())
   ); //filter fetched data on the basis of name
 
@@ -112,9 +106,12 @@ const CompanyTable = () => {
       />
       {DeleteList && (
         <DeletePopup
-          url="Company/Delete/"
-          id={DeleteId}
-          handleDeleteConfirmation={handleDeleteConfirmation}
+        
+          
+         
+          DeleteId={DeleteId}
+          Deldata={Deldata}
+        
         />
       )}
     </div>

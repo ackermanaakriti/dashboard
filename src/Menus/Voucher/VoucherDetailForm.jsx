@@ -1,5 +1,5 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as Yup from 'yup'; import Voucher from './VoucherForm'
 import { v4 as uuidv4 } from 'uuid';
 import { useDispatch, useSelector } from 'react-redux';
@@ -30,15 +30,12 @@ const VoucherDetailform = ({ onDataSubmit, dataByid,editMode,setdebCredAmount })
   const [detailformError, setDetailformError] = useState('')
   const [selectedChartOfAccount, setSelectedChartOfAccount] = useState([]); // State to store the selected ChartofAccount
   const [id, setIdCounter] = useState(1);
+  const firstFieldRef = useRef()
 
-  const customStyles = {
-    control: (provided, state) => ({
-      ...provided,
-      border: '1px solid #e2e8f0', // Customize border color
-      borderRadius: '0.375rem', // Customize border radius
-      width: '100%', // Customize width
-    }),
-  };
+  useEffect(() => {
+    // Focus on the first field when the component mounts
+    firstFieldRef.current?.focus();
+  }, []);
 
 
   const initialValues = {
@@ -64,11 +61,11 @@ const VoucherDetailform = ({ onDataSubmit, dataByid,editMode,setdebCredAmount })
 
 
   const validationSchema = Yup.object().shape({
-    // chartOfAccountId: Yup.string().required('required'),
+    chartOfAccountId: Yup.string().required('required'),
     // debitAmount: Yup.number().typeError('enter number').required('required'),
     // creditAmount: Yup.number().required('required'),
     narration: Yup.string().required('required'),
-    // Amount: Yup.number().required('required'),
+    Amount: Yup.number().required('required'),
     // isAmount : Yup.boolean().required('required'),
     chequeNumber: Yup.number().required('required')
 
@@ -104,6 +101,20 @@ const VoucherDetailform = ({ onDataSubmit, dataByid,editMode,setdebCredAmount })
       resetForm();
       setisAmount(prevIsAmount => !prevIsAmount);
     } 
+    const handleEnterKeyPress = (event, nextField,formik) => {
+      if (event.key === "Enter" || event.key === 'Tab') {
+        event.preventDefault();
+        const nextInput = document.getElementById(nextField);
+        if (nextField === 'chartofaccount') {
+          console.log('hello')
+          handleSubmit(formik.values, { resetForm: formik.resetForm });
+        }
+        if (nextInput) {
+          nextInput.focus();
+        }
+        
+      }
+    };
   
   
 
@@ -128,7 +139,10 @@ const VoucherDetailform = ({ onDataSubmit, dataByid,editMode,setdebCredAmount })
                   <div className='py-[8px]'>
                     <label className='block py-[5px] font-[500] font-inter '>ChartofAccount</label>
                     <Field
+                     ref={firstFieldRef}
                       as='select'
+                      id='chartofaccount'
+                      onKeyDown={(event) => handleEnterKeyPress(event, "isamounttrue",formik)}
                       name='chartOfAccountId'
                       className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr'
                       onChange={(event) => {
@@ -137,7 +151,7 @@ const VoucherDetailform = ({ onDataSubmit, dataByid,editMode,setdebCredAmount })
                       }}
                     >
                       <option disabled selected value=''>Select ChartofAccount</option>
-                      {data?.data?.map((item, index) => (
+                      {data?.map((item, index) => (
                         <option key={index} value={item.id}>{item.accountName}</option>
                       ))}
                     </Field>
@@ -168,9 +182,9 @@ const VoucherDetailform = ({ onDataSubmit, dataByid,editMode,setdebCredAmount })
                     <div role="group">
                       <label className='block py-[8px] font-[500] font-inter '> Type <span>*</span></label>
                       <div>
-                        <label className=""> <input className='mx-[5px]' type="radio" name="isAmount" value={true}
+                        <label className=""> <input className='mx-[5px]' id='isamounttrue'    onKeyDown={(event) => handleEnterKeyPress(event, "isamountfalse",formik)} type="radio" name="isAmount" value={true}
                           onChange={() => setisAmount(true)}  checked={isamount} />Debit</label>
-                        <label className="ml-[10px]"><input className='ml-[30px]' type="radio" name="isAmount" value={false}
+                        <label className="ml-[10px]"><input className='ml-[30px]' id='isamountfalse' type="radio"    onKeyDown={(event) => handleEnterKeyPress(event, "amount",formik)} name="isAmount" value={false}
                           onChange={() => setisAmount(false)} checked={!isamount} /> Credit</label>
                       </div>
                       <ErrorMessage component="div" className='text-[14px] text-redclr ' name="isAmount" />
@@ -183,6 +197,8 @@ const VoucherDetailform = ({ onDataSubmit, dataByid,editMode,setdebCredAmount })
                       className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr '
                       type='number'
                       name='Amount'
+                      id='amount'
+                      onKeyDown={(event) => handleEnterKeyPress(event, "chequenumber",formik)}
                     //  onChange={(e)=>setAmount(e.target.value)}
                     //  value={amount}
                     />
@@ -195,6 +211,8 @@ const VoucherDetailform = ({ onDataSubmit, dataByid,editMode,setdebCredAmount })
                       className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr '
                       type='text'
                       name='chequeNumber'
+                      id='chequenumber'
+                      onKeyDown={(event) => handleEnterKeyPress(event, "remarks",formik)}
                     />
                     <ErrorMessage component='div' className='text-[14px] text-redclr ' name='chequeNumber' />
                   </div>
@@ -210,12 +228,14 @@ const VoucherDetailform = ({ onDataSubmit, dataByid,editMode,setdebCredAmount })
                       className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none  border-borderclr '
                       type='text'
                       name='narration'
+                      id='remarks'
+                      onKeyDown={(event) => handleEnterKeyPress(event, "btnsubmit",formik)}
 
                     />
                     <ErrorMessage component='div' className='text-[14px] text-redclr' name='narration' />
                   </div>
                   <div className='col-span-1 flex justify-center items-center'>
-                    <button type='submit' className='text-[40px] text-PrimaryColor cursor-pointer pt-[15px]'><IoMdAddCircleOutline /></button>
+                    <button id='btnsubmit' type='submit'  onKeyDown={(event) => handleEnterKeyPress(event, "chartofaccount",formik)} className='text-[40px] text-PrimaryColor cursor-pointer pt-[15px]'><IoMdAddCircleOutline /></button>
                   </div>
                 </div>
 

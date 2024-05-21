@@ -11,8 +11,8 @@ import DeletePopup from "../../Components/DeletePopup";
 const ChartofAccTable = () => {
   const { DeleteList, setDeleteList } = useLayouData();
   const [DeleteId, setDeleteId] = useState("");
-  const { data, fetchData } = useGetData(
-    `ChartOfAccount/GetAll?ShowTransactionalOnly=${false}`
+  const { data, fetchData,Deldata } = useGetData(
+    `ChartOfAccount/GetAll?ShowTransactionalOnly=${false}`, 'ChartOfAccount/Delete/'
   );
   const [tableData, setTableData] = useState([]);
   const [filterText, setFilterText] = useState("");
@@ -29,13 +29,11 @@ const ChartofAccTable = () => {
     navigate(`/chartofaccount/form/${id}`);
   };
 
-  const filteredItems = tableData?.filter((item) =>
+  const filteredItems =data?.filter((item) =>
     item?.accountName.toLowerCase().includes(filterText.toLowerCase())
   );
 
-  useEffect(() => {
-    setTableData(data?.data);
-  }, [data]);
+  
 
   const tabletree = () => {
     return (
@@ -120,8 +118,9 @@ const ChartofAccTable = () => {
       {DeleteList && (
         <DeletePopup
           url="ChartOfAccount/Delete/"
-          id={DeleteId}
-          handleDeleteConfirmation={handleDeleteConfirmation}
+          DeleteId={DeleteId}
+          Deldata={Deldata}
+           
         />
       )}
     </div>

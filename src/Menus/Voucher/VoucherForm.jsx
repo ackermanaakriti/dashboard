@@ -62,6 +62,21 @@ const paramId = useParams()
   isVoid: true,
   isActive: true
   };
+
+  const handleEnterKeyPress = (event, nextField,formik) => {
+    if (event.key === "Enter" || event.key === 'Tab') {
+      event.preventDefault();
+      const nextInput = document.getElementById(nextField);
+      if (nextField === 'name') {
+        console.log('hello')
+        handleSubmit(formik.values, { resetForm: formik.resetForm });
+      }
+      if (nextInput) {
+        nextInput.focus();
+      }
+      
+    }
+  };
  
 
   const validationSchema = Yup.object().shape({
@@ -116,10 +131,12 @@ const paramId = useParams()
                     className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr '
                     type='text'
                    disabled={editMode}
+                   onKeyDown={(event) => handleEnterKeyPress(event, "invoiceNumber",formik)}
                     name='voucherTypeId'
+                    id='voucherTypeId'
                     as='select'>
                     <option disabled selected value=''>  Select Voucher Type</option>
-                    {data?.data?.map((item,index)=>(
+                    {data?.map((item,index)=>(
                     <option value={item?.id}>{item?.name}</option>
                     ))}
                   </Field>
@@ -142,7 +159,10 @@ const paramId = useParams()
                   <Field
                     className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr '
                     type='text'
+                    id='invoiceNumber'
+                    onKeyDown={(event) => handleEnterKeyPress(event, "transactionDate",formik)}
                     name='invoiceNumber'/>
+                     
                   <ErrorMessage component='div' className='text-[14px] text-redclr ' name='invoiceNumber' />
                 </div></div>
 
@@ -154,6 +174,8 @@ const paramId = useParams()
                       className='border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr '
                       name='transactionDate'
                       type='date'
+                      id='transactionDate'
+                      onKeyDown={(event) => handleEnterKeyPress(event, "transactionDateBS",formik)}
                     />
                     {/* <ErrorMessage component='div' className='text-[14px] text-redclr ' name='transactionDate' /> */}
                   </div>
@@ -163,6 +185,8 @@ const paramId = useParams()
                       className='border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr '
                       name='transactionDateBS'
                       type='date'
+                      id='transactionDateBS'
+                       onKeyDown={(event) => handleEnterKeyPress(event, "narration",formik)}
                     />
                     {/* <ErrorMessage component='div' className='text-[14px] text-redclr ' name='transactionDateBS' /> */}
                   </div>
@@ -172,6 +196,8 @@ const paramId = useParams()
                     className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr '
                     type='text'
                     name='narration'
+                  id='narration'
+                    onKeyDown={(event) => handleEnterKeyPress(event, "prefix",formik)}
                    
                   />
                   <ErrorMessage component='div' className='text-[14px] text-redclr' name='narration' />

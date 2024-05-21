@@ -9,6 +9,7 @@ import useGetById from "../../Apis/useGetById";
 import useUpdateData from "../../Apis/useUpdate";
 import useGetData from "../../Apis/useGetData";
 import { useNavigate, useParams } from "react-router";
+import useFormNavigation from "../../Components/FormNavigation";
 
 const EmployeeForm = () => {
   const { postdata, postError } = usePostData("Employee/Add");
@@ -20,6 +21,7 @@ const EmployeeForm = () => {
   const {data}= useGetData(`Department/GetAll?IsDeleted?isDeleted=${false}`)
   const navigate = useNavigate()
   const paramId = useParams()
+  const formRef = useFormNavigation();
 
 
   useEffect(() => {
@@ -76,7 +78,7 @@ navigate('/employee')
         enableReinitialize={true}
       >
         {(formik) => (
-          <Form className="grid grid-cols-2 gap-[90px]">
+          <Form ref={formRef} className="grid grid-cols-2 gap-[90px]">
             <div className="relative">
               <div className="py-[8px]">
                 <label className="block py-[5px] font-[500] font-inter ">

@@ -3,15 +3,16 @@ import { RiDeleteBin5Fill } from "react-icons/ri";
 import '../FiscalYearMenu/Fiscalyear.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLayouData } from '../../Context/MainLayoutContext';
-import useDelData from '../../Apis/useDelData';
+import useGetData from '../../Apis/useGetData';
+
 
 const VoucherDetailTable = ({ dataByid, editData, detaildata, editMode, setdebCredAmount }) => {
   const { setId, getId } = useLayouData();
   const dispatch = useDispatch();
   const voucherDetail = useSelector((state) => state.voucherData?.voucherDetail);
   const [voucherDetaildata, setVoucherDetaildata] = useState([]);
-  const { Deldata } = useDelData('VoucherDetail/Delete/');
-  const { data, fetchData } = useDelData(`VoucherDetail/GetAll/IsDeleted=${true}`);
+  // const { Deldata } = useDelData('VoucherDetail/Delete/');
+  const { data, fetchData,Deldata } = useGetData(`VoucherDetail/GetAll/IsDeleted=${true}`);
  
 
   useEffect(() => {
@@ -68,6 +69,7 @@ const VoucherDetailTable = ({ dataByid, editData, detaildata, editMode, setdebCr
       Deldata(id);
     } else {
       const updateddata = voucherDetaildata.filter(item => item.chartOfAccountName !== name);
+      console.log(updateddata)
       setVoucherDetaildata(updateddata);
     }
   };

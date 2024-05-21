@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 
 export const TableDataComp = ({ columns, width, filteredItems, filterText, setFilterText, link,tabletree }) => {
-    console.log(link)
+   
 
     const [resetPaginationToggle, setResetPaginationToggle] = React.useState(false);
     const [tableHeight, setTableHeight] = useState(0);

@@ -7,6 +7,36 @@
   --Tablebg: #c0d3e4;
   --inter: "Inter", sans-serif;
 }
+body 
+{
+  input 
+  {
+    &:focus
+    {
+      border:2px solid #95bfbf;
+    }
+  }
+  select
+  {
+    &:focus
+    {
+      border:2px solid #95bfbf;
+    }
+  }
+  textarea
+  {
+    &:focus
+    {
+      border:2px solid #95bfbf;
+    }
+  }
+  /* button 
+  {
+    &:focus{
+      border:2px solid #95bfbf;
+    }
+  } */
+}
 .header {
   position: relative;
   z-index: 99999;

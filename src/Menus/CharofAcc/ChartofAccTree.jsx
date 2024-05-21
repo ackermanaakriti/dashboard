@@ -92,7 +92,7 @@ const TreeViewChart = () => {
        <span className="text-PrimaryColor text-[24px]"><CiViewTable/></span></p>
       </div>
       <div>
-      {data?.data?.map(node => (
+      {data?.map(node => (
         <TreeNode key={node.id} node={node} />
       ))}
       </div>

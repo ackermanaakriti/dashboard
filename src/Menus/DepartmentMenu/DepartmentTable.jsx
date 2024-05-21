@@ -8,31 +8,26 @@ import DeletePopup from "../../Components/DeletePopup";
 import useGetData from "../../Apis/useGetData";
 
 const DepartmentTable = () => {
-  const { data, fetchData } = useGetData(`Department/GetAll?IsDeleted=${false}`);
+  const { data, fetchData,Deldata } = useGetData(`Department/GetAll?IsDeleted=${false}`,'Department/Delete/');
   const [tableData, setTableData] = useState([]);
   const [filterText, setFilterText] = React.useState('');
   const navigate = useNavigate();
   const { DeleteList, setDeleteList } = useLayouData();
   const [DeleteId, setDeleteId] = useState("");
 
-  useEffect(() => {
-    setTableData(data?.data);
-  }, [tableData, data]);
 
   const handleDelete = async (id) => {
     setDeleteList(true);
     setDeleteId(id);
   };
 
-  const handleDeleteConfirmation = async () => {
-    fetchData();
-  };
+  
 
   const handleEdit = (id) => {
     navigate(`/department/form/${id}`);
   };
 
-  const filteredItems = tableData?.filter(
+  const filteredItems = data?.filter(
     item => item?.name.toLowerCase().includes(filterText.toLowerCase())
   );
 
@@ -100,9 +95,10 @@ const DepartmentTable = () => {
       />
       {DeleteList && (
         <DeletePopup
-          url="Department/Delete/"
-          id={DeleteId}
-          handleDeleteConfirmation={handleDeleteConfirmation}
+         
+          DeleteId={DeleteId}
+          Deldata={Deldata}
+         
         />
       )}
     </div>

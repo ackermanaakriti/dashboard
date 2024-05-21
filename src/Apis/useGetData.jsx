@@ -1,42 +1,54 @@
-import { useEffect, useMemo, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { baseUrl } from "./Baseurl";
 import { useLayouData } from '../Context/MainLayoutContext';
 
-function useGetData(initialUrl) {
+function useGetData(fetchurl, deleteurl) {
   const { token } = useLayouData();
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [url, setUrl] = useState(initialUrl);
 
-  // Memoize the URL to avoid unnecessary re-fetching
-  const memoizedUrl = useMemo(() => url, [url]);
-
-  // Memoize the fetchData function to avoid re-creating it on every render
-  const fetchData = useCallback(async () => {
-    if (!memoizedUrl) return; // If URL is null or empty, do nothing
+  const fetchData = async () => {
     try {
-      // Set loading state to true
       setLoading(true);
-      const response = await axios.get(`${baseUrl}${memoizedUrl}`, {
+      const response = await axios.get(`${baseUrl}${fetchurl}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      // Update data and set loading state to false
-      setData(response?.data);
+      setData(response?.data?.data);
       setLoading(false);
+      console.log(response)
     } catch (err) {
-      // Handle errors
       setError(err);
       setLoading(false);
     }
-  }, [memoizedUrl, token]);
+  };
+
+  const Deldata = async (id) => {
+    console.log(id);
+    try {
+    const response =  await axios.post(
+        `${baseUrl}${deleteurl}${id}`,
+        null, // Pass null as the data parameter since it's not needed
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+      // Update the local state to remove the deleted item
+      setData((prevData) => prevData.filter(item => item.id !== id));
+      console.log(response)
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
     fetchData();
-  }, [fetchData]);
+  }, [fetchurl,deleteurl,]);
 
-  return { data, error, fetchData, loading, setUrl }; // Return fetchData along with data, error, loading, and setUrl
+  return { data, error, fetchData, loading, Deldata };
 }
 
 export default useGetData;

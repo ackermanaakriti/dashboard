@@ -4,21 +4,24 @@ import { useLayouData } from '../Context/MainLayoutContext'
 import useGetData from '../Apis/useGetData'
 
 
-const DeletePopup = ({id,url,handleDeleteConfirmation}) => {
-    console.log(id)
-    const { Deldata,delresponse } = useDelData(url) 
+const DeletePopup = ({DeleteId,Deldata}) => {
+   
+   
     const { DeleteList,setDeleteList} = useLayouData()
+  
     const handleAbort=()=>
         {
             setDeleteList(false)
         }
         const handleDel = async () => {
-            await Deldata(id); 
+            
+           Deldata(DeleteId)
             setDeleteList(false); 
-            handleDeleteConfirmation(); 
+
+           
         }
         
-    console.log('delete')
+
     return (
         <>
             <div className='overlay fixed inset-0 w-full h-full bg-[rgba(36,35,35,0.12)] ' style={{ zIndex: 9999 }}>
