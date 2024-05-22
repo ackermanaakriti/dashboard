@@ -13,10 +13,11 @@ import useGetData from '../../Apis/useGetData';
 import usePostData from '../../Apis/usePostData';
 import { editAccountgrp } from '../../Redux/Slices/AccountGroupSlice';
 import Select from 'react-select';
+import useFormNavigation from '../../Components/FormNavigation';
 
 
 
-const VoucherDetailform = ({ onDataSubmit, dataByid,editMode,setdebCredAmount }) => {
+const VoucherDetailform = ({ onDataSubmit, dataByid,editMode,setdebCredAmount ,setChildRef },) => {
 // const id = uuidv4();
   const { postdata } = usePostData('VoucherDetail/Add')
   const { data } = useGetData(`ChartOfAccount/GetAll?ShowTransactionalOnly=${false}`)
@@ -25,17 +26,17 @@ const VoucherDetailform = ({ onDataSubmit, dataByid,editMode,setdebCredAmount })
   const [detaildata, setdetailData] = useState([])
   const [isamount, setisAmount] = useState(false);
   const [d, setD] = useState([])
-  const dispatch = useDispatch();
-  const [value, setValue] = useState("");
-  const [detailformError, setDetailformError] = useState('')
   const [selectedChartOfAccount, setSelectedChartOfAccount] = useState([]); // State to store the selected ChartofAccount
   const [id, setIdCounter] = useState(1);
   const firstFieldRef = useRef()
+  const formref = useFormNavigation()
+
 
   useEffect(() => {
-    // Focus on the first field when the component mounts
-    firstFieldRef.current?.focus();
-  }, []);
+    // Pass the childRef to the parent component
+    setChildRef(firstFieldRef);
+  }, [setChildRef]);
+
 
 
   const initialValues = {
@@ -71,10 +72,11 @@ const VoucherDetailform = ({ onDataSubmit, dataByid,editMode,setdebCredAmount })
 
   });
   const handleChartOfAccountChange = (event, formik) => {
-    const selectedOption = data?.data?.find(item => item?.id.toString() === event.target.value);
+    const selectedOption = data?.find(item => item?.id.toString() === event.target.value);
     setSelectedChartOfAccount(selectedOption);
-    formik.setFieldValue('chartOfAccountId',selectedOption.id ); // Update the formik field value
-    formik.setFieldValue('chartOfAccountAccountName',selectedOption.accountName ); // Update the formik field value
+    console.log(selectedOption)
+    formik.setFieldValue('chartOfAccountId',selectedOption?.id ); // Update the formik field value
+    formik.setFieldValue('chartOfAccountAccountName',selectedOption?.accountName ); // Update the formik field value
   };
 
  
@@ -133,16 +135,15 @@ const VoucherDetailform = ({ onDataSubmit, dataByid,editMode,setdebCredAmount })
           enableReinitialize={true}
         >
           {(formik) => (
-            <Form className='pt-[30px]'>
+            <Form ref={formref} className='pt-[30px]'>
               <div className=' w-[70%] flex flex-col justify-center m-auto' >
                 <div className='grid grid-cols-4 gap-[20px]'>
                   <div className='py-[8px]'>
                     <label className='block py-[5px] font-[500] font-inter '>ChartofAccount</label>
                     <Field
-                     ref={firstFieldRef}
+                      innerRef={firstFieldRef}
                       as='select'
                       id='chartofaccount'
-                      onKeyDown={(event) => handleEnterKeyPress(event, "isamounttrue",formik)}
                       name='chartOfAccountId'
                       className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr'
                       onChange={(event) => {
@@ -160,31 +161,14 @@ const VoucherDetailform = ({ onDataSubmit, dataByid,editMode,setdebCredAmount })
                   </div>
                
 
-{/* 
-<div className='py-[8px] select'>
-  <label className='block py-[5px] font-[500] font-inter'>ChartofAccount</label>
-  <Select
-  options={data?.data?.map(item => ({ value: item.id, label: item.accountName }))}
-  onChange={(selectedOption) => {
-    console.log(selectedOption)
-    formik.setFieldValue('chartOfAccountId', selectedOption.value);
-    formik.setFieldValue('chartOfAccountAccountName', selectedOption.label);
-  }}
-  value={{ label: formik.values.chartOfAccountAccountName }}
-  placeholder="Select ChartofAccount"
-  styles={{ border: '1px solid #e2e8f0' }}
-/>
-
-  <ErrorMessage component='div' className='text-[14px] text-redclr' name='chartOfAccountId' />
-</div> */}
 
                   <div className="py-[8px]">
                     <div role="group">
                       <label className='block py-[8px] font-[500] font-inter '> Type <span>*</span></label>
                       <div>
-                        <label className=""> <input className='mx-[5px]' id='isamounttrue'    onKeyDown={(event) => handleEnterKeyPress(event, "isamountfalse",formik)} type="radio" name="isAmount" value={true}
+                        <label className=""> <Field className='mx-[5px]' id='isamounttrue'     type="radio" name="isAmount" value={true}
                           onChange={() => setisAmount(true)}  checked={isamount} />Debit</label>
-                        <label className="ml-[10px]"><input className='ml-[30px]' id='isamountfalse' type="radio"    onKeyDown={(event) => handleEnterKeyPress(event, "amount",formik)} name="isAmount" value={false}
+                        <label className="ml-[10px]"><Field className='ml-[30px]' id='isamountfalse' type="radio"     name="isAmount" value={false}
                           onChange={() => setisAmount(false)} checked={!isamount} /> Credit</label>
                       </div>
                       <ErrorMessage component="div" className='text-[14px] text-redclr ' name="isAmount" />
@@ -198,7 +182,7 @@ const VoucherDetailform = ({ onDataSubmit, dataByid,editMode,setdebCredAmount })
                       type='number'
                       name='Amount'
                       id='amount'
-                      onKeyDown={(event) => handleEnterKeyPress(event, "chequenumber",formik)}
+                    
                     //  onChange={(e)=>setAmount(e.target.value)}
                     //  value={amount}
                     />
@@ -212,7 +196,7 @@ const VoucherDetailform = ({ onDataSubmit, dataByid,editMode,setdebCredAmount })
                       type='text'
                       name='chequeNumber'
                       id='chequenumber'
-                      onKeyDown={(event) => handleEnterKeyPress(event, "remarks",formik)}
+                    
                     />
                     <ErrorMessage component='div' className='text-[14px] text-redclr ' name='chequeNumber' />
                   </div>
@@ -229,8 +213,13 @@ const VoucherDetailform = ({ onDataSubmit, dataByid,editMode,setdebCredAmount })
                       type='text'
                       name='narration'
                       id='remarks'
-                      onKeyDown={(event) => handleEnterKeyPress(event, "btnsubmit",formik)}
-
+                    
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          document.getElementById('btnsubmit').focus();
+                        }
+                      }}
                     />
                     <ErrorMessage component='div' className='text-[14px] text-redclr' name='narration' />
                   </div>

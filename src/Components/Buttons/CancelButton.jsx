@@ -6,7 +6,7 @@ const CancelButton = ({link}) => {
     const navigate = useNavigate()
   return (
    <>
-     <button
+     <button id='cancelbtn'
                   onClick={() => navigate(link)}
                   className=" border-[1px] border-redclr px-[15px] py-[4px] text-redclr font-inter"
                   type="button"

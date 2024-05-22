@@ -4,16 +4,18 @@ import '../FiscalYearMenu/Fiscalyear.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLayouData } from '../../Context/MainLayoutContext';
 import useGetData from '../../Apis/useGetData';
+import { baseUrl } from '../../Apis/Baseurl';
+import axios from 'axios';
 
 
 const VoucherDetailTable = ({ dataByid, editData, detaildata, editMode, setdebCredAmount }) => {
-  const { setId, getId } = useLayouData();
-  const dispatch = useDispatch();
-  const voucherDetail = useSelector((state) => state.voucherData?.voucherDetail);
+
   const [voucherDetaildata, setVoucherDetaildata] = useState([]);
   // const { Deldata } = useDelData('VoucherDetail/Delete/');
-  const { data, fetchData,Deldata } = useGetData(`VoucherDetail/GetAll/IsDeleted=${true}`);
- 
+  const { data, fetchData,Deldata } = useGetData( `VoucherDetail/GetAll/IsDeleted=${true}`,'VoucherDetail/Delete/');
+ const [creditsum,setCreditsum]= useState('');
+const [debitSum,setDebitSum]= useState('')
+ const {token} = useLayouData()
 
   useEffect(() => {
     setdebCredAmount(false);
@@ -32,27 +34,11 @@ const VoucherDetailTable = ({ dataByid, editData, detaildata, editMode, setdebCr
     calculateSumEquality(voucherDetaildata);
   }, [voucherDetaildata]);
 
-  // const calculateSumEquality = (data) => {
-  //   // if (!data || data.length === 0) {
-  //   //   setIsSumEqual(false); // Handle case when data is undefined or empty
-  //   //   return console.log('hello err');
-  //   // }
-  
-  //   const debitSum = data?.reduce((total, item) => total + (item.debitAmount || 0), 0);
-  //   const creditSum = data?.reduce((total, item) => total + (item.creditAmount || 0), 0);
-  //   console.log(debitSum);
-  //   console.log(creditSum)
-  //   if(debitSum === creditSum)
-  //     {
-  //       setIsSumEqual(true);
-  //       console.log('hello')
-  //     }
-   
-    
-  // };
   const calculateSumEquality = useCallback((data) => {
     const debitSum = data?.reduce((total, item) => total + (item.debitAmount || 0), 0);
+    setDebitSum(debitSum)
     const creditSum = data?.reduce((total, item) => total + (item.creditAmount || 0), 0);
+    setCreditsum(creditSum)
     console.log(debitSum)
     console.log(creditSum)
     if(debitSum === creditSum)
@@ -65,9 +51,28 @@ const VoucherDetailTable = ({ dataByid, editData, detaildata, editMode, setdebCr
   
 
   const handleDel = (id, name) => {
-    if (dataByid && editData) {
-      Deldata(id);
+    if (editMode) {
+      console.log('hello')
+      try {
+        const response =   axios.post(
+            `${baseUrl}VoucherDetail/Delete/${id}`,
+            null, // Pass null as the data parameter since it's not needed
+            {
+              headers: {
+                Authorization: `Bearer ${token}`
+              }
+            }
+          );
+          // Update the local state to remove the deleted item
+          setVoucherDetaildata((prevData) => prevData.filter(item => item.id !== id));
+          console.log(response)
+        } catch (err) {
+          console.log(err);
+        }
+      
+    
     } else {
+      console.log('bye')
       const updateddata = voucherDetaildata.filter(item => item.chartOfAccountName !== name);
       console.log(updateddata)
       setVoucherDetaildata(updateddata);
@@ -101,8 +106,16 @@ const VoucherDetailTable = ({ dataByid, editData, detaildata, editMode, setdebCr
                     </span>
                   </div>
                 </td>
+                
               </tr>
+
             ))}
+            <tr>
+              <th>Total</th>
+              <td>{debitSum}</td>
+              <td>{creditsum}</td>
+              <td colSpan={'2'}></td>
+            </tr>
           </tbody>
         </table>
       </div>

@@ -1,17 +1,10 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import React, { useEffect, useState } from 'react';
 import * as Yup from 'yup';
-import DatePicker from 'react-date-picker';
 import 'react-date-picker/dist/DatePicker.css';
 import 'react-calendar/dist/Calendar.css';
-import { CancelButton, GreenButton } from '../../Components/GreenButton';
 import { useDispatch, useSelector } from 'react-redux';
-import { addFiscalYear, editFiscalYear } from '../../Redux/Slices/FiscalYearSlice';
 import { useLayouData } from '../../Context/MainLayoutContext';
-import { addMenu } from '../../Redux/TopTabSlice';
-import { v4 as uuidv4 } from 'uuid';
-import { addCurrency, editCurrency } from '../../Redux/Slices/CurrencySlice';
-import { addChartofAcc, editCharofAcc } from '../../Redux/Slices/CharofAccSlice';
 import usePostData from '../../Apis/usePostData';
 import axios from 'axios';
 import { baseUrl } from '../../Apis/Baseurl';
@@ -19,7 +12,12 @@ import useUpdateData from '../../Apis/useUpdate';
 import useGetById from '../../Apis/useGetById';
 import useGetData from '../../Apis/useGetData';
 import { useNavigate, useParams } from 'react-router-dom';
+import useFormNavigation from '../../Components/FormNavigation';
+import SubmitButton from '../../Components/Buttons/SubmitButton';
+import CancelButton from '../../Components/Buttons/CancelButton';
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const CharofAccForm = () => {
   
     const {postdata,postError}= usePostData('ChartOfAccount/Add')
@@ -33,6 +31,7 @@ const CharofAccForm = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch();
     const paramId = useParams()
+    const formref = useFormNavigation()
  
  
     useEffect(() => {
@@ -77,12 +76,12 @@ const CharofAccForm = () => {
     const validationSchema = Yup.object().shape({
  
         // accountCode: Yup.string().typeError('invalid data').required('required'),
-        accountName: Yup.string().required('required'),
+        // accountName: Yup.string().required('required'),
         parentAccountId:Yup.string().required('required'),
         mainParentId: Yup.string().required('required'),
-        accountName:Yup.string().required('required')
+        accountName:Yup.string().required('required'),
         // description: Yup.string().required('required'),
-        // isTaxApplicable: Yup.boolean().required('required'),
+        isTaxApplicable: Yup.boolean().required('required'),
         // isActive: Yup.boolean().required('required'),
         // isLedger: Yup.boolean().required('required'),
         // isAllBranchApplicable: Yup.boolean().required('required'),
@@ -90,15 +89,18 @@ const CharofAccForm = () => {
         // accountGroupId:Yup.number().required('required')
     });
 
-    const handleSubmit = async (values) => {
-        
-// debugger;
-        console.log(values)
+    const handleSubmit = async (formik) => {
+
         if (editMode) {
-          updateData(values)  }
-        else { postdata(values ); }
+          updateData(formik.values)  ;
+           navigate('/chartofaccount') }
+        else { postdata(formik.values ,'Chart Of Account');
+        formik.resetForm()
+         }
+         document.getElementById('accountName').focus()
+  
        
-       navigate('/chartofaccount')
+     
        
 
     };
@@ -109,15 +111,29 @@ const CharofAccForm = () => {
                 <div>
                     <h2 className='font-inter font-semibold text-[30px]'> {editMode ? 'Update' : 'Add'} Chart of Account</h2>
                 </div>
+                <ToastContainer
+        position="bottom-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
 
                 <Formik
                     initialValues={editMode ? dataByid : initialValues}
                     validationSchema={validationSchema}
-                    onSubmit={handleSubmit}
+                    onSubmit={(values, {resetForm}) => {
+                        handleSubmit(values, {resetForm});
+                      }}
                     enableReinitialize={true}
                 >
                     {(formik) => (
-                        <Form className='grid grid-cols-2 gap-[90px]'>
+                        <Form ref={formref} className='grid grid-cols-2 gap-[90px]'>
                             <div className=''>
                                 <div className='py-[8px]'>
                                     <label className='block py-[5px] font-[500] font-inter '>Name <span className='text-redclr'>*</span></label>
@@ -125,6 +141,7 @@ const CharofAccForm = () => {
                                         className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr '
                                         type='text'
                                         name='accountName'
+                                        id='accountName'
                                     />
                                     <ErrorMessage component='div' className='text-[14px] text-redclr' name='accountName' />
                                 </div>
@@ -145,7 +162,7 @@ const CharofAccForm = () => {
                                         <Field
                                             className='border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr '
                                             name='accountGroupId'
-                                           
+                                            id='accountGroupId'
                                             as='select'
                                             placeholder='Select Account Group'
 
@@ -168,7 +185,7 @@ const CharofAccForm = () => {
                                         <Field
                                             className='border-[1px]  py-[8px] px-[12px] pr-[10px]  w-full outline-none border-borderclr '
                                             name='mainParentId'
-                                          
+                                            id='mainParentId'
                                             as='select'
                                             placeholder='Select Main Parent Account'
                                         >
@@ -185,7 +202,7 @@ const CharofAccForm = () => {
                                         <Field
                                             className='border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr '
                                             name='parentAccountId'
-                                          
+                                            id='parentAccountId'
                                             as='select'
                                         >
                                              <option className='text-[#717378] text-[15px]' value='' disabled  >Select  Parent Account</option>
@@ -204,9 +221,9 @@ const CharofAccForm = () => {
                                     <div role="group">
                                             <label className='block py-[8px] font-[500] font-inter '> Tax Applicable </label>
                                             <div>
-                                                <label className=""> <input className='mx-[5px]' type="radio"  name="isTaxApplicable"  checked={formik.values.isTaxApplicable === true} value={true}
+                                                <label className=""> <Field className='mx-[5px]' type="radio" id='texapplicable' name="isTaxApplicable"  checked={formik.values.isTaxApplicable === true} value={true}
                                                onChange={() => formik.setFieldValue('isTaxApplicable', true)} />Yes</label>
-                                                <label className="ml-[10px]"><input className='mx-[5px]' type="radio" name="isTaxApplicable" checked={formik.values.isTaxApplicable === false} value={false}
+                                                <label className="ml-[10px]"><Field className='mx-[5px]'id='texapplicable' type="radio" name="isTaxApplicable" checked={formik.values.isTaxApplicable === false} value={false}
                                                   onChange={() => formik.setFieldValue('isTaxApplicable', false)} /> No</label>
                                             </div>
                                             <ErrorMessage component="div" className='text-[14px] text-redclr ' name="isTaxApplicable" />
@@ -218,9 +235,9 @@ const CharofAccForm = () => {
                                         <div role="group">
                                             <label className='block py-[8px] font-[500] font-inter '>Active</label>
                                             <div>
-                                                <label className=""> <input className='mx-[5px]' type="radio"  name="isActive"  checked={formik.values.isActive === true} value={true}
+                                                <label className=""> <Field className='mx-[5px]' type="radio" id='isActive'  name="isActive"  checked={formik.values.isActive === true} value={true}
                                                onChange={() => formik.setFieldValue('isActive', true)} />Yes</label>
-                                                <label className="ml-[10px]"><input className='mx-[5px]' type="radio" name="isActive" checked={formik.values.isActive === false} value={false}
+                                                <label className="ml-[10px]"><Field className='mx-[5px]' type="radio" id='isActive' name="isActive" checked={formik.values.isActive === false} value={false}
                                                   onChange={() => formik.setFieldValue('isActive', false)} /> No</label>
                                             </div>
                                             <ErrorMessage component="div" className='text-[14px] text-redclr ' name="isActive" />
@@ -237,6 +254,7 @@ const CharofAccForm = () => {
                                         type='text'
                                         name='description'
                                         as='textarea'
+                                        id='description'
                                     />
                                     <ErrorMessage component='div' className='text-[14px] text-redclr' name='description' />
                                 </div>
@@ -244,16 +262,16 @@ const CharofAccForm = () => {
 
                             </div>
 
-                            <div>
+                            <div className='relative'>
 
                                 <div className='grid grid-cols-2 gap-[20px]'>
                                     <div className="py-[6px]">
                                     <div role="group">
                                             <label className='block py-[8px] font-[500] font-inter '> Transactional </label>
                                             <div>
-                                                <label className=""> <input className='mx-[5px]' type="radio"  name="isTransactional"  checked={formik.values.isTransactional === true} value={true}
+                                                <label className=""> <Field className='mx-[5px]' type="radio" id='transactional'  name="isTransactional"  checked={formik.values.isTransactional === true} value={true}
                                                onChange={() => formik.setFieldValue('isTransactional', true)} />Yes</label>
-                                                <label className="ml-[10px]"><input className='mx-[5px]' type="radio" name="isTransactional" checked={formik.values.isTransactional === false} value={false}
+                                                <label className="ml-[10px]"><Field className='mx-[5px]' type="radio" id='transactional' name="isTransactional" checked={formik.values.isTransactional === false} value={false}
                                                   onChange={() => formik.setFieldValue('isTransactional', false)} /> No</label>
                                             </div>
                                             <ErrorMessage component="div" className='text-[14px] text-redclr 'name="isTransactional" />
@@ -269,9 +287,9 @@ const CharofAccForm = () => {
                                     <div role="group">
                                             <label className='block py-[8px] font-[500] font-inter '> Apply for All Branch </label>
                                             <div>
-                                                <label className=""> <input className='mx-[5px]' type="radio"  name="isAllBranchApplicable"  checked={formik.values.isAllBranchApplicable === true} value={true}
+                                                <label className=""> <Field className='mx-[5px]' type="radio" id='applyforbranch' name="isAllBranchApplicable"  checked={formik.values.isAllBranchApplicable === true} value={true}
                                                onChange={() => formik.setFieldValue('isAllBranchApplicable', true)} />Yes</label>
-                                                <label className="ml-[10px]"><input className='mx-[5px]' type="radio" name="isAllBranchApplicable" checked={formik.values.isAllBranchApplicable === false} value={false}
+                                                <label className="ml-[10px]"><Field className='mx-[5px]' id='applyforbranch' type="radio" name="isAllBranchApplicable" checked={formik.values.isAllBranchApplicable === false} value={false}
                                                   onChange={() => formik.setFieldValue('isAllBranchApplicable', false)} /> No</label>
                                             </div>
                                             <ErrorMessage component="div" className='text-[14px] text-redclr ' name="isAllBranchApplicable" />
@@ -283,9 +301,15 @@ const CharofAccForm = () => {
                                     <div role="group">
                                             <label className='block py-[8px] font-[500] font-inter '>Ledger </label>
                                             <div>
-                                                <label className=""> <input className='mx-[5px]' type="radio"  name="isLedger"  checked={formik.values.isLedger === true} value={true}
+                                                <label className=""> <Field className='mx-[5px]' type="radio" id='ledger' name="isLedger"  checked={formik.values.isLedger === true} value={true}
                                                onChange={() => formik.setFieldValue('isLedger', true)} />Yes</label>
-                                                <label className="ml-[10px]"><input className='mx-[5px]' type="radio" name="isLedger" checked={formik.values.isLedger === false} value={false}
+                                                <label className="ml-[10px]"><Field id='ledger' className='mx-[5px]' type="radio"
+                                                 onKeyDown={(e) => {
+                                                    if (e.key === 'Enter') {
+                                                      e.preventDefault();
+                                                      document.getElementById('btnsubmit').focus();
+                                                    }
+                                                  }} name="isLedger" checked={formik.values.isLedger === false} value={false}
                                                   onChange={() => formik.setFieldValue('isLedger', false)} /> No</label>
                                             </div>
                                             <ErrorMessage component="div" className='text-[14px] text-redclr ' name="isLedger" />
@@ -294,11 +318,12 @@ const CharofAccForm = () => {
                                 </div>
 
 
-                                <div className=' mt-[40px] flex gap-[20px] absolute bottom-[2em] right-[5em]' >
-                                    <button onClick={() =>  navigate('/chartofaccount')} className=' border-[1px] border-redclr px-[15px] py-[4px] text-redclr font-inter'  type='button'>Cancel</button>
-
-                                    <button className='bg-PrimaryColor px-[15px] py-[4px] text-white font-inter' type='submit' >
-                                        {editMode ? 'Update' : 'Save'} </button>
+                                <div className=' mt-[40px] flex gap-[20px] right-0  absolute bottom-[2em]' >
+                                <CancelButton link='/chartofaccount'/>
+                <SubmitButton type='submit'
+                 editMode={editMode}
+                  formik={formik}
+                   handleSubmit={(values) => handleSubmit(values)}/>
                                 </div>
                             </div>
 

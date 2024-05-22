@@ -2,8 +2,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
  
  export const FocuseErrorField = (errors) => {
-    console.log(errors)
-    console.log('hello error')
+
     const errorKeys = Object.keys(errors);
     toast.error('Validation Error') 
     errorKeys.forEach((item) => {

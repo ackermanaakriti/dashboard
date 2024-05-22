@@ -4,20 +4,20 @@ import { Formik, ErrorMessage, Form, Field } from "formik";
 import { useLayouData } from "../../../Context/MainLayoutContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useDispatch } from "react-redux";
-import { addMenu } from "../../../Redux/TopTabSlice";
 import { HiOutlinePhotograph } from "react-icons/hi";
 import axios from "axios";
 import useGetById from "../../../Apis/useGetById";
 import { baseUrl } from "../../../Apis/Baseurl";
 import { useNavigate, useParams } from "react-router";
 import { FaArrowLeft } from "react-icons/fa6";
+import useFormNavigation from "../../../Components/FormNavigation";
+import CancelButton from "../../../Components/Buttons/CancelButton";
+import SubmitButton from "../../../Components/Buttons/SubmitButton";
 
 
 const CompanyForm = () => {
   const {  token } = useLayouData();
   const { GiveId, dataByid } = useGetById('Company/GetById/');
-  const dispatch = useDispatch();
   const [editMode, setEditMode] = useState(false);
   const [logo, setLogoFile] = useState('');
   const [billLogoFile, setBillLogoFile] = useState('');
@@ -25,16 +25,11 @@ const CompanyForm = () => {
   const paramId = useParams();
   const [error,setError] =useState('');
   const [errorMessages, setErrorMessages] = useState([]);
+  const formref = useFormNavigation()
 
-  // Assuming this is your mapping logic
-  const addErrorMessagesToState = (error) => {
-    setErrorMessages(Object.values(error).flat());
-  };
-  
-  useEffect(() => {
-    addErrorMessagesToState(error);
-  }, [error]);
-  console.log(errorMessages);
+
+console.log(logo)
+
 
   const initialValues = {
     name: "",
@@ -51,9 +46,10 @@ const CompanyForm = () => {
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("required"),
-    regestrationNo: Yup.string().typeError("invalid data").required("required"),
-    pan: Yup.string().typeError("invalid data").required("required"),
+    regestrationNo: Yup.string().required("required"),
+    pan: Yup.string().required("required"),
     address: Yup.string().required("required"),
+    contactNumber: Yup.string().required("required"),
   });
 
   useEffect(() => {
@@ -63,18 +59,19 @@ const CompanyForm = () => {
       GiveId(paramId?.id);
     }
   }, [paramId?.id]);
-  console.log(editMode)
 
-  const handleSubmit = async (values,{resetForm}) => {
+  
+  const handleSubmit = async (formik) => {
     const formData = new FormData();
+    console.log(formik.values)
 
-    Object.keys(values).forEach((key) => {
-      formData.append(key, values[key]);
+    Object.keys(formik.values).forEach((key) => {
+      formData.append(key, formik.values[key]);
     });
-    formData.append("name",values.name)
+    
     formData.append("logo", logo);
-   formData.append("logoFile", billLogoFile);
-    console.log(formData)
+
+  
 
     try {
       const response = await axios.post(
@@ -87,7 +84,7 @@ const CompanyForm = () => {
           },
         }
       );
-      console.log(response);
+      console.log(formData);
       toast.success('Data added Successfully!', {
         position: "bottom-center",
         autoClose: 5000,
@@ -99,39 +96,19 @@ const CompanyForm = () => {
         theme: "light",
         
         });
-      resetForm()
+      formik.resetForm()
     } catch (error) {
       console.log(error.response?.data.errors);
       setError(error.response?.data.errors);
-      // errorMessages?.map((item)=>
-      //   toast.error(item))
-      // if(errorMessages.length>0)
-      //   {
-          
-      //   }
-      toast.error(errorMessages.toString())
     }
     
     
   };
   
-  const handleEnterKeyPress = (event, nextField,formik) => {
-    if (event.key === "Enter" || event.key === 'Tab') {
-      event.preventDefault();
-      const nextInput = document.getElementById(nextField);
-      if (nextField === 'name') {
-        console.log('hello')
-        handleSubmit(formik.values, { resetForm: formik.resetForm });
-      }
-      if (nextInput) {
-        nextInput.focus();
-      }
-      
-    }
-  };
+
 
   return (
-    <div className="Branchform">
+    <div className="px-[50px]">
       
       <div className="pb-[25px] flex justify-between">
         <h3 className="font-inter font-semibold text-[30px]">
@@ -158,78 +135,78 @@ theme="light"
         onSubmit={(values, { resetForm }) => handleSubmit(values, { resetForm })}
       >
         {(formik) => (
-          <Form onSubmit={formik.handleSubmit}>
+          <Form ref={formref} >
             <div className="grid grid-cols-2 gap-[90px] relative">
               <div>
-                <div className="flex justify-between">
+                <div className="grid grid-cols-2  gap-[20px]">
                   <div className="py-[5px]">
-                    <label className="block">Name <span>*</span></label>
+                    <label className="block py-[5px] font-[500] font-inter ">Name <span  className="text-redclr">*</span></label>
                     <Field
                       type="text"
                       name="name"
                       id='name'
-                      className="w-[22em]"
+                      className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr ${formik.errors.name ? 'border-redclr' : ''}`}
+
                       placeholder=""
-                      onKeyDown={(event) => handleEnterKeyPress(event, "contactNumber",formik)}
                     />
                     <ErrorMessage component="div" className="error" name="Name" />
                   </div>
                  
                   <div className="py-[6px]">
-                    <label className="block">Contact Number <span>*</span></label>
+                    <label className="block py-[5px] font-[500] font-inter">Contact Number <span  className="text-redclr">*</span></label>
                     <Field
                       type="text"
                       name="contactNumber"
-                      className="w-[22em]"
+                      className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr ${formik.errors.contactNumber ? 'border-redclr' : ''}`}
+
                       placeholder=""
                       id="contactNumber"
-                      onKeyDown={(event) => handleEnterKeyPress(event, "regestrationNo",formik)}
                     />
                     <ErrorMessage component="div" className="error" name="contactNumber" />
                   </div>
                 </div>
 
-                <div className="flex justify-between">
+                <div className="grid grid-cols-2 gap-[20px]">
                   <div className="py-[6px]">
-                    <label className="block">Regestration No. <span>*</span></label>
+                    <label className="block py-[5px] font-[500] font-inter">Regestration No. <span  className="text-redclr">*</span></label>
                     <Field
                       type="text"
                       name="regestrationNo"
-                      className="w-[22em]"
+                      className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr ${formik.errors.regestrationNo ? 'border-redclr' : ''}`}
+
                       placeholder=""
                       id="regestrationNo"
-                      onKeyDown={(event) => handleEnterKeyPress(event, "pan",formik)}
                     />
-                    <ErrorMessage component="div" className="error" name="regestrationNo" />
+                    <ErrorMessage  component="div" className="error text-redclr text-[12px]" name="regestrationNo" />
                   </div>
                   <div className="py-[6px]">
-                    <label className="block">Pan <span>*</span></label>
+                    <label className="block py-[5px] font-[500] font-inter">Pan <span className="text-redclr">*</span></label>
                     <Field
                       type="text"
                       name="pan"
-                      className="w-[22em]"
+                      className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr ${formik.errors.pan ? 'border-redclr' : ''}`}
+
                       placeholder=""
                       id="pan"
-                      onKeyDown={(event) => handleEnterKeyPress(event, "address",formik)}
                     />
                     <ErrorMessage component="div" className="error" name="pan" />
                   </div>
                 </div>
 
                 <div className="py-[6px]">
-                  <label className="block">Address <span>*</span></label>
+                  <label className="block py-[5px] font-[500] font-inter">Address <span>*</span></label>
                   <Field
                     type="text"
-                    onKeyDown={(event) => handleEnterKeyPress(event, "logoFile",formik)}
                     id="address"
                     name="address"
-                    className="w-[100%]"
+                    className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr ${formik.errors.address ? 'border-redclr' : ''}`}
+
                   />
                   <ErrorMessage component="div" className="error" name="address" />
                 </div>
 
                 <div className="py-[6px]">
-                  <label className="block">Logo <span>*</span></label>
+                  <label className="block py-[5px] font-[500] font-inter">Logo <span>*</span></label>
                   <div className="relative border-dotted border-[2px] border-[#c0d3e5] text-center py-[10px]">
                     <input
                       type="file"
@@ -237,7 +214,6 @@ theme="light"
                       className="w-[100%] opacity-0 absolute inset-0"
                       id="logoFile"
                       onChange={(e) => setLogoFile(e.target.files[0])}
-                      onKeyDown={(event) => handleEnterKeyPress(event, "billAddress",formik)}
                     />
                     <span className="text-[#c0d3e5] text-[30px] flex justify-center "> <HiOutlinePhotograph /></span>
                     <p className="text-[#c0d3e5]">Click to upload photo</p>
@@ -249,60 +225,48 @@ theme="light"
               <div>
                 <h2 className="text-PrimaryColor font-semibold text-center text-[20px]">Billing Information</h2>
                 <div className="py-[6px]">
-                  <label className="block">Bill Address <span>*</span></label>
+                  <label className="block py-[5px] font-[500] font-inter">Bill Address <span>*</span></label>
                   <Field
                     as="textarea"
                     type="text"
-                    onKeyDown={(event) => handleEnterKeyPress(event, "shipAddress",formik)}
                     id="billAddress"
                     name="billAddress"
-                    className="w-[100%]"
+                    className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr ${formik.errors.billAddress ? 'border-redclr' : ''}`}
+
                   />
                   <ErrorMessage component="div" className="error" name="billAddress" />
                 </div>
                 <div className="py-[6px]">
-                  <label className="block">Ship Address <span>*</span></label>
+                  <label className="block py-[5px] font-[500] font-inter">Ship Address <span>*</span></label>
                   <Field
                     as="textarea"
                     type="text"
                     name="shipAddress"
                     id="shipAddress"
-                    onKeyDown={(event) => handleEnterKeyPress(event, "billContactInfo",formik)}
-                    className="w-[100%]"
+                    className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr ${formik.errors.shipAddress ? 'border-redclr' : ''}`}
+
                   />
                   <ErrorMessage component="div" className="error" name="shipAddress" />
                 </div>
                 <div className="py-[6px]">
-                  <label className="block">Bill Contact Info <span>*</span></label>
+                  <label className="block py-[5px] font-[500] font-inter">Bill Contact Info <span>*</span></label>
                   <Field
                     as="textarea"
                     type="text"
                     name="billContactInfo"
-                    className="w-[100%]"
+                    className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr ${formik.errors.billContactInfo ? 'border-redclr' : ''}`}
+
                     id="billContactInfo"
-                    onKeyDown={(event) => handleEnterKeyPress(event, "btnsubmit",formik)}
                   />
                   <ErrorMessage component="div" className="error" name="billContactInfo" />
                 </div>
 
                 <div className="mt-[70px] flex gap-[20px] float-right">
-                  <button
-                    onClick={() =>navigate('/company`')}
-                    type="button"
-                    id='cancel'
-                    className="bg-transparent border-[#d13838] border-solid py-[4px] px-[20px] border-[1px] text-[16px] font-inter font-[600] text-[#d13838]"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    id="btnsubmit"
-                    onKeyDown={(event) => handleEnterKeyPress(event, "name",formik)}
-                  
-                    className="bg-PrimaryColor py-[4px] px-[20px] text-[16px] font-inter text-white focus:bg-[#6bc2eb]"
-                  >
-                    Save
-                  </button>
+                <CancelButton link='/company'/>
+                <SubmitButton type='submit'
+                 editMode={editMode}
+                  formik={formik}
+                   handleSubmit={(values) => handleSubmit(values)}/>
                 </div>
               </div>
             </div>

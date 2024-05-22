@@ -9,7 +9,7 @@ const usePostData = (url) => {
     const [error, setError] = useState('');
     const { token } = useLayouData();
 
-    const postdata = async (values) => {
+    const postdata = async (values,name) => {
         try {
             const response = await axios.post(`${baseUrl}${url}`, values, {
                 headers: { Authorization: `Bearer ${token}` },
@@ -20,7 +20,7 @@ const usePostData = (url) => {
             // Show success toast notification
             if(response?.statusText === 'OK')
                 {
-                    toast.success('Data added successfully!', {
+                    toast.success(`${name} added successfully!`, {
                         position: "bottom-center",
                         autoClose: 5000,
                         hideProgressBar: false,
@@ -38,7 +38,7 @@ const usePostData = (url) => {
             console.log(error)
             // Show error toast notification
             if(error)
-            toast.error('Failed to add data. Please try again later.', {
+            toast.error(`Failed to add  ${name}. Please try again later.`, {
                 position: "bottom-center",
                 autoClose: 5000,
                 hideProgressBar: false,

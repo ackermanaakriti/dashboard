@@ -49,7 +49,7 @@ const ModuleForm = () => {
         await updateData(formik.values);
         navigate('/module');
       } else {
-        await postdata(formik.values);
+        await postdata(formik.values,'module');
       }
      
      document.getElementById('name').focus()
@@ -167,6 +167,12 @@ const ModuleForm = () => {
                         checked={formik.values.isActive === false}
                         value={false}
                         onChange={() => formik.setFieldValue("isActive", false)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault();
+                            document.getElementById('btnsubmit').focus();
+                          }
+                        }}
                       />
                       No
                     </label>
@@ -184,7 +190,7 @@ const ModuleForm = () => {
                 <SubmitButton type='submit'
                  editMode={editMode}
                   formik={formik}
-                   focusFirstErrorField={FocuseErrorField} 
+                  id='btnsubmit'
                    handleSubmit={(values) => handleSubmit(values)}/>
               </div>
             </div>

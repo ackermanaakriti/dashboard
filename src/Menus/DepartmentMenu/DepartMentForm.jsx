@@ -48,15 +48,15 @@ const formref = useFormNavigation()
     companyId: Yup.string().required("Company is required"),
   });
 
-  const handleSubmit = async (values, {resetForm}) => {
+  const handleSubmit = async (formik) => {
 
     if (editMode) {
-      await updateData(values);
+      await updateData(formik.values);
       navigate('/department');
     } else {
-      await postdata(values);
+      await postdata(formik.values,'Department');
     }
-    resetForm()
+    formik.resetForm()
    document.getElementById('name').focus()
 
 };
@@ -202,6 +202,12 @@ const formref = useFormNavigation()
                         checked={formik.values.isActive === false}
                         value={false}
                         onChange={() => formik.setFieldValue("isActive", false)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault();
+                            document.getElementById('btnsubmit').focus();
+                          }
+                        }}
                       />
                       No
                     </label>
@@ -216,7 +222,7 @@ const formref = useFormNavigation()
 
               <div className="mt-[40px] flex gap-[20px] justify-end">
               <CancelButton link='/department'/>
-                <SubmitButton type='submit' editMode={editMode} formik={formik} focusFirstErrorField={FocuseErrorField}/>
+                <SubmitButton id='btnsubmit' type='submit' editMode={editMode}  formik={formik}  handleSubmit={handleSubmit} />
               </div>
             </div>
           </Form>

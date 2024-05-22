@@ -14,6 +14,9 @@ import axios from "axios";
 import useUpdateData from "../../Apis/useUpdate";
 import useGetById from "../../Apis/useGetById";
 import { useNavigate, useParams } from "react-router";
+import useFormNavigation from "../../Components/FormNavigation";
+import SubmitButton from "../../Components/Buttons/SubmitButton";
+import CancelButton from "../../Components/Buttons/CancelButton";
 // import usePostData from '../../Apis/usePostData'
 
 
@@ -25,6 +28,7 @@ const BranchForm = () => {
  const {data} = useGetData('Branch/GetParent')
  const{GiveId,dataByid} = useGetById('Company/GetById/')
  const {updateData} = useUpdateData('Company/Update')
+ const formref = useFormNavigation()
 
 const [companyData,setCompanyData]= useState('')
   const dispatch = useDispatch();
@@ -59,7 +63,7 @@ const [companyData,setCompanyData]= useState('')
     // billadd: Yup.string().required("required"),
     // shipadd: Yup.string().required("required"),
     // billcontactNumber: Yup.string().required("required"),
-    address: Yup.string().required("required"),
+    address: Yup.string().required(" required"),
     fax:Yup.string().required('required'),
     shipAddress: Yup.string().required('required'),
     billContactInfo:Yup.string().required('required'),
@@ -120,6 +124,7 @@ const [companyData,setCompanyData]= useState('')
       if(editMode)
       {
         updateData(formData)
+        navigate('/branch')
       }
       else 
       {
@@ -138,29 +143,33 @@ const [companyData,setCompanyData]= useState('')
       }
   
     
-      navigate('/branch')
+      
 
     };
 
  
-  const handleEnterKeyPress = (event, nextField) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      const nextInput = document.getElementById(nextField);
-      if (nextInput) {
-        nextInput.focus();
-      }
-    }
-  };
 
   return (
-    <div className="Branchform ">
-      <ToastContainer />
+    <div className="px-[50px] ">
+
       <div className="pb-[25px]">
         <h3 className="font-inter font-semibold text-[30px]">
           {editMode ? 'Update Branch' : 'Add Branch'}
         </h3>
       </div>
+
+      <ToastContainer
+        position="bottom-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
 
       <Formik
         enableReinitialize={true}
@@ -169,36 +178,31 @@ const [companyData,setCompanyData]= useState('')
         onSubmit={handleSubmit}
       >
         {(formik) => (
-          <Form onSubmit={formik.handleSubmit}>
+          <Form ref={formref} onSubmit={formik.handleSubmit}>
             <div className="grid grid-cols-2 gap-[90px]">
               <div>
                 <div className="grid grid-cols-2 gap-[30px]">
                 <div className="py-[5px]">
-                  <label className="block">Name <span>*</span></label>
+                  <label className="block py-[5px] font-[500] font-inter ">Name <span>*</span></label>
                   <Field type="text"
                     name="name"
-                    className="w-[100%]"
-                    placeholder=""
-                    onKeyDown={(event) =>
-                      handleEnterKeyPress(event, "parentId")
-                    }
+                      className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr ${formik.errors.name ? 'border-redclr' : ''}`}                    placeholder=""
+                    id='name-'
                   />
                   <ErrorMessage component="div" className="error" name="name" />
                 </div>
 
                 <div className="py-[5px]">
-                  <label className="block">Company <span>*</span></label>
+                  <label className="block py-[5px] font-[500] font-inter ">Company <span>*</span></label>
                   <Field type="text"
                     name="companyId"
                     as='select'
-                 
-                    className="w-[100%] border-[1px] px-[8px] py-[8px] outline-0 border-[#c0d3e5"
+                  id='companyId'
+                  className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr ${formik.errors.companyId ? 'border-redclr' : ''}`}
                     placeholder=""
                     value={CompanyAutofillData}
                     onChange={(e) => setCompanyAutofillData((e.target.value))}
-                    onKeyDown={(event) =>
-                      handleEnterKeyPress(event, "parentId")
-                    }
+                   
                   >
                     <option disabled value="">
                         select company
@@ -211,13 +215,13 @@ const [companyData,setCompanyData]= useState('')
                   <ErrorMessage component="div" className="error" name="companyId" />
                 </div>
                 </div>
-                <div className="flex  justify-between items-center">
+                <div className="grid grid-cols-2 gap-[30px]">
                   <div className="py-[5px]">
-                    <label className="block">
+                    <label className="block py-[5px] font-[500] font-inter ">
                       Parent Branch <span>*</span>
                     </label>
                     <Field
-                      className="border-[1px] px-[8px] py-[8px] outline-0 border-[#c0d3e5] w-[22em] "
+                        className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr ${formik.errors.parentId ? 'border-redclr' : ''}`}
                       as="select"
                       id="parentId"
                       name="parentId"
@@ -228,12 +232,12 @@ const [companyData,setCompanyData]= useState('')
                         // formik.setFieldValue('fieldName', newValue);
                       }}
                     
-                      onKeyDown={(event) => handleEnterKeyPress(event, "Code")}
+                      
                     >
                       <option disabled value="">
                         Select Parent 
                       </option>
-                      {data?.data?.map((item, index) => (
+                      {data?.map((item, index) => (
                         <option key={item?.id} value={item?.id}>{item?.name}</option>
                       ))}
                     </Field>
@@ -244,16 +248,14 @@ const [companyData,setCompanyData]= useState('')
                     />
                   </div>
                   <div className="py-[6px]">
-                    <label className="block">
+                    <label className="block py-[5px] font-[500] font-inter ">
                       Branch Code <span></span>
                     </label>
                     <Field
                       type="text"
-                      onKeyDown={(event) =>
-                        handleEnterKeyPress(event, "regestrationNo")
-                      }
+                      
                       name="code"
-                      className="w-[22em]"
+                      className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr ${formik.errors.code ? 'border-redclr' : ''}`}
                       placeholder=""
                       id="code"
                     />
@@ -265,18 +267,18 @@ const [companyData,setCompanyData]= useState('')
                   </div>
                 </div>
 
-                <div className="flex justify-between">
+                <div className="grid grid-cols-2 gap-[30px]">
                   <div className="py-[6px]">
-                    <label className="block">
+                    <label className="block py-[5px] font-[500] font-inter ">
                       Regestration No. <span>*</span>
                     </label>
                     <Field
                       type="text"
                       name="regestrationNo"
-                      className="w-[22em]"
+                      className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr ${formik.errors.regestrationNo ? 'border-redclr' : ''}`}
                       placeholder=""
                       id="regestrationNo"
-                      onKeyDown={(event) => handleEnterKeyPress(event, "Pan")}
+                     
                     />
                     <ErrorMessage
                       component="div"
@@ -286,16 +288,16 @@ const [companyData,setCompanyData]= useState('')
                   </div>
 
                   <div className="py-[6px]">
-                    <label className="block">
+                    <label className="block py-[5px] font-[500] font-inter ">
                       Pan <span>*</span>
                     </label>
                     <Field
                       type="text"
                       name="pan"
-                      className="w-[22em]"
+                      className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr ${formik.errors.pan ? 'border-redclr' : ''}`}
                       placeholder=""
                       id="pan"
-                      onKeyDown={(event) => handleEnterKeyPress(event, "contactNumber")}
+                     
                     />
                     <ErrorMessage component="div" className="error" name="pan" />
                   </div>
@@ -303,18 +305,18 @@ const [companyData,setCompanyData]= useState('')
 
 
 
-                <div className="flex justify-between">
+                <div className="grid grid-cols-2 gap-[30px]">
                   <div className="py-[6px]">
-                    <label className="block">
+                    <label className="block py-[5px] font-[500] font-inter ">
                       Contact Number <span>*</span>
                     </label>
                     <Field
                       type="text"
                       name="contactNumber"
-                      className="w-[22em]"
+                      className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr ${formik.errors.contactNumber ? 'border-redclr' : ''}`}
                       placeholder=""
                       id="contactNumber"
-                      onKeyDown={(event) => handleEnterKeyPress(event, "address")}
+                     
                     />
                     <ErrorMessage
                       component="div"
@@ -324,32 +326,32 @@ const [companyData,setCompanyData]= useState('')
                   </div>
 
                   <div className="py-[6px]">
-                    <label className="block">
+                    <label className="block py-[5px] font-[500] font-inter ">
                       Fax <span></span>
                     </label>
                     <Field
                       type="text"
                       name="fax"
-                      className="w-[22em]"
+                      className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr ${formik.errors.fax ? 'border-redclr' : ''}`}
                       placeholder=""
                       id="fax"
-                      onKeyDown={(event) => handleEnterKeyPress(event, "address")}
+                      
                     />
                     <ErrorMessage component="div" className="error" name="fax" />
                   </div>
                 </div>
 
                 <div className="py-[6px]">
-                  <label className="block">
+                  <label className="block py-[5px] font-[500] font-inter ">
                     Address <span>*</span>
                   </label>
                   <Field
 
                     type="text"
-                    onKeyDown={(event) => handleEnterKeyPress(event, "billadd")}
+                    
                     id="Address"
                     name="Address"
-                    className="w-[100%] "
+                    className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr ${formik.errors.Address ? 'border-redclr' : ''}`}
                   ></Field>
                   <ErrorMessage
                     component="div"
@@ -359,20 +361,18 @@ const [companyData,setCompanyData]= useState('')
                 </div>
 
                 <div className="py-[6px]">
-                  <label className="block">
+                  <label className="block py-[5px] font-[500] font-inter ">
                     Logo <span></span>
                   </label>
                   <div className="relative border-dotted border-[2px] border-[#c0d3e5] text-center py-[10px]">
-                    <input
+                    <Field
 
                       type="file"
                       name="logoFile"
                       className="w-[100%] opacity-0  absolute inset-0 "
                       id="logoFile"
                       onChange={(e)=>setLogofile(e.target.files[0])}
-                      onKeyDown={(event) =>
-                        handleEnterKeyPress(event, "btnsubmit")
-                      }
+                     
                     />
                     <span className="text-[#c0d3e5] text-[30px] flex justify-center "> <HiOutlinePhotograph /></span>
                     <p className="text-[#c0d3e5] ">Click to upload photo</p>
@@ -389,9 +389,9 @@ const [companyData,setCompanyData]= useState('')
                   <div role="group">
                     <label className='block py-[8px] font-[500] font-inter '>Head Office<span>*</span></label>
                     <div>
-                      <label className=""> <input className='mx-[5px]' type="radio" name="IsHeadOffice" checked={formik.values.IsHeadOffice === true} value={true}
+                      <label className=""> <Field className='mx-[5px]' type="radio" id='headoffice' name="IsHeadOffice" checked={formik.values.IsHeadOffice === true} value={true}
                         onChange={() => formik.setFieldValue('IsHeadOffice', true)} />Yes</label>
-                      <label className="ml-[10px]"><input className='mx-[5px]' type="radio" name="IsHeadOffice" checked={formik.values.IsHeadOffice === false} value={false}
+                      <label className="ml-[10px]"><Field className='mx-[5px]' type="radio" id='headoffice' name="IsHeadOffice" checked={formik.values.IsHeadOffice === false} value={false}
                         onChange={() => formik.setFieldValue('IsHeadOffice', false)} /> No</label>
                     </div>
                     <ErrorMessage component="div" className='text-[14px] text-redclr ' name="IsHeadOffice" />
@@ -401,19 +401,19 @@ const [companyData,setCompanyData]= useState('')
 
               </div>
 
-              <div>
+              <div className="relative">
                 <h2 className="text-PrimaryColor font-semibold text-center text-[20px] ">Billing Information</h2>
                 <div className="py-[6px]">
-                  <label className="block">
+                  <label className="block py-[5px] font-[500] font-inter ">
                     Bill Address <span></span>
                   </label>
                   <Field
                     as="textarea"
                     type="text"
-                    onKeyDown={(event) => handleEnterKeyPress(event, "shipadd")}
+                    
                     id="billAddress"
                     name="billAddress"
-                    className="w-[100%] "
+                    className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr ${formik.errors.billAddress ? 'border-redclr' : ''}`}
                   ></Field>
                   <ErrorMessage
                     component="div"
@@ -422,7 +422,7 @@ const [companyData,setCompanyData]= useState('')
                   />
                 </div>
                 <div className="py-[6px]">
-                  <label className="block">
+                  <label className="block py-[5px] font-[500] font-inter ">
                     {" "}
                     Ship Address <span></span>
                   </label>
@@ -431,10 +431,7 @@ const [companyData,setCompanyData]= useState('')
                     type="text"
                     name="shipAddress"
                     id="shipAddress"
-                    onKeyDown={(event) =>
-                      handleEnterKeyPress(event, "billcontact")
-                    }
-                    className="w-[100%] "
+                    className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr ${formik.errors.shipAddress ? 'border-redclr' : ''}`}
                   ></Field>
                   <ErrorMessage
                     component="div"
@@ -444,18 +441,15 @@ const [companyData,setCompanyData]= useState('')
                 </div>
 
                 <div className="py-[6px]">
-                  <label className="block">
+                  <label className="block py-[5px] font-[500] font-inter ">
                     Bill Contact Info <span></span>
                   </label>
                   <Field
                     as="textarea"
                     type="text"
                     name="billContactInfo"
-                    className="w-[100%]"
-                    id="billContactInfo"
-                    onKeyDown={(event) =>
-                      handleEnterKeyPress(event, "image")
-                    }
+  className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr ${formik.errors.billContactInfo ? 'border-redclr' : ''}`}                    id="billContactInfo"
+                   
                   ></Field>
                   <ErrorMessage
                     component="div"
@@ -464,7 +458,7 @@ const [companyData,setCompanyData]= useState('')
                   />
                 </div>
                 <div className="py-[6px]">
-                  <label className="block">
+                  <label className="block py-[5px] font-[500] font-inter ">
                     Bill Logo <span></span>
                   </label>
                   <div className="relative border-dotted border-[2px] border-[#c0d3e5] text-center py-[10px]">
@@ -475,9 +469,13 @@ const [companyData,setCompanyData]= useState('')
                       className="w-[100%] opacity-0  absolute inset-0 "
                       id="billLogoFile"
                       onChange={(e)=>setbillLogofile(e.target.files[0])}
-                      onKeyDown={(event) =>
-                        handleEnterKeyPress(event, "btnsubmit")
-                      }
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          document.getElementById('btnsubmit').focus();
+                        }
+                      }} 
+                      
                     />
                     <span className="text-[#c0d3e5] text-[30px] flex justify-center "> <HiOutlinePhotograph /></span>
                     <p className="text-[#c0d3e5] ">Click to upload photo</p>
@@ -492,21 +490,13 @@ const [companyData,setCompanyData]= useState('')
 
 
 
-                <div className="flex gap-[30px] items-center formbutton">
-                  <button
-                    onClick={() => navigate('/branch')}
-                    type="reset"
-                    className="bg-transparent border-[#d13838] border-solid py-[4px] px-[20px] border-[1px] text-[16px] font-inter font-[600] text-[#d13838]"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    id="btnsubmit"
-                    className="bg-PrimaryColor py-[4px] px-[20px] text-[16px] font-inter  text-white o "
-                  >
-                    Save
-                  </button>
+                <div className="flex pt-[30px] gap-[30px] items-center formbutton">
+                <CancelButton link='/branch'/>
+                <SubmitButton type='submit'
+                 editMode={editMode}
+                  formik={formik}
+                  id='btnsubmit'
+                   handleSubmit={(values) => handleSubmit(values)}/>
                 </div>
               </div>
             </div>

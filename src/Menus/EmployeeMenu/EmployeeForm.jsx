@@ -10,6 +10,10 @@ import useUpdateData from "../../Apis/useUpdate";
 import useGetData from "../../Apis/useGetData";
 import { useNavigate, useParams } from "react-router";
 import useFormNavigation from "../../Components/FormNavigation";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import SubmitButton from "../../Components/Buttons/SubmitButton";
+import CancelButton from "../../Components/Buttons/CancelButton";
 
 const EmployeeForm = () => {
   const { postdata, postError } = usePostData("Employee/Add");
@@ -52,16 +56,19 @@ const EmployeeForm = () => {
     // // departmentName: Yup.string().required("required"),
     // isActive: Yup.boolean().required("required"),
   });
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (formik) => {
     // postdata(values);
     console.log('hell')
 
     if (editMode) {
-      updateData(values);
+      updateData(formik.values)
+      navigate('/employee');
     } else {
-      await postdata(values);
+      await postdata(formik.values,'Employee');
     }
-navigate('/employee')
+    document.getElementById('firstName').focus()
+   formik.resetForm()
+
   };
   return (
     <div className="px-[50px]">
@@ -70,7 +77,18 @@ navigate('/employee')
           {editMode ? "Update" : "Add"} Employee Form
         </h2>
       </div>
-
+      <ToastContainer
+        position="bottom-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <Formik
         initialValues={editMode ? dataByid : initialValues}
         validationSchema={validationSchema}
@@ -88,6 +106,7 @@ navigate('/employee')
                   className="border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr "
                   type="text"
                   name="firstName"
+                  id='firstName'
                 />
                 <ErrorMessage
                   component="div"
@@ -105,6 +124,7 @@ navigate('/employee')
                     className="border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr "
                     name="lastName"
                     type="text"
+                    id='lastName'
                   />
                   <ErrorMessage
                     component="div"
@@ -120,6 +140,7 @@ navigate('/employee')
                     className="border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr "
                     name="positon"
                     type="text"
+                    id='positon'
                   />
                   <ErrorMessage
                     component="div"
@@ -138,6 +159,7 @@ navigate('/employee')
                     className="border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr "
                     name="email"
                     type="email"
+                    id='email'
                   />
                   <ErrorMessage
                     component="div"
@@ -153,6 +175,7 @@ navigate('/employee')
                     className="border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr "
                     name="contactNumber"
                     type="text"
+                    id='contactNumber'
                   />
                   <ErrorMessage
                     component="div"
@@ -168,13 +191,13 @@ navigate('/employee')
                                         <Field
                                             className='border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr '
                                             name='departmentId'
-                                           
+                                           id='departmentId'
                                             as='select'
                                             placeholder='Select Account Group'
 
                                         >
                                             <option disabled value='' selected >Select Department</option>
-                                            {data?.data?.map((item, index) =>
+                                            {data?.map((item, index) =>
                                             (
                                                 <option key={item.id} value={item.id}>{item.name}</option>
                                             ))}
@@ -192,10 +215,11 @@ navigate('/employee')
                     </label>
                     <div>
                       <label className="">
-                        <input
+                        <Field
                           className="mx-[5px]"
                           type="radio"
                           name="isActive"
+                          id='isActive'
                           checked={formik.values.isActive === true}
                           value={true}
                           onChange={() =>
@@ -205,12 +229,19 @@ navigate('/employee')
                         Yes
                       </label>
                       <label className="ml-[10px]">
-                        <input
+                        <Field
                           className="mx-[5px]"
                           type="radio"
                           name="isActive"
+                          id='isActive'
                           checked={formik.values.isActive === false}
                           value={false}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              e.preventDefault();
+                              document.getElementById('btnsubmit').focus();
+                            }
+                          }} 
                           onChange={() =>
                             formik.setFieldValue("isActive", false)
                           }
@@ -229,18 +260,12 @@ navigate('/employee')
              
              </div>
              <div className=" mt-[40px] flex gap-[20px] float-right bottom-[2em] right-[5em]">
-                <button
-                  onClick={() =>
-                    navigate('/employee')
-                  }
-                  className=" border-[1px] border-redclr px-[15px] py-[4px] text-redclr font-inter"
-                  type="button"
-                >
-                  Cancel
-                </button>
-
-                <button   className='bg-PrimaryColor px-[15px] py-[4px] text-white font-inter' type='submit' > 
-                  {editMode ? 'Update': 'Save'} </button>
+            < CancelButton link='/employee'/>
+                <SubmitButton type='submit'
+                 editMode={editMode}
+                  formik={formik}
+                  id='btnsubmit'
+                   handleSubmit={(values) => handleSubmit(values)}/>
               </div>
             </div>
 

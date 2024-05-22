@@ -22,7 +22,7 @@ const EmployeeTable = () => {
     navigate(`/employee/form/${id}`);
   };
 
-  const filteredItems = data?.data?.filter(
+  const filteredItems = data?.filter(
     item => item?.firstName.toLowerCase().includes(filterText.toLowerCase())
   );
 

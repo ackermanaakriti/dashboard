@@ -1,7 +1,6 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
-import { CancelButton, GreenButton } from "../../Components/GreenButton";
 import { useDispatch, useSelector } from "react-redux";
 import { useLayouData } from "../../Context/MainLayoutContext";
 import { addMenu } from "../../Redux/TopTabSlice";
@@ -12,6 +11,12 @@ import useGetData from "../../Apis/useGetData";
 import { useNavigate, useParams } from "react-router";
 import axios from "axios";
 import { baseUrl } from "../../Apis/Baseurl";
+import SubmitButton from "../../Components/Buttons/SubmitButton";
+import CancelButton from "../../Components/Buttons/CancelButton";
+import useFormNavigation from "../../Components/FormNavigation";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 const CustomerForm = () => {
   const { postdata } = usePostData("Debtors/Add");
@@ -24,6 +29,7 @@ const CustomerForm = () => {
   const navigate = useNavigate()
   const paramId = useParams()
   const [companyData,setcompanyData]= useState([])
+  const formref = useFormNavigation()
 
   useEffect(() => {
     if (paramId?.id) {
@@ -66,14 +72,17 @@ const CustomerForm = () => {
     // syPlacement: Yup.string().required('required'),
   });
 
-  const handleSubmit = async (values) => {
-    console.log(values);
+  const handleSubmit = async (formik) => {
+
     if (editMode) {
-      updateData(values);
+      updateData(formik.values)
+      navigate('/debtors');
     } else {
-     await  postdata(values);
+     await  postdata(formik.values,'Debtors');
     }
-   navigate('/debtors')
+   
+   document.getElementById('name').focus()
+   formik.resetForm()
   };
 
   return (
@@ -85,7 +94,18 @@ const CustomerForm = () => {
             {editMode ? "Update" : "Add"} Debtor
           </h2>
         </div>
-
+        <ToastContainer
+        position="bottom-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
         <Formik
           initialValues={editMode ? dataByid : initialValues}
           validationSchema={validationSchema}
@@ -93,7 +113,7 @@ const CustomerForm = () => {
           enableReinitialize={true}
         >
           {(formik) => (
-            <Form className="grid grid-cols-2 gap-[90px]">
+            <Form ref={formref} className="grid grid-cols-2 gap-[90px]">
               <div className="">
                 <div className="grid grid-cols-2 gap-[20px]">
                   <div className="py-[8px]">
@@ -104,6 +124,7 @@ const CustomerForm = () => {
                       className="border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr "
                       type="text"
                       name="name"
+                      id='name'
                     />
                     <ErrorMessage
                       component="div"
@@ -120,6 +141,7 @@ const CustomerForm = () => {
                       className="border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr "
                       type="text"
                       name="address"
+                      id='address'
                     />
                     <ErrorMessage
                       component="div"
@@ -137,13 +159,14 @@ const CustomerForm = () => {
                       type="text"
                       name="companyId"
                       as="select"
+                      id='companyId'
                       className="w-[100%] border-[1px] px-[8px] py-[8px]  outline-none border-borderclr"
                       placeholder=""
                       // value={CompanyAutofillData}
                       // onChange={(e) => setCompanyAutofillData((e.target.value))}
                     >
                       <option disabled value="">
-                        select ChartOfAccount
+                        select company
                       </option>
                       {companyData?.map((item, index) => (
                         <option key={item?.id} value={item?.id}>
@@ -165,6 +188,7 @@ const CustomerForm = () => {
                       className="border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr "
                       type="text"
                       name="contactNumber"
+                      id='contactNumber'
                     />
                     <ErrorMessage
                       component="div"
@@ -183,6 +207,7 @@ const CustomerForm = () => {
                       className="border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr "
                       type="email"
                       name="email"
+                      id='email'
                     />
                     <ErrorMessage
                       component="div"
@@ -198,6 +223,7 @@ const CustomerForm = () => {
                       type="text"
                       name="chartOfAccountId"
                       as="select"
+                      id='chatOfAccountId'
                       className="w-[100%] border-[1px] px-[8px] py-[8px]  outline-none border-borderclr"
                       placeholder=""
                       // value={CompanyAutofillData}
@@ -206,7 +232,7 @@ const CustomerForm = () => {
                       <option disabled value="">
                         select ChartOfAccount
                       </option>
-                      {data?.data?.map((item, index) => (
+                      {data?.map((item, index) => (
                         <option key={item?.id} value={item?.id}>
                           {item?.accountName}
                         </option>
@@ -214,8 +240,8 @@ const CustomerForm = () => {
                     </Field>
                     <ErrorMessage
                       component="div"
-                      className="error"
-                      name="chartOfAccountId"
+                      className="text-[14px] text-redclr "
+                      name="chatOfAccountId"
                     />
                   </div>
                 </div>
@@ -226,10 +252,11 @@ const CustomerForm = () => {
                     </label>
                     <div>
                       <label className="">
-                        <input
+                        <Field
                           className="mx-[5px]"
                           type="radio"
                           name="isActive"
+                          id='isActive'
                           checked={formik.values.isActive === true}
                           value={true}
                           onChange={() =>
@@ -239,12 +266,19 @@ const CustomerForm = () => {
                         Yes
                       </label>
                       <label className="ml-[10px]">
-                        <input
+                        <Field
                           className="mx-[5px]"
                           type="radio"
                           name="isActive"
+                          id='isActive'
                           checked={formik.values.isActive === false}
                           value={false}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              e.preventDefault();
+                              document.getElementById('btnsubmit').focus();
+                            }
+                          }} 
                           onChange={() =>
                             formik.setFieldValue("isActive", false)
                           }
@@ -260,18 +294,12 @@ const CustomerForm = () => {
                   </div>
                 </div>
                 <div className=" mt-[40px] flex gap-[20px] justify-end">
-                <button
-                  onClick={() =>
-                    navigate('/debtors')
-                  }
-                  className=" border-[1px] border-redclr px-[15px] py-[4px] text-redclr font-inter"
-                  type="button"
-                >
-                  Cancel
-                </button>
-
-                <button className='bg-PrimaryColor px-[15px] py-[4px] text-white font-inter' type='submit' > 
-                  {editMode ? 'Update': 'Save'} </button>
+                <CancelButton link='/vouchertype'/>
+                <SubmitButton type='submit'
+                 editMode={editMode}
+                  formik={formik}
+                  id='btnsubmit'
+                   handleSubmit={(values) => handleSubmit(values)}/>
                 </div>
               </div>
               </div>

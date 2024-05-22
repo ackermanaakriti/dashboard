@@ -49,7 +49,7 @@ const [companyData,setCompanyData]= useState([])
            {headers : { Authorization:`Bearer ${token}` }
           
          })
-         setCompanyData(response.data)
+         setCompanyData(response.data.data)
          console.log(response)
         }
       catch (err)
@@ -91,7 +91,7 @@ const [companyData,setCompanyData]= useState([])
       navigate('/creditors')
      }
     else 
-    {   postdata(formik.values) }
+    {   postdata(formik.values,'Creditors') }
     
    
    document.getElementById('name').focus()
@@ -153,7 +153,7 @@ const [companyData,setCompanyData]= useState([])
                     <option disabled value="">
                         select company
                       </option>
-                      {companyData?.data?.map((item, index) => (
+                      {companyData?.map((item, index) => (
                         <option key={item?.id} value={item?.id}>{item?.name}</option>
                       ))}
 
@@ -190,7 +190,7 @@ const [companyData,setCompanyData]= useState([])
                     <option disabled value="">
                       CharotAccount
                       </option>
-                      {data?.data?.map((item, index) => (
+                      {data?.map((item, index) => (
                         <option key={item?.id} value={item?.id}>{item?.accountName}</option>
                       ))}
 
@@ -228,7 +228,14 @@ const [companyData,setCompanyData]= useState([])
                            <div>
                            <label className=""> <Field className='mx-[5px]' type="radio" id='isActive'  name="isActive"  checked={formik.values.isActive === true} value={true}
                              onChange={() => formik.setFieldValue('isActive', true)} />Yes</label>
-                             <label className="ml-[10px]"><Field className='mx-[5px]' type="radio" id='isActive' name="isActive" checked={formik.values.isActive === false} value={false}
+                             <label className="ml-[10px]"><Field className='mx-[5px]' type="radio" id='isActive' name="isActive"
+                              checked={formik.values.isActive === false} value={false}
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                  e.preventDefault();
+                                  document.getElementById('btnsubmit').focus();
+                                }
+                              }}
                               onChange={() => formik.setFieldValue('isActive', false)} /> No</label>
                                </div>
                                <ErrorMessage component="div" className='text-[14px] text-redclr ' name="isAllBranchApplicable" />
@@ -240,7 +247,7 @@ const [companyData,setCompanyData]= useState([])
                 <SubmitButton type='submit'
                  editMode={editMode}
                   formik={formik}
-                   focusFirstErrorField={FocuseErrorField} 
+                   id='btnsubmit'
                    handleSubmit={(values) => handleSubmit(values)}/>
                 </div>
                 </div>

@@ -1,7 +1,6 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import React, { useEffect, useState } from 'react';
 import * as Yup from 'yup';
-import { CancelButton, GreenButton } from '../../Components/GreenButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLayouData } from '../../Context/MainLayoutContext';
 import moment from 'moment';
@@ -13,6 +12,12 @@ import useGetById from '../../Apis/useGetById';
 import { baseUrl } from '../../Apis/Baseurl';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router';
+import SubmitButton from '../../Components/Buttons/SubmitButton';
+import CancelButton from '../../Components/Buttons/CancelButton';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import useFormNavigation from '../../Components/FormNavigation';
+
 
 const BankForm = () => {
 
@@ -26,6 +31,7 @@ const [companyData,setCompanyData]= useState([])
   const dispatch = useDispatch();
   const navigate= useNavigate()
   const paramId = useParams()
+  const formref = useFormNavigation()
 
 
 
@@ -63,14 +69,17 @@ const [companyData,setCompanyData]= useState([])
   });
 
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (formik) => {
 
     if(editMode)
-    { updateData(values) }
+    { updateData(formik.values)
+      navigate('/bank')
+     }
     else 
-    {  await postdata(values) }
+    {  await postdata(formik.values,'Bank') }
     
-   navigate('/bank')
+    document.getElementById('name').focus()
+    formik.resetForm()
     
   };
 
@@ -80,7 +89,18 @@ const [companyData,setCompanyData]= useState([])
         <div>
           <h2 className='font-inter font-semibold text-[30px]'>{editMode ? 'Update' : 'Add'} Bank</h2>
         </div>
-
+        <ToastContainer
+        position="bottom-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
         <Formik
           initialValues={editMode ? dataByid : initialValues}
           validationSchema={validationSchema}
@@ -88,14 +108,14 @@ const [companyData,setCompanyData]= useState([])
           enableReinitialize={true}
         >
           {(formik) => (
-            <Form className='grid grid-cols-2 gap-[90px]'>
+            <Form ref={formref} className='grid grid-cols-2 gap-[90px]'>
                 <div>
               <div className='grid grid-cols-2 gap-[30px]'>
                 <div className='py-[8px]'>
                   <label className='block py-[5px] font-[500] font-inter '> Name <span className='text-redclr'>*</span></label>
                   <Field
                     className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr '
-                 
+                   id='name'
                     name='name'
                   />
                   <ErrorMessage component='div' className='text-[14px] text-redclr' name='name' />
@@ -106,7 +126,7 @@ const [companyData,setCompanyData]= useState([])
                   <Field type="text"
                     name="companyId"
                     as='select'
-                 
+                   id='companyId'
                     className="w-[100%] border-[1px] px-[8px] py-[8px] outline-none border-borderclr"
                     placeholder=""
                     // value={CompanyAutofillData}
@@ -116,7 +136,7 @@ const [companyData,setCompanyData]= useState([])
                     <option disabled value="">
                         select company
                       </option>
-                      {data?.data?.map((item, index) => (
+                      {data?.map((item, index) => (
                         <option key={item?.id} value={item?.id}>{item?.name}</option>
                       ))}
 
@@ -133,7 +153,7 @@ const [companyData,setCompanyData]= useState([])
                     <Field
                       className='border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr '
                       name='accountNumber'
-                   
+                      id='accountNumber'
                     />
                     <ErrorMessage component='div' className='text-[14px] text-redclr ' name='accountNumber' />
                   </div>
@@ -143,6 +163,7 @@ const [companyData,setCompanyData]= useState([])
                       className='border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr '
                       name='balance'
                      type='number'
+                     id='balance'
                     />
                     <ErrorMessage component='div' className='text-[14px] text-redclr ' name='balance' />
                   </div>
@@ -157,9 +178,15 @@ const [companyData,setCompanyData]= useState([])
                     <div role="group">
                        <label className='block py-[8px] font-[500] font-inter '> Active </label>
                            <div>
-                           <label className=""> <input className='mx-[5px]' type="radio"  name="isActive"  checked={formik.values.isActive === true} value={true}
+                           <label className=""> <Field className='mx-[5px]' type="radio" id='isActive' name="isActive"  checked={formik.values.isActive === true} value={true}
                              onChange={() => formik.setFieldValue('isActive', true)} />Yes</label>
-                             <label className="ml-[10px]"><input className='mx-[5px]' type="radio" name="isActive" checked={formik.values.isActive === false} value={false}
+                             <label className="ml-[10px]"><Field className='mx-[5px]' type="radio"  id='isActive'
+                             onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        document.getElementById('btnsubmit').focus();
+                      }
+                    }} name="isActive" checked={formik.values.isActive === false} value={false}
                               onChange={() => formik.setFieldValue('isActive', false)} /> No</label>
                                </div>
                                <ErrorMessage component="div" className='text-[14px] text-redclr ' name="isAllBranchApplicable" />
@@ -167,9 +194,12 @@ const [companyData,setCompanyData]= useState([])
                         </div>
 
                 <div className=' mt-[40px] flex gap-[20px] justify-end'>
-                <CancelButton onClick={()=>   navigate('/bank')} className=' border-[1px] border-redclr px-[15px] py-[4px] text-redclr font-inter' text='Cancel' type='button' />
-                  <button  className='bg-PrimaryColor px-[15px] py-[4px] text-white font-inter' type='submit' > 
-                  {editMode ? 'Update': 'Save'} </button>
+                <CancelButton link='/vouchertype'/>
+                <SubmitButton type='submit'
+                 editMode={editMode}
+                  formik={formik}
+                  id='btnsubmit'
+                   handleSubmit={(values) => handleSubmit(values)}/>
                 </div>
                 </div>
             </Form>
