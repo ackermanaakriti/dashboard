@@ -9,38 +9,30 @@ import { TableDataComp } from "../../Global/Table/TableData";
 import { TableButton } from "../../Components/GreenButton";
 import useGetData from "../../Apis/useGetData";
 import DeletePopup from "../../Components/DeletePopup";
+import { useNavigate } from "react-router";
 
 const CurrencyTable = () => {
-  const { setId } = useLayouData();
-  const dispatch = useDispatch();
-  const { Deldata } = useDelData('Currency/Delete/');
-  const { data, fetchData } = useGetData(`Currency/GetAll?IsDeleted=${false}`);
+
+  const { data, Deldata } = useGetData(`Currency/GetAll?IsDeleted=${false}`,"Currency/Delete/");
   const [tableData, setTableData] = useState([]);
   const [filterText, setFilterText] = React.useState('');
   const { DeleteList, setDeleteList } = useLayouData();
   const [DeleteId, setDeleteId] = useState("");
+  const navigate = useNavigate()
 
-  useEffect(() => {
-    setTableData(data?.data);
-    console.log(tableData);
-  }, [tableData, data]);
 
   const handleDelete = async (id) => {
     setDeleteList(true);
     setDeleteId(id);
   };
 
-  const handleDeleteConfirmation = async () => {
-    fetchData();
-  };
+
 
   const handleEdit = (id) => {
-    console.log(id);
-    setId(id);
-    dispatch(addMenu({ id: id, menu: "currencyform" }));
+    navigate(`/currency/form/${id}`);
   };
 
-  const filteredItems = tableData?.filter(
+  const filteredItems = data?.filter(
     item => item?.name.toLowerCase().includes(filterText.toLowerCase())
   );
 
@@ -72,8 +64,6 @@ const CurrencyTable = () => {
           </button>
         </div>
       ),
-      allowOverflow: true,
-      button: true,
     }
   ];
 
@@ -92,9 +82,8 @@ const CurrencyTable = () => {
       />
       {DeleteList && (
         <DeletePopup
-          url="Currency/Delete/"
-          id={DeleteId}
-          handleDeleteConfirmation={handleDeleteConfirmation}
+          DeleteId={DeleteId}
+          Deldata={Deldata}
         />
       )}
     </div>

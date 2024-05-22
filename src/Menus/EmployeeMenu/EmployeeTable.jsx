@@ -7,8 +7,7 @@ import useGetData from "../../Apis/useGetData";
 import { useNavigate } from "react-router";
 import DeletePopup from "../../Components/DeletePopup";
 const EmployeeTable = () => {
-  const { data, fetchData } = useGetData(`Employee/GetAll?isDeleted=${false}`);
-  const [tableData, setTableData] = useState([]);
+  const { data, Deldata } = useGetData(`Employee/GetAll?isDeleted=${false}`,"Employee/Delete/");
   const [filterText, setFilterText] = React.useState('');
   const navigate = useNavigate();
   const { DeleteList, setDeleteList,token } = useLayouData();
@@ -17,10 +16,6 @@ const EmployeeTable = () => {
   const handleDelete = async (id) => {
     setDeleteList(true);
     setDeleteId(id);
-  };
-
-  const handleDeleteConfirmation = async () => {
-    fetchData();
   };
 
   const handleEdit = (id) => {
@@ -83,8 +78,6 @@ const EmployeeTable = () => {
           </button>
         </div>
       ),
-      allowOverflow: true,
-      button: true,
       width: '10%',
     }
   ];
@@ -103,10 +96,8 @@ const EmployeeTable = () => {
       />
       {DeleteList && (
         <DeletePopup
-          url="Employee/Delete/"
-          id={DeleteId}
-          handleDeleteConfirmation={handleDeleteConfirmation}
-        />
+          DeleteId={DeleteId}
+          Deldata={Deldata}        />
       )}
     </div>
   );

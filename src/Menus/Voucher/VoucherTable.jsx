@@ -12,34 +12,25 @@ import { useNavigate } from "react-router";
 import DeletePopup from "../../Components/DeletePopup";
 
 const VoucherTable = () => {
-  const { data, fetchData,Deldata } = useGetData(`Voucher/GetAll?IsDeleted=${false}`);   // use custom hook to get all data...passing url
-  const [tableData, setTableData] = useState([]);          
+  const { data,Deldata } = useGetData(`Voucher/GetAll?IsDeleted=${false}`,"Voucher/Delete/");   // use custom hook to get all data...passing url
   const [filterText, setFilterText] = React.useState('');
   const navigate = useNavigate();
   const { DeleteList, setDeleteList } = useLayouData();
   const [DeleteId, setDeleteId] = useState("");
-  
-  console.log(data);
 
-  useEffect(() => {
-    setTableData(data?.data); 
-    // set fetched data to tableData for filtering 
-  }, [tableData, data]);
+
 
   const handleDelete = async (id) => {
     setDeleteList(true);
     setDeleteId(id);
   };
 
-  const handleDeleteConfirmation = async () => {
-    fetchData();
-  };
 
   const handleEdit = (id) => {
     navigate(`/voucher/form/${id}`);
   };
 
-  const filteredItems = tableData?.filter(
+  const filteredItems = data?.filter(
     item => item?.voucherTypeName.toLowerCase().includes(filterText.toLowerCase())  // filter fetched data on the basis of name
   );
 
@@ -78,8 +69,7 @@ const VoucherTable = () => {
           </button>
         </div>
       ),
-      allowOverflow: true,
-      button: true,
+     
     }
   ];
 
@@ -98,9 +88,8 @@ const VoucherTable = () => {
       />
       {DeleteList && (
         <DeletePopup
-          url="Voucher/Delete/"
-          id={DeleteId}
-          handleDeleteConfirmation={handleDeleteConfirmation}
+          DeleteId={DeleteId}
+          Deldata={Deldata}
         />
       )}
     </div>

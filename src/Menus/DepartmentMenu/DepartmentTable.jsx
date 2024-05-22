@@ -75,8 +75,7 @@ const DepartmentTable = () => {
           </button>
         </div>
       ),
-      allowOverflow: true,
-      button: true,
+     
     }
   ];
 

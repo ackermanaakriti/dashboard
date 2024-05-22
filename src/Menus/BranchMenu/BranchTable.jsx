@@ -12,31 +12,26 @@ import { useNavigate } from "react-router";
 import DeletePopup from "../../Components/DeletePopup";
 
 const BranchTable = () => {
-  const { data, fetchData } = useGetData(`Branch/GetAll?IsDeleted=${false}`); //use custom hook to get all data...passing url
-  const [tableData, setTableData] = useState([]);
+  const { data,Deldata } = useGetData(`Branch/GetAll?IsDeleted=${false}`,"Branch/Delete/"); //use custom hook to get all data...passing url
   const [filterText, setFilterText] = React.useState('');
   const navigate = useNavigate();
   const { DeleteList, setDeleteList } = useLayouData();
   const [DeleteId, setDeleteId] = useState("");
 
-  useEffect(() => {
-    setTableData(data?.data);  //set fetched data to tableData for filtering 
-  }, [tableData, data]);
+
 
   const handleDelete = async (id) => {
     setDeleteList(true);
     setDeleteId(id);
   };
 
-  const handleDeleteConfirmation = async () => {
-    fetchData();
-  };
+
 
   const handleEdit = (id) => {
     navigate(`/branch/form/${id}`);
   };
 
-  const filteredItems = tableData?.filter(
+  const filteredItems = data?.filter(
     item => item?.name.toLowerCase().includes(filterText.toLowerCase())  //filter fetched data on the basis of name
   );
 
@@ -84,8 +79,7 @@ const BranchTable = () => {
           {/* <button onClick={() => handleView(row)}> <span className="text-[20px]   mx-[3px]"><IoEyeOutline/></span></button> */}
         </div>
       ),
-      allowOverflow: true,
-      button: true,
+     
     }
   ];
 
@@ -104,9 +98,8 @@ const BranchTable = () => {
       />
       {DeleteList && (
         <DeletePopup
-          url="Branch/Delete/"
-          id={DeleteId}
-          handleDeleteConfirmation={handleDeleteConfirmation}
+          DeleteId={DeleteId}
+          Deldata={Deldata}
         />
       )}
     </div>

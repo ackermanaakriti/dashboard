@@ -11,10 +11,10 @@ import DeletePopup from "../../Components/DeletePopup";
 const ChartofAccTable = () => {
   const { DeleteList, setDeleteList } = useLayouData();
   const [DeleteId, setDeleteId] = useState("");
-  const { data, fetchData,Deldata } = useGetData(
+  const { data,Deldata } = useGetData(
     `ChartOfAccount/GetAll?ShowTransactionalOnly=${false}`, 'ChartOfAccount/Delete/'
   );
-  const [tableData, setTableData] = useState([]);
+
   const [filterText, setFilterText] = useState("");
 
   const navigate = useNavigate();
@@ -46,9 +46,6 @@ const ChartofAccTable = () => {
     );
   };
 
-  const handleDeleteConfirmation = async () => {
-    fetchData();
-  };
 
   const columns = [
     {
@@ -117,7 +114,7 @@ const ChartofAccTable = () => {
       />
       {DeleteList && (
         <DeletePopup
-          url="ChartOfAccount/Delete/"
+         
           DeleteId={DeleteId}
           Deldata={Deldata}
            

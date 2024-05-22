@@ -13,15 +13,17 @@ import useGetData from "../../Apis/useGetData";
 import { useNavigate, useParams } from "react-router";
 import InputField from "../../Components/InputField";
 import useFormNavigation from "../../Components/FormNavigation";
+import CancelButton from "../../Components/Buttons/CancelButton";
+import SubmitButton from "../../Components/Buttons/SubmitButton";
+import { FocuseErrorField } from "../../Components/FocusErrorField";
 
 const DepartmentForm = () => {
-  const { postdata, error, postDataResponse } = usePostData("Department/Add");
+  const { postdata,} = usePostData("Department/Add");
   const { setId, getId, token } = useLayouData();
   const { updateData } = useUpdateData("Department/Update");
   const { dataByid, GiveId } = useGetById("Department/GetById/");
   const { data } = useGetData(`Company/GetAll?IsDeleted=${false}`);
   const [editMode, setEditMode] = useState(false);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const paramId = useParams();
 const formref = useFormNavigation()
@@ -41,60 +43,25 @@ const formref = useFormNavigation()
   };
 
   const validationSchema = Yup.object().shape({
-    // name: Yup.string().required("Name is required"),
-    // description: Yup.string().required("Description is required"),
-    // companyId: Yup.number().typeError("Enter a number").required("Company is required"),
+    name: Yup.string().required("Name is required"),
+    description: Yup.string().required("Description is required"),
+    companyId: Yup.string().required("Company is required"),
   });
 
-  function handleKeyDown(event) {
-    if (event.key === 'Enter') {
-  
-      document.getElementById('name').focus(); // Focus on the input field with ID "name"
+  const handleSubmit = async (values, {resetForm}) => {
+
+    if (editMode) {
+      await updateData(values);
+      navigate('/department');
+    } else {
+      await postdata(values);
     }
-  }
+    resetForm()
+   document.getElementById('name').focus()
 
-  const handleSubmit = async (values, { resetForm, setFieldError }) => {
-    console.log('hello')
-    try {
-      await validationSchema.validate(values, { abortEarly: false });
+};
 
-      if (editMode) {
-        updateData(values);
-        navigate('/department');
-      } else {
-        postdata(values);
-        resetForm();
-      }
-    } catch (validationError) {
-      console.log(validationError)
-      if (validationError.inner.length > 0) {
-        const errorPaths = validationError.inner.map((item) => item.path);
-        errorPaths.forEach((path) => {
-          const elm = document.getElementById(path);
-          if (elm) {
-            elm.style.borderColor = 'red';
-          }
-        });
-
-        toast.error('Validation Error');
-
-        const firstErrorField = validationError.inner[0].path;
-        const element = document.getElementById(firstErrorField);
-        if (element) {
-          element.focus();
-        }
-
-        errorPaths.forEach((path) => {
-          const elm = document.getElementById(path);
-          if (elm) {
-            elm.addEventListener('input', () => {
-              elm.style.borderColor = 'rgb(192 211 229)';
-            });
-          }
-        });
-      }
-    }
-  };
+    
   return (
     <div className="px-[50px]">
       <div>
@@ -145,7 +112,7 @@ const formref = useFormNavigation()
 
               <div className="py-[8px]">
                 <label className="block py-[5px] font-[500] font-inter">
-                  Code <span className='text-redclr'>*</span>
+                  Code <span className='text-redclr'></span>
                 </label>
                 <Field
                   className="border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr"
@@ -248,22 +215,8 @@ const formref = useFormNavigation()
               </div>
 
               <div className="mt-[40px] flex gap-[20px] justify-end">
-                <button
-                  onClick={() => navigate('/department')}
-                  className="border-[1px] border-redclr px-[15px] py-[4px] text-redclr font-inter"
-                  type="button"
-                >
-                  Cancel
-                </button>
-
-                <button
-                  className="bg-PrimaryColor px-[15px] py-[4px] text-white font-inter focus:bg-[#6bc2eb]"
-                  type="submit"
-                  id='btnsubmit'
-                  onKeyDown={handleKeyDown}
-                >
-                  {editMode ? "Update" : "Save"}
-                </button>
+              <CancelButton link='/department'/>
+                <SubmitButton type='submit' editMode={editMode} formik={formik} focusFirstErrorField={FocuseErrorField}/>
               </div>
             </div>
           </Form>

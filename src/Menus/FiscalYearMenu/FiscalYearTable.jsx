@@ -9,32 +9,21 @@ import { Outlet, useNavigate } from "react-router";
 import DeletePopup from "../../Components/DeletePopup";
 
 const FiscalYearTable = () => {
-  const { data, fetchData } = useGetData(`FiscalYear/GetAll?isDeleted=${false}`);
-  const [tableData, setTableData] = useState([]);
+  const { data, Deldata } = useGetData(`FiscalYear/GetAll?isDeleted=${false}`,"FiscalYear/Delete/");
   const [filterText, setFilterText] = React.useState('');
   const navigate = useNavigate();
   const { DeleteList, setDeleteList } = useLayouData();
   const [DeleteId, setDeleteId] = useState("");
-
-  useEffect(() => {
-    setTableData(data?.data);
-  }, [tableData, data]);
-
-  console.log(data?.data);
 
   const handleDelete = async (id) => {
     setDeleteList(true);
     setDeleteId(id);
   };
 
-  const handleDeleteConfirmation = async () => {
-    fetchData();
-  };
-
   const handleEdit = (id) => {
     navigate(`/fiscalyear/form/${id}`);
   };
-  const filteredItems = tableData?.filter(
+  const filteredItems = data?.filter(
     (item) => item?.name.toLowerCase().includes(filterText.toLowerCase())
   );
 
@@ -98,9 +87,8 @@ const FiscalYearTable = () => {
       />
       {DeleteList && (
         <DeletePopup
-          url="FiscalYear/Delete/"
-          id={DeleteId}
-          handleDeleteConfirmation={handleDeleteConfirmation}
+          DeleteId={DeleteId}
+          Deldata={Deldata}
         />
       )}
     </div>

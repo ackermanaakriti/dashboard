@@ -12,34 +12,24 @@ import DeletePopup from "../../Components/DeletePopup";
 
 const CustomerTable = () => {
   //use custom delete hook
-  const { data ,fetchData} = useGetData(`Debtors/GetAll?IsDeleted=${false}`)   //use custom hook to get all data...passing url
-  const [tableData,setTableData]= useState([])          
+  const { data ,Deldata} = useGetData(`Debtors/GetAll?IsDeleted=${false}`,"Debtors/Delete/")   //use custom hook to get all data...passing url
   const [filterText, setFilterText] = React.useState('');
   const navigate=useNavigate()
   const { DeleteList, setDeleteList } = useLayouData();
   const [DeleteId, setDeleteId] = useState("");
 
 
-  
-  useEffect(()=>
-  {
-     setTableData(data?.data)  //set fetched data to tableData for filtering 
-  },[tableData,data])
-
   const handleDelete = async (id) => {
     setDeleteList(true);
     setDeleteId(id);
   };
 
-  const handleDeleteConfirmation = async () => {
-    fetchData();
-  };
-
+ 
   const handleEdit = (id) => {
     navigate(`/debtors/form/${id}`)
   };
 
-  const filteredItems = tableData?.filter(
+  const filteredItems = data?.filter(
     item =>  item?.name.toLowerCase().includes(filterText.toLowerCase()),  //filter fetched data on the basis of name
 );
 
@@ -90,9 +80,7 @@ const CustomerTable = () => {
           {/* <button onClick={() => handleView(row)}> <span className="text-[20px]   mx-[3px]"><IoEyeOutline/></span></button> */}
         </div>
       ),
-      allowOverflow: true,
-      button: true,
-  
+    
     }
   ];
 
@@ -109,9 +97,9 @@ const CustomerTable = () => {
           link='/debtors/form' />
                 {DeleteList && (
         <DeletePopup
-          url="Debtors/Delete/"
-          id={DeleteId}
-          handleDeleteConfirmation={handleDeleteConfirmation}
+         
+          DeleteId={DeleteId}
+          Deldata={Deldata}
         />
       )}
     </div>

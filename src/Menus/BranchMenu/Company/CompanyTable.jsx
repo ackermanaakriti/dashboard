@@ -85,8 +85,7 @@ const CompanyTable = () => {
           </button>
         </div>
       ),
-      allowOverflow: true,
-      button: true,
+    
     },
   ];
 

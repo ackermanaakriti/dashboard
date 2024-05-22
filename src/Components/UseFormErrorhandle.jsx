@@ -20,6 +20,7 @@ const useFormErrorHandling = (error) => {
       if (element) {
         element.focus();
       }
+      
 
       errorPaths.forEach((path) => {
         const elm = document.getElementById(path);

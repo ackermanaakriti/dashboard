@@ -35,6 +35,7 @@ import Voucher from "../Menus/Voucher/VoucherForm";
 import VoucherTable from "../Menus/Voucher/VoucherTable";
 import CustomerForm from "../Menus/Debtors/DebtorForm";
 import TreeViewChart from "../Menus/CharofAcc/ChartofAccTree";
+import CurrencyTable from "../Menus/CurrencyMenu/CurrencyTable";
 
 const Routess = () => {
   return (
@@ -59,6 +60,12 @@ const Routess = () => {
               <Route path="branch">
                 <Route index element={<BranchTable />} />
                 <Route path="form" element={<BranchForm />} />
+                <Route path="form/:id" element={<BranchForm />} />
+              </Route>
+
+              <Route path="currency">
+                <Route index element={<CurrencyTable />} />
+                <Route path="form" element={<CurrencyTable />} />
                 <Route path="form/:id" element={<BranchForm />} />
               </Route>
 
