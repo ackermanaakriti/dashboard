@@ -17,12 +17,14 @@ const BranchTable = () => {
   const navigate = useNavigate();
   const { DeleteList, setDeleteList } = useLayouData();
   const [DeleteId, setDeleteId] = useState("");
+  const [DatatobeDeleted,setDatatobeDeleted]= useState('')
 
 
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id,name) => {
     setDeleteList(true);
     setDeleteId(id);
+    setDatatobeDeleted(name)
   };
 
 
@@ -73,7 +75,7 @@ const BranchTable = () => {
           <button onClick={() => handleEdit(row.id)}>
             <span className="text-[20px] text-PrimaryColor  mx-[3px]"><MdEdit /></span>
           </button>
-          <button onClick={() => handleDelete(row.id)}>
+          <button onClick={() => handleDelete(row.id,row?.name)}>
             <span className="text-[20px] text-redclr  mx-[3px]"><RiDeleteBin6Line /></span>
           </button>
           {/* <button onClick={() => handleView(row)}> <span className="text-[20px]   mx-[3px]"><IoEyeOutline/></span></button> */}
@@ -86,7 +88,7 @@ const BranchTable = () => {
   return (
     <div className="px-[50px] flex flex-col ">
       <div>
-        <h2 className="font-inter font-semibold text-[30px]">Branch Table</h2>
+        <h2 className="font-inter font-semibold text-[30px]">Branch </h2>
       </div>
       <TableDataComp
         columns={columns}
@@ -100,6 +102,7 @@ const BranchTable = () => {
         <DeletePopup
           DeleteId={DeleteId}
           Deldata={Deldata}
+          DatatobeDeleted={DatatobeDeleted}
         />
       )}
     </div>

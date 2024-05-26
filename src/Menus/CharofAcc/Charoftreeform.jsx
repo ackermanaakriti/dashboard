@@ -4,7 +4,6 @@ import * as Yup from 'yup';
 import DatePicker from 'react-date-picker';
 import 'react-date-picker/dist/DatePicker.css';
 import 'react-calendar/dist/Calendar.css';
-import { CancelButton, GreenButton } from '../../Components/GreenButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { addFiscalYear, editFiscalYear } from '../../Redux/Slices/FiscalYearSlice';
 import { useLayouData } from '../../Context/MainLayoutContext';
@@ -18,13 +17,17 @@ import { baseUrl } from '../../Apis/Baseurl';
 import useUpdateData from '../../Apis/useUpdate';
 import useGetData from '../../Apis/useGetData';
 import { useNavigate } from 'react-router';
+import SubmitButton from '../../Components/Buttons/SubmitButton';
+import CancelButton from '../../Components/Buttons/CancelButton';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const CharofAccTreeForm = ({node,mainParentId,parentAccountId,accountGroupId,setShowForm}) => {
    
     const {postdata,postError}= usePostData('ChartOfAccount/Add')
     // const {data}= useGetData('ChartOfAccount/GetAll')
     const {updateData} = useUpdateData('ChartOfAccount/Update');
-    const {data}= useGetData('AccountGroup/GetAll')
+    const {data}= useGetData(`AccountGroup/GetAll?IsDeleted=${false}`,'')
     const { setId, getId,token } = useLayouData();
     const [editMode, setEditMode] = useState(false)
     const [editData, seteditData] = useState()
@@ -32,19 +35,20 @@ const CharofAccTreeForm = ({node,mainParentId,parentAccountId,accountGroupId,set
     const dispatch = useDispatch();
     const navigate = useNavigate()
 
- 
+ console.log(mainParentId)
+ console.log(parentAccountId)
     useEffect(() => {
-        if (getId && data) {
-            setEditMode(true)
-            seteditData(data?.data?.find((item) => item?.id === getId))
-        } 
-        if(accountGroupId)
-        {
-            const accId = data?.data?.find((item)=>item.id === accountGroupId)
-            console.log(accId)
-            setGroupIdData(accId)
-            console.log(groupIddata)
-        }
+        // if (getId && data) {
+        //     setEditMode(true)
+        //     seteditData(data?.data?.find((item) => item?.id === getId))
+        // } 
+        // if(accountGroupId)
+        // {
+        //     const accId = data?.data?.find((item)=>item.id === accountGroupId)
+        //     console.log(accId)
+        //     setGroupIdData(accId)
+        //     console.log(groupIddata)
+        // }
     }, [data,setId]
     )
 
@@ -71,7 +75,7 @@ const CharofAccTreeForm = ({node,mainParentId,parentAccountId,accountGroupId,set
 
     const validationSchema = Yup.object().shape({
  
-        accountCode: Yup.string().typeError('invalid data').required('required'),
+        // accountCode: Yup.string().typeError('invalid data').required('required'),
         accountName: Yup.string().required('required'),
         description: Yup.string().required('required'),
         isTaxApplicable: Yup.boolean().required('required'),
@@ -83,19 +87,21 @@ const CharofAccTreeForm = ({node,mainParentId,parentAccountId,accountGroupId,set
     });
 
 
-    const handleSubmit = async (values) => {
+    const handleSubmit = async (formik) => {
         
-        const treeData = { ...values,
+        const treeData = { ...formik.values,
             mainParentId: mainParentId,
-          
+            accountGroupId:parseInt(accountGroupId),
             parentAccountId: parentAccountId? parentAccountId : 0}
        
         console.log(treeData)
        
         if (editMode) {
-          updateData(values)  }
-        else { postdata(treeData ); }
-    setShowForm(false)
+          updateData(formik.values)  }
+        else { postdata(treeData );
+            
+         }
+   
     };
 
     return (
@@ -104,7 +110,10 @@ const CharofAccTreeForm = ({node,mainParentId,parentAccountId,accountGroupId,set
                 <div>
                     <h2 className='font-inter font-semibold text-[20px]'> {editMode ? 'Update' : 'Add'} Chart of Account</h2>
                 </div>
-
+         <ToastContainer
+         position="bottom-center"
+         autoClose={5000}
+         hideProgressBar={false}/>
                 <Formik
                     initialValues={editMode ? editData : initialValues}
                     validationSchema={validationSchema}
@@ -131,6 +140,7 @@ const CharofAccTreeForm = ({node,mainParentId,parentAccountId,accountGroupId,set
                                             className='border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr '
                                             name='accountCode'
                                             type='text'
+                                            disabled
                                         />
                                         <ErrorMessage component='div' className='text-[14px] text-redclr ' name='accountCode' />
                                     </div>
@@ -144,10 +154,9 @@ const CharofAccTreeForm = ({node,mainParentId,parentAccountId,accountGroupId,set
                                             placeholder='Select Account Group'
 
                                         >
-                                            {/* <option disabled value=''  >Select Account Group</option> */}
-                                            <>
-                                           {/* { accountGroupId  ?  <><option selected  value={groupIddata?.id} >{groupIddata?.name}</option>
-                                                 ({data?.data?.map((item)=>
+                                           
+                                             {/* { accountGroupId  ?  <><option selected  value={groupIddata?.id} >{groupIddata?.name}</option>
+                                                 ({data?.filter((item)=>(item?.id !== accountGroupId)).map((item)=>
                                                 <option value={item.id}>{item.name}</option>)})
                                               </> : (data?.data?.map((item)=>
                                               (
@@ -155,19 +164,17 @@ const CharofAccTreeForm = ({node,mainParentId,parentAccountId,accountGroupId,set
                                               )))  
                                            
                                             } */}
-                                             { accountGroupId  ?  <><option selected  value={groupIddata?.id} >{groupIddata?.name}</option>
-                                                 ({data?.data?.filter((item)=>(item?.id !== accountGroupId)).map((item)=>
-                                                <option value={item.id}>{item.name}</option>)})
-                                              </> : (data?.data?.map((item)=>
-                                              (
-                                                <option value={item.id}>{item.name}</option>
-                                              )))  
-                                           
-                                            }
+                                            <option selected disabled >Select Account Group</option>
                                          
-                                            </>
-                                        
-                                          {}
+                                           
+                                            {data?.map((item)=>
+                                            (
+                                               
+                                                <option value={item.id}>{item?.name}</option>
+                                            )
+                                                
+                                            )}
+                                         
                                             
                                         </Field>
                                         <ErrorMessage component='div' className='text-[14px] text-redclr ' name='accountGroupId' />
@@ -269,10 +276,12 @@ const CharofAccTreeForm = ({node,mainParentId,parentAccountId,accountGroupId,set
 
 
                                 <div className=' mt-[40px] flex gap-[50px] absolute bottom-[2em] right-[5em]' >
-                                    <button onClick={() => navigate('/chartofaccount')} className=' border-[1px] border-redclr px-[15px] py-[4px] text-redclr font-inter'  type='button'>Cancel</button>
-
-                                    <button className='bg-PrimaryColor px-[15px] py-[4px] text-white font-inter' type='submit' >
-                                        {editMode ? 'Update' : 'Save'} </button>
+                                <CancelButton link='/chartofaccount/listview'/>
+                <SubmitButton type='submit'
+                 editMode={editMode}
+                  formik={formik}
+                  id='btnsubmit'
+                   handleSubmit={(values) => handleSubmit(values)}/>
                                 </div>
                             </div>
 

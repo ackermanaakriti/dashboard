@@ -5,7 +5,7 @@ import { FaChevronDown, FaChevronRight } from 'react-icons/fa';
 import './Sidebar.css';
 import { UseDispatch, useDispatch } from 'react-redux';
 import { addTab } from '../Redux/TopTabSlice';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 
 
 const SideBar = () => {
@@ -14,12 +14,18 @@ const SideBar = () => {
     const [activeLink, setActiveLink] = useState(null);
     const [activeSubMenu, setActiveSubMenu] = useState(null);
     const [menuopen, setMenuopen] = useState(false);
+    const navigate = useNavigate()
    
 
 
     const handleClick = (name,index) => {
+        console.log(name)
+        console.log(activeLink)
     
-        
+        if(name=== '/')
+            {
+                navigate('/')
+            }
          
         if (activeLink === name) {
             setMenuopen(!menuopen);
@@ -44,7 +50,7 @@ const SideBar = () => {
                         <ul>
                             {MenuData.map((menu, index) => (
                                 <li key={index}>
-                                    <a onClick={() => handleClick(menu.slug,index)} className={activeLink === menu.menu ? 'active' : ''}>
+                                    <a onClick={() => handleClick(menu.slug,index)} className={activeLink === menu.slug ? 'active' : ''}>
                                         <div className='menuitems-flex'>
                                         <span className='menuicons'>{menu.icon}</span>
                                         <span className='menuname cursor-pointer'> {menu.menu}</span>
@@ -55,7 +61,7 @@ const SideBar = () => {
                                         }
                                       </a>
                                     {activeLink === menu.slug && menu.submenu.length > 0 && menuopen && (
-                                        <ul>
+                                        <ul style={{zIndex:'99999'}}>
                                             {menu.submenu.map((submenu, subIndex) => (
                                                 <li key={subIndex}>
                                                     <NavLink to={`/${submenu?.slug}`} onClick={() => handleSubMenuClick( submenu.slug ,index)} className={activeSubMenu === submenu.name ? 'activesubmenu' : ''}>

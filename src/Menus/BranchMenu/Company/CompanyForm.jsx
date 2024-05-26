@@ -20,11 +20,8 @@ const CompanyForm = () => {
   const { GiveId, dataByid } = useGetById('Company/GetById/');
   const [editMode, setEditMode] = useState(false);
   const [logo, setLogoFile] = useState('');
-  const [billLogoFile, setBillLogoFile] = useState('');
   const navigate = useNavigate();
   const paramId = useParams();
-  const [error,setError] =useState('');
-  const [errorMessages, setErrorMessages] = useState([]);
   const formref = useFormNavigation()
 
 
@@ -69,7 +66,7 @@ console.log(logo)
       formData.append(key, formik.values[key]);
     });
     
-    formData.append("logo", logo);
+    formData.append("logoFile", logo);
 
   
 
@@ -85,21 +82,26 @@ console.log(logo)
         }
       );
       console.log(formData);
-      toast.success('Data added Successfully!', {
-        position: "bottom-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        
-        });
-      formik.resetForm()
+      if(response.statusText === 'OK')
+        {
+          toast.success('Company added Successfully!', {
+            position: "bottom-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            
+            });
+          formik.resetForm()
+          setLogoFile('')
+        }
+     
     } catch (error) {
       console.log(error.response?.data.errors);
-      setError(error.response?.data.errors);
+      toast.error('Something went wrong while adding company. Try again later !')
     }
     
     
@@ -145,11 +147,11 @@ theme="light"
                       type="text"
                       name="name"
                       id='name'
-                      className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr ${formik.errors.name ? 'border-redclr' : ''}`}
+                      className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr }`}
 
                       placeholder=""
                     />
-                    <ErrorMessage component="div" className="error" name="Name" />
+                    <ErrorMessage component="div" className=" text-redclr text-[14px]" name="name" />
                   </div>
                  
                   <div className="py-[6px]">
@@ -157,12 +159,12 @@ theme="light"
                     <Field
                       type="text"
                       name="contactNumber"
-                      className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr ${formik.errors.contactNumber ? 'border-redclr' : ''}`}
+                      className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr `}
 
                       placeholder=""
                       id="contactNumber"
                     />
-                    <ErrorMessage component="div" className="error" name="contactNumber" />
+                    <ErrorMessage component="div" className=" text-redclr text-[14px]" name="contactNumber" />
                   </div>
                 </div>
 
@@ -172,41 +174,41 @@ theme="light"
                     <Field
                       type="text"
                       name="regestrationNo"
-                      className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr ${formik.errors.regestrationNo ? 'border-redclr' : ''}`}
+                      className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr `}
 
                       placeholder=""
                       id="regestrationNo"
                     />
-                    <ErrorMessage  component="div" className="error text-redclr text-[12px]" name="regestrationNo" />
+                    <ErrorMessage  component="div" className=" text-redclr text-[14px]" name="regestrationNo" />
                   </div>
                   <div className="py-[6px]">
                     <label className="block py-[5px] font-[500] font-inter">Pan <span className="text-redclr">*</span></label>
                     <Field
                       type="text"
                       name="pan"
-                      className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr ${formik.errors.pan ? 'border-redclr' : ''}`}
+                      className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr `}
 
                       placeholder=""
                       id="pan"
                     />
-                    <ErrorMessage component="div" className="error" name="pan" />
+                    <ErrorMessage component="div" className=" text-redclr text-[14px]" name="pan" />
                   </div>
                 </div>
 
                 <div className="py-[6px]">
-                  <label className="block py-[5px] font-[500] font-inter">Address <span>*</span></label>
+                  <label className="block py-[5px] font-[500] font-inter">Address <span className="text-redclr">*</span></label>
                   <Field
                     type="text"
                     id="address"
                     name="address"
-                    className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr ${formik.errors.address ? 'border-redclr' : ''}`}
+                    className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr `}
 
                   />
-                  <ErrorMessage component="div" className="error" name="address" />
+                  <ErrorMessage component="div" className=" text-redclr text-[14px]" name="address" />
                 </div>
 
                 <div className="py-[6px]">
-                  <label className="block py-[5px] font-[500] font-inter">Logo <span>*</span></label>
+                  <label className="block py-[5px] font-[500] font-inter">Logo</label>
                   <div className="relative border-dotted border-[2px] border-[#c0d3e5] text-center py-[10px]">
                     <input
                       type="file"
@@ -215,29 +217,30 @@ theme="light"
                       id="logoFile"
                       onChange={(e) => setLogoFile(e.target.files[0])}
                     />
-                    <span className="text-[#c0d3e5] text-[30px] flex justify-center "> <HiOutlinePhotograph /></span>
-                    <p className="text-[#c0d3e5]">Click to upload photo</p>
+                   {logo ? <><span className="text-[#c0d3e5] text-[30px] flex justify-center "> </span>
+                    <p className="text-[#c0d3e5] "> Selected File : {logo?.name}</p></> : <><span className="text-[#c0d3e5] text-[30px] flex justify-center "> <HiOutlinePhotograph /></span>
+                    <p className="text-[#c0d3e5] ">Click to upload photo</p></> }
                   </div>
-                  <ErrorMessage component="div" className="error" name="logoFile" />
+                  <ErrorMessage component="div"className=" text-redclr text-[14px]" name="logoFile" />
                 </div>
               </div>
 
               <div>
                 <h2 className="text-PrimaryColor font-semibold text-center text-[20px]">Billing Information</h2>
                 <div className="py-[6px]">
-                  <label className="block py-[5px] font-[500] font-inter">Bill Address <span>*</span></label>
+                  <label className="block py-[5px] font-[500] font-inter">Bill Address </label>
                   <Field
                     as="textarea"
                     type="text"
                     id="billAddress"
                     name="billAddress"
-                    className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr ${formik.errors.billAddress ? 'border-redclr' : ''}`}
+                    className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr `}
 
                   />
-                  <ErrorMessage component="div" className="error" name="billAddress" />
+                  <ErrorMessage component="div" className=" text-redclr text-[14px]" name="billAddress" />
                 </div>
                 <div className="py-[6px]">
-                  <label className="block py-[5px] font-[500] font-inter">Ship Address <span>*</span></label>
+                  <label className="block py-[5px] font-[500] font-inter">Ship Address </label>
                   <Field
                     as="textarea"
                     type="text"
@@ -246,10 +249,10 @@ theme="light"
                     className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr ${formik.errors.shipAddress ? 'border-redclr' : ''}`}
 
                   />
-                  <ErrorMessage component="div" className="error" name="shipAddress" />
+                  <ErrorMessage component="div" className=" text-redclr text-[14px]" name="shipAddress" />
                 </div>
                 <div className="py-[6px]">
-                  <label className="block py-[5px] font-[500] font-inter">Bill Contact Info <span>*</span></label>
+                  <label className="block py-[5px] font-[500] font-inter">Bill Contact Info</label>
                   <Field
                     as="textarea"
                     type="text"
@@ -258,7 +261,7 @@ theme="light"
 
                     id="billContactInfo"
                   />
-                  <ErrorMessage component="div" className="error" name="billContactInfo" />
+                  <ErrorMessage component="div" className=" text-redclr text-[14px]" name="billContactInfo" />
                 </div>
 
                 <div className="mt-[70px] flex gap-[20px] float-right">

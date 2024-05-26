@@ -43,17 +43,16 @@ const CharofAccForm = () => {
         } 
         const  fetchDropDownsData=async()=>
             {
-              const responseA = await axios.get(`${baseUrl}ChartOfAccount/GetMainParentDDL`,{headers:{Authorization: `Bearer ${token}`}})
+              const responseA = await axios.get(`${baseUrl}ChartOfAccount/GetTree`,{headers:{Authorization: `Bearer ${token}`}})
               setMainparentAcc(responseA.data.data)
-              const responseB = await axios.get(`${baseUrl}ChartOfAccount/GetParentDDL`,{headers:{Authorization: `Bearer ${token}`}})
-              setparentAcc(responseB.data.data)
+              
             }
             fetchDropDownsData()
     }, [data,paramId?.id]
     )
 
 
-
+ console.log(mainparentAcc)
     const initialValues = {
         id:0,
         accountCode: '',
@@ -90,20 +89,34 @@ const CharofAccForm = () => {
     });
 
     const handleSubmit = async (formik) => {
-
+        const datawithInt = {...formik.values,accountGroupId: parseInt(formik.values.accountGroupId)}
         if (editMode) {
           updateData(formik.values)  ;
            navigate('/chartofaccount') }
-        else { postdata(formik.values ,'Chart Of Account');
+        else {
+          
+            postdata(datawithInt ,'Chart Of Account');
         formik.resetForm()
+        setparentAcc('')
          }
          document.getElementById('accountName').focus()
   
-       
-     
-       
-
     };
+    const handleParentAccounts=(e,setFieldValue)=>
+        {
+            const mainparentAccountId = e.target.value;
+            console.log(mainparentAccountId)
+            console.log(mainparentAcc)
+            const findByIdMainparent = mainparentAcc.find((item)=>item.id === parseInt(mainparentAccountId))
+            console.log(findByIdMainparent)
+            if(findByIdMainparent)
+                {
+                    setFieldValue('parentAccountId','')
+                    setparentAcc(findByIdMainparent?.children)
+                }
+           
+            setFieldValue('mainParentId', mainparentAccountId);
+        }
 
     return (
         <>
@@ -168,7 +181,7 @@ const CharofAccForm = () => {
 
                                         >
                                             <option disabled value='' selected >Select Account Group</option>
-                                            {data?.data?.map((item, index) =>
+                                            {data?.map((item, index) =>
                                             (
                                                 <option key={index} value={item?.id}>{item.name}</option>
                                             ))}
@@ -187,9 +200,10 @@ const CharofAccForm = () => {
                                             name='mainParentId'
                                             id='mainParentId'
                                             as='select'
+                                            onChange={(e)=>handleParentAccounts(e,formik.setFieldValue)}
                                             placeholder='Select Main Parent Account'
                                         >
-                                            <option className='text-[#717378] text-[15px]' value='' disabled  >Select Main Parent Account</option>
+                                            <option className='text-[#717378] text-[15px]'  selected >Select Main Parent Account</option>
                                            {mainparentAcc?.map((item,index)=>
                                            (
                                             <option key={index} value={item?.id}>{item?.accountName}</option>
@@ -206,10 +220,10 @@ const CharofAccForm = () => {
                                             as='select'
                                         >
                                              <option className='text-[#717378] text-[15px]' value='' disabled  >Select  Parent Account</option>
-                                           {parentAcc?.map((item,index)=>
+                                           {parentAcc ? (parentAcc?.map((item,index)=>
                                            (
                                             <option key={index} value={item?.id}>{item?.accountName}</option>
-                                           ))}
+                                           ))): <option value=''>No Parent Data</option>}
                                         </Field>
                                         <ErrorMessage component='div' className='text-[14px] text-redclr ' name='parentAccountId' />
                                     </div>
@@ -319,7 +333,7 @@ const CharofAccForm = () => {
 
 
                                 <div className=' mt-[40px] flex gap-[20px] right-0  absolute bottom-[2em]' >
-                                <CancelButton link='/chartofaccount'/>
+                                <CancelButton link='/chartofaccount/listview'/>
                 <SubmitButton type='submit'
                  editMode={editMode}
                   formik={formik}

@@ -18,7 +18,7 @@ import useFormNavigation from '../../Components/FormNavigation';
 
 
 const VoucherDetailform = ({ onDataSubmit, dataByid,editMode,setdebCredAmount ,setChildRef },) => {
-// const id = uuidv4();
+const idforTable = uuidv4();
   const { postdata } = usePostData('VoucherDetail/Add')
   const { data } = useGetData(`ChartOfAccount/GetAll?ShowTransactionalOnly=${false}`)
   // const [editMode, setEditMode] = useState(false)
@@ -27,15 +27,21 @@ const VoucherDetailform = ({ onDataSubmit, dataByid,editMode,setdebCredAmount ,s
   const [isamount, setisAmount] = useState(false);
   const [d, setD] = useState([])
   const [selectedChartOfAccount, setSelectedChartOfAccount] = useState([]); // State to store the selected ChartofAccount
-  const [id, setIdCounter] = useState(1);
+const [hiddenCharofAccdata,setHiddenChartofAccData]= useState([])
   const firstFieldRef = useRef()
   const formref = useFormNavigation()
+  const [dataforvoucherDetailtable,setDataforvoucherDetailtable] = useState([])
+  const [hideSelectedCharofAcc,setHideSelectedChartofAcc]= useState(true)
+  const [CharofAccInitialData,setchartofAccInitialData]= useState([])
 
 
   useEffect(() => {
     // Pass the childRef to the parent component
     setChildRef(firstFieldRef);
-  }, [setChildRef]);
+    console.log(data)
+setchartofAccInitialData(data)
+console.log(CharofAccInitialData)
+  }, [data]);
 
 
 
@@ -72,52 +78,51 @@ const VoucherDetailform = ({ onDataSubmit, dataByid,editMode,setdebCredAmount ,s
 
   });
   const handleChartOfAccountChange = (event, formik) => {
+  
     const selectedOption = data?.find(item => item?.id.toString() === event.target.value);
     setSelectedChartOfAccount(selectedOption);
-    console.log(selectedOption)
     formik.setFieldValue('chartOfAccountId',selectedOption?.id ); // Update the formik field value
     formik.setFieldValue('chartOfAccountAccountName',selectedOption?.accountName ); // Update the formik field value
+  
+    if( !hideSelectedCharofAcc)
+      {
+         const filteredchartofAcc = data?.filter(item=>item?.id.toString() !== event.target.value)
+         console.log(filteredchartofAcc)
+         setchartofAccInitialData(filteredchartofAcc)
+         console.log(hiddenCharofAccdata)
+         
+      }
   };
 
  
  
 
-  const handleSubmit = async (values, { resetForm }) => {
+  const handleSubmit = async (values, { resetForm ,setFieldValue}) => {
    
-    
-      const VoucherDataId = { ...values, debitAmount: isamount ? values.Amount : 0, creditAmount: isamount ? 0 : values.Amount };
-      console.log(VoucherDataId)
+    setHideSelectedChartofAcc(false)
+      const VoucherDataiwthNoId = { ...values, debitAmount: isamount ? values.Amount : 0, creditAmount: isamount ? 0 : values.Amount };
+      console.log(VoucherDataiwthNoId)
      
       if (editMode) {
-        const dataWithId = {...VoucherDataId, id: 0, voucherId:dataByid.id}
+        const dataWithId = {...VoucherDataiwthNoId, id: 0, voucherId:dataByid.id}
         setD(prevD => [...prevD, dataWithId])
         seteditData([...d,dataWithId]);
         onDataSubmit([...d,dataWithId]);
         
       } else {
-        setD(prevD => [...prevD, VoucherDataId]);
-        setdetailData([...d,VoucherDataId]);
-        onDataSubmit([...d, VoucherDataId]);
+        setD(prevD => [...prevD, VoucherDataiwthNoId]);
+        setdetailData([...d,VoucherDataiwthNoId]);
+        onDataSubmit([...d, VoucherDataiwthNoId]);
+        const datawidhId = {...VoucherDataiwthNoId,  voucherId:idforTable} //delete ko lagi with id voucherdetail table ma pathako
+       setDataforvoucherDetailtable([...d,datawidhId])
       }
       // Reset the form
       resetForm();
+      setFieldValue('Amount',values.Amount)
       setisAmount(prevIsAmount => !prevIsAmount);
+      document.getElementById('chartofaccount').focus()
     } 
-    const handleEnterKeyPress = (event, nextField,formik) => {
-      if (event.key === "Enter" || event.key === 'Tab') {
-        event.preventDefault();
-        const nextInput = document.getElementById(nextField);
-        if (nextField === 'chartofaccount') {
-          console.log('hello')
-          handleSubmit(formik.values, { resetForm: formik.resetForm });
-        }
-        if (nextInput) {
-          nextInput.focus();
-        }
-        
-      }
-    };
-  
+
   
 
   return (
@@ -131,7 +136,7 @@ const VoucherDetailform = ({ onDataSubmit, dataByid,editMode,setdebCredAmount ,s
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
-          onSubmit={(values, { resetForm }) => handleSubmit(values, { resetForm })}
+          onSubmit={(values, { resetForm,setFieldValue }) => handleSubmit(values, { resetForm,setFieldValue })}
           enableReinitialize={true}
         >
           {(formik) => (
@@ -145,14 +150,15 @@ const VoucherDetailform = ({ onDataSubmit, dataByid,editMode,setdebCredAmount ,s
                       as='select'
                       id='chartofaccount'
                       name='chartOfAccountId'
+                      value={selectedChartOfAccount.id}
                       className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr'
                       onChange={(event) => {
                         formik.handleChange(event); // This ensures that Formik handles the change event
                         handleChartOfAccountChange(event,formik); // Your custom handler
                       }}
                     >
-                      <option disabled selected value=''>Select ChartofAccount</option>
-                      {data?.map((item, index) => (
+                      <option value='' selected >Select ChartofAccount</option>
+                      { CharofAccInitialData?.map((item, index) => (
                         <option key={index} value={item.id}>{item.accountName}</option>
                       ))}
                     </Field>
@@ -224,7 +230,7 @@ const VoucherDetailform = ({ onDataSubmit, dataByid,editMode,setdebCredAmount ,s
                     <ErrorMessage component='div' className='text-[14px] text-redclr' name='narration' />
                   </div>
                   <div className='col-span-1 flex justify-center items-center'>
-                    <button id='btnsubmit' type='submit'  onKeyDown={(event) => handleEnterKeyPress(event, "chartofaccount",formik)} className='text-[40px] text-PrimaryColor cursor-pointer pt-[15px]'><IoMdAddCircleOutline /></button>
+                    <button id='btnsubmit' type='submit' className='text-[40px] text-PrimaryColor cursor-pointer pt-[15px]'><IoMdAddCircleOutline /></button>
                   </div>
                 </div>
 
@@ -234,7 +240,7 @@ const VoucherDetailform = ({ onDataSubmit, dataByid,editMode,setdebCredAmount ,s
           )}
 
         </Formik>
-        <VoucherDetailTable dataByid={dataByid} editMode={editMode} editData={editData} setdebCredAmount={setdebCredAmount} detaildata={detaildata} />
+        <VoucherDetailTable dataByid={dataByid} editMode={editMode} editData={editData} dataforvoucherDetailtable ={dataforvoucherDetailtable} setdebCredAmount={setdebCredAmount} detaildata={detaildata} />
       </div>
 
     </>

@@ -14,14 +14,15 @@ const ChartofAccTable = () => {
   const { data,Deldata } = useGetData(
     `ChartOfAccount/GetAll?ShowTransactionalOnly=${false}`, 'ChartOfAccount/Delete/'
   );
-
+const [DatatobeDeleted,setDatatobeDeleted]= useState('')
   const [filterText, setFilterText] = useState("");
 
   const navigate = useNavigate();
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id,name) => {
     setDeleteList(true);
     setDeleteId(id);
+    setDatatobeDeleted(name)
   };
 
   const handleEdit = (id) => {
@@ -87,7 +88,7 @@ const ChartofAccTable = () => {
               <MdEdit />
             </span>
           </button>
-          <button onClick={() => handleDelete(row.id)}>
+          <button onClick={() => handleDelete(row.id,row?.accountName)}>
             <span className="text-[20px] text-redclr  mx-[3px]">
               <RiDeleteBin6Line />
             </span>
@@ -102,7 +103,7 @@ const ChartofAccTable = () => {
   return (
     <div className="px-[50px]">
       <div>
-        <h2 className="font-inter font-semibold text-[30px]">CharofAccount Table</h2>
+        <h2 className="font-inter font-semibold text-[30px]">ChartofAccount </h2>
       </div>
       <TableDataComp
         columns={columns}
@@ -114,7 +115,7 @@ const ChartofAccTable = () => {
       />
       {DeleteList && (
         <DeletePopup
-         
+         DatatobeDeleted={DatatobeDeleted}
           DeleteId={DeleteId}
           Deldata={Deldata}
            

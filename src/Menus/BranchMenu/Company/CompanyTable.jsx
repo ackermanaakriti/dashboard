@@ -18,12 +18,14 @@ const CompanyTable = () => {
   const navigate = useNavigate();
   const { DeleteList, setDeleteList } = useLayouData();
   const [DeleteId, setDeleteId] = useState("");
+  const [DatatobeDeleted,setDatatobeDeleted]= useState('')
 
 
 
-  const handleDelete =  async (id) => {
+  const handleDelete =  async (id,name) => {
     setDeleteList(true)
     setDeleteId(id)
+    setDatatobeDeleted(name)
   };
 
  
@@ -78,7 +80,7 @@ const CompanyTable = () => {
               <MdEdit />
             </span>
           </button>
-          <button onClick={() => handleDelete(row.id)}>
+          <button onClick={() => handleDelete(row.id,row.name)}>
             <span className="text-[20px] text-redclr mx-[3px]">
               <RiDeleteBin6Line />
             </span>
@@ -92,7 +94,7 @@ const CompanyTable = () => {
   return (
     <div className="px-[50px] flex flex-col">
       <div>
-        <h2 className="font-inter font-semibold text-[30px]">Company Table</h2>
+        <h2 className="font-inter font-semibold text-[30px]">Company </h2>
       </div>
       <TableDataComp
         columns={columns}
@@ -107,7 +109,7 @@ const CompanyTable = () => {
         <DeletePopup
         
           
-         
+        DatatobeDeleted={DatatobeDeleted}
           DeleteId={DeleteId}
           Deldata={Deldata}
         

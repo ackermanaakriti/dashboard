@@ -6,8 +6,9 @@ import { GreenButton } from "../../Components/GreenButton";
 import { addMenu } from '../../Redux/TopTabSlice';
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
+import SpinLoader from "../../Components/Loader/SpinLoader";
 
-export const TableDataComp = ({ columns, width, filteredItems, filterText, setFilterText, link,tabletree }) => {
+export const TableDataComp = ({ columns, width, filteredItems, filterText, setFilterText, link,tabletree, }) => {
    
 
     const [resetPaginationToggle, setResetPaginationToggle] = React.useState(false);
@@ -17,21 +18,8 @@ export const TableDataComp = ({ columns, width, filteredItems, filterText, setFi
 
 
 
-    // getting viewHeight according to the users screens size and 
-    //setting height for table
-    const windowHeight = window.innerHeight;
     useEffect(() => {
-        if (windowHeight < 700) {
-            const calculateTableHeight = () => {
-                const availableHeight = windowHeight - 100;
-                setTableHeight(availableHeight);
-            };
-            calculateTableHeight();
-            window.addEventListener('resize', calculateTableHeight);
-            return () => {
-                window.removeEventListener('resize', calculateTableHeight);
-            };
-        }
+        
     }, [tableHeight, filteredItems]);
 
     const customStyles = {
@@ -107,8 +95,9 @@ export const TableDataComp = ({ columns, width, filteredItems, filterText, setFi
     }, [filterText, resetPaginationToggle]);
 
     return (
-        <div className={`wrap-datatable`} style={{ height: windowHeight < 600 ? `${tableHeight}px` : '', width: `${width}`, }}
+        <div className={`wrap-datatable`} style={{  width: `${width}`, }}
         >
+            {/* {loading ? <SpinLoader/> : ''} */}
             <DataTable
                 columns={columns}
                 data={filteredItems}

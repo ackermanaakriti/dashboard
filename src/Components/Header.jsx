@@ -8,8 +8,8 @@ import { Link, NavLink, Navigate, useNavigate } from "react-router-dom";
 const Header = () => {
   const navigate = useNavigate()
  
-  // const { menuClose, setMenuClose, menuOpen,setMenuOpen,collapsed, setCollapsed,sidebarToggle,setSidebarToggle } = useLayouData();
-  const [sidebarToggle,setSidebarToggle]= useState(false)
+  const { sidebarToggle,setSidebarToggle } = useLayouData();
+
   const handleToggleSidebar = () => {
     setSidebarToggle(!sidebarToggle);
    

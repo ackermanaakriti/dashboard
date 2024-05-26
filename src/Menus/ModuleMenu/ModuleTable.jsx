@@ -10,18 +10,20 @@ import { useNavigate } from "react-router";
 import DeletePopup from "../../Components/DeletePopup";
 
 const ModuleTable = () => {
-  const { data, fetchData,Deldata } = useGetData(`Module/GetAll?IsDeleted=${false}`,'Module/Delete/');
+  const { data, fetchData,Deldata,loading } = useGetData(`Module/GetAll?IsDeleted=${false}`,'Module/Delete/');
   const [tableData, setTableData] = useState([]);
   const [filterText, setFilterText] = React.useState('');
   const navigate = useNavigate();
   const { DeleteList, setDeleteList } = useLayouData();
   const [DeleteId, setDeleteId] = useState("");
+  const [DatatobeDeleted,setDatatobeDeleted]= useState('')
   
+console.log(data)
 
-
-  const handleDelete = async (id) => {
+  const handleDelete = async (id,name) => {
     setDeleteList(true);
     setDeleteId(id);
+    setDatatobeDeleted(name)
   };
 
   
@@ -72,7 +74,7 @@ const ModuleTable = () => {
               <MdEdit />
             </span>
           </button>
-          <button onClick={() => handleDelete(row.id)}>
+          <button onClick={() => handleDelete(row.id,row?.name)}>
             <span className="text-[20px] text-redclr mx-[3px]">
               <RiDeleteBin6Line />
             </span>
@@ -88,7 +90,7 @@ const ModuleTable = () => {
   return (
     <div className="px-[50px]">
       <div>
-        <h2 className="font-inter font-semibold text-[30px]">Module Table</h2>
+        <h2 className="font-inter font-semibold text-[30px]">Module </h2>
       </div>
       <TableDataComp
         columns={columns}
@@ -96,10 +98,11 @@ const ModuleTable = () => {
         filterText={filterText}
         setFilterText={setFilterText}
         link='/module/form'
+        loading
       />
       {DeleteList && (
         <DeletePopup
-        
+          DatatobeDeleted={DatatobeDeleted}
           DeleteId={DeleteId}
           Deldata={Deldata}
         />

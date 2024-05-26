@@ -8,7 +8,7 @@ import { baseUrl } from '../../Apis/Baseurl';
 import axios from 'axios';
 
 
-const VoucherDetailTable = ({ dataByid, editData, detaildata, editMode, setdebCredAmount }) => {
+const VoucherDetailTable = ({ dataByid, editData, detaildata,dataforvoucherDetailtable, editMode, setdebCredAmount }) => {
 
   const [voucherDetaildata, setVoucherDetaildata] = useState([]);
   // const { Deldata } = useDelData('VoucherDetail/Delete/');
@@ -21,12 +21,12 @@ const [debitSum,setDebitSum]= useState('')
     setdebCredAmount(false);
   
     if (editMode) {
-      setVoucherDetaildata(dataByid?.voucherDetailDTOs);
+      setVoucherDetaildata(dataByid?.voucherDetailDTOs);  //yo chai children get gareko from voucher 
       if (editData.length > 0) {
-        setVoucherDetaildata(prevData => [...prevData, ...editData]);
+        setVoucherDetaildata(prevData => [...prevData, ...editData]); //edit garda feri data add garyo bhaney locally to children ma data add garne
       }
     } else {
-      setVoucherDetaildata(detaildata);
+      setVoucherDetaildata(dataforvoucherDetailtable); // edit mode xaina bhane voucherdetail data ma detaildata rakhne
     }
   }, [editMode, dataByid, detaildata, editData, setdebCredAmount]);
 
@@ -50,30 +50,46 @@ const [debitSum,setDebitSum]= useState('')
   }, []);
   
 
-  const handleDel = (id, name) => {
+  const handleDel = (id, voucherId) => {
     if (editMode) {
-      console.log('hello')
-      try {
-        const response =   axios.post(
-            `${baseUrl}VoucherDetail/Delete/${id}`,
-            null, // Pass null as the data parameter since it's not needed
-            {
-              headers: {
-                Authorization: `Bearer ${token}`
-              }
+      console.log(editData)
+      if(editMode && editData.length === 0)
+        {
+          try {
+            const response =   axios.post(
+                `${baseUrl}VoucherDetail/Delete/${id}`,
+                null, // Pass null as the data parameter since it's not needed
+                {
+                  headers: {
+                    Authorization: `Bearer ${token}`
+                  }
+                }
+              );
+              
+              // Update the local state to remove the deleted item
+             
+            } catch (err) {
+              console.log(err);
             }
-          );
-          // Update the local state to remove the deleted item
-          setVoucherDetaildata((prevData) => prevData.filter(item => item.id !== id));
-          console.log(response)
-        } catch (err) {
-          console.log(err);
         }
+      console.log('hello')
       
+        if(editData.length > 0)
+          {
+            console.log(voucherDetaildata)
+            setVoucherDetaildata((prevData) => prevData.filter(item => item.id !== id));
+           
+          }
     
-    } else {
+    }
+
+    
+    
+    else {
       console.log('bye')
-      const updateddata = voucherDetaildata.filter(item => item.chartOfAccountName !== name);
+      console.log(voucherDetaildata)
+      const updateddata = voucherDetaildata.filter(item => item.voucherId !== voucherId);
+      console.log('hello')
       console.log(updateddata)
       setVoucherDetaildata(updateddata);
     }
@@ -101,7 +117,7 @@ const [debitSum,setDebitSum]= useState('')
                 <td>{item?.narration}</td>
                 <td>
                   <div className='flex gap-[25px] items-center justify-center'>
-                    <span onClick={() => handleDel(item?.id, item?.chartOfAccountName)} className='text-[#d13838] cursor-pointer'>
+                    <span onClick={() => handleDel(item?.id, item?.voucherId)} className='text-[#d13838] cursor-pointer'>
                       <RiDeleteBin5Fill />
                     </span>
                   </div>

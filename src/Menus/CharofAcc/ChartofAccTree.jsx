@@ -78,10 +78,7 @@ const TreeViewChart = () => {
   const navigate = useNavigate()
   const { data,fetchData } = useGetData('ChartOfAccount/GetTree')
   console.log(data)
-  useEffect(()=>
-  {
-   
-  },[data])
+  
 
 
   return (

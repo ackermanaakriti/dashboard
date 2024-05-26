@@ -67,7 +67,7 @@ const VoucherSeqTable = () => {
   return (
     <div className="px-[50px]">
       <div>
-        <h2 className="font-inter font-semibold text-[30px]">Voucher Sequence Table</h2>
+        <h2 className="font-inter font-semibold text-[30px]">Voucher Sequence </h2>
       </div>
       <TableDataComp 
         columns={columns}

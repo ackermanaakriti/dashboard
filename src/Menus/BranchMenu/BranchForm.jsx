@@ -26,8 +26,8 @@ const BranchForm = () => {
   const { getId, setId,token, } = useLayouData();
  const {postdata,postError}= usePostData('Branch/Create',)
  const {data} = useGetData('Branch/GetParent')
- const{GiveId,dataByid} = useGetById('Company/GetById/')
- const {updateData} = useUpdateData('Company/Update')
+ const{GiveId,dataByid} = useGetById('Branch/GetById/')
+ const {updateData} = useUpdateData('Branch/Update')
  const formref = useFormNavigation()
 
 const [companyData,setCompanyData]= useState('')
@@ -37,48 +37,45 @@ const [companyData,setCompanyData]= useState('')
   const  [billLogoFile,setbillLogofile]= useState('')
   const paramId = useParams()
 
+ console.log(logoFile)
   const [CompanyAutofillData, setCompanyAutofillData] = useState("");
-  const [initialValues, setInitialValues] = useState({
+  const initialFormValues = {
     name: "",
-    companyId: '',
-    parentId: '',
+    companyId: "",
+    parentId: "",
     regestrationNo: "",
     contactNumber: "",
     pan: "",
     address: "",
     shipAddress: "",
     billContactInfo: "",
-    IsHeadOffice: '',
-    code: '',
+    isHeadOffice: true,
+    code: "",
     IsActive: true,
-    fax: ''
-  });
+    fax: "",
+    billAddress: "",
+  };
+  const [initialValues, setInitialValues] = useState(initialFormValues);
+
  const  validationSchema=Yup.object().shape({
-    Name: Yup.string().required("required"),
-    // parentId: Yup.number().required("required"),
+    name: Yup.string().required(" Please enter name"),
+    // companyId: Yup.number().required(" required"),
     code: Yup.string().required("required"),
-    regestrationNo: Yup.string().typeError("invalid data").required("required"),
-    pan: Yup.string().typeError("invalid data").required("required"),
-     contactNumber: Yup.string().typeError("invalid data").min(10, "contactNumber number should be  between 10 to 11  characters ").required("required"),
-    // billadd: Yup.string().required("required"),
-    // shipadd: Yup.string().required("required"),
-    // billcontactNumber: Yup.string().required("required"),
+     contactNumber: Yup.string().typeError("invalid data").required("required"),
     address: Yup.string().required(" required"),
-    fax:Yup.string().required('required'),
-    shipAddress: Yup.string().required('required'),
-    billContactInfo:Yup.string().required('required'),
-    // Logo: Yup.string().required('required'),
-    // BillLogo: Yup.string().required('required'),
-    // parentId:Yup.number().required('required')
+   
   })
 
  
 
   useEffect(() => {
     if (paramId?.id) {
-      console.log(getId);
+      setEditMode(true)
       GiveId(paramId?.id)
+      console.log(dataByid)
+      
     }
+ 
       const fetchData = async ()=>
       {
          try {
@@ -86,36 +83,26 @@ const [companyData,setCompanyData]= useState('')
                {headers : { Authorization:`Bearer ${token}` }
              })
              setCompanyData(response.data)
-             console.log(response.data.data)
             }
           catch (err)
           {
            console.log(err)
            }
          };
+       
          fetchData();
-
-         if(CompanyAutofillData)
-         {
-          const autofillCompanyData = companyData?.data?.find((item) => item?.id === parseInt(CompanyAutofillData));
-          setInitialValues(prevValues => ({
-            ...prevValues,
-            address: autofillCompanyData.address,
-            contactNumber: autofillCompanyData.contactNumber,
-            shipAddress: autofillCompanyData.shipAddress
-        }));
-          
-         }
- 
-     }, [paramId?.id,CompanyAutofillData]);
+        
+         
+     }, [paramId?.id]);
 
 
-     const handleSubmit = async (values) => {
+     const handleSubmit = async (formik) => {
+      console.log(formik.values)
       const formData = new FormData();
     
       // Append all form fields to formData
-      Object.keys(values).forEach((key) => {
-        formData.append(key, values[key]);
+      Object.keys(formik.values).forEach((key) => {
+        formData.append(key, formik.values[key]);
       });
     
       // Append files to formData
@@ -137,8 +124,30 @@ const [companyData,setCompanyData]= useState('')
           });
       
           console.log(response);
+          if(response.statusText === 'OK')
+            {
+              toast.success('Branch added Sucessfully!')
+              formik.resetForm()
+              setCompanyAutofillData('')
+            //   console.log(initialValues)
+            // console.log( Object.keys(initialValues)) 
+            // const inputfieldName = Object.keys(initialValues)
+            // console.log(inputfieldName)
+            // inputfieldName.forEach((item)=>
+            // {
+            //   const inputfieldNameGet = document.getElementsByName(item)[0].value ='';
+            //   console.log(inputfieldNameGet)
+            // })
+      // const r=      document.getElementsByName(inputfieldName)
+      // console.log(r)
+              
+            }
         } catch (error) {
           console.error(error);
+          if(error)
+            {
+              toast.error('Somethind went wrong while adding Branch. Please try again later')
+            }
         }
       }
   
@@ -146,8 +155,28 @@ const [companyData,setCompanyData]= useState('')
       
 
     };
+    const handlecompanyAutfillData = (e, setFieldValue) => {
+      const selectedCompanyId = e.target.value;
+      setCompanyAutofillData(selectedCompanyId)
+    
+      const autofillCompanyData = companyData?.data?.find((item) => item?.id === parseInt(selectedCompanyId));
+    
+      if (autofillCompanyData) {
+        setFieldValue('address', autofillCompanyData.address);
+        setFieldValue('contactNumber', autofillCompanyData.contactNumber);
+        setFieldValue('shipAddress', autofillCompanyData.address);
+        setFieldValue('pan', autofillCompanyData.pan);
+        setFieldValue('regestrationNo', autofillCompanyData.regestrationNo);
+        setFieldValue('fax', autofillCompanyData.fax);
+        setFieldValue('billAddress', autofillCompanyData.address);
+        setFieldValue('billContactInfo', autofillCompanyData.contactNumber);
+        setFieldValue('companyId', selectedCompanyId);
+      }
+    };
+    
 
- 
+
+   
 
   return (
     <div className="px-[50px] ">
@@ -173,7 +202,7 @@ const [companyData,setCompanyData]= useState('')
 
       <Formik
         enableReinitialize={true}
-        initialValues={editMode && CompanyAutofillData ? CompanyAutofillData : initialValues}
+        initialValues={editMode  ? dataByid : initialValues}
        validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
@@ -183,25 +212,26 @@ const [companyData,setCompanyData]= useState('')
               <div>
                 <div className="grid grid-cols-2 gap-[30px]">
                 <div className="py-[5px]">
-                  <label className="block py-[5px] font-[500] font-inter ">Name <span>*</span></label>
+                  <label className="block py-[5px] font-[500] font-inter ">Name <span className="text-redclr">*</span></label>
                   <Field type="text"
                     name="name"
-                      className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr ${formik.errors.name ? 'border-redclr' : ''}`}                    placeholder=""
-                    id='name-'
+                      className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr `}                    
+                    id='name'
                   />
-                  <ErrorMessage component="div" className="error" name="name" />
+                  <ErrorMessage component="div" className="text-[14px] text-redclr" name="name" />
                 </div>
 
                 <div className="py-[5px]">
-                  <label className="block py-[5px] font-[500] font-inter ">Company <span>*</span></label>
+                  <label className="block py-[5px] font-[500] font-inter ">Company <span className="text-redclr" >*</span></label>
                   <Field type="text"
                     name="companyId"
                     as='select'
                   id='companyId'
-                  className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr ${formik.errors.companyId ? 'border-redclr' : ''}`}
+                  className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr `}
                     placeholder=""
-                    value={CompanyAutofillData}
-                    onChange={(e) => setCompanyAutofillData((e.target.value))}
+                    value={ editMode ? dataByid.companyId : CompanyAutofillData}
+                 
+                    onChange={(e) => handlecompanyAutfillData(e, formik?.setFieldValue)}
                    
                   >
                     <option disabled value="">
@@ -212,16 +242,16 @@ const [companyData,setCompanyData]= useState('')
                       ))}
 
                   </Field>
-                  <ErrorMessage component="div" className="error" name="companyId" />
+                  <ErrorMessage component="div" className="text-[14px] text-redclr" name="companyId" />
                 </div>
                 </div>
                 <div className="grid grid-cols-2 gap-[30px]">
                   <div className="py-[5px]">
                     <label className="block py-[5px] font-[500] font-inter ">
-                      Parent Branch <span>*</span>
+                      Parent Branch <span className="text-redclr">*</span>
                     </label>
                     <Field
-                        className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr ${formik.errors.parentId ? 'border-redclr' : ''}`}
+                        className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr `}
                       as="select"
                       id="parentId"
                       name="parentId"
@@ -249,19 +279,19 @@ const [companyData,setCompanyData]= useState('')
                   </div>
                   <div className="py-[6px]">
                     <label className="block py-[5px] font-[500] font-inter ">
-                      Branch Code <span></span>
+                      Branch Code <span className="text-redclr" >*</span>
                     </label>
                     <Field
                       type="text"
                       
                       name="code"
-                      className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr ${formik.errors.code ? 'border-redclr' : ''}`}
+                      className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr `}
                       placeholder=""
                       id="code"
                     />
                     <ErrorMessage
                       component="div"
-                      className="error"
+                      className="text-[14px] text-redclr"
                       name="code"
                     />
                   </div>
@@ -270,12 +300,12 @@ const [companyData,setCompanyData]= useState('')
                 <div className="grid grid-cols-2 gap-[30px]">
                   <div className="py-[6px]">
                     <label className="block py-[5px] font-[500] font-inter ">
-                      Regestration No. <span>*</span>
+                      Regestration No. 
                     </label>
                     <Field
                       type="text"
                       name="regestrationNo"
-                      className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr ${formik.errors.regestrationNo ? 'border-redclr' : ''}`}
+                      className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr `}
                       placeholder=""
                       id="regestrationNo"
                      
@@ -289,17 +319,17 @@ const [companyData,setCompanyData]= useState('')
 
                   <div className="py-[6px]">
                     <label className="block py-[5px] font-[500] font-inter ">
-                      Pan <span>*</span>
+                      Pan 
                     </label>
                     <Field
                       type="text"
                       name="pan"
-                      className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr ${formik.errors.pan ? 'border-redclr' : ''}`}
+                      className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr `}
                       placeholder=""
                       id="pan"
                      
                     />
-                    <ErrorMessage component="div" className="error" name="pan" />
+                    <ErrorMessage component="div" className="text-[14px] text-redclr"name="pan" />
                   </div>
                 </div>
 
@@ -313,26 +343,26 @@ const [companyData,setCompanyData]= useState('')
                     <Field
                       type="text"
                       name="contactNumber"
-                      className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr ${formik.errors.contactNumber ? 'border-redclr' : ''}`}
+                      className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr `}
                       placeholder=""
                       id="contactNumber"
                      
                     />
                     <ErrorMessage
                       component="div"
-                      className="error"
+                      className="text-[14px] text-redclr"
                       name="contactNumber"
                     />
                   </div>
 
                   <div className="py-[6px]">
                     <label className="block py-[5px] font-[500] font-inter ">
-                      Fax <span></span>
+                      Fax 
                     </label>
                     <Field
                       type="text"
                       name="fax"
-                      className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr ${formik.errors.fax ? 'border-redclr' : ''}`}
+                      className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr `}
                       placeholder=""
                       id="fax"
                       
@@ -343,20 +373,20 @@ const [companyData,setCompanyData]= useState('')
 
                 <div className="py-[6px]">
                   <label className="block py-[5px] font-[500] font-inter ">
-                    Address <span>*</span>
+                    Address <span className="text-redclr">*</span>
                   </label>
                   <Field
 
                     type="text"
                     
                     id="Address"
-                    name="Address"
-                    className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr ${formik.errors.Address ? 'border-redclr' : ''}`}
+                    name="address"
+                    className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr `}
                   ></Field>
                   <ErrorMessage
                     component="div"
                     className="error"
-                    name="Address"
+                    name="address"
                   />
                 </div>
 
@@ -365,6 +395,8 @@ const [companyData,setCompanyData]= useState('')
                     Logo <span></span>
                   </label>
                   <div className="relative border-dotted border-[2px] border-[#c0d3e5] text-center py-[10px]">
+                 
+                  
                     <Field
 
                       type="file"
@@ -374,8 +406,10 @@ const [companyData,setCompanyData]= useState('')
                       onChange={(e)=>setLogofile(e.target.files[0])}
                      
                     />
-                    <span className="text-[#c0d3e5] text-[30px] flex justify-center "> <HiOutlinePhotograph /></span>
-                    <p className="text-[#c0d3e5] ">Click to upload photo</p>
+                    {logoFile ? <><span className="text-[#c0d3e5] text-[30px] flex justify-center "> </span>
+                    <p className="text-[#c0d3e5] "> Selected File : {logoFile?.name}</p></> : <><span className="text-[#c0d3e5] text-[30px] flex justify-center "> <HiOutlinePhotograph /></span>
+                    <p className="text-[#c0d3e5] ">Click to upload photo</p></> }
+                    
                   </div>
                   <ErrorMessage
                     component="div"
@@ -387,14 +421,14 @@ const [companyData,setCompanyData]= useState('')
 
                 <div className="py-[6px]">
                   <div role="group">
-                    <label className='block py-[8px] font-[500] font-inter '>Head Office<span>*</span></label>
+                    <label className='block py-[8px] font-[500] font-inter '>Head Office</label>
                     <div>
-                      <label className=""> <Field className='mx-[5px]' type="radio" id='headoffice' name="IsHeadOffice" checked={formik.values.IsHeadOffice === true} value={true}
-                        onChange={() => formik.setFieldValue('IsHeadOffice', true)} />Yes</label>
-                      <label className="ml-[10px]"><Field className='mx-[5px]' type="radio" id='headoffice' name="IsHeadOffice" checked={formik.values.IsHeadOffice === false} value={false}
-                        onChange={() => formik.setFieldValue('IsHeadOffice', false)} /> No</label>
+                      <label className=""> <Field className='mx-[5px]' type="radio" id='headoffice' name="isHeadOffice" checked={formik.values.isHeadOffice === true} value={true}
+                        onChange={() => formik.setFieldValue('isHeadOffice', true)} />Yes</label>
+                      <label className="ml-[10px]"><Field className='mx-[5px]' type="radio" id='headoffice' name="isHeadOffice" checked={formik.values.isHeadOffice === false} value={false}
+                        onChange={() => formik.setFieldValue('isHeadOffice', false)} /> No</label>
                     </div>
-                    <ErrorMessage component="div" className='text-[14px] text-redclr ' name="IsHeadOffice" />
+                    <ErrorMessage component="div" className='text-[14px] text-redclr ' name="isHeadOffice" />
                   </div>
                 </div>
 
@@ -413,7 +447,7 @@ const [companyData,setCompanyData]= useState('')
                     
                     id="billAddress"
                     name="billAddress"
-                    className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr ${formik.errors.billAddress ? 'border-redclr' : ''}`}
+                    className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr `}
                   ></Field>
                   <ErrorMessage
                     component="div"
@@ -431,7 +465,7 @@ const [companyData,setCompanyData]= useState('')
                     type="text"
                     name="shipAddress"
                     id="shipAddress"
-                    className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr ${formik.errors.shipAddress ? 'border-redclr' : ''}`}
+                    className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr `}
                   ></Field>
                   <ErrorMessage
                     component="div"
@@ -448,7 +482,8 @@ const [companyData,setCompanyData]= useState('')
                     as="textarea"
                     type="text"
                     name="billContactInfo"
-  className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr ${formik.errors.billContactInfo ? 'border-redclr' : ''}`}                    id="billContactInfo"
+  className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr `}         
+             id="billContactInfo"
                    
                   ></Field>
                   <ErrorMessage
@@ -477,8 +512,9 @@ const [companyData,setCompanyData]= useState('')
                       }} 
                       
                     />
-                    <span className="text-[#c0d3e5] text-[30px] flex justify-center "> <HiOutlinePhotograph /></span>
-                    <p className="text-[#c0d3e5] ">Click to upload photo</p>
+                     {billLogoFile ? <><span className="text-[#c0d3e5] text-[30px] flex justify-center "> </span>
+                    <p className="text-[#c0d3e5] "> Selected File : {billLogoFile?.name}</p></> : <><span className="text-[#c0d3e5] text-[30px] flex justify-center "> <HiOutlinePhotograph /></span>
+                    <p className="text-[#c0d3e5] ">Click to upload photo</p></> }
                   </div>
                   <ErrorMessage
                     component="div"

@@ -70,7 +70,7 @@ const CurrencyTable = () => {
   return (
     <div className="px-[50px]">
       <div>
-        <h2 className="font-inter font-semibold text-[30px]">Currency Table</h2>
+        <h2 className="font-inter font-semibold text-[30px]">Currency </h2>
       </div>
       <TableDataComp
         columns={columns}

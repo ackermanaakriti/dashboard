@@ -7,7 +7,7 @@ import { MdDashboardCustomize } from "react-icons/md";
 export const MenuData =[
     {
         menu:'Dashboard',
-        slug:'dashboard',
+        slug:'/',
         icon: <MdDashboardCustomize className='text-[28px] text-[#049268ec]'/>,
         submenu: []
 
@@ -60,7 +60,7 @@ export const MenuData =[
         submenu:[
             {
                 name:'Chart of Accounts',
-                slug:'chartofaccount',
+                slug:'chartofaccount/listview',
                 icon:<LuSchool2 className='text-[25px] text-[#ab243d]' />
             },
             {

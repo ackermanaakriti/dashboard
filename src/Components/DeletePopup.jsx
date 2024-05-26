@@ -4,7 +4,7 @@ import { useLayouData } from '../Context/MainLayoutContext'
 import useGetData from '../Apis/useGetData'
 
 
-const DeletePopup = ({DeleteId,Deldata}) => {
+const DeletePopup = ({DeleteId,Deldata,DatatobeDeleted}) => {
    
    
     const { DeleteList,setDeleteList} = useLayouData()
@@ -29,7 +29,8 @@ const DeletePopup = ({DeleteId,Deldata}) => {
                     <div className=' h-[180px] w-[20%] bg-bgclr p-[20px] rounded-[10px]'>
                        
                         <div className='py-[20px]  '>
-                            <p className='text-center text-inter text-[20px]'>Do you want to delete?</p>
+                            <p className='text-center font-inter text-[20px]'>Do you want really want to delete
+                          <span className='font-[700] font-inter text-PrimaryColor'> {DatatobeDeleted}</span>?</p>
                         </div>
                         <div className='flex justify-center gap-[20px] items-center pt-[10px]'>
                             <button onClick={handleAbort} className='bg-[#bfbfbd] px-[12px] rounded-[7px] text-black py-[4px]  font-inter'>Cancel</button>

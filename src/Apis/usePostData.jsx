@@ -9,7 +9,7 @@ const usePostData = (url) => {
     const [error, setError] = useState('');
     const { token } = useLayouData();
 
-    const postdata = async (values,name) => {
+    const postdata = async (values,name,) => {
         try {
             const response = await axios.post(`${baseUrl}${url}`, values, {
                 headers: { Authorization: `Bearer ${token}` },

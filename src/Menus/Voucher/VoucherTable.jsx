@@ -12,23 +12,29 @@ import { useNavigate } from "react-router";
 import DeletePopup from "../../Components/DeletePopup";
 
 const VoucherTable = () => {
-  const { data,Deldata } = useGetData(`Voucher/GetAll?IsDeleted=${false}`,"Voucher/Delete/");   // use custom hook to get all data...passing url
+  const { data,Deldata,fetchData } = useGetData(`Voucher/GetAll?IsDeleted=${false}`,"Voucher/Delete/");   // use custom hook to get all data...passing url
   const [filterText, setFilterText] = React.useState('');
   const navigate = useNavigate();
   const { DeleteList, setDeleteList } = useLayouData();
   const [DeleteId, setDeleteId] = useState("");
+  const [DatatobeDeleted,setDatatobeDeleted]= useState('')
 
 
-
-  const handleDelete = async (id) => {
+ useEffect(()=>
+{
+  fetchData()
+},[])
+  const handleDelete = async (id,name) => {
     setDeleteList(true);
     setDeleteId(id);
+    setDatatobeDeleted(name)
   };
 
 
   const handleEdit = (id) => {
     navigate(`/voucher/form/${id}`);
   };
+  console.log(data)
 
   const filteredItems = data?.filter(
     item => item?.voucherTypeName.toLowerCase().includes(filterText.toLowerCase())  // filter fetched data on the basis of name
@@ -64,7 +70,7 @@ const VoucherTable = () => {
           <button onClick={() => handleEdit(row.id)}>
             <span className="text-[20px] text-PrimaryColor  mx-[3px]"><MdEdit /></span>
           </button>
-          <button onClick={() => handleDelete(row.id)}>
+          <button onClick={() => handleDelete(row.id,row?.voucherTypeName)}>
             <span className="text-[20px] text-redclr  mx-[3px]"><RiDeleteBin6Line /></span>
           </button>
         </div>
@@ -72,11 +78,21 @@ const VoucherTable = () => {
      
     }
   ];
+  const ExpandableRow = ({ data }) => (
+    <div>
+      <p><strong>Voucher Details:</strong></p>
+      <p>Voucher Type: {data.voucherTypeName}</p>
+      <p>Voucher Number: {data.voucherNumber}</p>
+      <p>Invoice Number: {data.invoiceNumber}</p>
+      <p>Transaction Date: {data.transactionDate}</p>
+      <p>Transaction Date (BS): {data.transactionDateBS}</p>
+    </div>
+  );
 
   return (
     <div className="px-[50px] flex flex-col">
       <div>
-        <h2 className="font-inter font-semibold text-[30px]">Voucher Table</h2>
+        <h2 className="font-inter font-semibold text-[30px]">Voucher </h2>
       </div>
       <TableDataComp 
         columns={columns}
@@ -85,11 +101,14 @@ const VoucherTable = () => {
         setFilterText={setFilterText}
         link='/voucher/form'
         width='100%'
+        expandableRows
+        expandableRowsComponent={ExpandableRow}
       />
       {DeleteList && (
         <DeletePopup
           DeleteId={DeleteId}
           Deldata={Deldata}
+          DatatobeDeleted={DatatobeDeleted}
         />
       )}
     </div>

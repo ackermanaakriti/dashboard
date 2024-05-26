@@ -17,7 +17,7 @@ function useGetData(fetchurl, deleteurl) {
       });
       setData(response?.data?.data);
       setLoading(false);
-      console.log(response)
+      console.log('all data',response);
     } catch (err) {
       setError(err);
       setLoading(false);
@@ -27,7 +27,7 @@ function useGetData(fetchurl, deleteurl) {
   const Deldata = async (id) => {
     console.log(id);
     try {
-    const response =  await axios.post(
+      const response = await axios.post(
         `${baseUrl}${deleteurl}${id}`,
         null, // Pass null as the data parameter since it's not needed
         {
@@ -38,7 +38,7 @@ function useGetData(fetchurl, deleteurl) {
       );
       // Update the local state to remove the deleted item
       setData((prevData) => prevData.filter(item => item.id !== id));
-      console.log(response)
+      console.log(response);
     } catch (err) {
       console.log(err);
     }
@@ -46,7 +46,7 @@ function useGetData(fetchurl, deleteurl) {
 
   useEffect(() => {
     fetchData();
-  }, [fetchurl,deleteurl,]);
+  }, [fetchurl, deleteurl]);
 
   return { data, error, fetchData, loading, Deldata };
 }

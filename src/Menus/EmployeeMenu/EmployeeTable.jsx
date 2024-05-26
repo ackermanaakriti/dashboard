@@ -12,10 +12,12 @@ const EmployeeTable = () => {
   const navigate = useNavigate();
   const { DeleteList, setDeleteList,token } = useLayouData();
   const [DeleteId, setDeleteId] = useState("");
+  const [DatatobeDeleted,setDatatobeDeleted]= useState('')
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id,name) => {
     setDeleteList(true);
     setDeleteId(id);
+    setDatatobeDeleted(name)
   };
 
   const handleEdit = (id) => {
@@ -73,7 +75,7 @@ const EmployeeTable = () => {
           <button onClick={() => handleEdit(row.id)}>
             <span className="text-[20px] text-PrimaryColor  mx-[3px]"><MdEdit /></span>
           </button>
-          <button onClick={() => handleDelete(row.id)}>
+          <button onClick={() => handleDelete(row.id,row?.firstName)}>
             <span className="text-[20px] text-redclr  mx-[3px]"><RiDeleteBin6Line /></span>
           </button>
         </div>
@@ -85,7 +87,7 @@ const EmployeeTable = () => {
   return (
     <div className="px-[50px]">
       <div>
-        <h2 className="font-inter font-semibold text-[30px]">Employee Table</h2>
+        <h2 className="font-inter font-semibold text-[30px]">Employee </h2>
       </div>
       <TableDataComp
         columns={columns}
@@ -97,7 +99,8 @@ const EmployeeTable = () => {
       {DeleteList && (
         <DeletePopup
           DeleteId={DeleteId}
-          Deldata={Deldata}        />
+          Deldata={Deldata}    
+          DatatobeDeleted={DatatobeDeleted}    />
       )}
     </div>
   );

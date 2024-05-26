@@ -158,21 +158,14 @@ const CustomerForm = () => {
                     <Field
                       type="text"
                       name="companyId"
-                      as="select"
+                     
                       id='companyId'
                       className="w-[100%] border-[1px] px-[8px] py-[8px]  outline-none border-borderclr"
                       placeholder=""
                       // value={CompanyAutofillData}
                       // onChange={(e) => setCompanyAutofillData((e.target.value))}
                     >
-                      <option disabled value="">
-                        select company
-                      </option>
-                      {companyData?.map((item, index) => (
-                        <option key={item?.id} value={item?.id}>
-                          {item?.name}
-                        </option>
-                      ))}
+                      
                     </Field>
                     <ErrorMessage
                       component="div"
