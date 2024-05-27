@@ -73,6 +73,7 @@ const VoucherTypeTable = () => {
         filterText={filterText}
         setFilterText={setFilterText}
         link='/vouchertype/form'
+        fileName='Voucher Type'
       />
       {DeleteList && (
         <DeletePopup

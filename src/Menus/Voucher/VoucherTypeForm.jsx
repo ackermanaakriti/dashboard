@@ -18,7 +18,7 @@ import "react-toastify/dist/ReactToastify.css";
 const VouchertypeForm = () => {
   const id =uuidv4();
 
-  const {setId,getId}= useLayouData();
+  const {formDirty,setFormDirty}= useLayouData();
   const [editMode,setEditMode]= useState(false)
   const [editData,seteditData]= useState('')
   const dispatch = useDispatch();
@@ -102,7 +102,7 @@ const formref = useFormNavigation()
           enableReinitialize={true}
         >
           {(formik) => (
-            <Form ref={formref} className='grid grid-cols-2 gap-[90px]'>
+            <Form onChange={()=>setFormDirty(true)} ref={formref} className='grid grid-cols-2 gap-[90px]'>
               <div className=''>
                 <div className='py-[8px]'>
                   <label className='block py-[5px] font-[500] font-inter '>Name <span className='text-redclr'> *</span></label>

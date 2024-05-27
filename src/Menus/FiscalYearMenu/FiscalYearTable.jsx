@@ -84,6 +84,7 @@ const FiscalYearTable = () => {
         setFilterText={setFilterText}
         link="/fiscalyear/form"
         width="100%"
+        fileName='Fiscal Year'
       />
       {DeleteList && (
         <DeletePopup

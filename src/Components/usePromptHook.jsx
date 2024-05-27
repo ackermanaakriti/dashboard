@@ -1,14 +1,13 @@
-import { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
-export function useBeforeUnload(formDirty) {
+export function useBeforeUnload(isFormDirty) {
   const [showWarning, setShowWarning] = useState(false);
-  console.log('hello from usebefor unload')
-  console.log(formDirty)
+  console.log(isFormDirty)
 
   useEffect(() => {
     const handleBeforeUnload = (event) => {
-        console.log('k garne')
-      if ( !formDirty) {
+      if (isFormDirty) {
+        console.log('from inside')
         event.preventDefault();
         event.returnValue = ''; // Chrome requires setting returnValue to a string to display the message
         setShowWarning(true);
@@ -17,11 +16,12 @@ export function useBeforeUnload(formDirty) {
 
     window.addEventListener('beforeunload', handleBeforeUnload);
 
-    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
-  }, [formDirty]);
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [isFormDirty]); // Pass isFormDirty as a dependency here
 
   const handleLeave = () => {
-    // Handle confirmation (e.g., navigate anyway, stay on page)
     setShowWarning(false);
   };
 

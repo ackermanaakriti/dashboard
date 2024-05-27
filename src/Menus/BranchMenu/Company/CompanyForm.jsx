@@ -16,7 +16,7 @@ import SubmitButton from "../../../Components/Buttons/SubmitButton";
 
 
 const CompanyForm = () => {
-  const {  token } = useLayouData();
+  const {  token,formDirty,setFormDirty } = useLayouData();
   const { GiveId, dataByid } = useGetById('Company/GetById/');
   const [editMode, setEditMode] = useState(false);
   const [logo, setLogoFile] = useState('');
@@ -137,7 +137,7 @@ theme="light"
         onSubmit={(values, { resetForm }) => handleSubmit(values, { resetForm })}
       >
         {(formik) => (
-          <Form ref={formref} >
+          <Form onChange={()=>setFormDirty(true)} ref={formref} >
             <div className="grid grid-cols-2 gap-[90px] relative">
               <div>
                 <div className="grid grid-cols-2  gap-[20px]">

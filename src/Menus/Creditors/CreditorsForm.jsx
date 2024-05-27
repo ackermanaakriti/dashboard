@@ -23,7 +23,7 @@ const VendorForm = () => {
   const {data}= useGetData('ChartOfAccount/GetAll')
   const {updateData} = useUpdateData('Creditors/Update')
   const {GiveId,dataByid}= useGetById('Creditors/GetById/')
-  const {token}= useLayouData();
+  const {token,formDirty,setFormDirty}= useLayouData();
   const [editMode,setEditMode]= useState(false)
 const [companyData,setCompanyData]= useState([])
   const dispatch = useDispatch();
@@ -125,7 +125,7 @@ const [companyData,setCompanyData]= useState([])
           enableReinitialize={true}
         >
           {(formik) => (
-            <Form ref={formref} className='grid grid-cols-2 gap-[90px]'>
+            <Form onChange={()=>setFormDirty(true)} ref={formref} className='grid grid-cols-2 gap-[90px]'>
                 <div>
               <div className='grid grid-cols-2 gap-[30px]'>
                 <div className='py-[8px]'>

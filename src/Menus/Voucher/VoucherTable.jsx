@@ -65,6 +65,7 @@ const VoucherTable = () => {
     },
     {
       name: 'Actions',
+      width:'6%',
       cell: row => (
         <div className="flex gap-[24px]">
           <button onClick={() => handleEdit(row.id)}>
@@ -103,12 +104,14 @@ const VoucherTable = () => {
         width='100%'
         expandableRows
         expandableRowsComponent={ExpandableRow}
+        fileName='voucher'
       />
       {DeleteList && (
         <DeletePopup
           DeleteId={DeleteId}
           Deldata={Deldata}
           DatatobeDeleted={DatatobeDeleted}
+          
         />
       )}
     </div>

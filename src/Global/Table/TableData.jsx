@@ -7,20 +7,19 @@ import { addMenu } from '../../Redux/TopTabSlice';
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import SpinLoader from "../../Components/Loader/SpinLoader";
+import Export from "../../Components/ExportCsv";
 
-export const TableDataComp = ({ columns, width, filteredItems, filterText, setFilterText, link,tabletree, }) => {
+export const TableDataComp = ({ columns, width, filteredItems, filterText, setFilterText, link,tabletree,fileName }) => {
    
-
+console.log('hello from tabledata',filteredItems)
     const [resetPaginationToggle, setResetPaginationToggle] = React.useState(false);
     const [tableHeight, setTableHeight] = useState(0);
     const dispatch = useDispatch();
     const navigate = useNavigate()
 
+console.log(fileName)
 
 
-    useEffect(() => {
-        
-    }, [tableHeight, filteredItems]);
 
     const customStyles = {
     
@@ -79,20 +78,25 @@ export const TableDataComp = ({ columns, width, filteredItems, filterText, setFi
         return (
             <>
             <div className="flex gap-[20px]">
+            {fileName === 'VoucherSequence' ? ' ' :
                 <div  onClick={() => navigate(link)}>
-                    <GreenButton
+                      <GreenButton
                         className="bg-PrimaryColor px-[15px] py-[4px] text-white font-inter"
-                        text="Add New +" />
+                        text="Add New +" /> 
+                  
                          
                          </div>
+    }
                          <div className="flex float-right">{tabletree ? tabletree():''}</div>
                 </div>
                
-                
+                <div className="flex gap-[20px] items-center pb-[5px]">
+                    <Export filteredItems={filteredItems} fileName={fileName} allColumns={columns}/>
                 <FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} />
+                </div>
             </>
         );
-    }, [filterText, resetPaginationToggle]);
+    }, [filterText, resetPaginationToggle, filteredItems,]);
 
     return (
         <div className={`wrap-datatable`} style={{  width: `${width}`, }}

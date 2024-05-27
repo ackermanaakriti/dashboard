@@ -54,6 +54,7 @@ const CurrencyTable = () => {
     },
     {
       name: 'Actions',
+      width:'6%',
       cell: row => (
         <div className="flex gap-[24px]">
           <button onClick={() => handleEdit(row.id)}>
@@ -79,6 +80,7 @@ const CurrencyTable = () => {
         setFilterText={setFilterText}
         menuname='currencyform'
         width='100%'
+        fileName='Currency'
       />
       {DeleteList && (
         <DeletePopup

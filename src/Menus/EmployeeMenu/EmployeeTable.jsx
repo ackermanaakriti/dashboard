@@ -95,6 +95,7 @@ const EmployeeTable = () => {
         filterText={filterText}
         setFilterText={setFilterText}
         link='/employee/form'
+        fileName='Employee'
       />
       {DeleteList && (
         <DeletePopup

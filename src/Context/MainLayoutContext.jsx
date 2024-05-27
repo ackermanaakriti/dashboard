@@ -11,6 +11,7 @@ export const MainLayoutProvider = ({ children }) => {
   const [authorized,setAuthorized]= useState(false);
   const [token,setToken]= useState(localStorage.getItem("token"));
   const [DeleteList,setDeleteList]= useState(false)
+  const [formDirty,setFormDirty] = useState(false)
 
   return (
     <MainLayoutContext.Provider
@@ -20,7 +21,8 @@ export const MainLayoutProvider = ({ children }) => {
         hanleInquiry,setHandleInquiry,
         authorized,setAuthorized,
         token,setToken,
-        DeleteList,setDeleteList
+        DeleteList,setDeleteList,
+        formDirty,setFormDirty
 
       }}
     >

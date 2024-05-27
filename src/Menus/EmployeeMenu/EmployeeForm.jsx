@@ -17,7 +17,7 @@ import CancelButton from "../../Components/Buttons/CancelButton";
 
 const EmployeeForm = () => {
   const { postdata, postError } = usePostData("Employee/Add");
-  const { setId, getId, token } = useLayouData();
+  const { formDirty,setFormDirty} = useLayouData();
   const { updateData } = useUpdateData("Employee/Update");
   const { dataByid,GiveId } = useGetById("Employee/GetById/");
   const [editMode, setEditMode] = useState(false);
@@ -96,7 +96,7 @@ const EmployeeForm = () => {
         enableReinitialize={true}
       >
         {(formik) => (
-          <Form ref={formRef} className="grid grid-cols-2 gap-[90px]">
+          <Form onChange={()=>setFormDirty(true)} ref={formRef} className="grid grid-cols-2 gap-[90px]">
             <div className="relative">
               <div className="py-[8px]">
                 <label className="block py-[5px] font-[500] font-inter ">

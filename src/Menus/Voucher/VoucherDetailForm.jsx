@@ -20,7 +20,7 @@ import useFormNavigation from '../../Components/FormNavigation';
 const VoucherDetailform = ({ onDataSubmit, dataByid,editMode,setdebCredAmount ,setChildRef },) => {
 const idforTable = uuidv4();
   const { postdata } = usePostData('VoucherDetail/Add')
-  const { data } = useGetData(`ChartOfAccount/GetAll?ShowTransactionalOnly=${false}`)
+  const { data } = useGetData(`ChartOfAccount/GetAll?ShowTransactionalOnly=${true}`)
   // const [editMode, setEditMode] = useState(false)
   const [editData, seteditData] = useState([]);
   const [detaildata, setdetailData] = useState([])
@@ -71,10 +71,10 @@ console.log(CharofAccInitialData)
     chartOfAccountId: Yup.string().required('required'),
     // debitAmount: Yup.number().typeError('enter number').required('required'),
     // creditAmount: Yup.number().required('required'),
-    narration: Yup.string().required('required'),
+    // narration: Yup.string().required('required'),
     Amount: Yup.number().required('required'),
     // isAmount : Yup.boolean().required('required'),
-    chequeNumber: Yup.number().required('required')
+    // chequeNumber: Yup.number().required('required')
 
   });
   const handleChartOfAccountChange = (event, formik) => {

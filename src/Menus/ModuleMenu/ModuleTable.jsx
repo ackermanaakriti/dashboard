@@ -52,15 +52,16 @@ console.log(data)
       selector: row => row.prefix, 
     },
     {
-      name: 'isActive',
+      name: 'Active',
       hide: 'md',
+      width:'10%',
       selector: row => row.isActive, 
       cell: row => (
         <>
           {row.isActive ? (
             <TableButton className='bg-PrimaryColor rounded-[20px] px-[12px] py-[5px] text-white' text='Yes'/>
           ) :  (
-            <TableButton className="bg-[#378f80] rounded-[20px] px-[12px] py-[5px] text-white" text="No"/>
+            <TableButton className="bg-[#d2e6e2] rounded-[20px] px-[12px] py-[5px] text-black" text="No"/>
           )}
         </>
       ),
@@ -83,7 +84,7 @@ console.log(data)
       ),
       allowOverflow: true,
       button: true,
-      width: '15%',
+      width: '8%',
     }
   ];
 
@@ -99,6 +100,7 @@ console.log(data)
         setFilterText={setFilterText}
         link='/module/form'
         loading
+        fileName='Module'
       />
       {DeleteList && (
         <DeletePopup

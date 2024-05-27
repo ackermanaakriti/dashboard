@@ -66,7 +66,7 @@ const DepartmentTable = () => {
     },
     {
       name: 'Actions',
-      width: '20%',
+      width: '8%',
       cell: row => (
         <div className="flex gap-[24px]">
           <button onClick={() => handleEdit(row.id)}>
@@ -93,6 +93,7 @@ const DepartmentTable = () => {
         customStyles={customStyles}
         setFilterText={setFilterText}
         link='/department/form'
+        fileName='Department'
       />
       {DeleteList && (
         <DeletePopup

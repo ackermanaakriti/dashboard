@@ -50,14 +50,15 @@ const VoucherSeqTable = () => {
     },
     {
       name: 'Actions',
+      width:'10%',
       cell: row => (
         <div className="flex gap-[24px]">
           <button onClick={() => handleEdit(row.id)}>
             <span className="text-[20px] text-PrimaryColor  mx-[3px]"><MdEdit /></span>
           </button>
-          <button onClick={() => handleDelete(row.id)}>
+          {/* <button onClick={() => handleDelete(row.id)}>
             <span className="text-[20px] text-redclr  mx-[3px]"><RiDeleteBin6Line /></span>
-          </button>
+          </button> */}
         </div>
       ),
       
@@ -77,6 +78,8 @@ const VoucherSeqTable = () => {
         menuname='voucherseqform'
         width='100%' 
         link='/vouchersequence/form'
+        fileName='VoucherSequence'
+        
       />
       {DeleteList && (
         <DeletePopup

@@ -53,34 +53,34 @@ const [DatatobeDeleted,setDatatobeDeleted]= useState('')
       name: "Name",
       selector: (row) => row.accountName,
       sortable: true,
-      width: "25%",
+     
     },
     {
       name: " Code",
       selector: (row) => row.accountCode,
-      width: "15%",
+   
     },
     {
       name: "Account Group",
       hide: "md",
       selector: (row) => row.accountName,
-      width: "20%",
+   
     },
     {
       name: "Main Parent Account",
       hide: "md",
       selector: (row) => row.mainParentName,
-      width: "15%",
+    
     },
     {
       name: "Parent Account",
       hide: "md",
       selector: (row) => row.parentAccountName,
-      width: "10%",
+     
     },
     {
       name: "Actions",
-      width: "15%",
+      width: "8%",
       cell: (row) => (
         <div className="flex gap-[24px]">
           <button onClick={() => handleEdit(row.id)}>
@@ -112,6 +112,7 @@ const [DatatobeDeleted,setDatatobeDeleted]= useState('')
         setFilterText={setFilterText}
         tabletree={tabletree}
         link="/chartofaccount/form"
+        fileName='CharofAccount'
       />
       {DeleteList && (
         <DeletePopup

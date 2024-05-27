@@ -23,7 +23,7 @@ const CustomerForm = () => {
   const { GiveId, dataByid } = useGetById("Debtors/GetById/");
   const { updateData } = useUpdateData("Debtors/Update");
   const { data } = useGetData(`ChartOfAccount/GetAll?IsTransactionOnly=${false}`);
-  const { token } = useLayouData();
+  const { token ,formDirty,setFormDirty} = useLayouData();
   const [editMode, setEditMode] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate()
@@ -113,7 +113,7 @@ const CustomerForm = () => {
           enableReinitialize={true}
         >
           {(formik) => (
-            <Form ref={formref} className="grid grid-cols-2 gap-[90px]">
+            <Form onChange={()=>setFormDirty(true)} ref={formref} className="grid grid-cols-2 gap-[90px]">
               <div className="">
                 <div className="grid grid-cols-2 gap-[20px]">
                   <div className="py-[8px]">

@@ -19,7 +19,7 @@ import { FocuseErrorField } from "../../Components/FocusErrorField";
 
 const DepartmentForm = () => {
   const { postdata,} = usePostData("Department/Add");
-  const { setId, getId, token } = useLayouData();
+  const { formDirty,setFormDirty } = useLayouData();
   const { updateData } = useUpdateData("Department/Update");
   const { dataByid, GiveId } = useGetById("Department/GetById/");
   const { data } = useGetData(`Company/GetAll?IsDeleted=${false}`);
@@ -89,7 +89,7 @@ const formref = useFormNavigation()
         enableReinitialize={true}
       >
         {(formik) => (
-          <Form ref={formref} className="grid grid-cols-2 gap-[90px]">
+          <Form onChange={()=>setFormDirty(true)} ref={formref} className="grid grid-cols-2 gap-[90px]">
             <div className="">
               <div className="py-[8px]">
                 <label className="block py-[5px] font-[500] font-inter">

@@ -15,38 +15,52 @@ import CancelButton from '../../Components/Buttons/CancelButton';
 import useFormNavigation from '../../Components/FormNavigation';
 import { useBeforeUnload } from '../../Components/usePromptHook';
 
+
+const initialValues = {
+  name: "",
+  companyId: '',
+  companyName: "tes01",
+  accountNumber: "",
+  balance: '',
+  isActive: true,
+};
+
 const BankForm = () => {
   const { postdata } = usePostData('Bank/Add');
-  const { data } = useGetData('Company/GetAll');
+  const { data } = useGetData(`Company/GetAll?IsDeleted=${false}`);
   const { updateData } = useUpdateData('Bank/Update');
   const { GiveId, dataByid } = useGetById('Bank/GetById/');
-  const { setId, getId, token } = useLayouData();
+  const {  formDirty,setFormDirty } = useLayouData();
   const [editMode, setEditMode] = useState(false);
-  const [isFormDirty, setIsFormDirty] = useState(false); // State to track if form is dirty
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const paramId = useParams();
   const formref = useFormNavigation();
-  const {  handleLeave, confirmationDialog } = useBeforeUnload(isFormDirty);
+
 
 
   useEffect(() => {
     if (paramId?.id) {
       setEditMode(true);
       GiveId(paramId?.id);
+    
     }
-  }, [paramId?.id]);
+
+   
+
+  }, [paramId?.id,formDirty]);
+
+
+const handleFormChange=(formik)=>
+  {
 
 
 
-  const initialValues = {
-    name: "",
-    companyId: '',
-    companyName: "tes01",
-    accountNumber: "",
-    balance: '',
-    isActive: true,
-  };
+    const keys = Object.keys(formik.values)
+    const valuesofFormik = keys.map((item)=>formik.values[item])
+    const valuesofInitialvalue = keys.map((item)=>initialValues[item])
+     setFormDirty(true)
+
+  }
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required('required'),
@@ -65,13 +79,12 @@ const BankForm = () => {
 
     document.getElementById('name').focus();
     formik.resetForm();
-    setIsFormDirty(false); // Reset the form dirty state after submission
   };
 
   return (
     <>
-      <div className='px-[50px]'>
-        {confirmationDialog}
+      <div className='px-[50px] '>
+    
         <div>
           <h2 className='font-inter font-semibold text-[30px]'>{editMode ? 'Update' : 'Add'} Bank</h2>
         </div>
@@ -92,10 +105,11 @@ const BankForm = () => {
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
           enableReinitialize={true}
-          onChange={() => setIsFormDirty(true)} // Mark form as dirty on change
+    
+          
         >
           {(formik) => (
-            <Form ref={formref} className='grid grid-cols-2 gap-[90px]'>
+            <Form onChange={() => handleFormChange(formik)} ref={formref} className='grid grid-cols-2 gap-[90px]'>
               <div>
                 <div className='grid grid-cols-2 gap-[30px]'>
                   <div className='py-[8px]'>
@@ -182,6 +196,8 @@ const BankForm = () => {
           )}
         </Formik>
       </div>
+     
+      
     </>
   );
 };

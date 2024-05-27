@@ -1,6 +1,6 @@
  export const FilterComponent = ({ filterText, onFilter, onClear }) => (
 	<>
-    <div className="flex pb-[20px] ">
+    <div className="flex  ">
 		
 		<input
 			id="search"

@@ -55,13 +55,14 @@ const BranchTable = () => {
     {
       name: 'Head Office',
       hide: 'md',
+      width:'10%',
       cell: row => (
         <>
           {row.isEditable ? (
             <TableButton className='bg-PrimaryColor rounded-[20px] px-[12px] py-[5px] text-white' text='Yes' />
           ) : (
             <TableButton
-              className="bg-[#378f80] rounded-[20px] px-[12px] py-[5px] text-white"
+              className="bg-[#d2e6e2] rounded-[20px] px-[12px] py-[5px] text-black"
               text="No"
             />
           )}
@@ -70,6 +71,7 @@ const BranchTable = () => {
     },
     {
       name: 'Actions',
+      width:'6%',
       cell: row => (
         <div className="flex gap-[24px]">
           <button onClick={() => handleEdit(row.id)}>
@@ -97,6 +99,7 @@ const BranchTable = () => {
         setFilterText={setFilterText}
         link='/branch/form'
         width='100%'
+        fileName='Branch'
       />
       {DeleteList && (
         <DeletePopup

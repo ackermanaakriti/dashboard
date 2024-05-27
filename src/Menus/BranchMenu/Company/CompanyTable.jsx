@@ -55,6 +55,7 @@ const CompanyTable = () => {
     {
       name: "Head Office",
       hide: "md",
+      width:'10%',
       cell: (row) => (
         <>
           {row.isEditable ? (
@@ -64,7 +65,7 @@ const CompanyTable = () => {
             />
           ) : (
             <TableButton
-              className="bg-[#378f80] rounded-[20px] px-[12px] py-[5px] text-white"
+              className="bg-[#d2e6e2] rounded-[20px] px-[12px] py-[5px] text-black"
               text="No"
             />
           )}
@@ -73,6 +74,7 @@ const CompanyTable = () => {
     },
     {
       name: "Actions",
+      width:'6%',
       cell: (row) => (
         <div className="flex gap-[24px]">
           <button onClick={() => handleEdit(row.id)}>
@@ -104,6 +106,7 @@ const CompanyTable = () => {
         menuname="companyform"
         width="100%"
         link="/company/form"
+        fileName='Company'
       />
       {DeleteList && (
         <DeletePopup

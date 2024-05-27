@@ -22,9 +22,9 @@ import "react-toastify/dist/ReactToastify.css";
 const VocherSequenceForm = () => {
 
   const {postdata} = usePostData('VoucherSequence/Add')
-  const {data}= useGetData('VoucherType/GetAll')
+  const {data}= useGetData(`VoucherType/GetAll?IsDeleted=${false}`)
   const {updateData} = useUpdateData('Bank/Update')
-  const {GiveId,dataByid}= useGetById('Bank/GetById/')
+  const {GiveId,dataByid}= useGetById('VoucherSequence/GetById/')
   const {setId,getId,token}= useLayouData();
   const [editMode,setEditMode]= useState(false)
 const [fiscalYearData,setfiscalYearData]= useState([])
@@ -54,7 +54,7 @@ const [ChartofAccData,setChartofAccData]= useState([])
     }
   };
   useEffect(() => {
-
+  console.log(paramId?.id)
     if (paramId?.id) {
         setEditMode(true);
         GiveId(paramId?.id);
@@ -64,7 +64,7 @@ const [ChartofAccData,setChartofAccData]= useState([])
     fetchData();
   }, [paramId?.id]); 
 
-
+  console.log(dataByid)
 
   const initialValues = {
   
@@ -138,6 +138,7 @@ const [ChartofAccData,setChartofAccData]= useState([])
                     className='border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr '
                    id='name'
                     name='name'
+                    disabled={editMode}
                   />
                   <ErrorMessage component='div' className='text-[14px] text-redclr' name='name' />
                 </div>
@@ -163,6 +164,7 @@ const [ChartofAccData,setChartofAccData]= useState([])
                       className='border-[1px]  py-[8px] px-[12px]  w-full outline-none border-borderclr '
                       name='prefix'
                       id='prefix'
+                      disabled={editMode}
                     />
                     <ErrorMessage component='div' className='text-[14px] text-redclr ' name='prefix' />
                   </div>
@@ -172,6 +174,7 @@ const [ChartofAccData,setChartofAccData]= useState([])
                     name="voucherTypeId"
                     as='select'
                    id='voucherTypeId'
+                   disabled={editMode}
                     className="w-[100%] border-[1px] px-[8px] py-[8px] outline-none border-borderclr"
                     placeholder=""
                     // value={CompanyAutofillData}
@@ -198,6 +201,7 @@ const [ChartofAccData,setChartofAccData]= useState([])
                     name="fiscalYearId"
                     as='select'
                     id='fiscalYearId'
+                    disabled={editMode}
                     className="w-[100%] border-[1px] px-[8px] py-[8px] outline-none border-borderclr"
                     placeholder=""
                     // value={CompanyAutofillData}
@@ -221,6 +225,7 @@ const [ChartofAccData,setChartofAccData]= useState([])
                     name="charCount"
                     as='select'
                    id='cha'
+                   disabled={editMode}
                     className="w-[100%] border-[1px] px-[8px] py-[8px] outline-none border-borderclr"
                     placeholder=""
                     // value={CompanyAutofillData}

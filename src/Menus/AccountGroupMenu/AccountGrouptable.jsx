@@ -61,7 +61,7 @@ const AccountGrpTable = () => {
             {row.isActive ? (
                <TableButton className='bg-PrimaryColor rounded-[20px] px-[12px] py-[5px] text-white' text='Yes'/>
             ) :  <TableButton
-            className="bg-[#378f80] rounded-[20px] px-[12px] py-[5px] text-white"
+            className="bg-[#d2e6e2] rounded-[20px] px-[12px] py-[5px] text-white"
             text="No"
           />}
         </>

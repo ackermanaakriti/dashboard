@@ -24,11 +24,15 @@ const CurrencyForm = () => {
   const navigate = useNavigate()
   const paramId = useParams()
   const formref = useFormNavigation()
+  const [isDirty, setIsDirty] = useState(false);
 
   
 
   useEffect(()=>
-  { if(paramId?.id)
+  {
+    
+    
+    if(paramId?.id)
         {
       setEditMode(true)
        GiveId(paramId?.id) }},

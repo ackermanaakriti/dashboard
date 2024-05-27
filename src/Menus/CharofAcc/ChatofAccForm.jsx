@@ -24,7 +24,7 @@ const CharofAccForm = () => {
     const {updateData} = useUpdateData('ChartOfAccount/Update');
     const {data}= useGetData(`AccountGroup/GetAll?isDeleted=${false}`)
     const {GiveId,dataByid} = useGetById('ChartOfAccount/GetById/')
-    const { setId, getId,token } = useLayouData();
+    const {formDirty,setFormDirty,token } = useLayouData();
     const [mainparentAcc,setMainparentAcc]= useState([])
     const [parentAcc,setparentAcc]= useState([])
     const [editMode, setEditMode] = useState(false)
@@ -146,7 +146,7 @@ const CharofAccForm = () => {
                     enableReinitialize={true}
                 >
                     {(formik) => (
-                        <Form ref={formref} className='grid grid-cols-2 gap-[90px]'>
+                        <Form onChange={()=>setFormDirty(true)} ref={formref} className='grid grid-cols-2 gap-[90px]'>
                             <div className=''>
                                 <div className='py-[8px]'>
                                     <label className='block py-[5px] font-[500] font-inter '>Name <span className='text-redclr'>*</span></label>

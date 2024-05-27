@@ -74,7 +74,7 @@ const CustomerTable = () => {
     },
     {
       name: 'Actions',
-     
+      width:'6%',
       cell: row => (
         <div className="flex gap-[24px]">
           <button onClick={() => handleEdit(row.id)}> <span className="text-[20px] text-PrimaryColor  mx-[3px]"><MdEdit /></span></button>
@@ -96,7 +96,9 @@ const CustomerTable = () => {
         filteredItems={filteredItems}
          filterText={filterText}
           setFilterText={setFilterText}
-          link='/debtors/form' />
+          link='/debtors/form' 
+          fileName='Debtors'
+          />
                 {DeleteList && (
         <DeletePopup
          DatatobeDeleted={DatatobeDeleted}

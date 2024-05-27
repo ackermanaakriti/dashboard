@@ -23,7 +23,7 @@ import CancelButton from "../../Components/Buttons/CancelButton";
 
 const BranchForm = () => {
   const navigate = useNavigate();
-  const { getId, setId,token, } = useLayouData();
+  const { formDirty,setFormDirty,token, } = useLayouData();
  const {postdata,postError}= usePostData('Branch/Create',)
  const {data} = useGetData('Branch/GetParent')
  const{GiveId,dataByid} = useGetById('Branch/GetById/')
@@ -207,7 +207,7 @@ const [companyData,setCompanyData]= useState('')
         onSubmit={handleSubmit}
       >
         {(formik) => (
-          <Form ref={formref} onSubmit={formik.handleSubmit}>
+          <Form onChange={()=>setFormDirty(true)} ref={formref} onSubmit={formik.handleSubmit}>
             <div className="grid grid-cols-2 gap-[90px]">
               <div>
                 <div className="grid grid-cols-2 gap-[30px]">

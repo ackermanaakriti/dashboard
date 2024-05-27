@@ -58,6 +58,7 @@ const VendorTable = () => {
     },
     {
       name: 'Actions',
+      width:'6%',
       cell: row => (
         <div className="flex gap-[24px]">
           <button onClick={() => handleEdit(row.id)}>
@@ -84,6 +85,7 @@ const VendorTable = () => {
         setFilterText={setFilterText}
         link='/creditors/form'
         width='100%'
+        fileName='Creditors'
       />
       {DeleteList && (
         <DeletePopup
