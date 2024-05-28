@@ -14,6 +14,7 @@ module.exports = {
       },
       fontFamily: {
         'inter':[ 'Inter', 'sans-serif'],
+        'courier': ['Courier Prime', 'Courier, monospace']
       }
     },
   },

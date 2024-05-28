@@ -58,9 +58,7 @@ console.log(pageLeavepopUp)
                const pathname = urlObject.pathname;
                console.log(pathname)
                setUrl(pathname)
-              
-
-               
+  
             }
             else 
             {

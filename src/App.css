@@ -206,10 +206,7 @@ left: 0;
    
   table {
    
-    width: 100%;
-  
-   
-
+    /* width: 100%; */
     thead {
       th {
         border-right: 0.5px solid rgba(61, 99, 99, 0.4);
@@ -228,7 +225,7 @@ left: 0;
         border: 0.5px solid rgba(61, 99, 99, 0.4);
         background-color: white;
         border-bottom: none;
-        padding: 10px;
+      
         font-weight: 400;
         font-family: var(--inter);
         text-align: center;

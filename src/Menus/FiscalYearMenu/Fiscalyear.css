@@ -1,6 +1,8 @@
 
 
-table 
+.fiscalyear 
+{
+  table 
 {
  
   width:100%;
@@ -54,4 +56,5 @@ table
         }
     }
   }
+}
 }

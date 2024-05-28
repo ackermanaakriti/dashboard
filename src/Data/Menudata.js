@@ -76,6 +76,17 @@ export const MenuData =[
             
         ]
     },
+    {
+        menu:'Reports',
+        slug:'reports',
+        icon: <LuMenuSquare className='text-[28px] text-[#267bd1]'/>,
+        submenu:[
+            {name:'Balance Sheet',
+            slug:'balancesheet'
+
+            }
+        ]
+    },
    
     {
         menu:'Other Settings',  

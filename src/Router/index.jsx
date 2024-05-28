@@ -34,6 +34,7 @@ import CustomerForm from "../Menus/Debtors/DebtorForm";
 import TreeViewChart from "../Menus/CharofAcc/ChartofAccTree";
 import CurrencyTable from "../Menus/CurrencyMenu/CurrencyTable";
 import AuthenticatedLayout from "./AuthenticateLayout";
+import BalanceSheetReport from "../Reports/BalanceSheetReport";
 const Routess = () => {
   return (
     <Router>
@@ -112,6 +113,7 @@ const Routess = () => {
               <Route path="form" element={<Voucher />} />
               <Route path="form/:id" element={<Voucher />} />
             </Route>
+            <Route path='balancesheet' element={<BalanceSheetReport/>}/>
           </Route>
         </Route>
         <Route path="*" element={<h1>Page not found</h1>} />

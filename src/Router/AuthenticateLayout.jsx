@@ -11,7 +11,7 @@ const AuthenticatedLayout = () => {
       <Header />
       <div className="flex">
         <SideBar />
-        <div className="flex-grow p-[30px]">
+        <div className="flex-grow p-[30px] w-[80%]">
           <Outlet />
         </div>
       </div>

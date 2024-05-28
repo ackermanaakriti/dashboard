@@ -1,0 +1,70 @@
+.reporttable-container {
+    max-width: 210mm !important;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.report-table {
+    width: 210mm !important;
+}
+
+.reporttable-container table {
+    margin-top: 0px;
+}
+
+.reporttable-container table thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.reporttable-container table th {
+    /* Add styles for table header */
+}
+
+.reporttable-container table tbody td {
+    padding: 0px 5px;
+}
+
+.pdf-content {
+    font-family: Arial, sans-serif;
+}
+
+/* Adjust margins and paddings */
+.pdf-content .mx-[20px] {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.pdf-content .mt-[20px] {
+    margin-top: 20px;
+}
+
+.pdf-content .p-[20px] {
+    padding: 20px;
+}
+
+/* Ensure the table is properly formatted */
+.pdf-content table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.pdf-content th, .pdf-content td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.pdf-content th {
+    background-color: #f2f2f2;
+}
+
+.pdf-content tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.pdf-content tr:hover {
+    background-color: #ddd;
+}
