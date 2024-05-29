@@ -1,65 +1,48 @@
-import React, { useState } from 'react';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
-import * as XLSX from 'xlsx';
-import { HiOutlineDownload } from 'react-icons/hi';
+import React from 'react';
+import { Document, Page, View, StyleSheet, Text } from '@react-pdf/renderer';
+import ReportHeader from './ReportHeader';
+import ReportTable from './ReportTable';
 
-const Downloadformat = ({ reportRef, tableData }) => {
-  const [paperSize, setPaperSize] = useState('a4');
+const styles = StyleSheet.create({
+  page: {
+    flexDirection: 'column',
+    padding: 20,
+  },
+  headerContainer: {
+    position: 'absolute',
+    top: 20,
+    left: 20,
+    right: 20,
+    marginBottom: 20,
+  },
+  content: {
+    marginTop: 80, // Adjust this to avoid overlapping the header
+  },
+  footer: {
+    position: 'absolute',
+    bottom: 20,
+    left: 0,
+    right: 0,
+    textAlign: 'center',
+    fontSize: 8,
+    color: 'grey',
+  },
+});
 
-  const downloadPDF = () => {
-    const input = reportRef.current;
-    html2canvas(input, { scrollY: -window.scrollY }).then(canvas => {
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF(paperSize, 'mm', 'a4');
-      const imgProps = pdf.getImageProperties(imgData);
-      let pdfWidth, pdfHeight;
+const MyDocument = ({ headerData, tableData,endDate,startDate }) => (
+  <Document>
+    <Page size="A4" style={styles.page}>
+      <View fixed style={styles.headerContainer}>
+        <ReportHeader endDate={endDate} startDate={startDate}/>
+      </View>
+      <View style={styles.content}>
+        <ReportTable tableData={tableData} />
+      </View>
+      <Text style={styles.footer} fixed>
+        Page <Text render={({ pageNumber, totalPages }) => `${pageNumber} / ${totalPages}`} />
+      </Text>
+    </Page>
+  </Document>
+);
 
-      if (paperSize === 'a4') {
-        pdfWidth = 210;
-        pdfHeight = 297;
-      } else {
-        pdfWidth = 297;
-        pdfHeight = 420;
-      }
-
-      const scaleFactor = Math.min(pdfWidth / imgProps.width, pdfHeight / imgProps.height);
-
-      const scaledWidth = imgProps.width * scaleFactor;
-      const scaledHeight = imgProps.height * scaleFactor;
-
-      pdf.addImage(imgData, 'PNG', 0, 0, scaledWidth, scaledHeight);
-      pdf.save('balance_sheet_report.pdf');
-    });
-  };
-
-  const downloadExcel = () => {
-    const ws = XLSX.utils.json_to_sheet(tableData);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'BalanceSheet');
-    XLSX.writeFile(wb, 'balance_sheet_report.xlsx');
-  };
-
-  const handleDownload = (format) => {
-    if (format === 'pdf') {
-      downloadPDF();
-    } else if (format === 'excel') {
-      downloadExcel();
-    }
-  };
-
-  return (
-    <div className="flex justify-end items-center pt-[20px]">
-      <select
-        className="bg-PrimaryColor px-[15px] py-[4px] text-white font-inter cursor-pointer mr-4"
-        onChange={e => handleDownload(e.target.value)}
-      >
-        <option value="">Download as</option>
-        <option value="pdf">PDF</option>
-        <option value="excel">Excel</option>
-      </select>
-    </div>
-  );
-};
-
-export default Downloadformat;
+export default MyDocument;

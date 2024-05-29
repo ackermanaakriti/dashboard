@@ -1,65 +1,73 @@
+import React from 'react';
+import { View, Text, StyleSheet } from '@react-pdf/renderer';
 
-import React, { useEffect, useState } from 'react';
-import '../Report.css'
-
-
-const ReportTable = ({tableData,reportRef}) => {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [headers,setHeaders]= useState([])
-
-  console.log(tableData)
+const styles = StyleSheet.create({
+  tableContainer: {
+    flexDirection: 'column',
+    width: '100%',
+    marginTop: '15px',
+  },
+  tableHeader: {
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderBottomColor: '#000',
+    backgroundColor: '#f2f2f2',
+    textAlign: 'left',
+    padding: 5,
+  },
+  tableRow: {
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+    textAlign: 'left',
+    
+   
+  },
+  tableCellHeader: {
+    flex: 1,
+    fontWeight: 'bold',
+    fontSize: 8,
+    textAlign:'center',
  
+  },
+  tableCell: {
+    flex: 1,
+    fontSize: 8,
+    borderLeftWidth: 1,
+    borderLeftColor: '#ddd',
+    backgroundColor: '#f2f2f2',
+    textAlign:'center',
+    padding:'8px 4px'
+    
+  },
+});
 
-useEffect(()=>
-{
-  
+const ReportTable = ({ tableData }) => {
   if (!tableData || tableData.length === 0) {
-    console.log('hello')
-    return;
+    return <Text>No data available</Text>;
   }
 
-else 
-{
   const headers = Object.keys(tableData[0]);
-  console.log(headers)
-  setHeaders(headers)
-}
-},[tableData])
-
-  
-  // Get the table headers from the keys of the first object in the data array
- 
 
   return (
-    <div>
-    <div className="  h-[400px] w-[100%]  ">
-    <table className=" w-[100%]  bg-white text-[14px] font-courier">
-      <thead>
-        <tr>
-          {headers.map((header) => (
-            <th key={header} className="px-4 py-2 border ">
-              {header}
-            </th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {tableData.map((row, rowIndex) => (
-          <tr key={rowIndex}>
-            {headers.map((header) => (
-              <td  key={header} className="px-4 py-2 border table-rowdata hyphens-auto ">
-                {row[header]}
-              </td>
-            ))}
-          </tr>
+    <View style={styles.tableContainer}>
+      <View style={styles.tableHeader}>
+        {headers.map((header) => (
+          <Text key={header} style={styles.tableCellHeader}>
+            {header}
+          </Text>
         ))}
-      </tbody>
-    </table>
-  </div>
- 
-</div>
-
+      </View>
+      {tableData.map((row, rowIndex) => (
+        <View key={rowIndex} style={styles.tableRow}>
+          {headers.map((header) => (
+            <Text key={header} style={styles.tableCell}>
+              {row[header]}
+            </Text>
+          ))}
+        </View>
+      ))}
+    </View>
   );
 };
 

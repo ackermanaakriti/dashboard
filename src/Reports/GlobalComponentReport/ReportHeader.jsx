@@ -1,7 +1,30 @@
 import React from 'react';
+import { View, Text, StyleSheet } from '@react-pdf/renderer';
+
+const styles = StyleSheet.create({
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    paddingBottom: 10,
+  },
+  headerText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    paddingVertical:'5px'
+  },
+  companyInfo: {
+    fontSize: 10,
+    display:'block',
+    paddingVertical:'5px'
+  },
+  dateInfo: {
+    fontSize: 10,
+    display:'block'
+  },
+});
 
 const ReportHeader = ({ header, Company, startDate, endDate }) => {
-  // Function to format date as "Month Day, Year - HH:MM AM/PM"
   const formatDate = (date) => {
     const options = {
       year: 'numeric',
@@ -14,25 +37,20 @@ const ReportHeader = ({ header, Company, startDate, endDate }) => {
     return new Date(date).toLocaleString('en-US', options);
   };
 
-  // Get current date and time
   const issuedDate = formatDate(new Date());
 
   return (
-    <>
-      <div className='flex justify-between items-center w-[100%]'>
-        <div>
-          <p className='text-[25px] font-inter font-[600] text-center'>{header}</p>
-          <div>
-            <p className='text-[18px] font-inter font-[500] pt-[10px]'> Company Name: {Company}</p>
-            <p className='text-[17px] font-inter font-[400] pt-[5px]'> Start Date: {startDate}</p>
-            <p className='text-[17px] font-inter font-[400]'> End Date: {endDate}</p>
-          </div>
-        </div>
-        <div>
-          <p className='text-[17px] font-inter font-[400]'> Issued Date: {issuedDate}</p>
-        </div>
-      </div>
-    </>
+    <View style={styles.headerContainer}>
+      <View>
+        <Text style={styles.headerText}>Balance Sheet Report</Text>
+        <Text style={styles.companyInfo}>Company Name: Onviro Tech</Text>
+        <Text style={styles.companyInfo}>Start Date: {startDate}</Text>
+        <Text style={styles.companyInfo}>End Date: {endDate}</Text>
+      </View>
+      <View>
+        <Text style={styles.dateInfo}>Issued Date: {issuedDate}</Text>
+      </View>
+    </View>
   );
 };
 
