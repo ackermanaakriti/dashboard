@@ -7,6 +7,10 @@ const WebView = ({tableData,endDate,startDate}) => {
     <>
     <BalanceReportHeader startDate={startDate} endDate={endDate}/>
     <BalanceSheetTable  tableData={tableData}/>
+    <div>
+      <p className='font-inter'>Notes : </p>
+      <p className='font-inter font-[500]'>Powered By Onviro Tech</p>
+    </div>
     </>
   )
 }

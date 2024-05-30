@@ -5,14 +5,16 @@ const styles = StyleSheet.create({
   tableContainer: {
     flexDirection: 'column',
     width: '100%',
-    marginTop: '15px',
+    marginTop: '5px',
   },
   tableHeader: {
     flexDirection: 'row',
     borderBottomWidth: 1,
-    borderBottomColor: '#000',
+    borderBottomColor: '#ddd',
     backgroundColor: '#f2f2f2',
     textAlign: 'left',
+    borderLeftWidth: 1,
+    borderLeftColor: '#ddd',
     padding: 5,
   },
   tableRow: {
@@ -20,25 +22,19 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#ddd',
     textAlign: 'left',
-    
-   
   },
   tableCellHeader: {
-    flex: 1,
     fontWeight: 'bold',
-    fontSize: 8,
-    textAlign:'center',
- 
+    fontSize: 9,
+    textAlign: 'center',
+    padding: '8px 4px',
   },
   tableCell: {
-    flex: 1,
     fontSize: 8,
     borderLeftWidth: 1,
     borderLeftColor: '#ddd',
-    backgroundColor: '#f2f2f2',
-    textAlign:'center',
-    padding:'8px 4px'
-    
+    textAlign: 'center',
+    padding: '8px 4px',
   },
 });
 
@@ -47,24 +43,22 @@ const ReportTable = ({ tableData }) => {
     return <Text>No data available</Text>;
   }
 
-  const headers = Object.keys(tableData[0]);
-
   return (
     <View style={styles.tableContainer}>
-      <View style={styles.tableHeader}>
-        {headers.map((header) => (
-          <Text key={header} style={styles.tableCellHeader}>
-            {header}
-          </Text>
-        ))}
+      <View style={styles.tableHeader} fixed>
+        <Text style={[styles.tableCellHeader, { width: '10%' }]}>ID</Text>
+        <Text style={[styles.tableCellHeader, { width: '30%' }]}>Name</Text>
+        <Text style={[styles.tableCellHeader, { width: '30%' }]}>Prefix</Text>
+        <Text style={[styles.tableCellHeader, { width: '10%' }]}>Active</Text>
+        <Text style={[styles.tableCellHeader, { width: '20%' }]}>Accounting</Text>
       </View>
       {tableData.map((row, rowIndex) => (
         <View key={rowIndex} style={styles.tableRow}>
-          {headers.map((header) => (
-            <Text key={header} style={styles.tableCell}>
-              {row[header]}
-            </Text>
-          ))}
+          <Text style={[styles.tableCell, { width: '10%' }]}>{row.id}</Text>
+          <Text style={[styles.tableCell, { width: '30%' }]}>{row.name}</Text>
+          <Text style={[styles.tableCell, { width: '30%' }]}>{row.prefix}</Text>
+          <Text style={[styles.tableCell, { width: '10%' }]}>{row.isActive ? 'Yes' : 'No'}</Text>
+          <Text style={[styles.tableCell, { width: '20%' }]}>ACCOUNTING</Text>
         </View>
       ))}
     </View>
@@ -72,3 +66,4 @@ const ReportTable = ({ tableData }) => {
 };
 
 export default ReportTable;
+  

@@ -6,7 +6,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
-    paddingBottom: 10,
+    paddingBottom: '10px',
+    // backgroundColor:'#b2d6cc'
   },
   headerText: {
     fontSize: 18,
@@ -20,7 +21,9 @@ const styles = StyleSheet.create({
   },
   dateInfo: {
     fontSize: 10,
-    display:'block'
+    display:'block',
+    paddingTop:'50px'
+    
   },
 });
 
