@@ -43,14 +43,14 @@ const Login = () => {
           id: id,
         }
       );
-
+  console.log(response)
       localStorage.setItem('token', response?.data?.token);
       if (response?.data?.token && response?.statusText === 'OK') {
         setToken(response?.data?.token);
         setRedirecting(true);
         setTimeout(() => {
           navigate('/');
-        }, 2000); // 3 seconds delay
+        }, 2000); // 3 seconds delay 
       }
     } catch (error) {
       console.error('Error:', error);
@@ -61,7 +61,7 @@ const Login = () => {
           toast.error('Something went wrong. Please try again later!');
         }
         setLoading(false);
-      }, 2000); // Keep loading for 3 seconds before showing the error
+      }, 2000); //keep loading for 3 seconds before showing error
     }
   };
 

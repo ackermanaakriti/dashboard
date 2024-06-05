@@ -20,7 +20,7 @@ import useFormNavigation from '../../Components/FormNavigation';
 const VoucherDetailform = ({ onDataSubmit, dataByid,editMode,setdebCredAmount ,setChildRef },) => {
 const idforTable = uuidv4();
   const { postdata } = usePostData('VoucherDetail/Add')
-  const { data } = useGetData(`ChartOfAccount/GetAll?ShowTransactionalOnly=${true}`)
+  const { data } = useGetData(`ChartOfAccount/GetAll?ShowTransactionalOnly=${false}`)
   // const [editMode, setEditMode] = useState(false)
   const [editData, seteditData] = useState([]);
   const [detaildata, setdetailData] = useState([])
@@ -84,14 +84,14 @@ console.log(CharofAccInitialData)
     formik.setFieldValue('chartOfAccountId',selectedOption?.id ); // Update the formik field value
     formik.setFieldValue('chartOfAccountAccountName',selectedOption?.accountName ); // Update the formik field value
   
-    if( !hideSelectedCharofAcc)
-      {
-         const filteredchartofAcc = data?.filter(item=>item?.id.toString() !== event.target.value)
-         console.log(filteredchartofAcc)
-         setchartofAccInitialData(filteredchartofAcc)
-         console.log(hiddenCharofAccdata)
+    // if( !hideSelectedCharofAcc)
+    //   {
+    //      const filteredchartofAcc = data?.filter(item=>item?.id.toString() !== event.target.value)
+    //      console.log(filteredchartofAcc)
+    //      setchartofAccInitialData(filteredchartofAcc)
+    //      console.log(hiddenCharofAccdata)
          
-      }
+    //   }
   };
 
  

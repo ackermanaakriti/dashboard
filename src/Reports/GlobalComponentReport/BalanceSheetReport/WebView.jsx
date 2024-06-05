@@ -1,7 +1,6 @@
 import React from 'react'
 import BalanceReportHeader from './BalanceReportHeader'
 import BalanceSheetTable from './BalanceSheetReportTable'
-
 const WebView = ({tableData,endDate,startDate}) => {
   return (
     <>

@@ -76,8 +76,8 @@ const CharofAccForm = () => {
  
         // accountCode: Yup.string().typeError('invalid data').required('required'),
         // accountName: Yup.string().required('required'),
-        parentAccountId:Yup.string().required('required'),
-        mainParentId: Yup.string().required('required'),
+        // parentAccountId:Yup.string().required('required'),
+        // mainParentId: Yup.string().required('required'),
         accountName:Yup.string().required('required'),
         // description: Yup.string().required('required'),
         isTaxApplicable: Yup.boolean().required('required'),

@@ -68,3 +68,55 @@
 .pdf-content tr:hover {
     background-color: #ddd;
 }
+
+.report-webtable-container
+{
+   
+    overflow-x: auto;
+    /* overflow-y: auto; */
+    padding-top: 20px; 
+    padding-left: 30px;
+    display: flex;
+    margin:auto;
+    justify-content: center;
+    
+ 
+   
+    .report-webtable
+    { 
+        width:80%;
+        thead 
+        {
+            position: sticky;
+            th
+            {
+                /* background-color: rgb(197, 199, 199); */
+                border-right: 1px solid rgb(128, 127, 127);
+                padding:8px;
+                font-size: 16px;
+                &:last-child
+                {
+                    border-right: none;
+                }
+                
+            }
+            
+        }
+        tbody 
+        {
+            td
+            {
+                font-size: 15px;
+                font-weight: 500;
+                padding:5px 10px;
+                border-right: 1px solid rgb(223, 223, 223);
+                border-bottom:1px solid rgb(223, 223, 223);
+                &:last-child
+                {
+                    border-right: none;
+                }
+            }
+        }
+        
+    }
+}

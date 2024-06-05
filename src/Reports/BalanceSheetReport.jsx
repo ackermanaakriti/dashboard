@@ -17,8 +17,8 @@ import { FaRegFilePdf } from "react-icons/fa6";
 
 const BalanceSheetReport = () => {
     const [tableData, setTableData] = useState([]);
-    const [startDate, setStartDate] = useState(null);
-    const [endDate, setEndDate] = useState(null);
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
     const [paperSize, setPaperSize] = useState('a4');
     const reportRef = useRef();
     const {token} = useLayouData()
@@ -27,19 +27,16 @@ const BalanceSheetReport = () => {
 
     const fetchData = async () => {
         try {
-            const response = await axios.get(
-                `${baseUrl}Module/GetAll`,
-                {
-                    // params: {
-                    //     startDate: startDate,
-                    //     endDate: endDate,
-                    // },
+            const response = await axios.post(
+                `${baseUrl}Ledger/GenerateBalanceSheetReport`,{startDate,endDate},
+                {   
                     headers: {
                         'Content-Type': 'application/json',
                         Authorization: `Bearer ${token}`
                     },
                 }
             );
+            console.log(response)
             setTableData(response.data.data);
             if(response.status === 200)
                 {
