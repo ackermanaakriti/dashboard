@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const ReportHeader = ({ header, Company, startDate, endDate }) => {
+const ReportHeader = ({ header, Company, startDate, endDate,name }) => {
   const formatDate = (date) => {
     const options = {
       year: 'numeric',
@@ -45,7 +45,7 @@ const ReportHeader = ({ header, Company, startDate, endDate }) => {
   return (
     <View style={styles.headerContainer}>
       <View>
-        <Text style={styles.headerText}>Balance Sheet Report</Text>
+        <Text style={styles.headerText}>{name}</Text>
         <Text style={styles.companyInfo}>Company Name: Onviro Tech</Text>
         <Text style={styles.companyInfo}>Start Date: {startDate}</Text>
         <Text style={styles.companyInfo}>End Date: {endDate}</Text>

@@ -84,6 +84,26 @@ export const MenuData =[
             {name:'Balance Sheet',
             slug:'balancesheet'
 
+            }, 
+            {
+                name:'Income Expense ',
+                slug:'incomereport'
+
+            },
+            {
+                name:'General Ledger',
+                slug:'general-ledger'
+
+            },
+            {
+             name:'Trial Balance',
+             slug:'trial-balance'
+            }
+            
+            ,
+            {name:'Tree Report',
+            slug:'treereport'
+
             }
         ]
     },

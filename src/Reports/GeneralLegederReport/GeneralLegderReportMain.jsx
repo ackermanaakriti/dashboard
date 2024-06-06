@@ -1,26 +1,20 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
-import { PDFViewer, Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
-import { baseUrl } from '../Apis/Baseurl';
-import ReportHeader from './GlobalComponentReport/ReportHeader';
-import ReportTable from './GlobalComponentReport/ReportTable';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
-import * as XLSX from 'xlsx';
-import MyDocument from './GlobalComponentReport/Downloadformat';
+import { baseUrl } from '../../Apis/Baseurl';
 import { PDFDownloadLink, pdf } from '@react-pdf/renderer';
 import { saveAs } from 'file-saver'
-import WebView from './GlobalComponentReport/BalanceSheetReport/WebView';
-import { useLayouData } from '../Context/MainLayoutContext';
+import { useLayouData } from '../../Context/MainLayoutContext';
 import { FaRegFilePdf } from "react-icons/fa6";
+import IncomePdfView from '../IncomestatemnentReport/IncomePdfView';
+import GeneralLedgerWebView from './GeneralLedgerWebView';
+import GeneralLedgerPdfView from './GeneralLedgerPdfview';
 
 
-const BalanceSheetReport = () => {
+const GeneralLedgerReportMain = () => {
     const [tableData, setTableData] = useState([]);
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
-    const [paperSize, setPaperSize] = useState('a4');
-    const reportRef = useRef();
+    const [startDate, setStartDate] = useState('2081-08-05');
+    const [endDate, setEndDate] = useState('2081-08-05');
+
     const {token} = useLayouData()
     const [showWebView,setWebView]= useState(false)
 
@@ -28,7 +22,7 @@ const BalanceSheetReport = () => {
     const fetchData = async () => {
         try {
             const response = await axios.post(
-                `${baseUrl}Ledger/GenerateBalanceSheetReport`,{startDate,endDate},
+                `${baseUrl}Ledger/GenerateGeneralLedgerReport?ChartOfAccountId=${1}`,
                 {   
                     headers: {
                         'Content-Type': 'application/json',
@@ -40,15 +34,16 @@ const BalanceSheetReport = () => {
             setTableData(response.data.data);
             if(response.status === 200)
                 {
-                    setWebView(prevView => !prevView);
+                    setWebView(true);
                 }
         } catch (err) {
             console.log(err);
         }
     };
+    console.log(tableData)
 
     const handleDownload = async () => {
-        const blob = await pdf(<MyDocument startDate={startDate} endDate={endDate} tableData={tableData}/>).toBlob();
+        const blob = await pdf(<GeneralLedgerPdfView startDate={startDate} endDate={endDate} tableData={tableData}/>).toBlob();
         saveAs(blob, 'myDocument.pdf');
       };
 
@@ -57,7 +52,7 @@ const BalanceSheetReport = () => {
         <div className='pb-[50px]'>
             <div className='w-full pb-[20px] border-b-[1px] border-b-[#ddd] border-b-solid'>
                 <div className='flex justify-center items-center h-full'>
-                    <h2 className='text-inter text-PrimaryColor text-[30px]'>Balance Sheet Report</h2>
+                    <h2 className='text-inter text-PrimaryColor text-[30px]'>General Ledger Statement Report</h2>
                 </div>
 
                 <div className='flex justify-between items-center mb-[20px] '>
@@ -85,7 +80,7 @@ const BalanceSheetReport = () => {
                 </div> 
                 </div>
                 <div className='pt-[20px]'>
-                {showWebView &&   <WebView tableData={tableData} endDate={endDate} startDate={startDate}/>}
+                {showWebView &&   <GeneralLedgerWebView tableData={tableData} endDate={endDate} startDate={startDate}/>}
                 </div>
              
                 </div>
@@ -96,4 +91,4 @@ const BalanceSheetReport = () => {
     );
 };
 
-export default BalanceSheetReport;
+export default GeneralLedgerReportMain;

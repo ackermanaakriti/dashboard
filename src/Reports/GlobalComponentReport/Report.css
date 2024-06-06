@@ -32,18 +32,7 @@
 }
 
 /* Adjust margins and paddings */
-.pdf-content .mx-[20px] {
-    margin-left: 20px;
-    margin-right: 20px;
-}
 
-.pdf-content .mt-[20px] {
-    margin-top: 20px;
-}
-
-.pdf-content .p-[20px] {
-    padding: 20px;
-}
 
 /* Ensure the table is properly formatted */
 .pdf-content table {

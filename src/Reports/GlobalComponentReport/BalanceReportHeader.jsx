@@ -1,6 +1,6 @@
 import React from 'react';
 
-const BalanceReportHeader = ({ header, Company, startDate, endDate }) => {
+const ReportHeader = ({ header, Company, startDate, endDate,name }) => {
   // Function to format date as "Month Day, Year - HH:MM AM/PM"
   const formatDate = (date) => {
     const options = {
@@ -19,7 +19,7 @@ const BalanceReportHeader = ({ header, Company, startDate, endDate }) => {
 
   return (
     <>
-    <div> <p className='text-[25px] font-inter font-[600] text-center'>Balance Sheet Report</p></div>
+    <div> <p className='text-[25px] font-inter font-[600] text-center'>{name}</p></div>
       <div className='flex justify-between items-center w-[100%]'>
         <div>
          
@@ -37,4 +37,4 @@ const BalanceReportHeader = ({ header, Company, startDate, endDate }) => {
   );
 };
 
-export default BalanceReportHeader;
+export default ReportHeader;

@@ -34,7 +34,11 @@ import CustomerForm from "../Menus/Debtors/DebtorForm";
 import TreeViewChart from "../Menus/CharofAcc/ChartofAccTree";
 import CurrencyTable from "../Menus/CurrencyMenu/CurrencyTable";
 import AuthenticatedLayout from "./AuthenticateLayout";
-import BalanceSheetReport from "../Reports/BalanceSheetReport";
+import TreeReportWebView from "../Reports/TreeReports/TreeReportWebView";
+import IncomeReportMain from "../Reports/IncomestatemnentReport/IncomeReportMain";
+import GeneralLedgerReportMain from "../Reports/GeneralLegederReport/GeneralLegderReportMain";
+import TrialBalanceReportMain from "../Reports/TrialBalanceReport/TrialBalanceReportMain";
+import BalanceSheetReportMain from "../Reports/BalanceSheetReport/BalanceSheetReportmain";
 const Routess = () => {
   return (
     <Router>
@@ -113,7 +117,11 @@ const Routess = () => {
               <Route path="form" element={<Voucher />} />
               <Route path="form/:id" element={<Voucher />} />
             </Route>
-            <Route path='balancesheet' element={<BalanceSheetReport/>}/>
+            <Route path='balancesheet' element={<BalanceSheetReportMain/>}/>
+            <Route path='treereport' element={<TreeReportWebView/>} />
+            <Route path="incomereport" element={<IncomeReportMain/>} />
+            <Route path="general-ledger" element={<GeneralLedgerReportMain/>}/>
+            <Route path="trial-balance" element={<TrialBalanceReportMain/>}/>
           </Route>
         </Route>
         <Route path="*" element={<h1>Page not found</h1>} />

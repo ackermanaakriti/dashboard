@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from '@react-pdf/renderer';
 const styles = StyleSheet.create({
     footer:
     {
-        
+        paddingTop:'20px'
     },
     footerText:
     {
