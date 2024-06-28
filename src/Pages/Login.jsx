@@ -61,7 +61,7 @@ const Login = () => {
           toast.error('Something went wrong. Please try again later!');
         }
         setLoading(false);
-      }, 2000); //keep loading for 3 seconds before showing error
+      }, 100); //keep loading for 3 seconds before showing error
     }
   };
 

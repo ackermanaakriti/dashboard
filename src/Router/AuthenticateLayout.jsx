@@ -1,7 +1,7 @@
 import React from "react";
-import Header from "../Components/Header";
-import Footer from "../Components/Footer";
-import SideBar from "../Components/SideBar";
+import Header from "../Global/Header";
+import Footer from "../Global/Footer";
+import SideBar from "../Global/SideBar";
 import { Outlet } from "react-router-dom";
 
 const AuthenticatedLayout = () => {

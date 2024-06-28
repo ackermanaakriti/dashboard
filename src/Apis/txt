@@ -1,0 +1,65 @@
+//  
+// const createDetailSlice = (name) => {
+//   return createSlice({
+//     name,
+//     initialState: {
+//       detailList: [],
+//       editList: [],
+//       baseAmount: 0,
+//     },
+//     reducers: {
+//       updateEdit(state, action) {
+//         state.editList = action.payload;
+//       },
+//       emptyDetailList(state) {
+//         state.detailList = [];
+//       },
+//       addDetail(state, action) {
+//         state.detailList = [action.payload, ...state.detailList];
+//         state.baseAmount = state.baseAmount + action.payload.totalAmount;
+//       },
+//       addDetailFromServer(state, action) {
+//         state.detailList = action.payload.detailList;
+//         state.baseAmount = action.payload.baseAmount;
+//         console.log("Slice:", state.detailList);
+//       },
+//       updateDetail(state, action) {
+//         const totalAmount = state.detailList.find(
+//           (data) => data.tempId === action.payload.tempId
+//         ).totalAmount;
+//         state.baseAmount =
+//           state.baseAmount - totalAmount + action.payload.totalAmount;
+//         const newDetailList = state.detailList.filter(
+//           (data) => data.tempId !== action.payload.tempId
+//         );
+//         state.detailList = [action.payload, ...newDetailList];
+//       },
+//       deleteDetail(state, action) {
+//         state.baseAmount = state.baseAmount - action.payload.totalAmount;
+//         state.detailList = state.detailList.filter(
+//           (data) => data.tempId !== action.payload.tempId
+//         );
+//       },
+//     },
+//   });
+// };
+// const purchaseDetailSlice = createDetailSlice("purchaseDetail");
+// const purchaseOrderDetailSlice = createDetailSlice("purchaseOrderDetail");
+// export const {
+//   addDetail: addPurchaseDetail,
+//   addDetailFromServer: addPurchaseDetailFromServer,
+//   updateEdit: updateEditPurchaseDetail,
+//   deleteDetail: deletePurchaseDetail,
+//   updateDetail: updatePurchaseDetail,
+//   emptyDetailList: emptyPurchaseDetail,
+// } = purchaseDetailSlice.actions;
+// export const {
+//   addDetail: addPurchaseOrderDetail,
+//   addDetailFromServer: addPurchaseOrderDetailFromServer,
+//   updateEdit: updateEditPurchaseOrderDetail,
+//   deleteDetail: deletePurchaseOrderDetail,
+//   updateDetail: updatePurchaseOrderDetail,
+//   emptyDetailList: emptyPurchaseOrderDetail,
+// } = purchaseOrderDetailSlice.actions;
+// export const purchaseDetailReducer = purchaseDetailSlice.reducer;
+// export const purchaseOrderDetailReducer = purchaseOrderDetailSlice.reducer;

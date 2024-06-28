@@ -13,7 +13,7 @@ import useGetById from '../../Apis/useGetById';
 import SubmitButton from '../../Components/Buttons/SubmitButton';
 import CancelButton from '../../Components/Buttons/CancelButton';
 import useFormNavigation from '../../Components/FormNavigation';
-import { useBeforeUnload } from '../../Components/usePromptHook';
+import { useBeforeUnload } from '../../Hooks/usePromptHook';
 
 
 const initialValues = {

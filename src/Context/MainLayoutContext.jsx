@@ -1,16 +1,14 @@
 import React, { createContext, useContext, useState } from "react";
-import Header from "../Components/Header";
-import Footer from "../Components/Footer";
-import SideBar from "../Components/SideBar";
+
 
 const MainLayoutContext = createContext();
 
 export const MainLayoutProvider = ({ children }) => {
   const [sidebarToggle,setSidebarToggle]= useState(false);
-  const [hanleInquiry,setHandleInquiry]= useState(false)
+  const [handleInquiryShow,setHandleInquiryShow]= useState(false)
   const [authorized,setAuthorized]= useState(false);
   const [token,setToken]= useState(localStorage.getItem("token"));
-  const [DeleteList,setDeleteList]= useState(false)
+  const [DeletePopupShow,setDeletePopupShow]= useState(false)
   const [formDirty,setFormDirty] = useState(false)
 
   return (
@@ -18,10 +16,10 @@ export const MainLayoutProvider = ({ children }) => {
       value={{
 
         sidebarToggle,setSidebarToggle,
-        hanleInquiry,setHandleInquiry,
+        handleInquiryShow,setHandleInquiryShow,
         authorized,setAuthorized,
         token,setToken,
-        DeleteList,setDeleteList,
+        DeletePopupShow,setDeletePopupShow,
         formDirty,setFormDirty
 
       }}

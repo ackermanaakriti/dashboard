@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import useDelData from "../../Apis/useDelData";
 import { useLayouData } from "../../Context/MainLayoutContext";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addMenu } from "../../Redux/TopTabSlice";
 import { MdEdit } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
@@ -13,6 +13,7 @@ import DeletePopup from "../../Components/DeletePopup";
 
 const VendorTable = () => {
  
+  console.log(Creditors)
   const { data, Deldata } = useGetData(`Creditors/GetAll?IsDeleted=${false}`,"Creditors/Delete/");   //use custom hook to get all data...passing url
   const [filterText, setFilterText] = React.useState('');
   const navigate = useNavigate();
@@ -47,6 +48,7 @@ const VendorTable = () => {
     {
       name: 'Company',
       selector: row => row.companyName,
+      selector:row=>row.email
     },
     {
       name: 'Contact No',

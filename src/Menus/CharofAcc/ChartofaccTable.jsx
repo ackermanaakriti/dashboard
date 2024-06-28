@@ -3,19 +3,23 @@ import { useLayouData } from "../../Context/MainLayoutContext";
 import { MdEdit } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { TableDataComp } from "../../Global/Table/TableData";
-import useGetData from "../../Apis/useGetData";
 import { useNavigate } from "react-router";
 import { TbListTree } from "react-icons/tb";
 import DeletePopup from "../../Components/DeletePopup";
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteCharofAccount, fetchChartofAccount } from "../../Redux/Slices/ChartOfAccountSlice";
+import useGetData from "../../Apis/useGetData";
+
 
 const ChartofAccTable = () => {
+  const dispatch = useDispatch();
   const { DeleteList, setDeleteList } = useLayouData();
   const [DeleteId, setDeleteId] = useState("");
-  const { data,Deldata } = useGetData(
-    `ChartOfAccount/GetAll?ShowTransactionalOnly=${false}`, 'ChartOfAccount/Delete/'
-  );
+  const {data,Deldata} = useGetData(`ChartOfAccount/GetAll?ShowTransactionalOnly=${false}`,`ChartOfAccount/Delete/`)
 const [DatatobeDeleted,setDatatobeDeleted]= useState('')
   const [filterText, setFilterText] = useState("");
+
+ 
 
   const navigate = useNavigate();
 
@@ -23,6 +27,7 @@ const [DatatobeDeleted,setDatatobeDeleted]= useState('')
     setDeleteList(true);
     setDeleteId(id);
     setDatatobeDeleted(name)
+     
   };
 
   const handleEdit = (id) => {
@@ -118,7 +123,7 @@ const [DatatobeDeleted,setDatatobeDeleted]= useState('')
         <DeletePopup
          DatatobeDeleted={DatatobeDeleted}
           DeleteId={DeleteId}
-          Deldata={Deldata}
+         DelData= {Deldata}
            
         />
       )}

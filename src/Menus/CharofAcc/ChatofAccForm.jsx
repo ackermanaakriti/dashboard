@@ -18,9 +18,11 @@ import CancelButton from '../../Components/Buttons/CancelButton';
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { addChartOfAccount } from '../../Redux/Slices/ChartOfAccountSlice';
+import { ToggleSwitch } from '../../Components/ToggleSwitch';
 const CharofAccForm = () => {
   
-    const {postdata,postError}= usePostData('ChartOfAccount/Add')
+    const {postdata,postDataResponse}= usePostData('ChartOfAccount/Add')
     const {updateData} = useUpdateData('ChartOfAccount/Update');
     const {data}= useGetData(`AccountGroup/GetAll?isDeleted=${false}`)
     const {GiveId,dataByid} = useGetById('ChartOfAccount/GetById/')
@@ -96,6 +98,10 @@ const CharofAccForm = () => {
         else {
           
             postdata(datawithInt ,'Chart Of Account');
+            if(postDataResponse.status === 200)
+                {
+                    dispatch(addChartOfAccount({...datawithInt, id:postDataResponse.data.id}))
+                }
         formik.resetForm()
         setparentAcc('')
          }
@@ -231,7 +237,7 @@ const CharofAccForm = () => {
 
 
                                 <div className='grid grid-cols-2 gap-[20px]'>
-                                    <div className="py-[6px]">
+                                    {/* <div className="py-[6px]">
                                     <div role="group">
                                             <label className='block py-[8px] font-[500] font-inter '> Tax Applicable </label>
                                             <div>
@@ -242,10 +248,34 @@ const CharofAccForm = () => {
                                             </div>
                                             <ErrorMessage component="div" className='text-[14px] text-redclr ' name="isTaxApplicable" />
                                         </div>
-                                    </div>
+                                    </div> */}
+                                    <ToggleSwitch
+                                        label={"Tax Applicable"}
+                                        name={"isTaxApplicable"}
+                                        required
+                                        checked={formik.values.isTaxApplicable}
+                                        onChange={() => {
+                                            formik.setFieldValue(
+                                                "isTaxApplicable",
+                                                !formik.values.isTaxApplicable
+                                            );
+                                        }}
+                                    />
+                                     <ToggleSwitch
+                                        label={"Active"}
+                                        name={"isActive"}
+                                        required
+                                        checked={formik.values.isActive}
+                                        onChange={() => {
+                                            formik.setFieldValue(
+                                                "isActive",
+                                                !formik.values.isActive
+                                            );
+                                        }}
+                                    />
 
 
-                                    <div className="py-[6px]">
+                                    {/* <div className="py-[6px]">
                                         <div role="group">
                                             <label className='block py-[8px] font-[500] font-inter '>Active</label>
                                             <div>
@@ -256,7 +286,7 @@ const CharofAccForm = () => {
                                             </div>
                                             <ErrorMessage component="div" className='text-[14px] text-redclr ' name="isActive" />
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </div>
 
 
@@ -279,7 +309,7 @@ const CharofAccForm = () => {
                             <div className='relative'>
 
                                 <div className='grid grid-cols-2 gap-[20px]'>
-                                    <div className="py-[6px]">
+                                    {/* <div className="py-[6px]">
                                     <div role="group">
                                             <label className='block py-[8px] font-[500] font-inter '> Transactional </label>
                                             <div>
@@ -290,14 +320,26 @@ const CharofAccForm = () => {
                                             </div>
                                             <ErrorMessage component="div" className='text-[14px] text-redclr 'name="isTransactional" />
                                         </div>
-                                    </div>
+                                    </div> */}
+                                    <ToggleSwitch
+                                        label={"Transactional"}
+                                        name={"isTransactional"}
+                                        required
+                                        checked={formik.values.isTransactional}
+                                        onChange={() => {
+                                            formik.setFieldValue(
+                                                "isTransactional",
+                                                !formik.values.isTransactional
+                                            );
+                                        }}
+                                    />
 
 
                                 </div>
 
 
                                 <div className='grid grid-cols-2 gap-[20px]'>
-                                    <div className="py-[6px]">
+                                    {/* <div className="py-[6px]">
                                     <div role="group">
                                             <label className='block py-[8px] font-[500] font-inter '> Apply for All Branch </label>
                                             <div>
@@ -308,10 +350,34 @@ const CharofAccForm = () => {
                                             </div>
                                             <ErrorMessage component="div" className='text-[14px] text-redclr ' name="isAllBranchApplicable" />
                                         </div>
-                                    </div>
+                                    </div> */}
+                                    <ToggleSwitch
+                                        label={"Apply for all Branch"}
+                                        name={"isAllBranchApplicable"}
+                                        required
+                                        checked={formik.values.isAllBranchApplicable}
+                                        onChange={() => {
+                                            formik.setFieldValue(
+                                                "isAllBranchApplicable",
+                                                !formik.values.isAllBranchApplicable
+                                            );
+                                        }}
+                                    />
+                                    <ToggleSwitch
+                                        label={"Ledger"}
+                                        name={"isLedger"}
+                                        required
+                                        checked={formik.values.isLedger}
+                                        onChange={() => {
+                                            formik.setFieldValue(
+                                                "isLedger",
+                                                !formik.values.isLedger
+                                            );
+                                        }}
+                                    />
 
 
-                                    <div className="py-[6px]">
+                                    {/* <div className="py-[6px]">
                                     <div role="group">
                                             <label className='block py-[8px] font-[500] font-inter '>Ledger </label>
                                             <div>
@@ -328,7 +394,7 @@ const CharofAccForm = () => {
                                             </div>
                                             <ErrorMessage component="div" className='text-[14px] text-redclr ' name="isLedger" />
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </div>
 
 

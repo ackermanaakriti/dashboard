@@ -13,6 +13,7 @@ import { FaArrowLeft } from "react-icons/fa6";
 import useFormNavigation from "../../../Components/FormNavigation";
 import CancelButton from "../../../Components/Buttons/CancelButton";
 import SubmitButton from "../../../Components/Buttons/SubmitButton";
+import { InputField } from "../../../Components/InputField";
 
 
 const CompanyForm = () => {
@@ -140,72 +141,78 @@ theme="light"
           <Form onChange={()=>setFormDirty(true)} ref={formref} >
             <div className="grid grid-cols-2 gap-[90px] relative">
               <div>
-                <div className="grid grid-cols-2  gap-[20px]">
-                  <div className="py-[5px]">
-                    <label className="block py-[5px] font-[500] font-inter ">Name <span  className="text-redclr">*</span></label>
-                    <Field
-                      type="text"
-                      name="name"
-                      id='name'
-                      className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr }`}
-
-                      placeholder=""
-                    />
-                    <ErrorMessage component="div" className=" text-redclr text-[14px]" name="name" />
-                  </div>
+                <div className="grid grid-cols-2  gap-[20px] py-[8px]">
                  
-                  <div className="py-[6px]">
-                    <label className="block py-[5px] font-[500] font-inter">Contact Number <span  className="text-redclr">*</span></label>
-                    <Field
-                      type="text"
-                      name="contactNumber"
-                      className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr `}
-
-                      placeholder=""
-                      id="contactNumber"
-                    />
-                    <ErrorMessage component="div" className=" text-redclr text-[14px]" name="contactNumber" />
-                  </div>
+                  <InputField
+                  label="Name"
+                  name={"name"}
+                  id='name'
+                  number={false}
+                  required={true}
+                  value={formik.values.name}
+                  onChange={(e) => {
+                    formik.setFieldValue("name", e.target.value);
+                  }}
+                  textColor={"black"}
+                />
+                  <InputField
+                  label="Contact Number"
+                  name={"contactNumber"}
+                  id='contactNumber'
+                  number={false}
+                  required={true}
+                  value={formik.values.contactNumber}
+                  onChange={(e) => {
+                    formik.setFieldValue("contactNumber", e.target.value);
+                  }}
+                  textColor={"black"}
+                />
+                
                 </div>
 
-                <div className="grid grid-cols-2 gap-[20px]">
-                  <div className="py-[6px]">
-                    <label className="block py-[5px] font-[500] font-inter">Regestration No. <span  className="text-redclr">*</span></label>
-                    <Field
-                      type="text"
-                      name="regestrationNo"
-                      className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr `}
-
-                      placeholder=""
-                      id="regestrationNo"
-                    />
-                    <ErrorMessage  component="div" className=" text-redclr text-[14px]" name="regestrationNo" />
-                  </div>
-                  <div className="py-[6px]">
-                    <label className="block py-[5px] font-[500] font-inter">Pan <span className="text-redclr">*</span></label>
-                    <Field
-                      type="text"
-                      name="pan"
-                      className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr `}
-
-                      placeholder=""
-                      id="pan"
-                    />
-                    <ErrorMessage component="div" className=" text-redclr text-[14px]" name="pan" />
-                  </div>
+                <div className="grid grid-cols-2 gap-[20px] py-[8px]">
+                <InputField
+                  label="Regestration No."
+                  name={"regestrationNo"}
+                  id='regestrationNo'
+                  number={false}
+                  required={false}
+                  value={formik.values.regestrationNo}
+                  onChange={(e) => {
+                    formik.setFieldValue("regestrationNo", e.target.value);
+                  }}
+                  textColor={"black"}
+                />
+                <InputField
+                  label="Pan"
+                  name={"pan"}
+                  id='pan'
+                  number={false}
+                  required={false}
+                  value={formik.values.pan}
+                  onChange={(e) => {
+                    formik.setFieldValue("pan", e.target.value);
+                  }}
+                  textColor={"black"}
+                />
+                
+                
                 </div>
+                <InputField
+                  label="Address"
+                  name={"address"}
+                  id='address'
+                  number={false}
+                  required={false}
+                  value={formik.values.address}
+                  onChange={(e) => {
+                    formik.setFieldValue("address", e.target.value);
+                  }}
+                  textColor={"black"}
+                />
+                
 
-                <div className="py-[6px]">
-                  <label className="block py-[5px] font-[500] font-inter">Address <span className="text-redclr">*</span></label>
-                  <Field
-                    type="text"
-                    id="address"
-                    name="address"
-                    className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr `}
-
-                  />
-                  <ErrorMessage component="div" className=" text-redclr text-[14px]" name="address" />
-                </div>
+                
 
                 <div className="py-[6px]">
                   <label className="block py-[5px] font-[500] font-inter">Logo</label>
@@ -227,30 +234,45 @@ theme="light"
 
               <div>
                 <h2 className="text-PrimaryColor font-semibold text-center text-[20px]">Billing Information</h2>
-                <div className="py-[6px]">
-                  <label className="block py-[5px] font-[500] font-inter">Bill Address </label>
-                  <Field
-                    as="textarea"
-                    type="text"
-                    id="billAddress"
-                    name="billAddress"
-                    className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr `}
-
-                  />
-                  <ErrorMessage component="div" className=" text-redclr text-[14px]" name="billAddress" />
-                </div>
-                <div className="py-[6px]">
-                  <label className="block py-[5px] font-[500] font-inter">Ship Address </label>
-                  <Field
-                    as="textarea"
-                    type="text"
-                    name="shipAddress"
-                    id="shipAddress"
-                    className={`border-[1px] w-[100%] py-[8px] px-[12px] outline-none border-borderclr ${formik.errors.shipAddress ? 'border-redclr' : ''}`}
-
-                  />
-                  <ErrorMessage component="div" className=" text-redclr text-[14px]" name="shipAddress" />
-                </div>
+             
+                <InputField
+                  label="Bill Address"
+                  name={"billAddress"}
+                  id='billAddress'
+                  number={false}
+                  required={false}
+                  value={formik.values.billAddress}
+                  onChange={(e) => {
+                    formik.setFieldValue("billAddress", e.target.value);
+                  }}
+                  textColor={"black"}
+                />
+                <InputField
+                  label="Ship Address"
+                  name={"shipAddress"}
+                  id='shipAddress'
+                  number={false}
+                  required={false}
+                  value={formik.values.shipAddress}
+                  onChange={(e) => {
+                    formik.setFieldValue("shipAddress", e.target.value);
+                  }}
+                  textColor={"black"}
+                />
+                <InputField
+                  label="Bill Contact Info"
+                  name={"billContactInfo"}
+                  id='billContactInfo'
+                  number={false}
+                  required={false}
+                  value={formik.values.billContactInfo}
+                  onChange={(e) => {
+                    formik.setFieldValue("billContactInfo", e.target.value);
+                  }}
+                  textColor={"black"}
+                />
+                
+               
                 <div className="py-[6px]">
                   <label className="block py-[5px] font-[500] font-inter">Bill Contact Info</label>
                   <Field

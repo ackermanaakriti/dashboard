@@ -16,6 +16,7 @@ import CancelButton from "../../Components/Buttons/CancelButton";
 import useFormNavigation from "../../Components/FormNavigation";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ToggleSwitch } from "../../Components/ToggleSwitch";
 
 
 const CustomerForm = () => {
@@ -238,7 +239,7 @@ const CustomerForm = () => {
                     />
                   </div>
                 </div>
-                <div className="py-[6px]">
+                {/* <div className="py-[6px]">
                   <div role="group">
                     <label className="block py-[8px] font-[500] font-inter ">
                        Active 
@@ -285,7 +286,19 @@ const CustomerForm = () => {
                       name="isActive"
                     />
                   </div>
-                </div>
+                </div> */}
+                 <ToggleSwitch
+                  label={"Active"}
+                  name={"isActive"}
+                  required
+                  checked={formik.values.isActive}
+                  onChange={() => {
+                    formik.setFieldValue(
+                      "isActive",
+                      !formik.values.isActive
+                    );
+                  }}
+                />
                 <div className=" mt-[40px] flex gap-[20px] justify-end">
                 <CancelButton link='/vouchertype'/>
                 <SubmitButton type='submit'

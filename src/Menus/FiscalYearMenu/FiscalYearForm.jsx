@@ -11,6 +11,7 @@ import useGetData from '../../Apis/useGetData';
 import useUpdateData from '../../Apis/useUpdate';
 import useGetById from '../../Apis/useGetById';
 import { useParams } from 'react-router';
+import { ToggleSwitch } from '../../Components/ToggleSwitch';
 
 const FiscalYearForm = () => {
 
@@ -123,7 +124,7 @@ const FiscalYearForm = () => {
                 </div>
 
               
-                   <div className="py-[6px]">
+                   {/* <div className="py-[6px]">
                     <div role="group">
                        <label className='block py-[8px] font-[500] font-inter '>  Active</label>
                            <div>
@@ -134,7 +135,19 @@ const FiscalYearForm = () => {
                                </div>
                                <ErrorMessage component="div" className='text-[14px] text-redclr ' name="isAllBranchApplicable" />
                              </div>
-                        </div>
+                        </div> */}
+                         <ToggleSwitch
+                  label={"Active"}
+                  name={"isActive"}
+                  required
+                  checked={formik.values.isActive}
+                  onChange={() => {
+                    formik.setFieldValue(
+                      "isActive",
+                      !formik.values.isActive
+                    );
+                  }}
+                />
 
                 <div className=' mt-[40px] flex gap-[20px] justify-end'>
                 <CancelButton onClick={()=>dispatch(addMenu({ id:'', menu:'fiscalyeartable'}))} className=' border-[1px] border-redclr px-[15px] py-[4px] text-redclr font-inter' text='Cancel' type='button' />

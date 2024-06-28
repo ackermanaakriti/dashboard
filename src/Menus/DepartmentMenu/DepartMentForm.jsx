@@ -16,6 +16,7 @@ import useFormNavigation from "../../Components/FormNavigation";
 import CancelButton from "../../Components/Buttons/CancelButton";
 import SubmitButton from "../../Components/Buttons/SubmitButton";
 import { FocuseErrorField } from "../../Components/FocusErrorField";
+import { ToggleSwitch } from "../../Components/ToggleSwitch";
 
 const DepartmentForm = () => {
   const { postdata,} = usePostData("Department/Add");
@@ -173,7 +174,7 @@ const formref = useFormNavigation()
                 />
               </div>
 
-              <div className="py-[6px]">
+              {/* <div className="py-[6px]">
                 <div role="group">
                   <label className="block py-[8px] font-[500] font-inter">
                     Active
@@ -218,7 +219,19 @@ const formref = useFormNavigation()
                     name="isActive"
                   />
                 </div>
-              </div>
+              </div> */}
+               <ToggleSwitch
+                  label={"Active"}
+                  name={"isActive"}
+                  required
+                  checked={formik.values.isActive}
+                  onChange={() => {
+                    formik.setFieldValue(
+                      "isActive",
+                      !formik.values.isActive
+                    );
+                  }}
+                />
 
               <div className="mt-[40px] flex gap-[20px] justify-end">
               <CancelButton link='/department'/>

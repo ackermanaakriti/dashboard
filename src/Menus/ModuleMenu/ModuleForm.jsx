@@ -14,6 +14,7 @@ import useFormNavigation from "../../Components/FormNavigation";
 import { FocuseErrorField, focusFirstErrorField } from "../../Components/FocusErrorField";
 import SubmitButton from "../../Components/Buttons/SubmitButton";
 import CancelButton from "../../Components/Buttons/CancelButton";
+import { ToggleSwitch } from "../../Components/ToggleSwitch";
 
 
 
@@ -143,7 +144,7 @@ const ModuleForm = () => {
                   />
                 </div>
               </div>
-              <div className="py-[6px]">
+              {/* <div className="py-[6px]">
                 <div role="group">
                   <label className="block py-[8px] font-[500] font-inter ">
                     Active
@@ -186,7 +187,19 @@ const ModuleForm = () => {
                     name="isActive"
                   />
                 </div>
-              </div>
+              </div> */}
+              <ToggleSwitch
+                  label={"Active"}
+                  name={"isActive"}
+                  required
+                  checked={formik.values.isActive}
+                  onChange={() => {
+                    formik.setFieldValue(
+                      "isActive",
+                      !formik.values.isActive
+                    );
+                  }}
+                />
 
               <div className=" mt-[40px] flex gap-[20px]  justify-end ">
               <CancelButton link='/module'/>

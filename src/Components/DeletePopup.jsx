@@ -4,19 +4,21 @@ import { useLayouData } from '../Context/MainLayoutContext'
 import useGetData from '../Apis/useGetData'
 
 
-const DeletePopup = ({DeleteId,Deldata,DatatobeDeleted}) => {
+const DeletePopup = ({DeleteId,DatatobeDeleted,Deldata}) => {
+  
    
    
-    const { DeleteList,setDeleteList} = useLayouData()
+    const { DeletePopup,setDeletePopupShow} = useLayouData()
   
     const handleAbort=()=>
         {
-            setDeleteList(false)
+            setDeletePopupShow(false)
         }
-        const handleDel = async () => {
+        const handleDel =  () => {
             
            Deldata(DeleteId)
-            setDeleteList(false); 
+           
+            setDeletePopupShow(false); 
 
            
         }

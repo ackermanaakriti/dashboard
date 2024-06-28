@@ -14,6 +14,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import SubmitButton from "../../Components/Buttons/SubmitButton";
 import CancelButton from "../../Components/Buttons/CancelButton";
+import { ToggleSwitch } from "../../Components/ToggleSwitch";
 
 const EmployeeForm = () => {
   const { postdata, postError } = usePostData("Employee/Add");
@@ -208,7 +209,7 @@ const EmployeeForm = () => {
                 
               </div>
               <div className="grid grid-cols-2 gap-[20px]">
-                <div className="py-[6px]">
+                {/* <div className="py-[6px]">
                   <div role="group">
                     <label className="block py-[8px] font-[500] font-inter ">
                        Active
@@ -255,7 +256,19 @@ const EmployeeForm = () => {
                       name="isActive"
                     />
                   </div>
-                </div>
+                </div> */}
+                 <ToggleSwitch
+                  label={"Active"}
+                  name={"isActive"}
+                  required
+                  checked={formik.values.isActive}
+                  onChange={() => {
+                    formik.setFieldValue(
+                      "isActive",
+                      !formik.values.isActive
+                    );
+                  }}
+                />
               </div>
              
              </div>

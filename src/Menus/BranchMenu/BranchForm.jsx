@@ -17,6 +17,7 @@ import { useNavigate, useParams } from "react-router";
 import useFormNavigation from "../../Components/FormNavigation";
 import SubmitButton from "../../Components/Buttons/SubmitButton";
 import CancelButton from "../../Components/Buttons/CancelButton";
+import { ToggleSwitch } from "../../Components/ToggleSwitch";
 // import usePostData from '../../Apis/usePostData'
 
 
@@ -419,7 +420,7 @@ const [companyData,setCompanyData]= useState('')
                 </div>
 
 
-                <div className="py-[6px]">
+                {/* <div className="py-[6px]">
                   <div role="group">
                     <label className='block py-[8px] font-[500] font-inter '>Head Office</label>
                     <div>
@@ -430,7 +431,19 @@ const [companyData,setCompanyData]= useState('')
                     </div>
                     <ErrorMessage component="div" className='text-[14px] text-redclr ' name="isHeadOffice" />
                   </div>
-                </div>
+                </div> */}
+                               <ToggleSwitch
+                                        label={"Head Office"}
+                                        name={"isHeadOffice"}
+                                        required
+                                        checked={formik.values.isHeadOffice}
+                                        onChange={() => {
+                                            formik.setFieldValue(
+                                                "isHeadOffice",
+                                                !formik.values.isHeadOffice
+                                            );
+                                        }}
+                                    />
 
 
               </div>

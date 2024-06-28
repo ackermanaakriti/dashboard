@@ -16,14 +16,14 @@ const CompanyTable = () => {
   const [tableData, setTableData] = useState([]);
   const [filterText, setFilterText] = React.useState("");
   const navigate = useNavigate();
-  const { DeleteList, setDeleteList } = useLayouData();
+  const {  DeletePopupShow,setDeletePopupShow } = useLayouData();
   const [DeleteId, setDeleteId] = useState("");
   const [DatatobeDeleted,setDatatobeDeleted]= useState('')
 
 
 
   const handleDelete =  async (id,name) => {
-    setDeleteList(true)
+    setDeletePopupShow(true)
     setDeleteId(id)
     setDatatobeDeleted(name)
   };
@@ -108,7 +108,7 @@ const CompanyTable = () => {
         link="/company/form"
         fileName='Company'
       />
-      {DeleteList && (
+      {DeletePopupShow && (
         <DeletePopup
         
           
