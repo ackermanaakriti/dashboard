@@ -13,7 +13,7 @@ import DeletePopup from "../../Components/DeletePopup";
 
 const VendorTable = () => {
  
-  console.log(Creditors)
+
   const { data, Deldata } = useGetData(`Creditors/GetAll?IsDeleted=${false}`,"Creditors/Delete/");   //use custom hook to get all data...passing url
   const [filterText, setFilterText] = React.useState('');
   const navigate = useNavigate();

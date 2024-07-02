@@ -1,7 +1,7 @@
 import React, { useEffect, useState,use } from "react";
 import useDelData from "../../../Apis/useDelData";
 import { useLayouData } from "../../../Context/MainLayoutContext";
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import { addMenu } from "../../../Redux/TopTabSlice";
 import { MdEdit } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
@@ -10,16 +10,22 @@ import { TableButton } from "../../../Components/GreenButton";
 import useGetData from "../../../Apis/useGetData";
 import { useNavigate } from "react-router";
 import DeletePopup from "../../../Components/DeletePopup";
+import { companyAllData ,companyloading} from "../../../Redux/CustomSlice";
 
 const CompanyTable = () => {
-  const { data,Deldata } = useGetData(`Company/GetAll?IsDeleted=${false}`,'Company/Delete/'); //use custom hook to get all data...passing url
+  const { data,Deldata ,fetchData} = useGetData(`Company/GetAll?IsDeleted=${false}`,'Company/Delete/'); //use custom hook to get all data...passing url
   const [tableData, setTableData] = useState([]);
   const [filterText, setFilterText] = React.useState("");
   const navigate = useNavigate();
   const {  DeletePopupShow,setDeletePopupShow } = useLayouData();
   const [DeleteId, setDeleteId] = useState("");
   const [DatatobeDeleted,setDatatobeDeleted]= useState('')
+  const allData = useSelector((state) => state.companyData);
+  console.log(allData)
 
+
+
+ 
 
 
   const handleDelete =  async (id,name) => {

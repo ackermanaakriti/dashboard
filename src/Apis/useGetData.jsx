@@ -11,23 +11,23 @@ function useGetData(fetchurl, deleteurl) {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [deleteResponse, setDeleteResponse]= useState()
-  const dispatch = useDispatch()
+
 
   const fetchData = async () => {
     try {
       // setLoading(true);
-      dispatch(companyloading(true))
+      // dispatch(loading(true))
       const response = await axios.get(`${baseUrl}${fetchurl}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setData(response?.data?.data);
-      dispatch(companyAllData(response?.data?.data))
+      // dispatch(allData(response?.data?.data))
       
       setLoading(false);
       console.log('all data',response);
     } catch (err) {
       setError(err);
-      dispatch()
+    
       setLoading(false); 
     }
   };
@@ -52,9 +52,12 @@ function useGetData(fetchurl, deleteurl) {
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, [fetchurl, deleteurl]);
+  useEffect(()=>
+    {
+     fetchData()
+    },[fetchurl])
+
+ 
 
   return { data, error, fetchData, loading, Deldata };
 }

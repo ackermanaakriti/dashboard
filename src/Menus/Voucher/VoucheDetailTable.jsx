@@ -8,7 +8,7 @@ import { baseUrl } from '../../Apis/Baseurl';
 import axios from 'axios';
 
 
-const VoucherDetailTable = ({ dataByid, editData, detaildata,dataforvoucherDetailtable, editMode, setdebCredAmount }) => {
+const VoucherDetailTable = ({ dataByid, editData, detaildata,dataforvoucherDetailtable,setDataforvoucherDetailtable, editMode, setdebCredAmount }) => {
 
   const [voucherDetaildata, setVoucherDetaildata] = useState([]);
   // const { Deldata } = useDelData('VoucherDetail/Delete/');
@@ -16,6 +16,7 @@ const VoucherDetailTable = ({ dataByid, editData, detaildata,dataforvoucherDetai
  const [creditsum,setCreditsum]= useState('');
 const [debitSum,setDebitSum]= useState('')
  const {token} = useLayouData()
+ console.log(detaildata,dataforvoucherDetailtable)
 
   useEffect(() => {
     setdebCredAmount(false);
@@ -28,7 +29,7 @@ const [debitSum,setDebitSum]= useState('')
     } else {
       setVoucherDetaildata(dataforvoucherDetailtable); // edit mode xaina bhane voucherdetail data ma detaildata rakhne
     }
-  }, [editMode, dataByid, detaildata, editData, setdebCredAmount]);
+  }, [editMode, dataByid, detaildata, editData,dataforvoucherDetailtable, setdebCredAmount]);
 
   useEffect(() => {
     calculateSumEquality(voucherDetaildata);
@@ -52,7 +53,7 @@ const [debitSum,setDebitSum]= useState('')
 
   const handleDel = (id, voucherId) => {
     if (editMode) {
-      console.log(editData)
+      console.log(editData,editMode)
       if(editMode && editData.length === 0)
         {
           try {
@@ -65,14 +66,11 @@ const [debitSum,setDebitSum]= useState('')
                   }
                 }
               );
-              
-              // Update the local state to remove the deleted item
              
             } catch (err) {
               console.log(err);
             }
         }
-      console.log('hello')
       
         if(editData.length > 0)
           {
@@ -87,20 +85,29 @@ const [debitSum,setDebitSum]= useState('')
     
     else {
       console.log('bye')
-      console.log(voucherDetaildata)
-      const updateddata = voucherDetaildata.filter(item => item.voucherId !== voucherId);
-      console.log('hello')
-      console.log(updateddata)
-      setVoucherDetaildata(updateddata);
+      console.log(voucherDetaildata,voucherId)
+      const indexToRemove = voucherDetaildata.findIndex(item => item.voucherId === voucherId);
+      if (indexToRemove !== -1) {
+            dataforvoucherDetailtable.splice(indexToRemove, 1);
+            setDataforvoucherDetailtable([...dataforvoucherDetailtable]); // Update state or re-render if needed
+        }
+      const updateddata = dataforvoucherDetailtable.filter(item => item.voucherId !== voucherId);
+      setDataforvoucherDetailtable(updateddata)
+      console.log(dataforvoucherDetailtable)
+      setVoucherDetaildata(updateddata)
+      
+
+     console.log(voucherDetaildata)
+     console.log(dataforvoucherDetailtable)
     }
   };
 
   return (
     <>
-      <div className='px-[50px] pb-[50px]'>
-        <table className='shadow-lg'>
-          <thead>
-            <tr>
+      <div className='px-[50px] pb-[50px] '>
+        <table className='shadow-lg voucherDetailTable'>
+          <thead className='bg-tblbg '>
+            <tr className='px-[10px] py-[5px]'>
               <th>ChartofAccount</th>
               <th>Debit Amount</th>
               <th>Credit Amount</th>

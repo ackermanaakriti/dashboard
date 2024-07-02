@@ -252,4 +252,28 @@ left: 0;
     }
   }
 }
+.voucherDetailTable
+{
+  width: 80%;
+  margin:0 auto;
+  padding-top:50px;
+  margin-top: 50px;
+ 
+  th 
+  {
+    padding:10px 10px;
+    font-size: 16px;
+    font-weight: 500;
+    border-right:1px solid #c0d3e5;
+    border-bottom:1px solid #c0d3e5 ;
+  }
+  td 
+  {
+    padding:10px 10px;
+    font-size: 16px;
+    font-weight: 500;
+    border-right:1px solid #c0d3e5;
+    border-bottom:1px solid #c0d3e5 ;
+  }
+}
 
